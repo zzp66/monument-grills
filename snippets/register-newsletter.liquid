@@ -1,0 +1,82 @@
+{%- liquid
+  assign popups = section.blocks | where: 'type', 'popup-button'
+-%}
+
+{% style %}
+  .modal-hide{
+    display:none;
+  }
+  @media (min-width: 600px) {
+    .modal__window.newsletter-modal,
+    .modal__window.newsletter-modal .modal__content，
+    .modal__window.newsletter-modal .modal__content .normal-box{
+      min-height: 340px;
+    }
+    .modal__window.newsletter-modal .modal__content .normal-box{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+     }
+     .modal__window.newsletter-modal .modal__content .normal-box form{
+       width:100%;
+     }
+  }
+ 
+{% endstyle %}
+
+{% if popups.size > 0 %}
+<link rel="stylesheet" href="{{ 'modal.css' | asset_url }}">
+ {%- for block in popups -%}
+   <modal-dialog class="register_modal modal fixed top-0 left-0 w-full h-full flex items-center justify-center" id="modal-{{ block.id }}" {{ block.shopify_attributes }}>
+    <div class="modal__window newsletter-modal  relative bg-theme-bg text-theme-text text-start overflow-hidden has-motion" role="dialog" aria-label="{{ block.settings.pop_title }}" aria-modal="true" tabindex="-1">
+        <button id="close_btn" type="button" class="modal__close-btn absolute js-close-modal {% if block.settings.iframe_form != blank %}modal-hide{% endif %}">
+          {% render 'icon-close' %}
+          <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+        </button>
+      <div class="modal__header flex-auto h-full rte">
+        {%- if block.settings.pop_title != blank -%}
+          <h3 class="{% if block.settings.is_font_weight != blank %}font-weight{% endif %}">{{ block.settings.pop_title }}</h3>
+        {%- endif -%}
+      </div>
+      <div class="{% if block.settings.is_use_hulk_form != blank %}modal__content__form{% else %}modal__content{% endif %} flex-auto h-full rte">
+        <div class=" {% if block.settings.custom_liquid != blank %}normal-box{% else %}normal-des{% endif %}">
+          {% if block.settings.custom_liquid != blank %}
+            {{ block.settings.custom_liquid }}
+          {% endif %}
+          {% if block.settings.custom_text != blank %}
+            {{ block.settings.custom_text }}
+          {% endif %}
+        </div>
+        <div class="iframe-form modal-hide">
+          {% if block.settings.iframe_form %}
+            {{ block.settings.iframe_form }}
+          {% endif %}
+        </div>
+        {% if block.settings.custom_text_url_name != blank %}
+            <div class="modal-learn-more mt-4 mb-4">
+              {% if block.settings.custom_text_url != blank %}
+                <a class="btn btn--primary" href="{{ block.settings.custom_text_url }}" target="_blank" rel="nofollow">{{ block.settings.custom_text_url_name | escape }}</a>
+              {% endif %}
+            </div>
+        {% endif %}
+       
+      </div>
+      {% if block.settings.is_use_footer_button != blank %}
+          <div class="modal__footer flex-auto h-full rte">
+              {% if block.settings.footer_button_label != blank and block.settings.is_show_countdown_timer != blank %}
+                  <button id="countdown_btn" type="button" class="absolute js-close-modal {{ block.settings.footer_button_style }}" disabled>
+                    <span id="countdown"></span>
+                  </button>
+              {% else %}
+                  <button type="button" class="absolute js-close-modal {{ block.settings.footer_button_style }}">
+                    <span>{{ block.settings.footer_button_label }}</span>
+                  </button>
+              {% endif %}
+          </div>
+      {% endif %}
+    </div>
+  </modal-dialog>
+  {% endfor %}
+{% endif %}
+
+

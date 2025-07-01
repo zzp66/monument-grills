@@ -1,0 +1,13 @@
+<input id="fedex_number" class="input w-full FedEx" name="FedEx Number" pattern="[0-9]*" autocomplete="" aria-required="true" placeholder="Fedex number" required>
+{% for block in blocks %}
+  {% if block.settings.button_link %}
+    <button class="fedex-btn card__button{% if block.settings.button_label == blank %}{% if section.settings.button_style == 'link' %} btn--primary{% else %} {{ section.settings.button_style }}{% endif %} btn btn--icon btn--lg has-ltr-icon{% else %} {{ section.settings.button_style }}{% endif %}">
+      {%- if block.settings.button_label != blank -%}
+        {{- block.settings.button_label | escape -}}
+      {%- else -%}
+        <span class="visually-hidden">{{ "general.labels.please_select" | t }}{% if block.settings.heading != blank %} {{ block.settings.heading }}{% endif %}</span>
+        {%- render 'icon-arrow-right' -%}
+      {%- endif -%}
+    </button>
+  {% endif %}
+{% endfor %}

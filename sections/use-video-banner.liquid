@@ -1,0 +1,1315 @@
+{%- if section.blocks.size > 0 -%}
+    {%- if section.index > 2 -%}
+      <link rel="stylesheet" href="{{ 'text-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- else -%}
+      {{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+      {{ 'video.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+  {%- endif -%}
+  <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+  
+  {%- liquid
+      assign using_video_tag = false
+      assign autoplay = section.settings.video_autoplay
+      assign video_cover = section.settings.video_cover
+      assign color_scheme = section.settings.color_scheme
+  
+      if section.settings.video_upload != blank
+        assign using_video_tag = true
+      endif
+    -%}
+    
+    {%- capture video_component -%}
+      <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                       {%- unless using_video_tag %} data-video-url="{{ section.settings.video_upload | escape }}" {% endunless -%}
+                       data-video-id="{{ section.id }}"
+                       data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                       data-background="false"
+                       data-description="{{ section.settings.video_description | escape }}">
+        {%- if using_video_tag -%}
+          {{ section.settings.video_upload | video_tag: playsinline: true, autoplay: autoplay, muted: true, loop: true, controls: false, poster: video_cover | replace: '<img ', '<img width="100%" loading="lazy" hidden ' }}
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
+      </video-component>
+    {%- endcapture -%}
+
+    {%- capture video_component_mobile -%}
+      <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                       {%- unless using_video_tag %} data-video-url="{{ section.settings.video_upload | escape }}" {% endunless -%}
+                       data-video-id="{{ section.id }}"
+                       data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                       data-background="false"
+                       data-description="{{ section.settings.video_description | escape }}">
+        {%- if using_video_tag -%}
+          {{ section.settings.video_upload_mobile | video_tag: playsinline: true, autoplay: autoplay, muted: true, loop: true, controls: false, poster: video_cover | replace: '<img ', '<img width="100%" loading="lazy" hidden ' }}
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
+      </video-component>
+    {%- endcapture -%}
+  
+  {%- liquid
+    # constants
+    assign breakpoint_sm = 600
+    assign breakpoint_md = 769
+    assign breakpoint_xxl = 1536
+    assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+  
+    assign img = section.settings.image_desktop
+    assign m_img = section.settings.image_mobile
+  
+    assign overlay_position = section.settings.overlay_position | split: ' '
+    assign color_scheme = section.settings.color_scheme
+    assign bg_color = false
+  
+    if color_scheme == 'default'
+      assign bg_color = settings.bg_color
+    elsif color_scheme == '1'
+      assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+    elsif color_scheme == '2'
+      assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+    elsif color_scheme == '3'
+      assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+    endif
+  
+    if bg_color == 'rgba(0,0,0,0)'
+      assign bg_color = false
+    endif
+  
+    if section.index == 1 or section.settings.prevent_animation
+      assign lazy_load_images = false
+    else
+      assign lazy_load_images = true
+    endif
+  
+    if color_scheme == "white"
+      assign brightness = section.settings.transparent_content_color | color_brightness
+      assign alpha = section.settings.transparent_content_color | color_extract: 'alpha'
+      if brightness < 190 and alpha > 0
+        assign transparent_text_contrast = "255 255 255"
+        assign transparent_hover_color = section.settings.transparent_content_color | color_lighten: 10
+      else
+        assign transparent_text_contrast = "0 0 0"
+        assign transparent_hover_color = section.settings.transparent_content_color | color_darken: 10
+      endif
+    endif
+  
+    assign show_search_types = false
+    if settings.show_search_types and shop.types
+      assign show_search_types = true
+    endif
+        
+  -%}
+  
+  {%- style -%}
+    .blod{
+      font-weight: bold;
+    }
+    .cc-shousuo h1,
+    .cc-shousuo .text-overlay__block{
+      margin-bottom:0;
+    }
+    .banner__search{
+      margin:2em 0;
+    }
+    .video-banner .text-overlay h2{
+      margin-bottom:0;
+    }
+    .video-banner .text-overlay .text-overlay__block{
+      margin-top:0.5em;
+    }
+    #{{ section.id }} { background: none; }
+    {% if section.settings.is_rectangular_video != blank %}
+      #{{ section.id }} .video-banner .video-section .has-video video{
+        height: 56.25vw;
+      }
+    {% endif %}
+    {% if section.settings.custom_size_video != blank %}
+      #{{ section.id }} .video-banner,
+      #{{ section.id }} .video-banner .video-section .has-video video{
+        height: {{ section.settings.custom_size_video_height }}vw;
+      }
+      #{{ section.id }} .video-banner .video-section .has-video video{
+        top: 0;
+        display: block;
+        position: absolute;
+      }
+      @media (min-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .video-banner .video-section .mobile-video{
+          display:none;
+        }
+        #{{ section.id }} .video-banner .video-section .pc-video{
+          display:block;
+        }
+        #{{ section.id }} .video-banner .video-info .text-overlay__block{
+          margin-top:0;
+        }
+       
+        
+        
+      }
+      @media (min-width:769px){
+         #{{ section.id }} .video-banner,
+         #{{ section.id }} .video-banner .video-section .has-video video{
+             height: 530px;
+         }
+      }
+      @media (max-width: 768px) {
+        .use-video-banner{
+          padding-left: 0;
+          padding-right: 0;
+        }
+        #{{ section.id }} .video-banner .video-section .mobile-video{
+          display:block;
+        }
+        #{{ section.id }} .video-banner .video-section .pc-video{
+          display:none;
+        }
+        #{{ section.id }} .video-banner,
+        #{{ section.id }} .video-banner .video-section .has-video video{
+          height: {{ section.settings.custom_size_video_height_mobile }}vw;
+        }
+        #{{ section.id }} .video-banner .video-section .has-video video{
+          object-fit: cover;
+          height:100%;
+        }
+        #{{ section.id }} .video-banner .video-info .text-overlay__block{
+          margin-top:0;
+        }
+        #{{ section.id }} .container{
+          padding-left:0;
+          padding-right:0;
+          max-width:100%;
+        }
+        
+      }
+      @media (min-width: 769px) and (max-width: 1280px) {
+       #{{ section.id }} .video-banner .video-section .has-video video {
+          height: 40vw;
+        }
+       #{{ section.id }} .video-banner {
+          height: 36.8vw;
+        }
+      }
+    {% endif %}}
+    
+    
+    @media (max-width:850px){
+      #{{ section.id }}.use-video-banner{
+        padding:0;
+      }
+      #{{ section.id }} .video-banner .video-section .has-video video{
+        max-width:110%;
+      }
+    }
+    {%- if color_scheme == "white" -%}
+      #{{ section.id }} {
+        --color-scheme-white-text: {{ section.settings.transparent_content_color.red }} {{ section.settings.transparent_content_color.green }} {{ section.settings.transparent_content_color.blue }};
+        --color-scheme-white-hover: {{ transparent_hover_color.red }} {{ transparent_hover_color.green }} {{ transparent_hover_color.blue }};
+        --color-scheme-white-text-contrast: {{ transparent_text_contrast }};
+      }
+    {%- endif -%}
+  
+    {%- if section.settings.height_mode == 'fixed' -%}
+      #{{ section.id }} .video-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+  
+      {%- if section.settings.mobile_stacked -%}
+        @media (max-width: {{ breakpoint_sm_down }}px) {
+          #{{ section.id }} .video-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+          #{{ section.id }}.mobile-stacked--spaced .text-overlay { color: inherit; }
+        }
+      {%- endif -%}
+  
+      @media (min-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .video-banner {
+          min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+        }
+      }
+      @media (min-width: {{ breakpoint_md }}px) {
+        #{{ section.id }} .video-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+      }
+  
+    {%- elsif section.settings.height_mode == 'auto' -%}
+      {%- liquid
+        if img != blank
+          assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+        else
+          assign img_padding = '56.25%'
+        endif
+        if m_img != blank
+          assign m_img_padding = 1 | divided_by: m_img.aspect_ratio | times: 100 | append: '%'
+        else
+          assign m_img_padding = img_padding
+        endif
+      -%}
+      #{{ section.id }} .video-banner::after {
+        content: '';
+        padding-top: {{ img_padding }};
+      }
+  
+      {%- if m_img != blank -%}
+        @media (max-width: {{ breakpoint_sm }}px) {
+          #{{ section.id }} .video-banner::after,
+          #{{ section.id }} .media::after {
+            padding-top: {{ m_img_padding }};
+          }
+        }
+      {%- endif -%}
+      {%- if section.settings.mobile_stacked -%}
+        @media (max-width: {{ breakpoint_sm_down }}px) {
+          #{{ section.id }} .video-banner { padding-top: {{ m_img_padding }};}
+          #{{ section.id }} .video-banner::after,
+          #{{ section.id }} .media::after {
+            padding-top: 0;
+          }
+        }
+      {%- endif -%}
+    {%- endif -%}
+  
+    {%- if section.settings.tint_opacity > 0 -%}
+      #{{ section.id }} .media::after {
+        background-color: rgba({{ section.settings.tint_color.red }}, {{ section.settings.tint_color.green }}, {{ section.settings.tint_color.blue }}, {{ section.settings.tint_opacity | divided_by: 100.0 }});
+      }
+    {%- endif -%}
+  
+    {%- if bg_color -%}
+      #{{ section.id }} .text-overlay { background: {{ bg_color }}; }
+      {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' and color_scheme == 'default' -%}
+        @media (max-width: {{ breakpoint_sm_down }}px) {
+          #{{ section.id }} .text-overlay { padding-bottom: 0; }
+        }
+      {%- endif -%}
+    {%- else -%}
+      {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' -%}
+        @media (max-width: {{ breakpoint_sm_down }}px) {
+          #{{ section.id }} .text-overlay { padding-bottom: 0; }
+        }
+      {%- endif -%}
+    {%- endif -%}
+  
+    {% if block.settings.header_uppercase %}
+      .uppercase{
+        text-transform:uppercase;
+      }
+    {% endif %}}
+    
+  {%- endstyle -%}
+  
+  <div class="section {% if section.settings.full_width %}section--full-width cc-shousuo {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width and bg_color == false or bg_color == settings.bg_color %} mobile-stacked--spaced{% endif %}{% endif %}{% unless color_scheme == 'default' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} {% if section.settings.full_screen %}{% else %} container use-video-banner{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+    <div class="video-banner relative flex {{ overlay_position | last }} {{ section.settings.height_mode }}-height">
+      <!-- video start -->
+        <div id="{{ section.settings.link_id }}" class="video-section media media--has-overlay absolute top-0 left-0 bottom-0 w-full flex-col{% if block.settings.video_size == 'sm' %} max-w-screen-md{% elsif block.settings.video_size == 'md' %} max-w-screen-lg{% endif %}">
+          {% if section.blocks.size > 0 %}
+              {% if autoplay %}
+                
+                {% if section.settings.video_upload_mobile != blank %}
+                  <deferred-media class="block top-0 left-0 w-full h-full no-js-hidden {% if section.settings.video_upload_mobile != blank %}mobile-video{% endif %}">
+                    <template>{{ video_component_mobile }}</template>
+                  </deferred-media>
+                {% endif %}}
+                <deferred-media class="block top-0 left-0 w-full h-full no-js-hidden pc-video">
+                  <template>{{ video_component }}</template>
+                </deferred-media>
+  
+                <noscript>
+                  <div class="absolute top-0 left-0 w-full h-full">
+                    {{ video_component }}
+                  </div>
+                </noscript>
+              {% else %}
+                <deferred-media class="height-clip top-0 left-0 w-full h-full no-js-hidden"{% if using_video_tag and autoplay == false %} data-hide-controls-instantly="true"{% endif %}>
+                  <button type="button" class="video-section__play-btn absolute top-0 left-0 flex justify-center items-center w-full h-full video-played-hidden js-load-media">
+                    <span class="visually-hidden">{{ 'general.icon_labels.play' | t }}</span>
+                    {%- render 'icon-play' -%}
+                  </button>
+                  <template>
+                    {{ video_component }}
+                  </template>
+                </deferred-media>
+              {% endif %}
+          {% endif %}
+  
+          <div class="media media--has-overlay absolute top-0 left-0 w-full h-full video-played-hidden">
+            {%- liquid
+              assign sizes = false
+              assign class = 'img-fit object-center'
+            -%}
+            {%- if section.settings.video_cover != blank -%}
+              {%- assign poster_image = section.settings.video_cover | default: block.settings.video_upload.preview_image  -%}
+              {%- capture sizes -%}
+                {%- render 'sizes-attribute', min: '100vw', sm: 'page', md: false, lg: false, xl: 'page', max: 'page' -%}
+              {%- endcapture -%}
+              {% render 'image',
+                image: poster_image,
+                widths: '750, 856, 1440, 1680, 1920, 2560',
+                src_width: 1680,
+                src_placeholder: true,
+                sizes: sizes,
+                section_index: section.index,
+                class: class
+              %}
+            {%- else -%}
+              {%- assign class = class | prepend: 'media__placeholder ' -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+            {%- endif -%}
+          </div>
+        </div>
+      {% style %}
+          .max-width-{{ section.settings.text_maximum_width }}{
+            padding: 1em;
+            max-width: {{ section.settings.text_maximum_width }}%;
+          }
+         @media (max-width:768px){
+           .max-width-{{ section.settings.text_maximum_width }}{
+              max-width: 100%;
+            }
+         }
+      {% endstyle %}
+      {%- if section.blocks.size > 0 -%}
+        <div class="{% if section.settings.full_width %}w-full mb-10{% else %}container{% endif %}{% unless bg_color %}{% if section.settings.full_width or section.settings.mobile_stacked %} md-down:p-xl{% endif %}{% endunless %} flex {{ overlay_position | first }}{% if section.settings.mob_center_text %} md-down:center{% endif %}">
+          <div class="video-info max-width-{{ section.settings.text_maximum_width }} {% if block.settings.header_icon != blank %} img-overlay{% endif %} {% if section.settings.full_width %}{% else %}text-overlay{% endif %}{% if bg_color %} text-overlay--bg{% endif %} {{ section.settings.overlay_text_align }} {% if section.settings.mob_center_text %} md-down:text-center{% endif %}"{% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %}>
+            {%- for block in section.blocks -%}
+              
+              {%- case block.type -%}
+                {%- when 'subheading' -%}
+                  {%- if block.settings.text != blank -%}
+                    <p class="text-overlay__block sub-title subheading" {{ block.shopify_attributes }}>
+                      {{- block.settings.text | escape -}}
+                    </p>
+                  {%- endif -%}
+            
+                {% when 'heading_photo' %}
+                  {% if block.settings.header_icon != blank %}
+                    <div class="header-icon-warp">
+                      {% liquid
+                        assign icon_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+                        assign icon = block.settings.header_icon
+                        assign icon_w = block.settings.icon_size
+                      %}
+                      {%- render 'image',
+                        image: icon,
+                        widths: '240, 480, 960',
+                        src_width: 240,
+                        src_placeholder: true,
+                        sizes: icon_sizes,
+                        lazy_load: lazy_load_images,
+                        class: 'img-fit header-icon'
+                      -%}
+                    </div>
+                    {% style %}
+                      .header-icon-warp .header-icon{
+                        display:block;
+                        width:auto;
+                        max-width: {{ icon_w }}%;
+                        position:relative;
+                        margin:auto;
+                      }
+                      @media (max-width:850px){
+                        
+                      }
+                    {% endstyle %}
+                  {% endif %}
+            
+                {%- when 'heading' -%}
+                  {% style %}
+                    .custom-size{
+                      font-size: {{ block.settings.custom_size }}px;
+                    }
+                    @media (max-width:768px){
+                      .custom-size{
+                        font-size: {{ block.settings.mobile_custom_size }}px;
+                      }
+                    }
+                  {% endstyle %}
+                  {%- if block.settings.heading != blank -%}
+                    <{{ block.settings.heading_size }} class="text-overlay__heading {% if block.settings.custom_size %} custom-size{% endif %} {% if block.settings.header_uppercase %} uppercase{% endif %} {% if block.settings.one_color %} color-text{% endif %}" {{ block.shopify_attributes }} 
+                      >
+                      {% render 'multiline-text' with block.settings.heading %}
+                    </{{ block.settings.heading_size }}>
+                  {%- endif -%}
+  
+                {%- when 'text' -%}
+                  {%- if block.settings.text != blank -%}
+                    <small class="text-overlay__block reading-width rte mt-4 {% if block.settings.enlarge_text %} enlarge-text{% endif %}" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
+                    </small>
+                  {%- endif -%}
+  
+                {% when 'social' %}
+                  {% style %}
+                    .footer-social{
+                      padding:20px 0 !important;
+                    }
+                    .footer .social{
+                      width: 100%;
+                      display: flex;
+                    }
+                    .footer .social.flex-center{
+                      justify-content: center;
+                    }
+                  {% endstyle %}
+                  <div class="footer footer-social">
+                    <ul class="social inline-flex flex-wrap justify-start {% if block.settings.iscenter != blank %} flex-center{% endif %}">
+                      {% if block.settings.fb_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.fb_url }}" target="_blank" rel="noopener" title="Monument Grills on Facebook"><svg width="24" height="24" viewBox="0 0 14222 14222" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M14222 7112c0 3549.352-2600.418 6491.344-6000 7024.72V9168h1657l315-2056H8222V5778c0-562 275-1111 1159-1111h897V2917s-814-139-1592-139c-1624 0-2686 984-2686 2767v1567H4194v2056h1806v4968.72C2600.418 13603.344 0 10661.352 0 7112 0 3184.703 3183.703 1 7111 1s7111 3183.703 7111 7111Zm-8222 7025c362 57 733 86 1111 86-377.945 0-749.003-29.485-1111-86.28Zm2222 0v-.28a7107.458 7107.458 0 0 1-167.717 24.267A7407.158 7407.158 0 0 0 8222 14137Zm-167.717 23.987C7745.664 14201.89 7430.797 14223 7111 14223c319.843 0 634.675-21.479 943.283-62.013Z"></path></svg><span class="visually-hidden">Facebook</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                      {% if block.settings.youtube_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.youtube_url }}" target="_blank" rel="noopener" title="Monument Grills on YouTube"><svg width="24" height="17" viewBox="0 0 48 34" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m19.044 23.27-.001-13.582 12.968 6.814-12.967 6.768ZM47.52 7.334s-.47-3.33-1.908-4.798C43.787.61 41.74.601 40.803.49 34.086 0 24.01 0 24.01 0h-.02S13.914 0 7.197.49c-.939.11-2.984.12-4.81 2.045C.947 4.003.48 7.334.48 7.334S0 11.247 0 15.158v3.668c0 3.912.48 7.823.48 7.823s.468 3.331 1.906 4.798c1.827 1.926 4.226 1.866 5.294 2.067C11.52 33.885 24 34 24 34s10.086-.015 16.803-.505c.938-.113 2.984-.122 4.809-2.048 1.439-1.467 1.908-4.798 1.908-4.798s.48-3.91.48-7.823v-3.668c0-3.911-.48-7.824-.48-7.824Z"></path></svg><span class="visually-hidden">YouTube</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                      {% if block.settings.instagram_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.instagram_url }}" target="_blank" rel="noopener" title="Monument Grills on Instagram"><svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><circle cx="15.238" cy="4.948" r="1.238"></circle><path d="M19.47 3.444A5.11 5.11 0 0 0 16.548.527a7.351 7.351 0 0 0-2.43-.466C13.05.014 12.713 0 9.999 0c-2.712 0-3.057 0-4.12.06A7.351 7.351 0 0 0 3.45.528 5.11 5.11 0 0 0 .528 3.444 7.317 7.317 0 0 0 .06 5.87C.014 6.936 0 7.274 0 9.982s0 3.053.06 4.113c.018.829.176 1.649.468 2.425a5.11 5.11 0 0 0 2.922 2.917 7.35 7.35 0 0 0 2.429.5c1.069.047 1.407.06 4.12.06s3.058 0 4.12-.06a7.351 7.351 0 0 0 2.429-.466 5.11 5.11 0 0 0 2.922-2.918 7.31 7.31 0 0 0 .467-2.424c.047-1.067.06-1.405.06-4.113s0-3.053-.06-4.113a7.317 7.317 0 0 0-.467-2.459zm-1.437 10.537a5.439 5.439 0 0 1-.34 1.843 3.262 3.262 0 0 1-1.87 1.87 5.451 5.451 0 0 1-1.825.34c-1.04.046-1.332.06-3.996.06-2.664 0-2.937 0-3.995-.06a5.451 5.451 0 0 1-1.825-.34 3.255 3.255 0 0 1-1.878-1.87 5.439 5.439 0 0 1-.34-1.823c-.046-1.038-.06-1.33-.06-3.992s0-2.934.06-3.992c.006-.63.121-1.253.34-1.844a3.255 3.255 0 0 1 1.878-1.87 5.451 5.451 0 0 1 1.825-.339c1.038-.046 1.331-.06 3.995-.06s2.937 0 3.996.06c.623.008 1.24.123 1.824.34.86.331 1.54 1.01 1.872 1.87.216.583.331 1.2.34 1.823.046 1.038.06 1.33.06 3.992 0 2.661 0 2.948-.047 3.992h-.014z"></path><path d="M9.991 14.753a4.761 4.761 0 1 1 0-9.523 4.761 4.761 0 0 1 0 9.523zm0-1.905a2.857 2.857 0 1 0 0-5.713 2.857 2.857 0 0 0 0 5.713z"></path></svg><span class="visually-hidden">Instagram</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                      {% if block.settings.tiktok_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.tiktok_url }}" target="_blank" rel="noopener" title="Monument Grills on TikTok"><svg width="23" height="24" viewBox="0 0 15 16" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M7.638.013C8.512 0 9.378.007 10.245 0c.054 1.02.42 2.06 1.167 2.78.746.74 1.8 1.08 2.826 1.193V6.66c-.96-.033-1.926-.233-2.8-.647a8.238 8.238 0 0 1-1.08-.62c-.006 1.947.007 3.894-.013 5.834a5.092 5.092 0 0 1-.9 2.626c-.873 1.28-2.387 2.114-3.94 2.14-.953.054-1.907-.206-2.72-.686C1.438 14.513.492 13.06.352 11.5a12.36 12.36 0 0 1-.007-.993A5.003 5.003 0 0 1 2.065 7.2c1.107-.96 2.653-1.42 4.1-1.147.013.987-.027 1.974-.027 2.96-.66-.213-1.433-.153-2.013.247-.42.273-.74.693-.907 1.167-.14.34-.1.713-.093 1.073.16 1.093 1.213 2.013 2.333 1.913.747-.006 1.46-.44 1.847-1.073.127-.22.267-.447.273-.707.067-1.193.04-2.38.047-3.573.007-2.687-.007-5.367.013-8.047Z"></path></svg><span class="visually-hidden">TikTok</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                      {% if block.settings.pinterest_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.pinterest_url }}" target="_blank" rel="noopener" title="Monument Grills on Pinterest"><svg width="24" height="24" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M24.001 0C10.748 0 0 10.745 0 24.001c0 9.825 5.91 18.27 14.369 21.981-.068-1.674-.012-3.689.415-5.512.462-1.948 3.087-13.076 3.087-13.076s-.765-1.533-.765-3.799c0-3.556 2.064-6.212 4.629-6.212 2.182 0 3.237 1.64 3.237 3.604 0 2.193-1.4 5.476-2.12 8.515-.6 2.549 1.276 4.623 3.788 4.623 4.547 0 7.61-5.84 7.61-12.76 0-5.258-3.543-9.195-9.986-9.195-7.279 0-11.815 5.427-11.815 11.49 0 2.094.616 3.567 1.581 4.708.446.527.505.736.344 1.34-.113.438-.378 1.505-.488 1.925-.16.607-.652.827-1.2.601-3.355-1.369-4.916-5.04-4.916-9.17 0-6.816 5.75-14.995 17.152-14.995 9.164 0 15.195 6.636 15.195 13.75 0 9.416-5.233 16.45-12.952 16.45-2.588 0-5.026-1.4-5.862-2.99 0 0-1.394 5.53-1.688 6.596-.508 1.85-1.504 3.7-2.415 5.14 2.159.638 4.44.985 6.801.985C37.255 48 48 37.255 48 24.001 48 10.745 37.255 0 24.001 0"></path></svg><span class="visually-hidden">Pinterest</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                      {% if block.settings.twitter_url != blank %}
+                        <li>
+                          <a class="social__link flex items-center justify-center" href="{{ block.settings.twitter_url }}" target="_blank" rel="noopener" title="Monument Grills on Twitter"><svg fill="currentColor" width="40" height="40" viewBox="1 1 22 22" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg><span class="visually-hidden">Twitter</span>
+                          </a>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                
+                {%- when 'search_bar' -%}
+                  {% if block.settings.search_dom != blank %}
+                      <link rel="stylesheet" href="{{ 'predictive-search.css' | asset_url }}"{% unless show_search_types %} media="print" onload="this.media='all'"{% endunless %}>
+                      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+                      <script src="{{ 'tabs.js' | asset_url }}" defer="defer"></script>
+  
+                      <div class="header__search banner__search relative js-closes-menu">
+                        {% render 'predictive-search', id: 'support-search', show_search_types: show_search_types, block: block %}
+                      </div>
+                  {% endif %}
+                
+                {%- when 'button' -%}
+                  {%- if block.settings.button_1_label != blank or block.settings.button_2_label != blank -%}
+                    <div class="text-overlay__buttons inline-flex flex-wrap mt-6{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
+                      {%- if block.settings.button_1_label != blank %}
+                        <a class="{{ block.settings.button_1_style }}" {% if block.settings.button_1_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.button_1_link }}"{% endif %} style="border-color:{{ block.settings.btn_border_color }};background:{{ block.settings.btn_background_color }};color:{{ block.settings.btn_font_color }};">
+                          {{- block.settings.button_1_label | escape -}}
+                        </a>
+                      {%- endif -%}
+                      {%- if block.settings.button_2_label != blank %}
+                        <a class="{{ block.settings.button_2_style }}" {% if block.settings.button_2_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.button_2_link }}"{% endif %} style="border-color:{{ block.settings.btn_border_color }};background:{{ block.settings.btn_background_color }};color:{{ block.settings.btn_font_color }};">
+                          {{- block.settings.button_2_label | escape -}}
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+  
+                {% when 'timer' %}
+                  {% if block.settings.show_timer != blank %}
+                    <script src="{{ 'countdown-timer.js' | asset_url }}" defer="defer"></script>
+                    {% style %}
+                      #{{ section.id }} .section__block--countdown {
+                        --countdown-size: {{ block.settings.countdown_size }};
+      
+                        {%- assign countdown_size_int = block.settings.countdown_size | plus: 0 -%}
+                        {% if countdown_size_int %}
+                          --countdown-gap: 0.7em;
+                        {% endif %}
+      
+                        {% if block.settings.use_custom_colors %}
+                          .countdown__item .countdown__number{
+                            background:{{ block.settings.count_color }};
+                            color:{{ block.settings.bg_color.rgb }};
+                          }
+                       
+                        {% endif %}
+                      }
+                    {% endstyle %}
+                    <div class="section__block--countdown text-overlay__block{% if block.settings.enlarge_end_text %} countdown-large-endtext{% endif %}" {{ block.shopify_attributes }}>
+                      {% render 'countdown-timer',
+                        end_date: block.settings.end_date,
+                        end_time: block.settings.end_time,
+                        end_text: block.settings.end_text,
+                        end_midnight: true,
+                        hide_on_end: block.settings.hide_on_end
+                      %}
+                    </div>
+                  {% endif %}
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+      <!-- video end -->
+    </div>
+  </div>
+      
+  
+  {% schema %}
+  {
+    "name": "video banner -- wenfei",
+    "class": "cc-video-banner",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Quick jump"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Full screen",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Layout video"
+      },
+      {
+        "type": "video",
+        "id": "video_upload",
+        "label": "Video upload for pc"
+      },
+      {
+        "type": "video",
+        "id": "video_upload_mobile",
+        "label": "Video upload for mobile"
+      },
+      {
+        "type": "select",
+        "id": "video_size",
+        "label": "Video size",
+        "info": "常规尺寸视频",
+        "options": [
+          {
+            "value": "sm",
+            "label": "Small"
+          },
+          {
+            "value": "md",
+            "label": "Medium"
+          },
+          {
+            "value": "lg",
+            "label": "Large"
+          }
+        ],
+        "default": "md"
+      },
+      {
+        "type": "checkbox",
+        "id": "is_rectangular_video",
+        "label": "Is this video ratio 16:9?",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "custom_size_video",
+        "label": "Custom size video",
+        "default": false
+      },
+      {
+        "type":"text",
+        "id":"custom_size_video_height",
+        "label":"Vedeo height PC",
+        "info":"单位为 vw ，计算公式：真实视频高 / 真实视频宽"
+      },
+      {
+        "type":"text",
+        "id":"custom_size_video_height_mobile",
+        "label":"Vedeo height mobile",
+        "info":"单位为 vw ，计算公式：真实视频高 / 真实视频宽"
+      },
+      
+      {
+        "type": "image_picker",
+        "id": "video_cover",
+        "label": "Video Cover"
+      },
+      {
+        "type": "text",
+        "id": "video_description",
+        "label": "Video description"
+      },
+      {
+        "type": "checkbox",
+        "id": "video_autoplay",
+        "label": "Autoplay",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Layout Setting"
+      },
+      {
+        "type": "select",
+        "id": "height_mode",
+        "label": "Video height",
+        "info": "Restricted to 1080px maximum.",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Original video height"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed height (set below)"
+          },
+          {
+            "value": "screen",
+            "label": "Full screen height"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_desktop",
+        "min": 400,
+        "max": 1000,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on large screens",
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_mobile",
+        "min": 250,
+        "max": 500,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on mobile",
+        "default": 350
+      },
+      {
+        "type": "header",
+        "content": "Text overlay"
+      },
+      {
+        "type": "range",
+        "id": "text_maximum_width",
+        "min": 10,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "label": "Text maximum width",
+        "default": 70
+      },
+      {
+        "type": "select",
+        "id": "overlay_position",
+        "label": "Text position",
+        "options": [
+          {
+            "value": "justify-start items-start",
+            "label": "Top left"
+          },
+          {
+            "value": "justify-center items-start",
+            "label": "Top center"
+          },
+          {
+            "value": "justify-end items-start",
+            "label": "Top right"
+          },
+          {
+            "value": "justify-start items-center",
+            "label": "Middle left"
+          },
+          {
+            "value": "justify-center items-center",
+            "label": "Middle center"
+          },
+          {
+            "value": "justify-end items-center",
+            "label": "Middle right"
+          },
+          {
+            "value": "justify-start items-end",
+            "label": "Bottom left"
+          },
+          {
+            "value": "justify-center items-end",
+            "label": "Bottom center"
+          },
+          {
+            "value": "justify-end items-end",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "justify-center items-center"
+      },
+      {
+        "type": "select",
+        "id": "overlay_text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-end",
+            "label": "Right"
+          }
+        ],
+        "default": "text-center"
+      },
+      {
+        "type": "checkbox",
+        "id": "mob_center_text",
+        "label": "Center text on mobile",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_stacked",
+        "label": "Show text below image on mobile",
+        "info": "Does not apply to \"Full screen height\".",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Style"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+          {
+            "value": "white",
+            "label": "Transparent background"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "1",
+            "label": "Scheme 1"
+          },
+          {
+            "value": "2",
+            "label": "Scheme 2"
+          },
+          {
+            "value": "3",
+            "label": "Scheme 3"
+          }
+        ],
+        "default": "white"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make section background full width",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "transparent_content_color",
+        "label": "Text and button color",
+        "info": "Only applies when the \"Transparent background\" color scheme is chosen and the text shows over an image.",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "tint_color",
+        "label": "Image tint color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "tint_opacity",
+        "min": 0,
+        "max": 80,
+        "step": 5,
+        "unit": "%",
+        "label": "Image tint opacity",
+        "default": 40
+      },
+      {
+        "type": "header",
+        "content": "SEO"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevent_animation",
+        "label": "Load the section without animation",
+        "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type":"social",
+        "name":"Social List",
+        "limit":1,
+        "settings":[
+          {
+            "type": "checkbox",
+            "id": "iscenter",
+            "label": "是否居中",
+            "default":false
+          },
+          {
+            "type":"url",
+            "id":"fb_url",
+            "label":"FB url"
+          },
+          {
+            "type":"url",
+            "id":"youtube_url",
+            "label":"Youtube url"
+          },
+          {
+            "type":"url",
+            "id":"instagram_url",
+            "label":"Instagram url"
+          },
+          {
+            "type":"url",
+            "id":"tiktok_url",
+            "label":"Tiktok url"
+          },
+          {
+            "type":"url",
+            "id":"pinterest_url",
+            "label":"Pinterest url"
+          },
+          {
+            "type":"url",
+            "id":"twitter_url",
+            "label":"Twitter url"
+          }
+        ]
+      },
+      {
+        "type": "subheading",
+        "name": "Subheading",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Subheading",
+            "default": "Subheading"
+          }
+        ]
+      },
+      {
+        "type":"search_bar",
+        "name": "search bar -- wenfei",
+        "settings":[
+          {
+            "type": "checkbox",
+            "id":"search_dom",
+            "label":"Show Search Bar"
+          },
+          {
+            "type":"color",
+            "id":"search_bg_color",
+            "label":"Settings Search Color"
+          }
+        ]
+      },
+      {
+        "type":"heading_photo",
+        "name":"Heading Photo",
+        "limit":1,
+        "settings":[
+          {
+            "type": "header",
+            "content": "Header Icon Photo"
+          },
+          {
+            "type": "image_picker",
+            "id": "header_icon",
+            "label": "Header Icon"
+          },
+          {
+            "type": "range",
+            "id": "icon_size",
+            "min": 10,
+            "max": 160,
+            "step": 10,
+            "unit": "%",
+            "label": "Icon Size",
+            "default": 50
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "name": "Heading",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default":"Banner Title",
+            "info": "Enter <br> for a line-break."
+          },
+          {
+            "type": "select",
+            "id": "heading_size",
+            "label": "Heading size",
+            "options": [
+              {
+                "value": "h6",
+                "label": "Extra extra small"
+              },
+              {
+                "value": "h5",
+                "label": "Extra small"
+              },
+              {
+                "value": "h4",
+                "label": "Small"
+              },
+              {
+                "value": "h3",
+                "label": "Medium"
+              },
+              {
+                "value": "h2",
+                "label": "Large"
+              },
+              {
+                "value": "h1",
+                "label": "Extra large"
+              },
+              {
+                "value": "h0",
+                "label": "Extra extra large"
+              }
+            ],
+            "default": "h1"
+          },
+          
+          {
+            "type":"checkbox",
+            "id":"header_weight",
+            "label":"Font Weight"
+          },
+          {
+            "type":"checkbox",
+            "id":"header_uppercase",
+            "label":"Font Uppercase",
+            "default":false
+          },
+          {
+            "type": "checkbox",
+            "id": "heading_h1",
+            "label": "Set as page heading (uses h1 tag)",
+            "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+            "default": false
+          },
+          {
+            "type":"color",
+            "id":"one_color",
+            "label":"First Color",
+            "default":"#ffffff"
+          },
+          {
+            "type":"color",
+            "id":"two_color",
+            "label":"Second Color",
+            "default":"#ffffff"
+          },
+          {
+            "type":"text",
+            "id":"color_angle",
+            "label":"Color Angle",
+            "default":"45"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "limit": 2,
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          },
+          {
+            "type": "checkbox",
+            "id": "enlarge_text",
+            "label": "Enlarge text",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "Button",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "button_1_label",
+            "label": "Button 1 label",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "button_1_link",
+            "label": "Button 1 link"
+          },
+          {
+            "type": "select",
+            "id": "button_1_style",
+            "label": "Button 1 style",
+            "options": [
+              {
+                "value": "link",
+                "label": "Link"
+              },
+              {
+                "value": "btn btn--primary",
+                "label": "Primary button"
+              },
+              {
+                "value": "btn btn--secondary",
+                "label": "Secondary button"
+              }
+            ],
+            "default": "btn btn--primary"
+          },
+          {
+            "type": "text",
+            "id": "button_2_label",
+            "label": "Button 2 label",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "button_2_link",
+            "label": "Button 2 link"
+          },
+          {
+            "type": "select",
+            "id": "button_2_style",
+            "label": "Button 2 style",
+            "options": [
+              {
+                "value": "link",
+                "label": "Link"
+              },
+              {
+                "value": "btn btn--primary",
+                "label": "Primary button"
+              },
+              {
+                "value": "btn btn--secondary",
+                "label": "Secondary button"
+              }
+            ],
+            "default": "btn btn--primary"
+          },
+          {
+            "type":"color",
+            "id":"btn_border_color",
+            "label":"Border Color"
+          },
+          {
+            "type":"color",
+            "id":"btn_background_color",
+            "label":"Background Color"
+          },
+          {
+            "type":"color",
+            "id":"btn_font_color",
+            "label":"Font Color"
+          }
+        ]
+      },
+      {
+        "type":"timer",
+        "name":"Show Timer",
+        "limit":1,
+        "settings":[
+          {
+            "type": "checkbox",
+            "id": "show_timer",
+            "label": "Enlarge Timer",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "mob_center_text",
+            "label": "Center text on mobile",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "select",
+            "id": "countdown_size",
+            "label": "Count size",
+            "options": [
+              {
+                "value": "18",
+                "label": "Extra extra small"
+              },
+              {
+                "value": "21",
+                "label": "Extra small"
+              },
+              {
+                "value": "24",
+                "label": "Small"
+              },
+              {
+                "value": "27",
+                "label": "Medium"
+              },
+              {
+                "value": "30",
+                "label": "Large"
+              },
+              {
+                "value": "33",
+                "label": "Extra large"
+              },
+              {
+                "value": "36",
+                "label": "Extra extra large"
+              }
+            ],
+            "default": "24"
+          },
+          
+          {
+            "type": "checkbox",
+            "id": "use_custom_colors",
+            "label": "Use custom colors",
+            "info": "Uses colors specified below.",
+            "default": false
+          },
+          {
+            "type": "color",
+            "id": "count_color",
+            "label": "Count number",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Count background/colon",
+            "default": "#070707"
+          },
+          {
+            "type": "text",
+            "id": "end_date",
+            "label": "End date",
+            "info": "Format: YYYY-MM-DD. If you don't enter a date, midnight tonight will be used."
+          },
+          {
+            "type": "text",
+            "id": "end_time",
+            "label": "End time (optional)",
+            "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
+          },
+          {
+            "type": "richtext",
+            "id": "end_text",
+            "label": "End text",
+            "info": "This shows when the date and time elapses."
+          },
+          {
+            "type": "checkbox",
+            "id": "enlarge_end_text",
+            "label": "Enlarge end text",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_on_end",
+            "label": "Hide the timer when the date and time elapses",
+            "default": false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "video Banner -- wenfei",
+        "blocks": [
+          {
+            "type": "heading"
+          },
+          {
+            "type": "text"
+          },
+          {
+            "type": "button"
+          }
+        ]
+      }
+    ],
+    "disabled_on": {
+      "groups": [
+        "header",
+        "footer",
+        "aside"
+      ]
+    }
+  }
+  {% endschema %}
+  

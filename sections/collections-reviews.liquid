@@ -1,0 +1,123 @@
+{% if settings.show_swiper_reviews != false %}
+  <script type="text/javascript">(function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/UQM2B4IW5kRH6em3tk8mbfGKc7242zHRB54vhx50/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})(); </script>
+  <div class="section {% if section.settings.full_width %}section--full-width {% endif %}  {% if section.settings.full_screen %}{% else %} {{ section.settings.class }}{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+    <div class="reviews-warp relative flex">
+      <div id="{{ section.settings.link_id }}" class="reviews-box {% if section.settings.full_screen != blank %} {% else %}container {% endif %}">
+          <div
+            class="yotpo yotpo-reviews-carousel"
+            data-background-color="{{ section.settings.reviews_bg }}"
+            data-mode="most_recent"
+            data-type="product"
+            data-count="{{ section.settings.reviews_count }}"
+            data-show-bottomline="1"
+            data-autoplay-enabled="1"
+            data-autoplay-speed="{{ section.settings.speed_s }}"
+            data-show-navigation="1"
+            data-testimonials-page-enabled="1"
+            data-testimonials-page-text="{{ section.settings.page_text }}"
+            data-testimonials-page-link="{{ section.settings.page_link }}"
+          >
+            &nbsp;
+          </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% style %}
+  .reviews-warp .yotpo-label {
+    display: none;
+  }
+{% endstyle %}
+
+{% schema %}
+  {
+    "name": "Collections reviews - fei",
+    "class": "collections-reviews",
+    "settings": [
+      {
+        "type": "header",
+        "content": "跳转ID设置"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Full screen",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make section background full width",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Collections Settings"
+      },
+      {
+        "type": "text",
+        "id": "page_text",
+        "label": "All Reviews text"
+      },
+      {
+        "type": "url",
+        "id": "page_link",
+        "label": "All Reviews link",
+        "info": "https://monumentgrills.com/pages/monument-grills-all-reviews"
+      },
+      {
+        "type": "text",
+        "id": "speed_s",
+        "label": "Swiper speed",
+        "default": "5000"
+      },
+      {
+        "type": "text",
+        "id": "reviews_count",
+        "label": "Reviews count",
+        "info": "max 9."
+      },
+      {
+        "type": "color",
+        "id": "reviews_bg",
+        "label": "Reviews Backgroud",
+        "default": "transparent"
+      }
+    ],
+    "presets":[
+      {
+        "name": "Collections-reviews - fei"
+      }
+    ]
+  }
+{% endschema %}

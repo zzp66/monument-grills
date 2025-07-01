@@ -1,0 +1,446 @@
+{%- liquid
+  if section.settings.layout == 'carousel'
+    assign carousel = true
+    assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4'
+  else
+    assign carousel = false
+    assign grid_classes = 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
+  endif
+
+  if section.settings.image_ratio == 'shortest'
+    assign image_ratio = 0
+    for article in section.settings.blog.articles
+      if article.image.aspect_ratio > image_ratio
+        assign image_ratio = article.image.aspect_ratio
+      endif
+    endfor
+  elsif section.settings.image_ratio == 'tallest'
+    assign image_ratio = 99
+    for article in section.settings.blog.articles
+      if article.image.aspect_ratio < image_ratio
+        assign image_ratio = article.image.aspect_ratio
+      endif
+    endfor
+  else
+    assign image_ratio = section.settings.image_ratio
+  endif
+-%}
+
+{% style %}
+  .article-block ul li .card{
+    min-height: 400px;
+    max-height: 400px;
+  }
+  .article-block ul li:nth-child(even) .card{
+    justify-content: flex-end;
+  }
+  .article-block ul li .card .card__media{
+    max-height: 500px;
+  }
+  .article-block ul li .card .card__media img{
+    position: relative;
+  }
+  .article-block ul li .card .card__info{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+ .article-block ul li .card .card__title{
+   margin: 0 auto;
+   font-weight: bold;
+   color:#111;
+ }
+@media (max-width:768px){
+  .article-block ul li .card
+  {
+      min-height: max-content;
+      max-height: max-content;
+  }
+  .article-block ul li .card .card__media{
+    max-height: 340px;
+  }
+}
+{% endstyle %}
+
+<div class="section">
+  {%- if section.settings.title != blank or section.settings.show_view_all -%}
+    <div class="container">
+      <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+        {%- if section.settings.title != blank -%}
+          <{{ section.settings.heading_size }} class="h4 section__heading mb-0 flex-auto {{ section.settings.heading_align }} {% if section.settings.header_weight != blank %}font-weight {% endif %}{% if section.settings.header_uppercase != blank %}font-uppercase{% endif %}">
+            {{- section.settings.title | escape -}}
+          </{{ section.settings.heading_size }}>
+        {%- endif -%}
+
+        {%- if section.settings.show_view_all -%}
+          <a href="{{ section.settings.blog.url }}" class="link">{{ 'sections.featured_blog.view_all' | t }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if carousel -%}
+    <carousel-slider class="carousel block article-mobile-block" inactive>
+      <div class="container relative">
+        <div class="slider" id="slider-{{ section.id }}">
+          {%- endif -%}
+
+    <div class="container article-block">
+      <ul class="{% if carousel %}slider__grid {% endif %}grid {{ grid_classes }} gap-x-theme gap-y-10" role="list">
+        {% for block in section.blocks limit: section.settings.posts_to_show %}
+          {% case block.type %}
+            {% when 'ss-article' %}
+            {% if block.settings.article_id != blank %}
+              {% liquid
+                assign article = block.settings.article_id
+                assign article_cover = block.settings.article_img_reupload
+                assign article_title = article.title | escape
+                assign article_rename = block.settings.article_rename
+                assign article_url = article.url
+
+                if article_cover == blank
+                  assign artice_img = article.image
+                else
+                  assign artice_img = article_cover
+                endif
+
+                if article_rename == blank
+                  assign rename = article_title
+                else
+                  assign rename = article_rename
+                endif
+                
+              %}
+              <li{% if carousel %} class="slider__item"{% endif %}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
+                  <div class="card hover:grow-media card--article h-full relative flex flex-col justify-between">
+                    <a href="{{ article_url }}" class="card__media relative">
+                      <div class="media block relative h-full" tabindex="-1">
+                            {%- if artice_img != blank -%}
+                              {% liquid
+                                assign ima_banner_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+                              %}
+                              {% render 'image',
+                                image: artice_img,
+                                widths: '480, 800, 980, 1024, 1440, 1920',
+                                src_width: 980,
+                                src_placeholder: true,
+                                sizes: ima_banner_sizes,
+                                quality: 1,
+                                section_index: section.index,
+                                class: 'img-fit'
+                              %}
+                            {%- else -%}
+                              {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit' }}
+                            {%- endif -%}
+                      </div>
+                    </a>
+                  <div class="card__info relative flex flex-col items-start grow">
+                     <{{ block.settings.article_rename_size }} class="card__title" {% if block.settings.article_rename_color != blank %}style="color: {{ block.settings.article_rename_color }}"{% endif %}>{{ rename }}</{{ block.settings.article_rename_size }}>
+                  </div>
+                </div>
+              </li>
+            {% endif %}
+          {% endcase %}
+        {% endfor %}
+      </ul>
+    </div>
+
+  {%- if carousel -%}
+        </div>
+        {%- if settings.slider_show_arrows != 'never' -%}
+          <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
+            <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
+              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+              {% render 'icon-chevron-right' %}
+            </button>
+            <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
+              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+              {% render 'icon-chevron-left' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    </carousel-slider>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Article list -- fei",
+  "tag": "section",
+  "class": "cc-featured-blog",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured blog"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h6",
+          "label": "Extra extra small"
+        },
+        {
+          "value": "h5",
+          "label": "Extra small"
+        },
+        {
+          "value": "h4",
+          "label": "Small"
+        },
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Extra large"
+        },
+        {
+          "value": "h0",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h3"
+    },
+    {
+      "type":"checkbox",
+      "id":"header_weight",
+      "label":"Font Weight"
+    },
+    {
+      "type":"checkbox",
+      "id":"header_uppercase",
+      "label":"Font Uppercase",
+      "default":false
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-start"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"View all\" link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "label": "Maximum posts to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+   
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "shortest",
+          "label": "Height of shortest image"
+        },
+        {
+          "value": "tallest",
+          "label": "Height of tallest image"
+        },
+        {
+          "value": "1.77",
+          "label": "Landscape"
+        },
+        {
+          "value": "1",
+          "label": "Square"
+        },
+        {
+          "value": "0.75",
+          "label": "Portrait"
+        }
+      ],
+      "default": "1.77"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button",
+      "options": [
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--primary"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ss-article",
+      "name": "Article",
+      "settings":[
+        {
+          "type": "article",
+          "id": "article_id",
+          "label": "Select Article"
+        },
+        {
+          "type": "text",
+          "id": "article_rename",
+          "label": "Rename Article Name"
+        },
+        {
+          "type": "color",
+          "id": "article_rename_color",
+          "label": "Text color"
+        },
+        {
+          "type": "select",
+          "id": "article_rename_size",
+          "label": "Rename Article name size",
+          "options": [
+            {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h6"
+        },
+        {
+          "type": "image_picker",
+          "id": "article_img_reupload",
+          "label": "Reupload article image",
+          "info": "Optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article list --fei",
+      "blocks": [
+        {
+          "type": "ss-article"
+        },
+        {
+          "type": "ss-article"
+        },
+        {
+          "type": "ss-article"
+        }
+      ]
+    }
+  ]
+  
+}
+{% endschema %}

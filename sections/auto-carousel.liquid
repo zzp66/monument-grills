@@ -1,0 +1,335 @@
+
+{% if section.blocks.size > 0 %}
+  
+{% endif %}
+
+{% liquid
+  assign text_length = text | size
+  assign text_width = text_length | plus: 1 | times: one_text_width
+  assign carousel_time = text_width | times: 15
+  
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+%}
+
+{% style %}
+
+/* .marquee {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  .marquee__content {
+    display: inline-block;
+    white-space: nowrap;
+    position: relative;
+    p {
+      margin: 0;
+      &::after {
+        content: "";
+        width: 15.5px;
+        display: inline-block;
+      }
+    }
+    p:last-child {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      color: red;
+    }
+  }
+} */
+
+.cc-auto-carousel{
+  
+}
+.cc-auto-carousel .carousel-box{
+  width:60%;
+  margin:auto;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: flex;
+  grid-auto-flow: row;
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 20px 20px;
+}
+  .cc-auto-carousel .carousel-box .item-img{
+    transition: 0.5s ease-in;
+  }
+.cc-auto-carousel .carousel-box .item-img img{
+  position: relative;
+  object-fit: contain;
+  transition: 0.5s ease-in;
+}
+.carousel-animation {
+  animation: marquee var(--marquee-time, 3s) linear infinite;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+{% endstyle %}
+
+
+
+<div class="section {% if section.settings.full_screen != blank %} {% else %}container {% endif %} " id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+  <div class="hide" id="{% if section.settings.link_id != blank %}{{ section.settings.link_id }}{% endif %}"></div>
+  <div class="carousel-box relative flex {{ section.settings.height_mode }}-height">
+    {% for block in section.blocks %}
+       {% case block.type %}
+          {% when 'item-img' %}
+            {% liquid
+               assign icon_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+               assign item_img = block.settings.custom_img
+               assign item_url = block.settings.custom_url
+            %}
+          {% if item_img != blank %}
+            <{% if item_url != blank %}a{% else %}div{% endif %} class="item-img carousel-animation" {% if item_url != blank %}href="{{ item_url }}" target="_blank"{% endif %}>
+               {%- render 'image',
+                  image: item_img,
+                  widths: '240, 480, 960',
+                  src_width: 240,
+                  src_placeholder: true,
+                  sizes: icon_sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit header-icon'
+                -%}
+             </{% if item_url != blank %}a{% else %}div{% endif %}>
+          {% endif %}
+       {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Auto Carousel -- wenfei",
+    "tag": "section",
+    "class": "cc-auto-carousel",
+    "settings": [
+      {
+        "type": "header",
+        "content": "跳转ID设置"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "header",
+        "content": "SEO"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevent_animation",
+        "label": "Load the section without animation",
+        "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Title Weight"
+      },
+      {
+        "id": "font_weight",
+        "type": "checkbox",
+        "label": "Font Weight",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "height_mode",
+        "label": "Image height",
+        "info": "Restricted to 1080px maximum.",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Original image height"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed height (set below)"
+          },
+          {
+            "value": "screen",
+            "label": "Full screen height"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_desktop",
+        "min": 400,
+        "max": 1000,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on large screens",
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_mobile",
+        "min": 250,
+        "max": 500,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on mobile",
+        "default": 350
+      },
+      {
+        "type": "header",
+        "content": "Text overlay"
+      },
+      {
+        "type": "select",
+        "id": "overlay_position",
+        "label": "Text position",
+        "options": [
+          {
+            "value": "justify-start items-start",
+            "label": "Top left"
+          },
+          {
+            "value": "justify-center items-start",
+            "label": "Top center"
+          },
+          {
+            "value": "justify-end items-start",
+            "label": "Top right"
+          },
+          {
+            "value": "justify-start items-center",
+            "label": "Middle left"
+          },
+          {
+            "value": "justify-center items-center",
+            "label": "Middle center"
+          },
+          {
+            "value": "justify-end items-center",
+            "label": "Middle right"
+          },
+          {
+            "value": "justify-start items-end",
+            "label": "Bottom left"
+          },
+          {
+            "value": "justify-center items-end",
+            "label": "Bottom center"
+          },
+          {
+            "value": "justify-end items-end",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "justify-center items-center"
+      },
+      {
+        "type": "select",
+        "id": "overlay_text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-end",
+            "label": "Right"
+          }
+        ],
+        "default": "text-center"
+      },
+    ],
+    "blocks": [
+      {
+        "type":"item-img",
+        "name":"Item image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "custom_img",
+            "label": "Custom images",
+          },
+          {
+            "type": "url",
+            "id": "custom_url",
+            "label": "Custom link (optional)"
+          }
+        ]
+      },
+      {
+        "type":"item-text",
+        "name":"Item text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "custom_text",
+            "label": "Custom text",
+          },
+          {
+            "type": "url",
+            "id": "custom_linl",
+            "label": "Custom link (optional)"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Auto Carousel -- wenfei",
+        "blocks": [
+          {
+            "type":"item-img"
+          },
+          {
+            "type":"item-text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

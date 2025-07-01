@@ -1,0 +1,1036 @@
+{%- unless section.settings.video_external == blank and section.settings.video_shopify == blank -%}
+
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    {%- if section.blocks.size > 0 -%}
+      <link rel="stylesheet" href="{{ 'text-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- endif -%}
+  {%- else -%}
+    {{ 'video.css' | asset_url | stylesheet_tag }}
+
+    {%- if section.blocks.size > 0 -%}
+      {{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+  {%- endif -%}
+
+  <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+
+  {%- liquid
+    assign using_video_tag = false
+    assign overlay_position = section.settings.overlay_position | split: ' '
+    assign color_scheme = section.settings.color_scheme
+    assign bg_color = false
+
+    if color_scheme == 'default'
+      assign bg_color = settings.bg_color
+    elsif color_scheme == '1'
+      assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+    elsif color_scheme == '2'
+      assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+    elsif color_scheme == '3'
+      assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+    endif
+
+    if bg_color == 'rgba(0,0,0,0)'
+      assign bg_color = false
+    endif
+
+    if section.settings.video_shopify != blank
+      assign using_video_tag = true
+    endif
+
+    if section.index == 1 or section.settings.prevent_animation
+      assign lazy_load_images = false
+    else
+      assign lazy_load_images = true
+    endif
+
+    if color_scheme == "white"
+      assign brightness = section.settings.transparent_content_color | color_brightness
+      assign alpha = section.settings.transparent_content_color | color_extract: 'alpha'
+      if brightness < 190 and alpha > 0
+        assign transparent_text_contrast = "255 255 255"
+        assign transparent_hover_color = section.settings.transparent_content_color | color_lighten: 10
+      else
+        assign transparent_text_contrast = "0 0 0"
+        assign transparent_hover_color = section.settings.transparent_content_color | color_darken: 10
+      endif
+    endif
+  -%}
+
+  {%- style -%}
+    
+    {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .video-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+    {% endif %}}
+    #{{ section.id }} .video-section::after {
+      content: '';
+      {%- if section.settings.video_height == 'full' -%}
+        padding-top: calc(var(--viewport-height, 100vh) - var(--header-end, 200px));
+      {%- elsif section.settings.video_height == 'landscape' -%}
+        padding-top: 56.25%;
+      {%- elsif section.settings.video_height == 'lg' -%}
+        padding-top: 60vh;
+      {%- elsif section.settings.video_height == 'md' -%}
+        padding-top: 45vh;
+      {%- else -%}
+        padding-top: 30vh;
+      {%- endif -%}
+    }
+    /* video 兼容 */
+    #{{ section.id }} .video-section--full-width .video-block .mobile-video{
+      display:none;
+    }
+    @media (max-width:1920px){
+          #{{ section.id }} .block-center{
+            max-width:1260px;
+            padding:0;
+            left: 50%;
+            transform: translateX(-50%);
+         }
+         #{{ section.id }} .full-block-center{
+           max-width:100%;
+            left:0;
+           right:0;
+         }
+         #{{ section.id }} .video-section--full-width{
+            min-height: 750px
+         }
+      }
+    @media (min-width:1921px){
+      #{{ section.id }} .block-center{
+         max-width:100%;
+         padding:0;
+         left: 50%;
+         transform: translateX(-50%);
+      }
+       #{{ section.id }} .video-section--full-width{
+          min-height: 750px; 
+       }
+      #{{ section.id }} .video-section--full-width .video-block{
+        margin: auto;
+        max-width: 100%;
+      }
+       #{{ section.id }} .min-height-video{
+        min-height: 13.8vw;
+      }
+    }
+     @media (max-width: 1440px) {
+      #{{ section.id }} .video-section--full-width{
+          min-height: calc(var(--page-width) * 0.5625);
+       }
+       #{{ section.id }} .min-height-video{
+        min-height: 13.8vw;
+      }
+    } 
+     @media (max-width: 1024px) {
+      #{{ section.id }} .video-section--full-width{
+          min-height: 750px
+       }
+    } 
+    @media (min-width:769px){
+       #{{ section.id }} .min-height-video{
+        min-height: 13.8vw;
+      }
+    }
+    @media (max-width: 768.98px) {
+      #{{ section.id }} .video-section--full-width{
+          min-height: 220px; 
+          max-height: max-content;
+       }
+       #{{ section.id }} .video-section--full-width .has-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: none;
+}
+      #{{ section.id }} .video-section--full-width .video-block{
+        max-width: 100%;
+        width: 100%;
+        min-height: auto;
+       
+      }
+      {% if section.settings.is_brand_day %}
+        #{{ section.id }} .video-section--full-width .video-block{
+          
+        }
+      {% endif %}
+
+      #{{ section.id }} .video-section--full-width .video-block .pc-video{
+        display:none;
+      }
+
+      #{{ section.id }} .video-section--full-width .video-block .video-section__bg-video,
+      #{{ section.id }} .video-section--full-width .video-block .video-section__bg-video .has-video{
+        height: auto;
+      }
+      #{{ section.id }} .video-section--full-width .video-block .video-section__bg-video .has-video{
+        margin-top: 15px;
+      }
+      #{{ section.id }} .video-section--full-width .video-block .mobile-video{
+        display:block;
+      }
+      #{{ section.id }} .video-section--full-width .video-block{
+        height: 100%;
+      }
+      /* #{{ section.id }} .video-section--full-width .text-block{
+        margin-top: 62.1vw;
+      } */
+      #{{ section.id }} .video-section--full-width .text-block .text-overlay{
+       color:#111; 
+       margin-top: 0;
+       margin-bottom: 0;
+      }
+      #{{ section.id }} .video-section--full-width .text-block .text-overlay .pc-title{
+        display:none;
+      }
+      #{{ section.id }} .video-section--full-width .video-block .mobile-title{
+        display:block;
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        padding: 0 20px;
+        text-align: center;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -68%);
+      }
+    }
+    @media(min-width: 768px){
+      #{{ section.id }} .video-section--full-width .video-block .mobile-title{
+        display:none;
+      }
+      #{{ section.id }} .video-section--full-width .text-block .text-overlay .pc-title{
+        display:block;
+      }
+      
+    }
+
+    {%- if section.settings.video_height != 'full' and section.settings.video_height != 'landscape' -%}
+      @media(min-width: 768px){
+        #{{ section.id }} .video-section::after {
+        {%- if section.settings.video_height == 'lg' -%}
+          padding-top: 80vh;
+        {%- elsif section.settings.video_height == 'md' -%}
+          padding-top: 65vh;
+        {%- else -%}
+          padding-top: 50vh;
+        {%- endif -%}
+        }
+      }
+    {% endif %}
+    {% if section.settings.is_brand_day != blank %}
+      @media (max-width: 768.98px) {
+        #{{ section.id }} .video-section--full-width .text-block{
+          margin-top: 62.1vw;
+        }
+        #{{ section.id }} .video-section--full-width .video-block{
+          position: relative;
+          height: none;
+        }
+      }
+    {% endif %}
+    {%- if bg_color -%}
+      #{{ section.id }} .text-overlay { background: {{ bg_color }}; }
+    {%- endif -%}
+
+    {%- if section.settings.tint_opacity > 0 -%}
+      #{{ section.id }} .media::after {
+        background-color: rgba({{ section.settings.tint_color.red }}, {{ section.settings.tint_color.green }}, {{ section.settings.tint_color.blue }}, {{ section.settings.tint_opacity | divided_by: 100.0 }});
+      }
+    {%- endif -%}
+
+    {%- if color_scheme == "white" -%}
+      #{{ section.id }} {
+        --color-scheme-white-text: {{ section.settings.transparent_content_color.red }} {{ section.settings.transparent_content_color.green }} {{ section.settings.transparent_content_color.blue }};
+        --color-scheme-white-hover: {{ transparent_hover_color.red }} {{ transparent_hover_color.green }} {{ transparent_hover_color.blue }};
+        --color-scheme-white-text-contrast: {{ transparent_text_contrast }};
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+
+  {%- capture video_component -%}
+    <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+      {%- unless using_video_tag %}data-video-url="{{ section.settings.video_external | escape }}" {% endunless -%}
+                     data-video-id="{{ section.id }}"
+                     data-autoplay="true"
+                     data-background="true"
+                     data-description="{{ section.settings.video_description | escape }}">
+      {%- if using_video_tag -%}
+        {{ section.settings.video_shopify | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+      {%- else -%}
+        <div></div>
+      {%- endif -%}
+    </video-component>
+  {%- endcapture -%}
+
+  {% capture mobile_video_conponent %}
+    <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full mobile-video"
+      {%- unless using_video_tag %}data-video-url="{{ section.settings.video_external | escape }}" {% endunless -%}
+                     data-video-id="{{ section.id }}"
+                     data-autoplay="true"
+                     data-background="true"
+                     data-description="{{ section.settings.video_description | escape }}">
+      {%- if using_video_tag -%}
+        {{ section.settings.mobile_video_shopify | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+      {%- else -%}
+        <div></div>
+      {%- endif -%}
+    </video-component>
+  {% endcapture %}
+
+  {% comment %}
+      section section--full-width video-section--full-width
+  {% endcomment %}
+  <div class="section background-video {% unless color_scheme == 'default' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} {{ section.settings.height_mode }}-height" id="{{ section.id }}">
+    <div class="video-section video-banner bg-video-section video-section--full-width{% if section.settings.is_bian_video != blank %} min-height-video{% endif %} relative flex mx-auto {{ overlay_position | first }} {{ overlay_position | last }}">
+      {%- if section.blocks.size > 0 -%}
+        <div class="text-block {% if section.settings.full_screen != blank %} {% else %}container {% endif %} md-down:p-xl flex md-down:center {{ overlay_position | first }} {{ overlay_position | last }}">
+          <div class="text-overlay {{ section.settings.overlay_text_align }}{% if section.settings.mob_center_text %} md-down:text-center{% endif %}{% if bg_color %} text-overlay--bg{% endif %}"{% if settings.animations_enabled != "disabled"and section.settings.prevent_animation == false %} data-cc-animate{% endif %}>
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'heading' -%}
+                  {%- if block.settings.heading != blank -%}
+                    <{% if block.settings.heading_h1 %}h1{% else %}h2{% endif %} class="pc-title {% if block.settings.font_size != blank %}font-size{% endif %} text-overlay__heading {{ block.settings.heading_size }} {% if block.settings.title_weight != blank %}font-weight{% endif %} {% if block.settings.title_uppercase != blank %} font-uppercase {% endif %}" {{ block.shopify_attributes }}>
+                      {{- block.settings.heading | newline_to_br -}}
+                    </{% if block.settings.heading_h1 %}h1{% else %}h2{% endif %}>
+                    {% style %}
+                        #{{ section.id }} .font-size{
+                          font-size: {{ block.settings.font_size }}px;
+                        }
+                        #{{ section.id }} .font-weight{
+                          font-weight: bold;
+                        }
+                        #{{ section.id }} .font-uppercase{
+                          text-transform:uppercase;
+                        }
+                        @media (max-width:850px){
+                         #{{ section.id }} .font-size{
+                            font-size: {{ block.settings.mobile_font_size }}px;
+                          }
+                        }
+                    {% endstyle %}
+                  {%- endif -%}
+
+                {%- when 'subheading' -%}
+                  {%- if block.settings.text != blank -%}
+                    <p class="text-overlay__block subheading" {{ block.shopify_attributes }}>
+                      {{- block.settings.text | escape -}}
+                    </p>
+                  {%- endif -%}
+
+                {%- when 'text' -%}
+                  {%- if block.settings.text != blank -%}
+                    <div class="text-overlay__block rte{% if block.settings.enlarge_text %} enlarge-text{% endif %}" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+            
+                {% when 'logo' %}
+                {% if block.settings.logo_image != blank %}
+                  <div class="brand-logo">
+                    <a class="logo-url" href="{{ block.settings.logo_image }}" target="_blank">
+                      {% render 'image',
+                        image: block.settings.logo_image,
+                        src_width: block.settings.logo_width,
+                        srcset_2x: true,
+                        section_index: section.index,
+                        class: 'w-auto'
+                      %}
+                    </a>
+                  </div>
+                  {% style %}
+                      .brand-logo,
+                      .brand-logo .logo-url{
+                        display:block;
+                      }
+                     .brand-logo{
+                          margin-top: -10%;
+                        }
+                      @media (max-width:850px){
+                        .brand-logo{
+                          margin-top: -3%;
+                        }
+                      }
+                  {% endstyle %}
+                {% endif %}
+                  
+                {% when 'social' %}
+                {% style %}
+                  .footer-social{
+                    padding:20px 0 !important;
+                  }
+                  .footer .social{
+                    width: 100%;
+                    display: flex;
+                  }
+                  .footer .social.flex-center{
+                    justify-content: center;
+                  }
+                {% endstyle %}
+                <div class="footer footer-social">
+                  <ul class="social inline-flex flex-wrap justify-start {% if block.settings.iscenter != blank %} flex-center{% endif %}">
+                    {% if block.settings.fb_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.fb_url }}" target="_blank" rel="noopener" title="Monument Grills on Facebook"><svg width="24" height="24" viewBox="0 0 14222 14222" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M14222 7112c0 3549.352-2600.418 6491.344-6000 7024.72V9168h1657l315-2056H8222V5778c0-562 275-1111 1159-1111h897V2917s-814-139-1592-139c-1624 0-2686 984-2686 2767v1567H4194v2056h1806v4968.72C2600.418 13603.344 0 10661.352 0 7112 0 3184.703 3183.703 1 7111 1s7111 3183.703 7111 7111Zm-8222 7025c362 57 733 86 1111 86-377.945 0-749.003-29.485-1111-86.28Zm2222 0v-.28a7107.458 7107.458 0 0 1-167.717 24.267A7407.158 7407.158 0 0 0 8222 14137Zm-167.717 23.987C7745.664 14201.89 7430.797 14223 7111 14223c319.843 0 634.675-21.479 943.283-62.013Z"></path></svg><span class="visually-hidden">Facebook</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% if block.settings.youtube_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.youtube_url }}" target="_blank" rel="noopener" title="Monument Grills on YouTube"><svg width="24" height="17" viewBox="0 0 48 34" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="m19.044 23.27-.001-13.582 12.968 6.814-12.967 6.768ZM47.52 7.334s-.47-3.33-1.908-4.798C43.787.61 41.74.601 40.803.49 34.086 0 24.01 0 24.01 0h-.02S13.914 0 7.197.49c-.939.11-2.984.12-4.81 2.045C.947 4.003.48 7.334.48 7.334S0 11.247 0 15.158v3.668c0 3.912.48 7.823.48 7.823s.468 3.331 1.906 4.798c1.827 1.926 4.226 1.866 5.294 2.067C11.52 33.885 24 34 24 34s10.086-.015 16.803-.505c.938-.113 2.984-.122 4.809-2.048 1.439-1.467 1.908-4.798 1.908-4.798s.48-3.91.48-7.823v-3.668c0-3.911-.48-7.824-.48-7.824Z"></path></svg><span class="visually-hidden">YouTube</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% if block.settings.instagram_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.instagram_url }}" target="_blank" rel="noopener" title="Monument Grills on Instagram"><svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><circle cx="15.238" cy="4.948" r="1.238"></circle><path d="M19.47 3.444A5.11 5.11 0 0 0 16.548.527a7.351 7.351 0 0 0-2.43-.466C13.05.014 12.713 0 9.999 0c-2.712 0-3.057 0-4.12.06A7.351 7.351 0 0 0 3.45.528 5.11 5.11 0 0 0 .528 3.444 7.317 7.317 0 0 0 .06 5.87C.014 6.936 0 7.274 0 9.982s0 3.053.06 4.113c.018.829.176 1.649.468 2.425a5.11 5.11 0 0 0 2.922 2.917 7.35 7.35 0 0 0 2.429.5c1.069.047 1.407.06 4.12.06s3.058 0 4.12-.06a7.351 7.351 0 0 0 2.429-.466 5.11 5.11 0 0 0 2.922-2.918 7.31 7.31 0 0 0 .467-2.424c.047-1.067.06-1.405.06-4.113s0-3.053-.06-4.113a7.317 7.317 0 0 0-.467-2.459zm-1.437 10.537a5.439 5.439 0 0 1-.34 1.843 3.262 3.262 0 0 1-1.87 1.87 5.451 5.451 0 0 1-1.825.34c-1.04.046-1.332.06-3.996.06-2.664 0-2.937 0-3.995-.06a5.451 5.451 0 0 1-1.825-.34 3.255 3.255 0 0 1-1.878-1.87 5.439 5.439 0 0 1-.34-1.823c-.046-1.038-.06-1.33-.06-3.992s0-2.934.06-3.992c.006-.63.121-1.253.34-1.844a3.255 3.255 0 0 1 1.878-1.87 5.451 5.451 0 0 1 1.825-.339c1.038-.046 1.331-.06 3.995-.06s2.937 0 3.996.06c.623.008 1.24.123 1.824.34.86.331 1.54 1.01 1.872 1.87.216.583.331 1.2.34 1.823.046 1.038.06 1.33.06 3.992 0 2.661 0 2.948-.047 3.992h-.014z"></path><path d="M9.991 14.753a4.761 4.761 0 1 1 0-9.523 4.761 4.761 0 0 1 0 9.523zm0-1.905a2.857 2.857 0 1 0 0-5.713 2.857 2.857 0 0 0 0 5.713z"></path></svg><span class="visually-hidden">Instagram</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% if block.settings.tiktok_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.tiktok_url }}" target="_blank" rel="noopener" title="Monument Grills on TikTok"><svg width="23" height="24" viewBox="0 0 15 16" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M7.638.013C8.512 0 9.378.007 10.245 0c.054 1.02.42 2.06 1.167 2.78.746.74 1.8 1.08 2.826 1.193V6.66c-.96-.033-1.926-.233-2.8-.647a8.238 8.238 0 0 1-1.08-.62c-.006 1.947.007 3.894-.013 5.834a5.092 5.092 0 0 1-.9 2.626c-.873 1.28-2.387 2.114-3.94 2.14-.953.054-1.907-.206-2.72-.686C1.438 14.513.492 13.06.352 11.5a12.36 12.36 0 0 1-.007-.993A5.003 5.003 0 0 1 2.065 7.2c1.107-.96 2.653-1.42 4.1-1.147.013.987-.027 1.974-.027 2.96-.66-.213-1.433-.153-2.013.247-.42.273-.74.693-.907 1.167-.14.34-.1.713-.093 1.073.16 1.093 1.213 2.013 2.333 1.913.747-.006 1.46-.44 1.847-1.073.127-.22.267-.447.273-.707.067-1.193.04-2.38.047-3.573.007-2.687-.007-5.367.013-8.047Z"></path></svg><span class="visually-hidden">TikTok</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% if block.settings.pinterest_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.pinterest_url }}" target="_blank" rel="noopener" title="Monument Grills on Pinterest"><svg width="24" height="24" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M24.001 0C10.748 0 0 10.745 0 24.001c0 9.825 5.91 18.27 14.369 21.981-.068-1.674-.012-3.689.415-5.512.462-1.948 3.087-13.076 3.087-13.076s-.765-1.533-.765-3.799c0-3.556 2.064-6.212 4.629-6.212 2.182 0 3.237 1.64 3.237 3.604 0 2.193-1.4 5.476-2.12 8.515-.6 2.549 1.276 4.623 3.788 4.623 4.547 0 7.61-5.84 7.61-12.76 0-5.258-3.543-9.195-9.986-9.195-7.279 0-11.815 5.427-11.815 11.49 0 2.094.616 3.567 1.581 4.708.446.527.505.736.344 1.34-.113.438-.378 1.505-.488 1.925-.16.607-.652.827-1.2.601-3.355-1.369-4.916-5.04-4.916-9.17 0-6.816 5.75-14.995 17.152-14.995 9.164 0 15.195 6.636 15.195 13.75 0 9.416-5.233 16.45-12.952 16.45-2.588 0-5.026-1.4-5.862-2.99 0 0-1.394 5.53-1.688 6.596-.508 1.85-1.504 3.7-2.415 5.14 2.159.638 4.44.985 6.801.985C37.255 48 48 37.255 48 24.001 48 10.745 37.255 0 24.001 0"></path></svg><span class="visually-hidden">Pinterest</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% if block.settings.twitter_url != blank %}
+                      <li>
+                        <a class="social__link flex items-center justify-center" href="{{ block.settings.twitter_url }}" target="_blank" rel="noopener" title="Monument Grills on Twitter"><svg fill="currentColor" width="40" height="40" viewBox="1 1 22 22" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg><span class="visually-hidden">Twitter</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+
+                {%- when 'button' -%}
+                  {%- if block.settings.button_label != blank -%}
+                    <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4" {{ block.shopify_attributes }}>
+                      <a class="{{ block.settings.button_style }}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} style="background:{{ block.settings.btn_bg }};border-color:{{ block.settings.btn_bg }};color:{{ block.settings.btn_color }};">
+                        {{- block.settings.button_label | escape -}}
+                      </a>
+                    </div>
+                  {%- endif -%}
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="video-block container block {% if section.settings.full_screen == blank %}block-center{% else %} full-block-center{% endif %} w-full absolute top-0 left-0 h-full" style="{% if section.settings.is_brand_day != blank %}position:absolute;{% else %}{% endif %}">
+        {% if section.settings.is_brand_day != blank %}
+        <h2 class="mobile-title text-overlay__heading h1">SHARE YOUR FAVORITE MOMENTS</h2>
+        {% endif %}
+        {%- if section.settings.lazyload == false -%}
+          <div class="video-section__bg-video pointer-events-none absolute top-0 left-0 w-full h-full">
+            {{ video_component }}
+          </div>
+        {%- else -%}
+          <deferred-media class="pc-video video-section__bg-video block pointer-events-none absolute top-0 left-0 w-full h-full no-js-hidden">
+            <template>{{ video_component }}</template>
+          </deferred-media>
+          
+          <deferred-media class="mobile-video video-section__bg-video block pointer-events-none absolute top-0 left-0 w-full h-full no-js-hidden">
+            <template>{{ mobile_video_conponent }}</template>
+          </deferred-media>
+          
+
+          <noscript>
+            <div class="video-section__bg-video pointer-events-none absolute top-0 left-0 w-full h-full">
+              {{ video_component }}
+            </div>
+          </noscript>
+        {%- endif -%}
+
+        <div class="media media--has-overlay absolute top-0 left-0 w-full h-full">
+          {%- liquid
+            assign sizes = false
+            assign class = 'img-fit object-center video-played-hidden'
+          -%}
+          {%- if section.settings.poster_image != blank or section.settings.video_shopify != blank -%}
+            {%- assign poster_image = section.settings.poster_image | default: section.settings.video_shopify.preview_image -%}
+            {% render 'image',
+              image: poster_image,
+              widths: '750, 856, 1440, 1680, 1920, 2560',
+              src_width: 1680,
+              src_placeholder: true,
+              sizes: sizes,
+              lazy_load: lazy_load_images,
+              class: class
+            %}
+          {%- else -%}
+            {%- assign class = class | prepend: 'media__placeholder ' -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endunless -%}
+
+
+{% schema %}
+{
+  "name": "Background video -- fei",
+  
+  "class": "cc-background-video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "此模板慎用，上传的视频分PC与MOBILE,视频高度由视频高度控制"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type":"checkbox",
+      "id":"is_brand_day",
+      "label": "is brand day",
+      "default": false
+    },
+    {
+      "type":"checkbox",
+      "id":"is_bian_video",
+      "label": "is Bian Video",
+      "default": false
+    },
+    {
+      "type": "paragraph",
+      "content": "Background videos are designed to autoplay and be silent. If you want a video with sound use the Video section. Please read documentation before using. [Read more](https://cleancanvas.co.uk/support/enterprise/background-video)"
+    },
+    {
+      "type": "video",
+      "id": "video_shopify",
+      "label": "Video upload",
+      "info": "Hosted by Shopify. Replaces External video if both are set."
+    },
+    {
+      "type":"video",
+      "id":"mobile_video_shopify",
+      "label":"Mobile Video upload",
+      "info":"不成比例"
+    },
+    {
+      "type": "text",
+      "id": "video_external",
+      "label": "External video",
+      "info": "Supports YouTube and Vimeo.",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "video_description",
+      "label": "Video description",
+      "info": "Describe the video for customers using screen readers. [Learn more](https://cleancanvas.co.uk/support/enterprise/background-video)"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Cover image",
+      "info": "Required. Shows while the video is loading, or if it cannot autoplay."
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Image height",
+      "info": "Restricted to 1080px maximum.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original image height"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height (set below)"
+        },
+        {
+          "value": "screen",
+          "label": "Full screen height"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "fixed_height_desktop",
+      "min": 400,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum fixed height on large screens",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "fixed_height_mobile",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum fixed height on mobile",
+      "default": 350
+    },
+    {
+      "type": "select",
+      "id": "video_height",
+      "label": "Minimum video size",
+      "options": [
+        {
+          "value": "landscape",
+          "label": "Landscape (16:9)"
+        },
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "md",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full screen height"
+        }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "header",
+      "content": "Text overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "select",
+      "id": "overlay_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "justify-start items-start",
+          "label": "Top left"
+        },
+        {
+          "value": "justify-center items-start",
+          "label": "Top center"
+        },
+        {
+          "value": "justify-end items-start",
+          "label": "Top right"
+        },
+        {
+          "value": "justify-start items-center",
+          "label": "Middle left"
+        },
+        {
+          "value": "justify-center items-center",
+          "label": "Middle center"
+        },
+        {
+          "value": "justify-end items-center",
+          "label": "Middle right"
+        },
+        {
+          "value": "justify-start items-end",
+          "label": "Bottom left"
+        },
+        {
+          "value": "justify-center items-end",
+          "label": "Bottom center"
+        },
+        {
+          "value": "justify-end items-end",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "justify-center items-center"
+    },
+    {
+      "type": "checkbox",
+      "id": "mob_center_text",
+      "label": "Center text on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "white",
+          "label": "Transparent background"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "color",
+      "id": "transparent_content_color",
+      "label": "Text and button color",
+      "info": "Only applies when the \"Transparent background\" color scheme is chosen.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tint_color",
+      "label": "Video tint color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "tint_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Video tint opacity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "checkbox",
+      "id": "lazyload",
+      "label": "Lazy load the video",
+      "info": "This will load the video only when it's about to come into view. Turn this off if you'd rather the video had the best chance of auto-playing on older devices, or if this section is visible when the page loads.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type":"logo",
+      "name":"Logo",
+      "limit":1,
+      "settings":[
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "logo_url",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 100,
+          "max": 4000,
+          "step": 100,
+          "unit": "px",
+          "label": "Maximum logo width",
+          "default": 2000
+        }
+      ]
+    },
+    {
+      "type":"social",
+      "name":"Social List",
+      "limit":1,
+      "settings":[
+        {
+          "type": "checkbox",
+          "id": "iscenter",
+          "label": "是否居中",
+          "default":false
+        },
+        {
+          "type":"url",
+          "id":"fb_url",
+          "label":"FB url"
+        },
+        {
+          "type":"url",
+          "id":"youtube_url",
+          "label":"Youtube url"
+        },
+        {
+          "type":"url",
+          "id":"instagram_url",
+          "label":"Instagram url"
+        },
+        {
+          "type":"url",
+          "id":"tiktok_url",
+          "label":"Tiktok url"
+        },
+        {
+          "type":"url",
+          "id":"pinterest_url",
+          "label":"Pinterest url"
+        },
+        {
+          "type":"url",
+          "id":"twitter_url",
+          "label":"Twitter url"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Background Video"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h1"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 16,
+          "max": 160,
+          "step": 16,
+          "unit": "px",
+          "label": "PC Font Size",
+          "default": 64
+        },
+        {
+          "type": "range",
+          "id": "mobile_font_size",
+          "min": 16,
+          "max": 64,
+          "step": 16,
+          "unit": "px",
+          "label": "Mobile Font Size",
+          "default": 32
+        },
+        {
+          "type":"checkbox",
+          "id":"title_weight",
+          "label":"Font Weight"
+        },
+        {
+          "type":"checkbox",
+          "id":"title_uppercase",
+          "label":"Font Uppercase",
+          "default":false
+        },
+        {
+          "type": "checkbox",
+          "id": "heading_h1",
+          "label": "Set as page heading (uses h1 tag)",
+          "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Subheading",
+          "default": "Subheading"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add text to a video to showcase a detail of your brand or product line.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_text",
+          "label": "Enlarge text",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type":"color",
+          "id":"btn_bg",
+          "label":"Btn BG"
+        },
+        {
+          "type":"color",
+          "id":"btn_color",
+          "label":"Text Color"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "btn btn--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "btn btn--secondary",
+              "label": "Secondary button"
+            }
+          ],
+          "default": "btn btn--secondary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background video -- fei",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
+}
+{% endschema %}
+{% style %}
+  @media (max-width:850px){
+    .cc-background-video .video-section{
+      max-height:100vw;
+    }
+    .cc-background-video .video-section .h-full{
+      height:auto;
+    }
+    .cc-background-video .video-section .h-full video{
+      position: relative;
+      height: 100%;
+      margin-bottom: 0;
+    }
+  }
+{% endstyle %}

@@ -1,0 +1,206 @@
+<style>
+  .head_sec h2 {
+    text-align: center;
+    font-size: 42px;
+}
+  .review__item {
+    border-radius: 20px;
+    overflow: hidden;
+    /* background: #f2f2f2; */
+        border: 1px solid #e9e9e9;
+    padding: 20px;
+}
+  .review__item img {
+    border-radius: 10px 10px 0 0;
+}
+  
+  .reviews_info {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #666;
+}
+  .reviews_name:before {
+    content: '';
+    width: 50px;
+    height: 1px;
+    display: block;
+    background: #ccc;
+}
+  .reviews_name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+     font-size: 15px;
+}
+  .review-stars {
+    font-size: 24px;
+    margin: 10px 0;
+}
+  span.rating__stars {
+    letter-spacing: 2px;
+    /* background:linear-gradient(90deg, rgb(192 0 0) var(--percent), var(--no-rating-col) var(--percent)) */
+}
+  .review__item h3 {
+    font-size: 18px;
+    line-height: 1.2;
+   height:43px;
+}
+  .reviews_info p {
+    height: 150px;
+}
+  @media(max-width:991px){
+      .head_sec h2 {
+    font-size: 24px;
+}
+    .review__item h3 {
+  
+   height:auto;
+}
+  .reviews_info p {
+    height: auto;
+}
+  }
+</style>
+<section class="reviews_sec" style="display:">
+  <div class="container">
+  <div class="head_sec">
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+  
+  <div class="reviews_container">
+     <div class="swiper reviewsSwiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <div class="review__item">
+                {% if block.settings.image !=blank %}<img src="{{ block.settings.image | img_url:'master' }}" />{% endif %}
+                 <div class="review-stars text-{{ section.settings.testimonial_size }} {{ section.settings.text_align }}">
+                    <div class="rating inline-block align-middle" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: block.settings.star_rating, rating_max: 5 }}">
+                      <span class="rating__stars" aria-hidden="true" style="--rating: {{ block.settings.star_rating }}; --rating-max: 5;">★★★★★</span>
+                    </div>
+                  </div>
+                <h3>{{ block.settings.title }}</h3>
+                <div class="reviews_info">{{ block.settings.content }}</div>
+                <div class="reviews_name">
+                  {{ block.settings.name }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+     </div>
+  </div>
+  </div>
+</section>
+ <!-- <link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/1639/3511/files/swiper-bundle.min.css?v=1744188233"> -->
+ 
+  <!-- <script src="https://cdn.shopify.com/s/files/1/1639/3511/files/swiper-bundle.min.js?v=1744188234"></script> -->
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 确保Swiper已加载
+    if (typeof Swiper !== 'undefined') {
+        const reviewsSwiper = new Swiper('.reviewsSwiper', {
+           slidesPerView: 4,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false
+            },
+            observer: true, // 启用动态检查
+            observeParents: true, // 监测父元素变化
+          breakpoints: { 
+    1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+                768: {
+                   slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+                0: {  
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                }
+    },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            // 添加触摸支持
+            allowTouchMove: true,
+            grabCursor: true,
+            // 添加调试事件
+            on: {
+                init: function() {
+                    console.log('Swiper initialized');
+                },
+                touchStart: function() {
+                    console.log('Touch started');
+                }
+            },
+           
+        });
+    }
+});
+  </script>
+{% schema %}
+{
+  "name": "Reviews",
+  "class": "cc-reviewsss",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Testimonials"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+         {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+      
+        {
+          "type": "text",
+          "id": "name",
+          "label": "name"
+        },
+       
+        {
+          "type": "range",
+          "id": "star_rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+     
+    }
+  ]
+ 
+}
+{% endschema %}

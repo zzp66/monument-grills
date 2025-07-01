@@ -1,0 +1,107 @@
+<style>
+  .communities_section .container {
+}
+  .communities_box {
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/comuuty.jpg?v=1742548764);
+    color: #fff;
+    text-align: center;
+    padding: 50px;
+    background-size: cover;
+}
+  .communities_box h2 {
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+  .communities_box > p {
+    font-size: 16px;
+    max-width: 60%;
+    margin: 0 auto;
+}
+.communities_box ul {
+    display: flex
+;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+.communities_box a {
+  
+    margin-top: 30px;
+    display: inline-block;
+    /* font-weight: bold; */
+}
+  .communities_box img {
+    width: 80px;
+    margin: 0 auto 15px;
+}
+  .communities_box ul p {
+    max-width: 80%;
+    margin: 0 auto;
+}
+  @media (max-width:991px){
+    .communities_box {
+   
+    padding: 50px 0;
+}
+    .communities_box p {
+    font-size: 14px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+    .communities_box ul {
+    display: grid;
+    margin-top: 30px;
+    grid-template-columns: repeat(2, 1fr);
+}
+    .communities_box img {
+    width: 50px;
+    margin: 0 auto 15px;
+}
+   
+    .communities_box h2 {
+    line-height: 1.2;
+}
+  }
+</style>
+<div class="communities_section" style="display:">
+  
+  <div class="container">
+    <div class="communities_box">
+  <h2>#Join the Knowledge Community</h2>
+  <p>Curious about our products? Looking to learn and connect? The Knowledge Sharing Community is your gateway to discovering insights, exchanging ideas, and engaging with a community of like-minded users.</p>
+  <ul>
+    <li>
+      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/1-Learn-about-us.png?v=1742541894" />
+      <p>Learn more about our products and their best uses</p>
+    </li>
+    <li>
+      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/2-Share.png?v=1742541894" />
+      <p>Share experiences and tips with other users</p>
+    </li>
+    <li>
+      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/3-Get-inspired.png?v=1742541895" />
+      <p>Get answers, advice, and inspiration</p>
+    </li>
+    <li>
+      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/4-Explore-More.png?v=1742541895" />
+      <p>New or experienced, always more to explore.</p>
+    </li>
+  </ul>
+  <a href="/community/my/knowledge-community" class="btn btn--primary" target="_blank">Start Now</a>
+</div>
+</div>
+</div>
+{% schema %}
+{
+  "name": "communities",
+  "settings": [
+    
+  ],
+  "presets": [
+    {
+      "name": "communities",
+    }
+  ]
+}
+{% endschema %}

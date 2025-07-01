@@ -1,0 +1,161 @@
+.article-box{
+  min-height: 22vw;
+  max-height: 520px;
+  overflow: hidden;
+}
+.article-box .heading-color{
+  color:#fff;
+}
+.article-box .image-banner .article-banner{
+  max-height:340px;
+}
+.article-box .image-banner .article-banner .blur-bg{
+    /* position:relative;
+    object-fit:contain;
+    height:auto; */
+    filter: blur(12px);
+    backdrop-filter: blur(12px);
+    -webkit-transform: scale(1.09);
+    -moz-transform: scale(1.09);
+    -ms-transform: scale(1.09);
+    transform: scale(1.09);
+ }
+.article-box .image-banner .article-header-banner{
+    width:100%;
+    justify-content:center;
+    position: relative;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1260px;
+    height: 22vw;
+}
+.article-box .image-banner .article-header-banner .article-cover-info{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #00000085;
+    padding: 0 2em;
+    text-align: center;
+}
+.article-box .image-banner .article-header-banner .article-cover-info h6{
+    margin: 0 auto;
+    max-width: 70%;
+    color: #fff;
+}
+.article-box .image-banner .article-header-banner .share-tools{
+  position: absolute;
+  bottom:15px;
+  right:15px;
+  background: #00000085;
+  padding:4px 6px;
+}
+.article-box .image-banner .article-header-banner .share-tools .tools-box,
+.article-box .image-banner .article-header-banner .share-tools .tools-box .share,
+.article-box .image-banner .article-header-banner .share-tools .tools-box .print{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.article-box .image-banner .article-header-banner .share-tools .tools-box .fg-line{
+  width:1px;
+  height:15px;
+  background:#fff;
+  display:block;
+  margin-left:10px;
+}
+.article-box .image-banner .article-header-banner .share-tools .tools-box .share img,
+.article-box .image-banner .article-header-banner .share-tools .tools-box .print img{
+  width:40px;
+  position: relative;
+}
+.article-box .image-banner .article-header-banner .share-tools .tools-box .share span,
+.article-box .image-banner .article-header-banner .share-tools .tools-box .print span{
+  font-size:12px;
+  color:#fff;
+}
+.article-box .image-banner .article-header-banner .share-tools .tools-box .share:hover span,
+.article-box .image-banner .article-header-banner .share-tools .tools-box .print:hover span{
+  color:#c00000;
+  transition: all 0.3s ease-in;
+}
+.article-box .image-banner .article-header-banner .share-tools .share-list{
+  height:0;
+  transform: translateY(0px);
+  opacity: 0;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  right: -10px;
+  transition: all 0.3s ease-in;
+}
+.article-box .image-banner .article-header-banner .share-tools .share-list ul{
+  background:#000;
+      width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.article-box .image-banner .article-header-banner .share-tools .share-list.show{
+  height:auto;
+  opacity: 1;
+  transition: all 0.3s ease-in;
+}
+
+.article-box .image-banner .article-header-banner .share-tools .share-list ul li .social__link svg{
+  fill:#fff;
+}
+.article-box .image-banner .w-full{
+  position:relative;
+  width:100%;
+}
+
+
+@meida (min-width:1920px){
+ .article-box .image-banner .article-header-banner{
+    width:90%;
+  }
+}
+@media (max-width: 1260px){
+  .article-box .image-banner .article-banner{
+    max-height:240px;
+  }
+  .article-box .image-banner .article-header-banner{
+    width:100%;
+    max-width:93%;
+    bottom: -10%;
+    height: 30vw;
+  }
+}
+@media (max-width: 768px){
+  .article-box .image-banner .article-header-banner .article-cover {
+    display: none;
+  }
+  .article-box .image-banner .article-header-banner .article-cover-info{
+    position: relative;
+  }
+  .article-box .image-banner .article-header-banner .share-tools{
+    width:100%;
+    right: 50%;
+    transform: translateX(50%);
+  }
+  .article-box .image-banner .article-header-banner .share-tools .tools-box{
+    justify-content: center;
+  }
+  .article-box .image-banner .article-header-banner{
+    max-width: 100%;
+    bottom: inherit;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+  }
+  .article-box .image-banner .article-header-banner .article-cover-info{
+    background: transparent;
+    padding:0;
+  }
+}
+

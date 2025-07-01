@@ -1,0 +1,1799 @@
+{{ 'products-grid.css' | asset_url | stylesheet_tag }}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
+<h2 class="parts__title">Looking for Grill Replacement Parts?</h2>
+<div class="" data-num-results="{{ collection.products_count }}">
+<script src="{{ 'products-toolbar.js' | asset_url }}" defer="defer"></script>
+    <style>
+.parts-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.parts-modal-content {
+    position: absolute;
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 1400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.parts-modal-inner {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex: 1;
+  overflow: hidden;
+}
+
+.parts-modal-image {
+    /* flex: 1; */
+    /* max-width: 50%; */
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100%;
+    overflow: auto;
+    align-items: center;
+      width: 50%;
+}
+
+.parts-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.parts-modal-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.parts_boxs{
+   flex: 1;
+}
+.parts-products-list {
+ 
+  overflow-y: auto;
+  padding-right: 15px;
+  max-height: calc(85vh - 150px);
+}
+
+.part-item {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.part-number {
+  min-width: 24px;
+  height: 24px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.part-info {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.add-to-cart-btn {
+  padding: 8px 15px;
+  background-color: #cb0f0f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 100px;
+  font-size: 12px;
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+/* 不可用产品样式 */
+.part-item.unavailable {
+  background-color: #f8f9fa;
+}
+
+.part-item.unavailable .part-number {
+  background-color: #999;
+}
+
+.part-item.unavailable .part-status {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.parts_boxs > h2 {
+    font-size: 24px;
+    margin-top: 35px;
+    padding: 0 40px;
+}
+      .part-title {
+    color: #000;
+    line-height: 1.2;
+}
+      .part-price {
+    color: #cb0f0f;
+}
+/* 移动端样式 */
+@media (max-width: 768px) {
+  .parts-modal-inner {
+    flex-direction: column;
+        overflow: scroll;
+  }
+  
+  .parts-modal-image {
+           max-width: 100%;
+        position: relative;
+        width: 100%;
+        display: block;
+        overflow: initial;
+  }
+  
+  .parts-products-list {
+    max-height: calc(90vh - 400px);
+            overflow: inherit;
+  }
+  
+ .parts_boxs > h2 {
+    font-size: 18px;
+    margin-top: 0;
+    padding: 0;
+}
+  
+  .part-info {
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+  
+  .add-to-cart-btn {
+        min-width: auto;
+        padding: 5px 10px;
+  }
+ .tem__gas-grills-parts button.btn.btn--secondary {
+   
+    font-size: 12px;
+    margin-top: 10px;
+}
+  .part-number {
+    min-width: 20px;
+    height: 20px;
+    font-size: 12px;
+}
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const triggers = document.querySelectorAll('.parts-modal-trigger');
+  const modals = document.querySelectorAll('.parts-modal');
+  const closeButtons = document.querySelectorAll('.close-modal');
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', function() {
+      const modal = this.nextElementSibling;
+      if (modal && modal.classList.contains('parts-modal')) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  closeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const modal = this.closest('.parts-modal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target.classList.contains('parts-modal')) {
+      event.target.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+});
+</script>
+ 
+    <!-- 添加搜索框 -->
+    <div class="collection-search-box mb-6">
+      {% style %}
+        h2.parts__title {
+    text-align: center;
+    margin:80px 0 40px;
+}
+        .collection-search-box {
+        max-width: 500px;
+        margin: 0 auto 20px;
+              position: relative;
+      }
+      .collection-search-box svg{
+        position: absolute;
+        left: 20px;
+        top: 12px;
+      } 
+      .collection-search-input {
+        width: 100%;
+        padding: 10px 15px 10px 60px;
+        border: 1px solid #ededed;
+        border-radius: 50px;
+        font-size: 16px;
+        box-shadow: 2px 6px 12px rgb(0 0 0 / 13%);
+      }
+      .collection-search-input:focus {
+        outline: none;
+        border-color: #666;
+      }
+      .search-loading {
+        display: none;
+        text-align: center;
+        padding: 10px;
+      }
+      .search-no-results {
+        text-align: center;
+        padding: 20px;
+        grid-column: 1 / -1;
+      }
+        .search_rule{
+          display: flex;
+          margin: 30px 0 50px;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+        }
+        .search_rule svg {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .search_pop {
+     position: absolute;
+    z-index: 1;
+    background: #f5f5f5;
+    top: 40px;
+    width: 500px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 2px 11px 9px rgb(0 0 0 / 25%);
+    font-size: 15px;
+    right: -80px;
+    display: none;
+}
+        .seachrbox {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    gap: 2px;
+}
+        .search_pop h3 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+        .search_pop strong {
+    color: #cb0f0f;
+    display: block;
+              font-size: 16px;
+}
+        .search_pop img {
+    width: 80px;
+}
+        .search_pop li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+        .search_pop ul {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+}
+        .search_pop:before {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid #f5f5f5;
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: 80px;
+    margin: 0 auto;
+}
+       .search_pop.active {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+      @media(max-width:768px){
+         .collection-search-box {
+              max-width: 80%;
+          }
+        h2.parts__title {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+      }  
+      {% endstyle %}
+      <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchTrigger = document.querySelector('.search-trigger');
+  const searchPop = document.querySelector('.search_pop');
+  let timeoutId;
+
+  // 鼠标进入 SVG
+  searchTrigger.addEventListener('mouseenter', function() {
+    clearTimeout(timeoutId);
+    searchPop.classList.add('active');
+  });
+
+  // 鼠标离开 SVG
+  searchTrigger.addEventListener('mouseleave', function(e) {
+    // 检查鼠标是否移动到了弹出框
+    if (!e.relatedTarget || !searchPop.contains(e.relatedTarget)) {
+      timeoutId = setTimeout(() => {
+        if (!searchPop.matches(':hover')) {
+          searchPop.classList.remove('active');
+        }
+      }, 100);
+    }
+  });
+
+  // 鼠标进入弹出框
+  searchPop.addEventListener('mouseenter', function() {
+    clearTimeout(timeoutId);
+  });
+
+  // 鼠标离开弹出框
+  searchPop.addEventListener('mouseleave', function() {
+    timeoutId = setTimeout(() => {
+      searchPop.classList.remove('active');
+    }, 100);
+  });
+
+  // 点击外部关闭弹出框
+  document.addEventListener('click', function(e) {
+    if (!searchTrigger.contains(e.target) && !searchPop.contains(e.target)) {
+      searchPop.classList.remove('active');
+    }
+  });
+});
+</script>
+      <svg width="21" height="23" viewBox="0 0 21 23" fill="currentColor" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M14.398 14.483 19 19.514l-1.186 1.014-4.59-5.017a8.317 8.317 0 0 1-4.888 1.578C3.732 17.089 0 13.369 0 8.779S3.732.472 8.336.472c4.603 0 8.335 3.72 8.335 8.307a8.265 8.265 0 0 1-2.273 5.704ZM8.336 15.53c3.74 0 6.772-3.022 6.772-6.75 0-3.729-3.031-6.75-6.772-6.75S1.563 5.051 1.563 8.78c0 3.728 3.032 6.75 6.773 6.75Z"></path></svg>
+      <input type="text" 
+           class="collection-search-input"
+           placeholder="Search..."
+           data-collection-handle="{{ collection.handle }}"
+           data-collection-id="{{ collection.id }}">
+    </div>
+<div class="search_rule">
+  <div class="seachrbox">
+  How to Find Grill's Model No.<svg class="show_rules search-trigger" t="1744685542397" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3489" width="200" height="200"><path d="M512 967.111C260.636 967.111 56.889 763.364 56.889 512S260.636 56.889 512 56.889 967.111 260.636 967.111 512 763.364 967.111 512 967.111zM512 768c16.868 0 30.55-5.461 41.074-16.356 10.524-10.922 15.815-24.433 15.815-40.533s-5.262-29.355-15.815-39.737c-10.525-10.41-24.206-16.1-41.074-17.152-22.13 1.053-38.457 10.923-48.981 29.61-10.525 18.717-10.525 37.405 0 56.122C473.543 758.642 489.87 768 512 768z m43.577-185.828c0-3.27-1.138-12.657-0.996-11.32-1.166-11.833 0.399-22.358 6.884-32.512 4.722-7.424 12.032-14.393 22.955-20.85 64.227-37.945 87.722-80.214 86.385-124.189-1.99-65.877-50.517-130.531-155.761-131.47-87.98-0.825-145.807 41.671-159.488 121.458a42.667 42.667 0 0 0 84.081 14.421c6.23-36.124 26.454-51 74.61-50.574 52.821 0.484 70.542 24.092 71.282 48.697a20.48 20.48 0 0 1-3.243 11.975c-5.888 10.581-18.66 22.87-41.244 36.21-22.33 13.17-39.51 29.554-51.57 48.498-18.745 29.44-22.84 58.567-19.655 88.177 0.483 4.466 0.427 3.897 0.427 1.48a42.667 42.667 0 1 0 85.333 0z" fill="#cb0f0f" p-id="3490"></path></svg>
+  
+  <div class="search_pop"> 
+    <h3>HOW TO FIND GRILL’S MODEL NO.
+</h3>
+    <ul>
+      <li>
+        <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/On_Your_Grill.png?v=1744704870" />
+        <div>
+        <strong>On Your Grill</strong>
+The model number is typically found on a label or sticker affixed to your grill. Check common locations such as side or back of the grill.
+        </div>
+      </li>
+      <li>
+        <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/In_Your_Owner_s_Manual.png?v=1744704870" />
+        <div>
+        <strong>In Your Owner's Manual</strong>
+The model number is usually printed on the front cover of the original owner's manual, providing a convenient reference for part replacements or repairs.
+        </div>
+      </li>
+    </ul>
+  </div>
+  </div>
+</div>
+  <!-- {% render 'products-toolbar', results: collection %} -->
+
+
+{%- if settings.enable_quick_add -%}
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-select.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if settings.pagination_style == "modern" or settings.pagination_infinite -%}
+  <script src="{{ 'custom-pagination.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+  {{ 'promos.css' | asset_url | stylesheet_tag }}
+
+  {%- for block in section.blocks -%}
+    {%- if block.settings.video_shopify != blank -%}
+      {{ 'video.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- liquid
+  assign list_layout = section.settings.list_layout
+  
+  if section.settings.card_size_mobile == 'small'
+    assign grid_mobile_cols = 'grid-cols-2 small-cards-mobile'
+  else
+    assign grid_mobile_cols = 'grid-cols-1'
+  endif
+
+  if collection.products.size > 0
+    if section.settings.card_size == 'small'
+      assign grid_classes_filters_open = grid_mobile_cols | append: ' sm:grid-cols-3 xl:grid-cols-4 small-cards-desktop'
+      assign grid_classes_filters_closed = grid_mobile_cols | append: ' sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 small-cards-desktop'
+    elsif section.settings.card_size == 'medium'
+      assign grid_classes_filters_open = grid_mobile_cols | append: ' sm:grid-cols-3'
+      assign grid_classes_filters_closed = grid_mobile_cols | append: ' sm:grid-cols-3 xl:grid-cols-4'
+    else
+      assign grid_classes_filters_open = grid_mobile_cols | append: ' sm:grid-cols-2 xl:grid-cols-3'
+      assign grid_classes_filters_closed = grid_mobile_cols | append: ' sm:grid-cols-2 xl:grid-cols-3'
+    endif
+
+    if settings.prod_card_image_ratio == 'shortest'
+      assign image_ratio = 0
+      for product in collection.products
+        if product.featured_media.preview_image.aspect_ratio > image_ratio
+          assign image_ratio = product.featured_media.preview_image.aspect_ratio
+        endif
+      endfor
+    elsif settings.prod_card_image_ratio == 'tallest'
+      assign image_ratio = 99
+      for product in collection.products
+        if product.featured_media.preview_image.aspect_ratio < image_ratio
+          assign image_ratio = product.featured_media.preview_image.aspect_ratio
+        endif
+      endfor
+    else
+      assign image_ratio = settings.prod_card_image_ratio
+    endif
+  endif
+
+  assign compare_toggle = false
+  assign compare_visible = false
+  if settings.enable_compare
+    if settings.compare_toggle == "none" or settings.compare_toggle == "toggle_on"
+      assign compare_toggle = true
+    endif
+
+    if settings.compare_toggle != "none"
+      assign compare_visible = true
+    endif
+  endif
+-%}
+
+{% style %}
+  .main-products-list__results ul{
+    grid-template-columns:repeat(1,minmax(0,1fr));
+  }
+  .main-products-list__results ul li.item-product{
+    margin-bottom:10px;
+    position: relative;
+  }
+  .main-products-list__results ul li.item-product .card{
+    flex-direction: row;
+    max-width: 100%;
+  }
+  .main-products-list__results ul li.item-product .card .card__media{
+    flex: 0 0 calc(33.333333% - calc(8 * var(--space-unit)));
+    max-width: 245px;
+    margin-inline-end: calc(10 * var(--space-unit));
+  }
+  .wide-promotion .promo .media{
+    height:auto;
+  }
+  .wide-promotion .promo .media img{
+    position: relative;
+    object-fit: contain;
+  }
+  .collection-banner .promo,
+  .collection-banner{
+    position: relative;
+  }    
+  .collection-banner .promo-icon{
+    position: absolute;
+  }
+   .collection-banner .promo-icon img{
+        object-fit: contain;
+      width: 80px;
+     position: relative;
+   }
+  {% if section.settings.list_layout != blank %}
+    .main-products-list__results ul li.item-product .card .card__title{
+      font-size: 20px;
+      margin-bottom: 0 !important;
+    }
+    .main-products-list__results ul li.item-product .card .text-body-extra_small{
+      font-size:16px;
+      margin-bottom: 0 !important;
+    }
+    .main-products-list__results ul li.item-product .card .yotpo-widget-instance{
+      max-width: max-content;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .main-products-list__results ul li.item-product .card .price{
+      padding-top: 0;
+    }
+    
+    .main-products-list__results ul li.item-product .card .card__info{
+      padding-top:0;
+    }
+   
+
+    @media (max-width:850px){
+     
+      .main-products-list__results ul{
+        row-gap: 15px;
+      }
+      .main-products-list__results ul li.item-product .card{
+        flex-direction: column;
+      }
+      .main-products-list__results ul li.item-product .card .yotpo-widget-instance{
+        position: relative;
+      }
+      .main-products-list__results ul li.item-product .card .card__media{
+        flex: 1;
+        max-width: 100%;
+        margin-inline-end: 0;
+      }
+      .main-products-list__results ul li.item-product .card .card__info{
+        padding: 15px 0;
+      }
+      .parts_boxs > h2 {
+    font-size: 14px;
+    margin-top: 0;
+    padding: 0;
+}
+    }
+  {% endif %}}
+{% endstyle %}
+
+<div class="container" data-num-results="{{ collection.products_count }}">
+  {%- if section.settings.enable_filtering or section.settings.show_layout_toggle or section.settings.enable_sorting or compare_visible -%}
+    <script src="{{ 'products-toolbar.js' | asset_url }}" defer="defer"></script>
+    {% render 'products-toolbar', results: collection %}
+  {%- endif -%}
+
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    <custom-pagination class="{% if section.settings.list_layout != blank %}main-products-list__results {% else %}main-products-grid {% endif %}{% if settings.card_contain %} main-products-grid--contained{% endif %} flex" data-layout="{% if section.settings.list_layout != blank %}list {% else %}grid{% endif %}" data-compare="{{ compare_toggle }}" data-infinite-scroll="{{ settings.pagination_infinite }}" data-pause-infinite-scroll="false">
+      {%- if collection.filters != empty and section.settings.enable_filtering -%}
+        <div class="main-products-grid__filters{% if section.settings.filters_open_lg == false %} lg:js-hidden{% endif %}">
+          {% render 'facet-filters', results: collection %}
+        </div>
+      {%- endif -%}
+
+      <div class="main-products-grid__results relative flex-auto " id="filter-results">
+        {%- if collection.products.size == 0 -%}
+          <p>{{ 'sections.collection.empty' | t }}</p>
+        {%- else -%}
+          {%- liquid
+            assign active_filters_count = 0
+            if collection.filters != empty
+              for filter in collection.filters
+                if filter.type == 'price_range'
+                  if filter.min_value.value
+                    assign active_filters_count = active_filters_count | plus: 1
+                  endif
+                  if filter.max_value.value
+                    assign active_filters_count = active_filters_count | plus: 1
+                  endif
+                else
+                  assign active_filters_count = active_filters_count | plus: filter.active_values.size
+                endif
+              endfor
+            endif
+          -%}
+          {% style %}
+             @media (max-width:768px){
+                 .ad-banner{
+                   row-gap: 20px;
+                 }
+              }
+            {% endstyle %}
+          <ul class="ad-banner grid mb-8 md:mb-12 collection__partss {% if section.settings.filters_open_lg %}{{ grid_classes_filters_open }}{% else %}{{ grid_classes_filters_closed }}{% endif %} gap-x-theme {% if settings.card_contain %}gap-y-4{% else %}gap-y-4{% endif %}"
+              data-filters-open-classes="grid mb-8 md:mb-12 {{ grid_classes_filters_open }} gap-x-theme {% if settings.card_contain %}gap-y-4{% else %}gap-y-4{% endif %}"
+              data-filters-closed-classes="grid mb-8 md:mb-12 {{ grid_classes_filters_closed }} gap-x-theme {% if settings.card_contain %}gap-y-4{% else %}gap-y-4{% endif %}{% unless paginate.pages > 1 %} mb-8 md:mb-12{% endunless %}" role="list">
+            {%- comment -%}Process wide promos aligned top{%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign show_promo = false
+                if block.settings.position == "top"
+                  if paginate.pages == 0 or paginate.current_page == 1
+                    if active_filters_count == 0 or block.settings.hide_on_filter == false
+                      assign show_promo = true
+                    endif
+                  endif
+                endif
+              -%}
+
+              {%- if show_promo -%}
+                <li class="promo-item--{{ block.settings.view }} collection-banner col-span-full js-pagination-result" style="--promo-text-color: {{- block.settings.text_color -}};--promo-min-height: {{- block.settings.min_height -}}px;--promo-overlay-color: rgba({{ block.settings.tint_color.red }}, {{ block.settings.tint_color.green }}, {{ block.settings.tint_color.blue }}, {{ block.settings.tint_opacity | divided_by: 100.0 }});">
+                   {% liquid
+                      assign collection_description = collection.description
+                      assign pc_collection_des = block.settings.pc_collection_des
+                      assign mobile_collection_des = block.settings.mobile_collection_des
+                      assign collection_des_tag = block.settings.collection_description_tag
+                    %}
+                  {%-
+                    render 'promo-image',
+                      link_url: block.settings.link_url,
+                      content: block.settings.content,
+                      text_alignment: block.settings.text_alignment,
+                      image: block.settings.image,
+                      video_shopify: block.settings.video_shopify,
+                      text_width: block.settings.text_width,
+                      text_type_scale: block.settings.text_type_scale,
+                      size: section.settings.card_size,
+                      button_label: block.settings.button_label,
+                      button_style: block.settings.button_style,
+                      collection_des: collection_description,
+                      pc_collection_des: pc_collection_des,
+                      mobile_collection_des: mobile_collection_des,
+                      des_tag: collection_des_tag
+                  -%}
+                  {% if block.settings.icon_promo != blank %}
+                      {% liquid
+                          assign promo_icon = block.settings.icon_promo
+                          assign promo_icon_position = block.settings.icon_position
+                          assign icon_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+
+                          if block.settings.prevent_animation
+                            assign lazy_load_images = false
+                          else
+                            assign lazy_load_images = true
+                          endif
+                      %}
+                      <div class="promo-icon"
+                        {% if promo_icon_position == 'top_left' %}
+                          style="top:20px;left:20px;"
+                        {% elsif promo_icon_position == 'top_center' %}
+                          style="top:20px;left:50%;transform: translateX(-50%);"
+                        {% elsif promo_icon_position == 'top_right' %}
+                          style="top:20px;right: 20px;"
+                        {% elsif promo_icon_position == 'middle_left' %}
+                          style="top:50%;left:20px;transform: translateY(-50%);"
+                        {% elsif promo_icon_position == 'middle_right' %}
+                          style="top:50%;right:20px;transform: translateY(-50%);"
+                        {% elsif promo_icon_position == 'middle_center' %}
+                          style="top:50%;left:50%;transform: translate(-50%, -50%);"
+                        {% elsif promo_icon_position == 'bottom_left' %}
+                          style="bottom:20px;left:20px;"
+                        {% elsif promo_icon_position == 'bottom_center' %}
+                          style="bottom:20px;left:50%;transform: translateX(-50%);"
+                        {% elsif promo_icon_position == 'bottom_right' %}
+                          style="bottom:20px;right:20px;"
+                        {% endif %}
+                        >
+                          {%- render 'image',
+                            image: promo_icon,
+                            widths: '240, 360, 480, 960',
+                            src_width: 240,
+                            src_placeholder: true,
+                            sizes: icon_sizes,
+                            lazy_load: lazy_load_images,
+                            class: 'img-fit festival-icon'
+                          -%}
+                      </div>
+                  {% endif %}
+                  
+                </li>
+              {%- endif -%}
+              {% if block.settings.pc_custom_icon != blank %}
+                  <li class="promo-item--grid_list col-span-full icons-list js-pagination-result" style="--promo-text-color: {{- block.settings.text_color -}};--promo-min-height: {{- block.settings.min_height -}}px;">
+                    {% liquid
+                      assign pc_img = block.settings.pc_custom_icon
+                      assign m_img = block.settings.mobile_custom_icon
+                      
+                    %}
+                    <div class="image-banner relative flex {{ block.settings.height_mode }}-height ">
+                       <div class="image-banner__image media media--has-overlay absolute top-0 left-0 w-full h-full">
+                         {% if pc_img != blank %}
+                            {% liquid
+                                assign alt_text = collection.title
+                                if block.settings.height_mode == 'screen'
+                                  assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+                                else
+                                  capture sizes
+                                    render 'sizes-attribute'
+                                  endcapture
+                                endif 
+  
+                                if section.index == 1 or block.settings.prevent_animation
+                                  assign lazy_load_images = false
+                                else
+                                  assign lazy_load_images = true
+                                endif
+                             %}
+                              {%- if m_img != blank -%}
+                                {%- render 'image',
+                                  image: m_img,
+                                  widths: '480, 980, 1200, 1400',
+                                  src_width: 980,
+                                  src_placeholder: true,
+                                  sizes: sizes,
+                                  lazy_load: lazy_load_images,
+                                  alt_text: alt_text,
+                                  class: 'img-fit mobile-img sm:hidden'
+                                -%}
+                              {%- endif -%}
+                              {%- render 'image',
+                                  image: pc_img,
+                                  widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+                                  src_width: 1400,
+                                  src_placeholder: true,
+                                  sizes: sizes,
+                                  alt_text: alt_text,
+                                  lazy_load: lazy_load_images,
+                                  class: 'img-fit pc-img'
+                              -%}
+                          {% else %}
+                             {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+                          {% endif %}
+                           {% style %}
+                              .image-banner img.pc-img{
+                                 position: relative;
+                                 /* object-fit: contain; */
+                              }
+                              .image-banner{
+                                height:7.5vw;
+                              }
+                             @media (max-width:768px){
+                                .image-banner{
+                                  height:14vw;
+                                }
+                             }
+                          {% endstyle %}
+                       </div>
+                    </div> 
+                  </li>
+              {% endif %}
+            {%- endfor -%}
+
+            {%- assign rendered_product_ids = "" -%}
+            {%- for product in collection.products -%}
+              {%- assign product_index = forloop.index -%}
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign show_promo = false
+                  unless block.settings.position == "top" or block.settings.position == "bottom"
+                    assign is_last_position = false
+                    if product_index == collection.products.size and block.settings.position > product_index
+                      assign is_last_position = true
+                    endif
+
+                    if product_index == block.settings.position or is_last_position
+                      if paginate.pages == 0 or paginate.current_page == 1
+                        if active_filters_count == 0 or block.settings.hide_on_filter == false
+                          assign show_promo = true
+                        endif
+                      endif
+                    endif
+                  endunless
+                -%}
+                {%- if is_last_position -%}
+                  {%- unless rendered_product_ids contains product.id -%}
+                    {%- assign rendered_product_ids = rendered_product_ids | append: product.id | append: "," -%}
+                    <li class="js-pagination-result">{% render 'product-card-parts', product: product, collection: collection, image_ratio: image_ratio, show_compare: settings.enable_compare %}</li>
+                  {%- endunless -%}
+                {%- endif -%}
+
+                {%- if show_promo -%}
+                  
+                  {% style %}
+                    
+                    @media (max-width:768px){
+                      
+                       li.wide-promotion{
+                          display:none;
+                        }
+                    }
+                  {% endstyle %}
+                  <li class="promo-item--{{ block.settings.view }} js-pagination-result {% if block.type == "image-promotion" %}wide-promotion{% endif %}" {% if block.type == "image-promotion" %}style="--promo-text-color: {{- block.settings.text_color -}};--promo-min-height: {{- block.settings.min_height -}}px;--promo-overlay-color: rgba({{ block.settings.tint_color.red }}, {{ block.settings.tint_color.green }}, {{ block.settings.tint_color.blue }}, {{ block.settings.tint_opacity | divided_by: 100.0 }});"{% endif %}>
+                    {% if block.type == 'image-promotion' %}
+                       {% if block.settings.use_video != blank %}
+                          {%- if section.index > 2 -%}
+                            <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" media="print" onload="this.media='all'">
+                          {%- else -%}
+                            {{ 'video.css' | asset_url | stylesheet_tag }}
+                          {%- endif -%}
+                          {% style %}
+                            .video-box{
+                              height:100%;
+                            }
+                            .video-box .upload-video-url{
+                              display:block;
+                              width:100%;
+                              height:100%;
+                            }
+                            .video-box video{
+                              width:100%;
+                              height:100%;
+                              object-fit: cover;
+                            }
+                          {% endstyle %}
+                          <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+                          
+                          {% liquid
+                             assign using_video_tag = false
+                             assign autoplay = block.settings.video_autoplay
+                             assign upload_video_url = block.settings.upload_video_url
+                      
+                             if block.settings.upload_video != blank
+                              assign using_video_tag = true
+                            endif
+                            assign alt_text = collection.title
+                          %}
+                           {%- capture video_component -%}
+                              <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                                               {%- unless using_video_tag %}data-video-url="{{ block.settings.video_external | escape }}" {% endunless -%}
+                                               data-video-id="{{ section.id }}"
+                                               data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                                               data-background="false"
+                                               data-description="{{ block.settings.video_description | escape }}">
+                                {%- if using_video_tag -%}
+                                  {{ block.settings.upload_video | video_tag: playsinline: true, autoplay: autoplay, loop: true, muted: autoplay, controls: false, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                                {%- else -%}
+                                  <div></div>
+                                {%- endif -%}
+                              </video-component>
+                            {%- endcapture -%}
+                            <div class="video-section video-box relative flex mx-auto overflow-hidden flex-col{% if block.settings.video_size == 'sm' %} max-w-screen-md {% endif %} mb-8">
+                                <a class="upload-video-url" href="{{ upload_video_url }}" target="_blank">
+                                    {%- if autoplay -%}
+                                      <deferred-media class="absolute block top-0 left-0 w-full h-full no-js-hidden">
+                                        <template>{{ video_component }}</template>
+                                      </deferred-media>
+                          
+                                      <noscript>
+                                        <div class="absolute top-0 left-0 w-full h-full">
+                                          {{ video_component }}
+                                        </div>
+                                      </noscript>
+                                    {%- else -%}
+                                      <deferred-media class="height-clip absolute top-0 left-0 w-full h-full no-js-hidden"{% if using_video_tag and autoplay == false %} data-hide-controls-instantly="true"{% endif %}>
+                                        <button type="button" class="video-section__play-btn absolute top-0 left-0 flex justify-center items-center w-full h-full video-played-hidden js-load-media">
+                                          <span class="visually-hidden">{{ 'general.icon_labels.play' | t }}</span>
+                                          {%- render 'icon-play' -%}
+                                        </button>
+                                        <template>
+                                          {{ video_component }}
+                                        </template>
+                                      </deferred-media>
+                                    {%- endif -%}
+                                </a>
+                            </div>
+                        {% else %}
+                           {%-
+                              render 'promo-image',
+                                link_url: block.settings.link_url,
+                                content: block.settings.content,
+                                sub_title:block.settings.sub_title,
+                                sub_title_size:block.settings.sub_title_size,
+                                sub_title_color: block.settings.sub_title_color,
+                                font_weight: block.settings.sub_font_weight,
+                                text_alignment: block.settings.text_alignment,
+                                image: block.settings.image,
+                                video_shopify: block.settings.video_shopify,
+                                text_width: block.settings.text_width,
+                                text_type_scale: block.settings.text_type_scale,
+                                size: section.settings.card_size,
+                                button_label: block.settings.button_label,
+                                button_style: block.settings.button_style,
+                                button_bg_primary: block.settings.bg_primary,
+                                button_text_primary: block.settings.text_primary,
+                                button_text_secondary: block.settings.text_secondary
+                            -%}
+                           {%-
+                            render 'promo-card-parts',
+                              link_url: block.settings.link_url,
+                              title: block.settings.title,
+                              content: block.settings.content,
+                              image: block.settings.image,
+                              image_ratio: block.settings.image_ratio,
+                              button_label: block.settings.button_label,
+                              button_style: block.settings.button_style,
+                              color_scheme: block.settings.color_scheme,
+                              button_bottom_align: block.settings.button_bottom_align,
+                              size: section.settings.card_size
+                          -%}
+                        {% endif %}
+                        
+                    {% endif %}
+                    {% if block.type == "wide-promotion" %}
+                      {%-
+                        render 'promo-image',
+                          link_url: block.settings.link_url,
+                          content: block.settings.content,
+                          sub_title:block.settings.sub_title,
+                          sub_title_size:block.settings.sub_title_size,
+                          sub_title_color: block.settings.sub_title_color,
+                          font_weight: block.settings.sub_font_weight,
+                          text_alignment: block.settings.text_alignment,
+                          image: block.settings.image,
+                          video_shopify: block.settings.video_shopify,
+                          text_width: block.settings.text_width,
+                          text_type_scale: block.settings.text_type_scale,
+                          size: section.settings.card_size,
+                          button_label: block.settings.button_label,
+                          button_style: block.settings.button_style,
+                          button_bg_primary: block.settings.bg_primary,
+                          button_text_primary: block.settings.text_primary,
+                          button_text_secondary: block.settings.text_secondary
+                      -%}
+                      
+                      {%-
+                        render 'promo-card-parts',
+                          link_url: block.settings.link_url,
+                          title: block.settings.title,
+                          content: block.settings.content,
+                          image: block.settings.image,
+                          image_ratio: block.settings.image_ratio,
+                          button_label: block.settings.button_label,
+                          button_style: block.settings.button_style,
+                          color_scheme: block.settings.color_scheme,
+                          button_bottom_align: block.settings.button_bottom_align,
+                          size: section.settings.card_size
+                      -%}
+                      
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- unless is_last_position and rendered_product_ids contains product.id -%}
+                {%- assign rendered_product_ids = rendered_product_ids | append: product.id | append: "," -%}
+                {% if product.price != 0 %}
+                  <li class="js-pagination-result item-product">
+                    {% render 'product-card-parts', 
+                      product: product, 
+                      collection: collection, 
+                      image_ratio: image_ratio, 
+                      show_compare: settings.enable_compare,
+                      hide_cart: section.settings.hide_add_cart,
+                      list_layout: list_layout,
+                      blocks: section.blocks
+                    %}
+                  </li>
+                {% endif %}
+                
+              {%- endunless -%}
+            {%- endfor -%}
+
+            {%- comment -%}Process wide promos aligned bottom{%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign show_promo = false
+                if block.settings.position == "bottom"
+                  if paginate.pages == 0 or paginate.current_page == 1
+                    if active_filters_count == 0 or block.settings.hide_on_filter == false
+                      assign show_promo = true
+                    endif
+                  endif
+                endif
+              -%}
+
+              {%- if show_promo and block.settings.image != blank -%}
+                <li class="promo-item--{{ block.settings.view }} col-span-full js-pagination-result" style="--promo-text-color: {{- block.settings.text_color -}};--promo-min-height: {{- block.settings.min_height -}}px;--promo-overlay-color: rgba({{ block.settings.tint_color.red }}, {{ block.settings.tint_color.green }}, {{ block.settings.tint_color.blue }}, {{ block.settings.tint_opacity | divided_by: 100.0 }});">
+                 
+                  {%-
+                    render 'promo-image',
+                      link_url: block.settings.link_url,
+                      content: block.settings.content,
+                      text_alignment: block.settings.text_alignment,
+                      image: block.settings.image,
+                      video_shopify: block.settings.video_shopify,
+                      text_width: block.settings.text_width,
+                      text_type_scale: block.settings.text_type_scale,
+                      size: section.settings.card_size,
+                      button_label: block.settings.button_label,
+                      button_style: block.settings.button_style,
+                      button_bg_primary: block.settings.bg_primary,
+                      button_text_primary: block.settings.text_primary,
+                      button_text_secondary: block.settings.text_secondary
+                  -%}
+                </li>
+              {%- endif -%}
+              
+            {%- endfor -%}
+          </ul>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate, class: "mb-10", style: settings.pagination_style %}
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </custom-pagination>
+  {%- endpaginate -%}
+</div>
+</div>
+ 
+<script>
+ class CollectionSearch {
+  constructor() {
+    this.searchInput = document.querySelector('.collection-search-input');
+    this.productsContainer = document.querySelector('.collection__partss');
+    this.originalProducts = Array.from(document.querySelectorAll('.item-product')); 
+    this.searchTimeout = null;
+    
+    this.init();
+  }
+
+  init() {
+    this.searchInput.addEventListener('input', (e) => this.handleSearch(e));
+  }
+
+  handleSearch(e) {
+    clearTimeout(this.searchTimeout);
+    const searchTerm = e.target.value.toLowerCase().trim();
+
+    if (!searchTerm) {
+      this.showAllProducts();
+      return;
+    }
+
+    this.searchTimeout = setTimeout(() => {
+      this.filterProducts(searchTerm);
+    }, 300);
+  }
+
+  showAllProducts() {
+    this.originalProducts.forEach(product => {
+      product.style.display = '';
+    });
+    const noResults = document.querySelector('.search-no-results');
+    if (noResults) {
+      noResults.remove();
+    }
+  }
+
+  filterProducts(searchTerm) {
+    let hasResults = false;
+
+    this.originalProducts.forEach(product => {
+      // 获取所有需要搜索的元素
+      const productTitle = product.querySelector('.card__title')?.textContent.toLowerCase() || '';
+      const factoryNumber = product.querySelector('.s_factory_number')?.textContent.toLowerCase() || '';
+      const factoryNumber2025 = product.querySelector('.s_factory_number_2025')?.textContent.toLowerCase() || '';
+      
+      // 如果任何一个字段包含搜索词则显示产品
+      if (productTitle.includes(searchTerm) || 
+          factoryNumber.includes(searchTerm) || 
+          factoryNumber2025.includes(searchTerm)) {
+        product.style.display = '';
+        hasResults = true;
+      } else {
+        product.style.display = 'none';
+      }
+    });
+
+    this.handleNoResults(hasResults);
+  }
+
+  handleNoResults(hasResults) {
+    const existingNoResults = document.querySelector('.search-no-results');
+    if (!hasResults) {
+      if (!existingNoResults) {
+        const noResultsElement = document.createElement('div');
+        noResultsElement.className = 'search-no-results';
+        noResultsElement.textContent = 'No related products found';
+        this.productsContainer.appendChild(noResultsElement);
+      }
+    } else if (existingNoResults) {
+      existingNoResults.remove();
+    }
+  }
+}
+
+// 页面加载完成后初始化搜索
+document.addEventListener('DOMContentLoaded', () => {
+  new CollectionSearch();
+});
+    
+  </script>
+
+{% schema %}
+{
+  "name": "Collection products",
+  "class": "cc-collection-products section section--template mb-0",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product service module"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_products_service_block",
+      "label": "Show products service block",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "products_service_block_pc",
+      "label": "PC"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Image height",
+      "info": "Restricted to 1080px maximum.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original image height"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height (set below)"
+        },
+        {
+          "value": "screen",
+          "label": "Full screen height"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "header",
+      "content": "List Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section background full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "list_layout",
+      "label": "Show list layout only",
+      "default": false,
+      "info":"Checked this box to display product highlights."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_add_cart",
+      "label": "Hide add to cart button",
+      "default": false
+    },
+   
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "label": "Products per page",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "card_size_mobile",
+      "label": "Product card size on mobile",
+      "info": "Applies to cards in Grid view only.",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "select",
+      "id": "card_size",
+      "label": "Product card size on large screens",
+      "info": "Applies to cards in Grid view only.",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Toolbar"
+    },
+    {
+      "type": "paragraph",
+      "content": "The Compare toggle can be disabled in \"Theme Settings > Product Compare\"."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_layout_toggle",
+      "label": "Show grid/list layout buttons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Filtering"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "info": "[Customize filters](/admin/menus)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "filters_open_lg",
+      "label": "Open filters by default on large screens",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "stick_on_scroll",
+      "label": "Stick on scroll on large screens",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_counts",
+      "label": "Show product counts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "expand_filters",
+      "label": "Expand all filters by default",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_deadends",
+      "label": "Show filters with zero results",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "max_filter_options",
+      "label": "Visible options per filter",
+      "info": "Remaining options will be automatically collapsed.",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feat_sort_opt",
+      "label": "Show 'Featured' option",
+      "info": "Add your manually sorted order to the sort options.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sort_first",
+      "label": "Show the sort options first on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "our-services",
+      "name":"Our services",
+      "settings": [
+          {
+            "type": "image_picker",
+            "id": "pc_custom_icon",
+            "label": "PC custom icon"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_custom_icon",
+            "label": "Mobile custom icon"
+          },
+          {
+            "type": "select",
+            "id": "height_mode",
+            "label": "Image height",
+            "info": "Restricted to 1080px maximum.",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Original image height"
+              },
+              {
+                "value": "fixed",
+                "label": "Fixed height (set below)"
+              },
+              {
+                "value": "screen",
+                "label": "Full screen height"
+              }
+            ],
+            "default": "auto"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+          "type": "header",
+          "content": "SEO"
+        },
+        {
+          "type": "checkbox",
+          "id": "prevent_animation",
+          "label": "Load the section without animation",
+          "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "wide-promotion",
+      "name": "Wide promotion",
+      "settings": [
+       
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position in results",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "select",
+          "id": "view",
+          "label": "Visibility",
+          "info": "Promos will be full width on List view",
+          "options": [
+            {
+              "value": "grid",
+              "label": "Grid view"
+            },
+            {
+              "value": "list",
+              "label": "List view"
+            },
+            {
+              "value": "grid_list",
+              "label": "Grid and List view"
+            }
+          ],
+          "default": "grid_list"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_filter",
+          "label": "Hide when results are filtered",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "min_height",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Minimum height",
+          "info": "Useful for controlling the height of the promo in List view and on mobile.",
+          "default": 150
+        },
+        {
+          "type": "header",
+          "content": "icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_promo",
+          "label": "Promo banner icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "icon position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top left"
+            },
+            {
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "top_right"
+        },
+        {
+          "type": "header",
+          "content": "SEO"
+        },
+        {
+          "type": "checkbox",
+          "id": "prevent_animation",
+          "label": "Load the section without animation",
+          "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video_shopify",
+          "label": "Video upload",
+          "info": "Hosted by Shopify. Video will autoplay and be muted. [Read more](https://cleancanvas.co.uk/support/enterprise/using-videos)"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "default": "<p>Promotion text</p>",
+          "label": "Text"
+        },
+        
+        {
+          "type": "select",
+          "id": "text_type_scale",
+          "label": "Text size",
+          "info": "This is calculated from the Heading font size.",
+          "options": [
+           {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h5"
+        },
+        {
+          "type": "richtext",
+          "id": "collection_description",
+          "label": "Collection Description"
+        },
+        {
+          "type": "text",
+          "id": "pc_collection_des",
+          "label": "PC Des size",
+          "default":"16"
+        },
+        {
+          "type": "text",
+          "id": "mobile_collection_des",
+          "label": "Mobile Des size",
+          "default":"18"
+        },
+        {
+          "type": "select",
+          "id": "collection_description_tag",
+          "label": "Description tag",
+          "options": [
+            {
+              "value": "strong",
+              "label": "Strong tag"
+            },
+            {
+              "value": "p",
+              "label": "P tag"
+            },
+           {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "text_width",
+          "min": 100,
+          "max": 800,
+          "step": 20,
+          "unit": "px",
+          "label": "Maximum text width",
+          "default": 400
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "justify-center items-center text-center",
+          "options": [
+            {
+              "value": "justify-start items-start",
+              "label": "Top left"
+            },
+            {
+              "value": "justify-center items-start text-center",
+              "label": "Top center"
+            },
+            {
+              "value": "justify-end items-start text-right",
+              "label": "Top right"
+            },
+            {
+              "value": "justify-start items-center",
+              "label": "Middle left"
+            },
+            {
+              "value": "justify-center items-center text-center",
+              "label": "Middle center"
+            },
+            {
+              "value": "justify-end items-center text-right",
+              "label": "Middle right"
+            },
+            {
+              "value": "justify-start items-end",
+              "label": "Bottom left"
+            },
+            {
+              "value": "justify-center items-end text-center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "justify-end items-end text-right",
+              "label": "Bottom right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Links to the URL specified in the \"Link URL\" setting."
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "btn btn--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "btn btn--secondary",
+              "label": "Secondary button"
+            }
+          ],
+          "default": "btn btn--primary"
+        },
+        
+        {
+          "type": "header",
+          "content": "Style"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "tint_color",
+          "label": "Tint color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "tint_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "Tint opacity",
+          "default": 20
+        }
+      ]
+    }
+
+   
+  ]
+}
+{% endschema %}

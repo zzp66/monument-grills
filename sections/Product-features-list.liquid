@@ -1,0 +1,457 @@
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'hotspots-image.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- else -%}
+  {{ 'hotspots-image.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign hotspot_color_brightness = section.settings.hotspot_color | color_brightness
+  assign image = section.settings.image | default: section.settings.product.featured_image
+  assign title = section.settings.title | default: section.settings.product.title
+  assign description = section.settings.description | default: section.settings.product.description
+-%}
+
+{% style %}
+  #{{ section.id }} {
+    --hotspot-color: {{ section.settings.hotspot_color.rgb }};
+    {%- if hotspot_color_brightness > 128 %}
+      --hotspot-cross-color: #000;
+    {%- else -%}
+      --hotspot-cross-color: #fff;
+    {%- endif %}
+  }
+  
+{% endstyle %}
+
+<div class="{% if section.settings.full_screen %}{% else %} container{% endif %}" id="{{ section.id }}">
+  <div class="section">
+    {%- if section.settings.show_content -%}
+    <div class="product-features product-features-info relative {{ section.settings.img_layout_postion }}">
+      <hotspots-image class="product-features__image block relative overflow-hidden"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+        {%- if image != blank -%}
+          {%- capture sizes -%}
+            {%- render 'sizes-attribute', min: 'page', sm: 'page', md: false, lg: false, xl: '1400px', max: false -%}
+          {%- endcapture -%}
+          {% liquid
+            if section.settings.img_alt != 'blank'
+              assign img_alt = section.settings.img_alt
+            endif
+          %}
+          {% render 'image',
+            image: image,
+            widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+            src_width: 1200,
+            sizes: sizes,
+            alt_text:img_alt
+            quality: 1,
+            section_index: section.index,
+            class: 'block mx-auto w-full'
+          %}
+        {%- else -%}
+          <div class="media relative" style="padding-top: 56.25%;">
+            {{ 'product-2' | placeholder_svg_tag: 'media__placeholder img-fit' }}
+          </div>
+        {%- endif -%}
+      </hotspots-image>
+      <ul class="features-info">
+          {%- if title != blank -%}
+            <h2 class="section__block section__block--heading {{ section.settings.heading_size }}">
+              {{- title | escape -}}
+            </h2>
+          {%- endif -%}
+          {%- if description != blank -%}
+            <p class="enlarge-text">
+              {{ description }}
+            </p>
+          {%- endif -%}
+        {%- for block in section.blocks -%}
+          <li class="features__card hotspot__card--wide absolute no-js-hidden {{ block.settings.content_align }}" aria-hidden="true">
+              <div class="info">
+                  {%- if block.settings.image != empty -%}
+                    {%- liquid
+                      if block.settings.image.width > 320
+                        assign src_width = 320
+                      else
+                        assign src_width = block.settings.image.width
+                      endif
+                    -%}
+                    <div class="features-icon">
+                      {% render 'image', 
+                        image: block.settings.image, 
+                        src_width: src_width, 
+                        srcset_2x: true, 
+                        class: 'mb-4' %}
+                    </div>
+                 
+                    
+                  {%- endif -%}
+                  {% if block.settings.image == empty %}
+                    <div class="features-icon" style="display:none;"></div>
+                  {% endif %}
+                <div class="features-text">
+                  {%- if block.settings.title != empty -%}
+                    <h6>{{ block.settings.title }}</h6>
+                  {%- endif -%}
+                  {%- if block.settings.text != empty -%}
+                    <div class="rte">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </li>
+        {% endfor %}
+        {%- if section.settings.button_label != blank -%}
+        <div class="section__block section__block--button">
+          <a class="{{ section.settings.button_style }} learn-more relative block{% if section.settings.button_style != 'link' %} btn--arrow-with-text{% endif %}{% if color_scheme == 'none' and section.settings.layout == 'text_first' %} mb-10{% endif %}" {% if section.settings.product != blank %}href="{{ section.settings.product.url }}"{% elsif section.settings.button_link != blank %}href="{{ section.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+            {{- section.settings.button_label | escape -}}
+          </a>
+        </div>
+      {%- endif -%}
+      </ul>
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Features list -- wenfei",
+  "tag": "section",
+  "class": "cc-product-features cwf",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show product information",
+      "default": true
+    },
+    {
+          "type": "select",
+          "id": "img_layout_postion",
+          "label": "layout position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "right"
+            }
+          ],
+          "default": "left"
+        },
+    {
+      "type": "checkbox",
+      "id": "mob_center_text",
+      "label": "Center text on mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h6",
+          "label": "Extra extra small"
+        },
+        {
+          "value": "h5",
+          "label": "Extra small"
+        },
+        {
+          "value": "h4",
+          "label": "Small"
+        },
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Extra large"
+        },
+        {
+          "value": "h0",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "checkbox",
+      "id": "enlarge_text",
+      "label": "Enlarge text",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Custom content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Replaces the default product image. For best results, use a landscape shaped image with a width of 1920px."
+    },
+    {
+      "type":"text",
+      "id":"img_alt",
+      "label":"Image Alt Text",
+      "info":"必填，用于 SEO"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "info": "Replaces the product title",
+      "default": "Product features"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Text",
+      "info": "Replaces the product description"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "The button will link to the product if a link is not added."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "hotspot_color",
+      "label": "Hotspot color",
+      "default": "#070707"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button",
+      "options": [
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--primary"
+    }
+  ],
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "For best results, use a square image 200px wide."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Feature name"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add some text describing the product feature.</p>"
+        },
+        
+        {
+          "type": "select",
+          "id": "content_align",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "text-start",
+              "label": "Left"
+            },
+            {
+              "value": "text-center",
+              "label": "Center"
+            },
+            {
+              "value": "text-end",
+              "label": "Right"
+            }
+          ],
+          "default": "text-start"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features list -- wenfei",
+      "settings": {
+        "title": "Product Features Info"
+      },
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
+}
+{% endschema %}
+<style>
+  
+  .product-features-info{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 50px;
+    align-items: center;
+  }
+  
+  .product-features-info.left .product-features__image{
+    order:initial;
+  }
+  .product-features-info.right .product-features__image{
+    order:1;
+  }
+  
+  .product-features-info .features-info{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2em;
+  }
+  .product-features-info .learn-more{
+    margin-top:2em;
+  }
+  .product-features-info .features-info li{
+    width:100%;
+    position: relative;
+    margin-bottom: 1em;
+  }
+  .product-features-info .features-info li .info{
+    display: flex;
+    align-items: flex-start;
+    place-self: center;
+  }
+  .product-features-info .features-info li .info .features-icon{
+    width:50px;
+    overflow: hidden;
+    margin-right:15px;
+  }
+  .product-features-info .features-info li .info .features-icon,
+  .product-features-info .features-info li .info .features-text{
+    position: relative;
+  }
+  .product-features-info .features-info li .info .features-text h6{
+    /* margin-bottom:0; */
+  }
+  .product-features-info .features-info li .info .features-text p{
+    font-size:1.5rem;
+  }
+  .product-features-info .features-info li .info .features-text{
+    width: calc(100% - 50px);
+  }
+  @media (max-width:850px){
+    .cc-product-features .container{
+      padding:0;
+    }
+    .product-features-info{
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 20px;
+    }
+    .product-features-info .section__block:last-child{
+      display: flex;
+      justify-content: center;
+    }
+    .product-features-info .features-info{
+      padding:0 15px;
+    }
+    .product-features-info .features-info li .info .features-text p{
+      font-size:0.5rem;
+    }
+    .product-features-info .features-info li .info .features-icon{
+      width:30px;
+      margin-right:10px;
+    }
+    .product-features-info .features-info li .info .features-text p{
+      font-size:1.5rem;
+    }
+  }    
+</style>

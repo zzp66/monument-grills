@@ -1,0 +1,60 @@
+<div class="account-gift-cards">
+  <h2>{{ 'customer.gift_cards.title' | t }}</h2>
+  
+  {%- if customer.gift_cards.size > 0 -%}
+    <div class="gift-cards-list">
+      {%- for gift_card in customer.gift_cards -%}
+        <div class="gift-card-item">
+          <div class="gift-card-balance">
+            {{ gift_card.balance | money }}
+          </div>
+          <div class="gift-card-number">
+            {{ gift_card.code }}
+          </div>
+          <div class="gift-card-expires">
+            {%- if gift_card.expired? -%}
+              {{ 'customer.gift_cards.expired' | t }}
+            {%- else -%}
+              {{ 'customer.gift_cards.expires_on' | t }}: {{ gift_card.expires_on | date: format: 'date' }}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p>{{ 'customer.gift_cards.empty' | t }}</p>
+  {%- endif -%}
+</div>
+<style>
+  .account-gift-cards {
+  margin: 2rem 0;
+  
+  .gift-cards-list {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .gift-card-item {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    
+    .gift-card-balance {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .gift-card-number {
+      margin: 0.5rem 0;
+      font-family: monospace;
+    }
+    
+    .gift-card-expires {
+      font-size: 0.875rem;
+      color: #666;
+    }
+  }
+}
+</style>

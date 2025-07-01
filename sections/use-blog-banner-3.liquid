@@ -1,0 +1,547 @@
+{%- if section.blocks.size > 0 -%}
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'text-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'blog.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- else -%}
+    {{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+    {{ 'blog.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- endif -%}
+
+{% liquid
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_lg = 1024
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+  
+  
+
+  assign overlay_position = section.settings.overlay_position | split: ' '
+  assign bg_color = false
+
+  if bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+  if section.settings.layout == 'carousel_on_mobile'
+    assign carousel = true
+    if section.settings.column_size == 'small'
+      assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 md:auto-cols-3 lg:auto-cols-4 '
+    elsif section.settings.column_size == 'medium'
+      assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2 lg:auto-cols-3'
+    else
+      assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2'
+    endif
+
+  else
+    assign carousel = false
+  endif
+%}
+
+{% style %}
+  {% if section.settings.column_size == 'small' %}
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .multi-column {
+        width: calc(50% - var(--column-gap));
+      }
+    }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .multi-column {
+        width: calc((100% / 3) - var(--column-gap));
+      }
+    }
+    @media (min-width: {{ breakpoint_lg }}px) {
+      #{{ section.id }} .multi-column {
+        width: calc(25% - var(--column-gap));
+      }
+    }
+  {% else %}
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .multi-column {
+        width: calc(50% - var(--column-gap));
+      }
+    }
+    {% if section.settings.column_size == 'medium' %}
+      @media (min-width: {{ breakpoint_lg }}px) {
+        #{{ section.id }} .multi-column {
+          width: calc((100% / 3) - var(--column-gap));
+        }
+      }
+    {% endif %}
+  {% endif %}
+  
+  #{{ section.id }} .article-item a{
+    margin-bottom: 10px;
+    
+  }
+  #{{ section.id }} .article-item a{
+    font-size:{{ section.settings.article_title_size }}px;
+  }
+  {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+        #{{ section.id }} .mobile-stacked--spaced .text-overlay { color: inherit; }
+        #{{ section.id }} .mobile-top-center .container{
+          position:absolute;
+          top:2em;
+        }
+        
+        #{{ section.id }} .mobile-top-center .container .text-overlay{
+          margin:1em auto;
+        }
+      }
+    {%- endif -%}
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .image-banner {
+        min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+      }
+    }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+    }
+  {%- endif -%}
+
+  
+
+  {%- if bg_color -%}
+    #{{ section.id }} .text-overlay { background: {{ bg_color }}; }
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- else -%}
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- endif -%}
+
+  @media (max-width:850px){
+    #{{ section.id }}.use-image-banner{
+      padding:0;
+    }
+  }
+  @media (max-width: {{ breakpoint_sm_down }}px) {
+    #{{ section.id }} .mobile-top-center .container{
+      position:absolute;
+      top:1em;
+    }
+    #{{ section.id }} .mobile-middle-center .container{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    #{{ section.id }} .mobile-bottom-center .container{
+      position:absolute;
+      bottom:1em;
+    }
+    
+    #{{ section.id }} .mobile-top-center .container .text-overlay,
+    #{{ section.id }} .mobile-middle-center .container .text-overlay,
+    #{{ section.id }} .mobile-bottom-center .container .text-overlay{
+      margin:10px auto;
+    }
+  }
+  
+{% endstyle %}
+
+<div class="section {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_screen and bg_color == false or bg_color == settings.bg_color %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} use-text-blog-banner-3{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+  <div class="article-tag-banner relative flex {{ overlay_position | last }} {{ section.settings.height_mode }}-height {% unless color_scheme == 'default' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}">
+    <div id="{{ section.settings.link_id }}" class="article-tag-warp {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% unless bg_color %}{% if section.settings.full_screen or section.settings.mobile_stacked %} md-down:p-xl{% endif %}{% endunless %}box-grid {{ overlay_position | first }}{% if section.settings.mob_center_text %} md-down:center{% endif %}">
+        <div class="item article-tag-box {{ section.settings.overlay_text_align }} {% if section.settings.mob_center_text %} md-down:text-center{% endif %}" {% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %} {% if section.settings.articles_bg != blank %}style="background:{{ section.settings.articles_bg }}"{% endif %}>
+           <div class="article-tag-info">
+             <h3>{{ section.settings.article_tag_title }}</h3>
+             <p class="mt-0 mb-4">{{ section.settings.article_description }}</p>
+             <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
+                {%- if section.settings.btn_label != blank %}
+                  <a class="{{ section.settings.btn_style }} mt-6" {% if section.settings.btn_url == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.btn_url }}"{% endif %}>
+                    {{- section.settings.btn_label | escape -}}
+                  </a>
+                {%- endif -%}
+              </div>
+           </div>
+        </div>
+        <div class="item selected-article-list {{ section.settings.overlay_text_align }} {% if section.settings.mob_center_text %} md-down:text-center{% endif %} {% if carousel %} slider{% endif %}"{% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %}>
+          {%- if carousel -%}
+            <carousel-slider class="carousel block" inactive>
+              <ul class="{% if carousel %}slider__grid grid {{ grid_classes }}{% else %} flex flex-wrap{% endif %} gap-x-theme{% if carousel == false %} gap-y-12 md:gap-y-6{% else %} gap-y-6{% endif %}" role="list">
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'articles' %}
+                      {% liquid
+                        assign articles = block.settings.articles_id
+                        assign article_cover_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+  
+                        assign article_cover = articles.image
+                        assign article_title = articles.title
+                        assign article_url = articles.url
+                        assign article_excerpt = articles.excerpt
+                        
+                      %}
+                      <li class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s">
+                        <a class="article-url" href="{{ article_url }}" target="_blank">
+                          {% if article_cover != blank %}
+                            <div class="img-box">
+                              {%- render 'image',
+                                image: article_cover,
+                                widths: '240, 480, 960, 1400',
+                                src_width: 240,
+                                src_placeholder: true,
+                                sizes: article_cover_sizes,
+                                lazy_load: lazy_load_images,
+                                class: 'img-fit article-cover'
+                              -%}
+                            </div> 
+                          {% endif %}
+                          {% if article_title != blank %}
+                            <h6 class="blogs-title">{{ article_title }}</h6>
+                          {% endif %}
+                          {% comment %}
+                          {% if article_excerpt != blank %}
+                            {{ article_excerpt }}
+                          {% endif %}
+                          {% endcomment %}
+                        </a>
+                      </li>
+                    {% endcase %}
+                {% endfor %}
+              </ul>
+            </carousel-slider>
+            {%- endif -%}
+        </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "blog banner 3 -- wenfei",
+    "class": "cc-blog-banner-3",
+    "settings": [
+      {
+        "type": "header",
+        "content": "跳转ID设置"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Full screen",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make section background full width",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      
+      {
+        "type": "header",
+        "content": "Select Blog",
+        "info": "此功能未做，暂时保留，tag 分类上线后再开发"
+      },
+      {
+        "type":"blog",
+        "id":"select_blogs",
+        "label":"Select Articles"
+      },
+      {
+        "type": "range",
+        "id": "article_number",
+        "min": 4,
+        "max": 10,
+        "step": 1,
+        "label": "Article Number",
+        "default": 4
+      },
+      {
+        "type": "header",
+        "content": "Article Tag Catalog"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          },
+          {
+            "value": "carousel_on_mobile",
+            "label": "Carousel on mobile"
+          },
+          {
+            "value": "grid",
+            "label": "Grid"
+          }
+        ],
+        "default": "carousel_on_mobile"
+      },
+      
+      {
+        "type": "select",
+        "id": "column_size",
+        "label": "Column size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "color",
+        "id": "articles_bg",
+        "label": "Articles Tag BG"
+      },
+      {
+        "type":"text",
+        "id":"article_tag_title",
+        "label":"Article Tag title"
+      },
+      {
+        "type": "richtext",
+        "id": "article_description",
+        "label": "Article Tag description",
+        "default": "<p>- Big sales on Black Friday! Big sales!!</p>"
+      },
+      {
+        "type": "text",
+        "id": "btn_label",
+        "label": "Button text"
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button Url"
+      },
+      {
+        "type": "select",
+        "id": "btn_style",
+        "label": "Button Style",
+        "options": [
+          {
+            "value": "link",
+            "label": "Link"
+          },
+          {
+            "value": "btn btn--primary",
+            "label": "Primary button"
+          },
+          {
+            "value": "btn btn--secondary",
+            "label": "Secondary button"
+          }
+        ],
+        "default": "btn btn--primary"
+      },
+      {
+        "type": "header",
+        "content": "Layout Blogs Cover"
+      },
+      {
+        "type": "select",
+        "id": "height_mode",
+        "label": "Image height",
+        "info": "Restricted to 1080px maximum.",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Original image height"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed height (set below)"
+          },
+          {
+            "value": "screen",
+            "label": "Full screen height"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_desktop",
+        "min": 400,
+        "max": 1000,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on large screens",
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "fixed_height_mobile",
+        "min": 250,
+        "max": 500,
+        "step": 10,
+        "unit": "px",
+        "label": "Minimum fixed height on mobile",
+        "default": 350
+      },
+      {
+        "type": "header",
+        "content": "Text overlay"
+      },
+      {
+        "type": "select",
+        "id": "overlay_text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-end",
+            "label": "Right"
+          }
+        ],
+        "default": "text-center"
+      },
+      
+      {
+        "type": "checkbox",
+        "id": "mob_center_text",
+        "label": "Center text on mobile",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_stacked",
+        "label": "Show text below image on mobile",
+        "info": "Does not apply to \"Full screen height\".",
+        "default": false
+      },
+      
+      {
+        "type": "select",
+        "id": "mobile_overlay_position",
+        "label": "Mobile Text position",
+        "options": [
+          {
+            "value": "mobile-top-center",
+            "label": "Mobile Top center"
+          },
+          {
+            "value": "mobile-middle-center",
+            "label": "Mobile Middle center"
+          },
+          {
+            "value": "mobile-bottom-center",
+            "label": "Mobile Bottom center"
+          }
+        ],
+        "default": "mobile-top-center"
+      },
+    ],
+    "blocks": [
+      {
+        "type": "articles",
+        "name":"Articles",
+        "settings": [
+          {
+            "type":"article",
+            "id":"articles_id",
+            "label":"Select Article"
+          },
+          {
+            "type": "select",
+            "id": "article_title_size",
+            "label": "Heading size",
+            "options": [
+              {
+                "value": "h6",
+                "label": "Extra extra small"
+              },
+              {
+                "value": "h5",
+                "label": "Extra small"
+              },
+              {
+                "value": "h4",
+                "label": "Small"
+              },
+              {
+                "value": "h3",
+                "label": "Medium"
+              }
+            ],
+            "default": "h3"
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "blog banner 3 -- wenfei",
+        "blocks": [
+          {
+            "type": "articles",
+          },
+          {
+            "type": "articles",
+          },
+          {
+            "type": "articles",
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

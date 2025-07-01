@@ -1,0 +1,48 @@
+{%- unless section.settings.full_width -%}
+  
+  <div class="container">
+  <div class="hide" id="{% if section.settings.link_id != blank %}{{ section.settings.link_id }}{% endif %}"></div>
+{%- endunless -%}
+
+{%- for block in section.blocks -%}
+  {% render block %}
+{%- endfor -%}
+
+{%- unless section.settings.full_width -%}
+  </div>
+{%- endunless- %}
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "section",
+  "class": "cc-apps section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "跳转ID设置"
+    },
+    {
+      "type": "text",
+      "id": "link_id",
+      "label": "Link ID"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apps"
+    }
+  ]
+}
+{% endschema %}

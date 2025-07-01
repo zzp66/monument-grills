@@ -1,0 +1,112 @@
+<style>
+  .drawer-product-service{
+    display:none
+  }
+.icontext-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #f8f8f8;
+    padding: 35px 30px;
+      margin-top: 80px;
+}
+  .icontext-item img {
+    width: 80px;
+    display: block;
+    margin: 0 auto;
+}
+  .icontext-item {
+    text-align: center;
+}
+  .icontext_wrapper h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+ .icontext-item p{
+    font-weight: 100;
+    font-size: 16px;
+       margin: 0;
+  }
+  @media(max-width:991px){
+   .icontext-item img {
+    width: 50px;
+          margin-bottom: 10px;
+}
+    .icontext-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px 10px;
+    margin-top: 40px;
+      gap: 20px 0;
+}
+    .icontext_wrapper h3 {
+    font-size: 15px;
+}
+    .icontext-item p {
+    font-size: 15px;
+}
+  }
+</style>
+<section class="icontext_sec" style="display:">
+  <div class="container">
+
+  
+  <div class="icontext_container">
+        <div class="icontext-wrapper">
+          {% for block in section.blocks %}
+            <div class="icontext-item">
+                <img src="{{ block.settings.image | img_url:'master' }}" />
+                <div class="icontext_wrapper">
+                  <h3>{{ block.settings.title }}</h3>
+                  <div class="icontext_info">{{ block.settings.content }}</div>
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+  </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Icon text list",
+  "class": "cc-icon-text",
+  "settings": [
+   
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+         {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      
+
+        
+       
+       
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon text list",
+     
+    }
+  ]
+ 
+}
+{% endschema %}

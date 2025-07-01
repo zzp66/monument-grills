@@ -1,0 +1,36 @@
+{%- comment -%}
+  Parameters:
+  - product {Object} - Product object.
+  - variant {Object} - Current variant object.
+
+  Usage:
+  {% render 'backorder',
+    product: product,
+    variant: product.selected_or_first_available_variant
+  %}
+{%- endcomment -%}
+
+<div class="backorder"{% unless variant.inventory_management == 'shopify' and variant.inventory_quantity < 1 and variant.available %} hidden{% endunless %}>
+  {%- if template contains 'cart' -%}
+    <p class="m-0">{{ 'cart.general.backorder' | t }}</p>
+  {%- else -%}
+    {% comment %}
+    <p class="m-0">
+      {% if request.path contains 'gift-card' %}
+        Restocking Soon
+      {% else %}
+        {{ 'products.product.backorder' | t }} {% if product.metafields.custom.estimated_shipping_date != blank %} the estimated shipping date for this product is {{ product.metafields.custom.estimated_shipping_date }}. {% endif %}
+      {% endif %}
+    </p>
+    {% endcomment %}
+  {%- endif -%}
+</div>
+{% style %}
+  .backorder p{
+    background: #dffbdf;
+    padding: 1em;
+    border-radius: 6px;
+    color: #242c24;
+    font-size: 14px;
+  }
+{% endstyle %}

@@ -1,0 +1,158 @@
+{% if customer %}
+<div class="user-profile-form page-width">
+  <div class="user-profile-form__wrapper">
+    <h2 class="user-profile-form__title">更新个人信息</h2>
+    
+    <div class="user-profile-form__message" style="display: none;"></div>
+    
+    <!-- 使用 Shopify 的客户更新表单 -->
+    {% form 'customer', customer %}
+      <!-- 添加防止跳转的隐藏字段 -->
+      <input type="hidden" name="return_to" value="/account">
+      
+      <div class="user-profile-form__fields">
+        <div class="field">
+          <label for="first_name">名字</label>
+          <input type="text" 
+                 id="first_name" 
+                 name="customer[note][first_name]" 
+                 value="{{ customer.metafields.custom.first_name }}" />
+        </div>
+        
+        <div class="field">
+          <label for="last_name">姓氏</label>
+          <input type="text" 
+                 id="last_name" 
+                 name="customer[note][last_name]" 
+                 value="{{ customer.metafields.custom.last_name }}" />
+        </div>
+        
+        <div class="field">
+          <label for="date_of_birth">出生日期</label>
+          <input type="date" 
+                 id="date_of_birth" 
+                 name="customer[note][date_of_birth]" 
+                 value="{{ customer.metafields.custom.date_of_birth }}" />
+        </div>
+        
+        <div class="field">
+          <label for="phone">电话号码</label>
+          <input type="tel" 
+                 id="phone" 
+                 name="customer[note][phone_number_1]" 
+                 value="{{ customer.metafields.custom.phone_number_1 }}" />
+        </div>
+        
+        <div class="field">
+          <label for="country">国家/地区</label>
+          <input type="text" 
+                 id="country" 
+                 name="customer[note][country_region]" 
+                 value="{{ customer.metafields.custom.country_region }}" />
+        </div>
+      </div>
+      
+      <div class="user-profile-form__submit">
+        <button type="submit" class="button button--primary">保存更改</button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+<style>
+.user-profile-form {
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.user-profile-form__wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.button--primary {
+  background: #000;
+  color: #fff;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button--primary:hover {
+  opacity: 0.9;
+}
+
+.user-profile-form__message {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.user-profile-form__message.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.user-profile-form__message.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.user-profile-form form');
+  
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = '保存中...';
+    
+    // 使用 fetch 发送表单数据
+    fetch('/account', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(new FormData(form))
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/account';
+      } else {
+        throw new Error('更新失败');
+      }
+    })
+    .catch(error => {
+      submitButton.disabled = false;
+      submitButton.textContent = '保存更改';
+      alert('更新失败，请稍后重试');
+    });
+  });
+});
+</script>
+{% endif %}

@@ -1,0 +1,876 @@
+{%- if section.blocks.size > 0 -%}
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'best-sales.css' | asset_url }}" as="style" media="print" onload="this.media='all'">
+  {% else %}
+    {{ 'best-sales.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+{% endif %}
+
+{% liquid
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+
+ 
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+  if section.settings.full_width
+    if section.settings.height_mode == 'screen'
+      assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+    endif
+  else
+    capture sizes
+      render 'sizes-attribute'
+    endcapture
+  endif
+
+  if m_img != blank
+    assign desktop_image_class = 'img-fit sm:block'
+  else
+    assign desktop_image_class = 'img-fit'
+  endif
+%}
+{% style %}
+  {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .image-banner {
+      min-height: {{ section.settings.fixed_height_mobile }}px;
+    }
+
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+        #{{ section.id }} .mobile-stacked--spaced .text-overlay { color: inherit; }
+        #{{ section.id }} .mobile-top-center .container{
+          position:absolute;
+          top:2em;
+        }
+
+        #{{ section.id }} .mobile-top-center .container .text-overlay{
+          margin:1em auto;
+        }
+      }
+    {%- endif -%}
+
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .image-banner {
+        min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+      }
+    }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+    }
+
+    {%- if m_img != blank -%}
+      @media (max-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: {{ m_img_padding }};
+        }
+      }
+    {%- endif -%}
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { padding-top: {{ m_img_padding }};}
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: 0;
+        }
+      }
+    {%- endif -%}
+  {%- endif -%}
+{% endstyle %}
+
+<div
+  class="section {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container cc-best-sales{% endif %}"
+  id="{{ section.id }}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: 0 auto;"
+>
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'event-information' %}
+        {% liquid
+          assign event_title_tag = block.settings.heading_size
+          assign event_sub_title_tag = block.settings.sub_size
+          assign event_special_size = block.settings.special_size
+          assign event_title = block.settings.event_title
+          assign event_very_low = block.settings.event_very_low
+          assign icon_one = block.settings.icon_one
+          assign icon_two = block.settings.icon_two
+          assign icon_three = block.settings.icon_three
+          assign sales_icon = block.settings.sales_icon
+          assign special_information = block.settings.special_information
+          assign special_information_color = block.settings.special_information_color
+          
+        %}
+        {% style %}
+          :root{
+            --info-bg: {{ block.settings.event_bg }}
+            --info-title-color: {{ block.settings.title_color }}
+            --info-icon-size: {{ block.settings.icon_size }}
+          }
+           .best-sales .cc-best-sales .event-information.info-bg{
+              background-color: {{ block.settings.event_bg }};
+            }
+            .best-sales .cc-best-sales .event-information .event-title{
+              color: {{ block.settings.title_color }};
+            }
+            .best-sales .cc-best-sales .event-information .icons img.icon{
+               width:{{ block.settings.icon_size }}px;
+            }
+            .best-sales .cc-best-sales .event-information .text-overlay__block{
+              margin-top:0;
+            }
+        {% endstyle %}
+        <div class="event-information {% if block.settings.event_bg != blank %}info-bg{% endif %}">
+          <{{ block.settings.heading_size }} class="{{ block.settings.header_class }} event-title event-header mb-2 {% if block.settings.title_weight != blank %}font-weight {% endif %}{% if block.settings.title_uppercase != blank %}font-uppercase{% endif %}">
+            {{ event_title }}
+          </{{ block.settings.heading_size }}>
+          
+          <{% if event_very_low != blank %}{{ event_sub_title_tag }}{% else %}h5{% endif %} class="event-title event-sub-header mb-6 {% if block.settings.title_weight != blank %}font-weight {% endif %}{% if block.settings.title_uppercase != blank %}font-uppercase{% endif %}">
+            {{ event_very_low }}
+          </{% if event_very_low != blank %}{{ event_sub_title_tag }}{% else %}h5{% endif %}>
+
+          <{% if special_information != blank %}{{ event_special_size }}{% else %}h4{% endif %} class="special-information mt-4 mb-6 {% if block.settings.title_weight != blank %}font-weight {% endif %}{% if block.settings.title_uppercase != blank %}font-uppercase{% endif %}" {% if block.settings.special_information_color != blank %}style="color:{{ special_information_color }}"{% endif %}>
+            {{ special_information }}
+          </{% if special_information != blank %}{{ event_special_size }}{% else %}h4{% endif %}>
+          {% if icon_one != blank %}
+            <div class="icons">
+              {%- if icon_one != blank -%}
+                {%- render 'image',
+                  image: icon_one,
+                  widths: '240, 320, 480, 960',
+                  src_width: 240,
+                  src_placeholder: true,
+                  sizes: sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit icon'
+                -%}
+              {%- endif -%}
+              {%- if icon_two != blank -%}
+                {%- render 'image',
+                  image: icon_two,
+                  widths: '240, 320, 480, 960',
+                  src_width: 240,
+                  src_placeholder: true,
+                  sizes: sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit icon'
+                -%}
+              {%- endif -%}
+              {%- if icon_three != blank -%}
+                {%- render 'image',
+                  image: icon_three,
+                  widths: '240, 320, 480, 960',
+                  src_width: 240,
+                  src_placeholder: true,
+                  sizes: sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit icon'
+                -%}
+              {%- endif -%}
+            </div>
+          {% endif %}
+          {%- if block.settings.button_label != blank -%}
+            <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-2{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.button_label != blank %}
+                <a class="{{ block.settings.button_style }}" {% if block.settings.button_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.button_link }}"{% endif %}>
+                  {{- block.settings.button_label | escape -}}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          {% if block.settings.sales_icon != blank %}
+            <div class="sales-icon sales-position" 
+              {% if block.settings.sales_icon_position == 'top_left' %}
+                style="top:-50px;left:-30px;"
+              {% elsif block.settings.sales_icon_position == 'top_center' %}
+                style="top:0;left:50%;transform: translateX(-50%);"
+              {% elsif block.settings.sales_icon_position == 'top_right' %}
+                style="top:-15px;right:-15px;"
+              {% elsif block.settings.sales_icon_position == 'middle_left' %}
+                style="top:50%;left:0;transform: translateY(-50%);"
+              {% elsif block.settings.sales_icon_position == 'middle_right' %}
+                style="top:50%;right:0;transform: translateY(-50%);"
+              {% elsif block.settings.sales_icon_position == 'middle_center' %}
+                style="top:50%;left:50%;transform: translate(-50%, -50%);"
+              {% elsif block.settings.sales_icon_position == 'bottom_left' %}
+                style="bottom:0;left:0;"
+              {% elsif block.settings.sales_icon_position == 'bottom_center' %}
+                style="bottom:0;left:50%;transform: translateX(-50%);"
+              {% elsif block.settings.sales_icon_position == 'bottom_right' %}
+                style="bottom:0;right:0;"
+              {% endif %}
+            >
+              {%- render 'image',
+                  image: sales_icon,
+                  widths: '240, 320, 480, 960',
+                  src_width: 240,
+                  src_placeholder: true,
+                  sizes: sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit icon'
+                -%}
+            </div>
+            
+          {% endif %}
+        </div>
+      {% when 'event-materials' %}
+        {% if block.settings.use_video != blank %}
+            {%- if section.index > 2 -%}
+              <link rel="stylesheet" hreflang="en" href="{{ 'video.css' | asset_url }}" media="print" onload="this.media='all'">
+            {%- else -%}
+              {{ 'video.css' | asset_url | stylesheet_tag }}
+            {%- endif -%}
+            <script src="{{ 'video.js' | asset_url }}"></script>
+
+            {% liquid
+              assign using_video_tag = false
+              assign autoplay = block.settings.video_autoplay
+              
+          
+              if block.settings.upload_video != blank
+                assign using_video_tag = true
+              endif
+
+               assign img = block.settings.image_desktop
+              assign m_img = block.settings.image_mobile
+              assign banner_url = block.settings.img_url
+            
+              assign overlay_position = block.settings.overlay_position | split: ' '
+              assign mobile_overlay_position = block.settings.mobile_overlay_position | split: ' '
+            %}
+
+            {%- capture video_component -%}
+                  <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                                   {%- unless using_video_tag %} data-video-url="{{ block.settings.upload_video | escape }}" {% endunless -%}
+                                   data-video-id="{{ section.id }}"
+                                   data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                                   data-background="false"
+                                   data-description="{{ block.settings.video_description | escape }}">
+                    {%- if using_video_tag -%}
+                      {{ block.settings.upload_video | video_tag: playsinline: true, autoplay: autoplay, muted: true, loop: true, controls: false, poster: video_cover | replace: '<img ', '<img width="100%" loading="lazy" hidden ' }}
+                    {%- else -%}
+                      <div></div>
+                    {%- endif -%}
+                  </video-component>
+              {%- endcapture -%}
+             <div class="video-box" >
+               <div class="video-banner relative flex {{ overlay_position | last }} {{ block.settings.height_mode }}-height">
+                    <div class="video-section media media--has-overlay absolute top-0 left-0 w-full h-full flex-col{% if block.settings.video_size == 'sm' %} max-w-screen-md{% elsif block.settings.video_size == 'md' %} max-w-screen-lg{% endif %}">
+                        {% if section.blocks.size > 0 %}
+                          {% if autoplay %}
+                            <deferred-media class="block top-0 left-0 w-full h-full no-js-hidden">
+                              <template>{{ video_component }}</template>
+                            </deferred-media>
+                            <noscript>
+                              <div class="absolute top-0 left-0 w-full h-full">
+                                {{ video_component }}
+                              </div>
+                            </noscript>
+                          {% endif %}
+                      {% endif %}
+                      <div class="media media--has-overlay absolute top-0 left-0 w-full h-full video-played-hidden">
+                          {%- liquid
+                            assign sizes = false
+                            assign class = 'img-fit object-center'
+                          -%}
+                          {%- if section.settings.video_cover != blank -%}
+                            {%- assign poster_image = block.settings.poster_image | default: block.settings.upload_video.preview_image -%}
+                            {%- capture sizes -%}
+                              {%- render 'sizes-attribute', min: '100vw', sm: 'page', md: false, lg: false, xl: 'page', max: 'page' -%}
+                            {%- endcapture -%}
+                            {% render 'image',
+                              image: poster_image,
+                              widths: '750, 856, 1440, 1680, 1920, 2560',
+                              src_width: 750,
+                              src_placeholder: true,
+                              sizes: sizes,
+                              section_index: section.index,
+                              class: class
+                            %}
+                          {%- else -%}
+                            {%- assign class = class | prepend: 'media__placeholder ' -%}
+                            {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+                          {%- endif -%}
+                        </div>
+                    </div>
+               </div>
+           </div>
+            {% elsif block.settings.use_image != blank %}
+              {% liquid
+                assign image_desktop = block.settings.image_desktop
+                assign image_mobile = block.settings.image_mobile
+                assign img_url = block.settings.img_url
+                assign height_mode = block.settings.height_mode
+                assign fixed_height_desktop = block.settings.fixed_height_desktop
+                assign fixed_height_mobile = block.settings.fixed_height_mobile
+
+                if section.settings.full_width
+                  if height_mode == 'screen'
+                    assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+                  endif
+                else
+                  capture sizes
+                    render 'sizes-attribute'
+                  endcapture
+                endif
+
+                if image_mobile != blank
+                  assign desktop_image_class = 'img-fit hidden sm:block'
+                else
+                  assign desktop_image_class = 'img-fit'
+                endif
+              %}
+              <div class="image-box">
+                <div class="image-banner relative flex {{ height_mode }}-height ">
+                {%- if img_url != blank -%}
+                  <a
+                    href="{{ img_url }}"
+                    class="w-full sm:w-auto"
+                  >
+                {%- endif -%}
+                <div
+                  class="image-banner__image media media--has-overlay absolute top-0 left-0 w-full h-full"
+                >
+                  {%- if image_desktop != blank -%}
+                    {%- if image_mobile != blank -%}
+                      {%- render 'image',
+                        image: image_mobile,
+                        widths: '480, 980, 1200, 1400',
+                        src_width: 980,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        lazy_load: lazy_load_images,
+                        class: 'img-fit mobile-img sm:hidden'
+                      -%}
+                    {%- endif -%}
+    
+                    {%- render 'image',
+                      image: image_desktop,
+                      widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+                      src_width: 1400,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      lazy_load: lazy_load_images,
+                      class: desktop_image_class
+                    -%}
+                  {%- else -%}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+                  {%- endif -%}
+                </div>
+                {%- if img_url != blank -%}
+                  </a>
+                {% endif %}
+              </div>
+              </div>
+        {% endif %}
+    {% endcase %}
+  {% endfor %}
+</div>
+{% comment %}
+<script>
+  $(function(){
+    setTimeout(function(){
+      var img_icon = $('<img src="https://cdn.shopify.com/s/files/1/1639/3511/files/home-Best_Seller-1202.png?v=1733136006" loading="eager" width="1200.0" height="1200" class="img-fit icon" sizes="(min-width: 1280px) calc(100vw - 128px), (min-width: 600px) calc(100vw - 64px), calc(100vw - 40px)" alt="Black friday 165 off" />')
+      $('.event-information .sales-icon').append(img_icon).css({
+        'opacity':'1'
+      });
+    },1000);
+  });
+</script>
+{% endcomment %}
+{% schema %}
+{
+  "name": "Best sales - fei",
+  "class": "best-sales",
+  "settings": [
+    {
+      "type": "header",
+      "content": "跳转ID设置"
+    },
+    {
+      "type": "text",
+      "id": "link_id",
+      "label": "Link ID"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Button",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "event-materials",
+      "name":"Event materials",
+      "limit": 1,
+      "settings": [
+         {
+            "type": "header",
+            "content": "Layout video"
+          },
+          {
+            "type": "checkbox",
+            "id": "use_video",
+            "label": "Use video",
+            "default": true
+          },
+          {
+            "type": "video",
+            "id": "upload_video",
+            "label": "Upload video"
+          },
+          {
+            "type": "text",
+            "id": "video_description",
+            "label": "Video description",
+            "info": "Describe the video for customers using screen readers. [Learn more](https://cleancanvas.co.uk/support/enterprise/using-videos)"
+          },
+          {
+            "type": "image_picker",
+            "id": "poster_image",
+            "label": "Cover image",
+            "info": "Required. Shows while the video is loading, or if it cannot autoplay."
+          },
+          {
+            "type": "select",
+            "id": "video_size",
+            "label": "Video size",
+            "info": "Applies to large screens only.",
+            "options": [
+              {
+                "value": "sm",
+                "label": "Small"
+              },
+              {
+                "value": "md",
+                "label": "Medium"
+              },
+              {
+                "value": "lg",
+                "label": "Large"
+              }
+            ],
+            "default": "md"
+          },
+          {
+            "type": "checkbox",
+            "id": "video_autoplay",
+            "label": "Autoplay",
+            "info": "Some devices will not autoplay videos under certain circumstances. In accordance with Google's guidelines, autoplaying videos will be muted by default. [Learn more](https://cleancanvas.co.uk/support/enterprise/using-videos)",
+            "default": true
+          },
+         {
+            "type": "header",
+            "content": "Layout images"
+          },
+          {
+            "type": "checkbox",
+            "id": "use_image",
+            "label": "Use images",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Image",
+            "info": "For best results, use a landscape shaped image with a width of 3200px."
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Mobile image (optional)",
+            "info": "For best results, use a square or portrait shaped image. If no mobile image is provided, the large screen image will be used."
+          },
+          {
+            "type": "url",
+            "id": "img_url",
+            "label": "Image link (optional)"
+          },
+          {
+            "type": "header",
+            "content": "Layout"
+          },
+          {
+            "type": "select",
+            "id": "height_mode",
+            "label": "Image height",
+            "info": "Restricted to 1080px maximum.",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Original image height"
+              },
+              {
+                "value": "fixed",
+                "label": "Fixed height (set below)"
+              },
+              {
+                "value": "screen",
+                "label": "Full screen height"
+              }
+            ],
+            "default": "auto"
+          },
+          {
+            "type": "range",
+            "id": "fixed_height_desktop",
+            "min": 200,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Minimum fixed height on large screens",
+            "default": 400
+          },
+          {
+            "type": "range",
+            "id": "fixed_height_mobile",
+            "min": 250,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Minimum fixed height on mobile",
+            "default": 350
+          }
+      ]
+    },
+    {
+      "type": "event-information",
+      "name":"Event information",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "color",
+          "id": "event_bg",
+          "label": "Background color"
+        },
+        {
+          "type": "header",
+          "content": "Sales tag"
+        },
+        {
+          "type": "image_picker",
+          "id": "sales_icon",
+          "label": "Sales tag icon"
+        },
+        {
+          "type": "select",
+          "id": "sales_icon_position",
+          "label": "Sales icon position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top left"
+            },
+            {
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "top_left"
+        },
+        {
+          "type": "header",
+          "content": "Title"
+        },
+        {
+          "type": "text",
+          "id": "event_title",
+          "label": "Event Title",
+          "info": "Enter <br> for a line-break."
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h2"
+        },
+        {
+          "type":"text",
+          "id":"header_class",
+          "label":"Add Class",
+          "info":"h2, h3, h4, h5"
+        },
+        {
+          "type": "richtext",
+          "id": "event_very_low",
+          "label": "Text when inventory is very low",
+          "default": "<p>- Almost gone!</p>"
+        },
+        {
+          "type": "select",
+          "id": "sub_size",
+          "label": "Sub size",
+          "options": [
+            {
+              "value":"p",
+              "label":"P tag"
+            },
+            {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+            {
+              "value": "h2",
+              "label": "Large"
+            },
+            {
+              "value": "h1",
+              "label": "Extra large"
+            },
+            {
+              "value": "h0",
+              "label": "Extra extra large"
+            }
+          ],
+          "default": "h5"
+        },
+        {
+          "type":"text",
+          "id":"special_information",
+          "label":"Special information"
+        },
+        {
+          "type":"color",
+          "id":"special_information_color",
+          "label":"Color"
+        },
+        {
+          "type": "select",
+          "id": "special_size",
+          "label": "Special font size",
+          "options": [
+            {
+              "value":"strong",
+              "label":"Strong tag"
+            },
+            {
+              "value":"p",
+              "label":"P tag"
+            },
+            {
+              "value": "h6",
+              "label": "Extra extra small"
+            },
+            {
+              "value": "h5",
+              "label": "Extra small"
+            },
+            {
+              "value": "h4",
+              "label": "Small"
+            },
+            {
+              "value": "h3",
+              "label": "Medium"
+            },
+          ],
+          "default": "strong"
+        },
+        {
+          "type":"checkbox",
+          "id":"title_weight",
+          "label":"Font Weight",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"title_uppercase",
+          "label":"Font Uppercase",
+          "default":false
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color"
+        },
+        {
+          "type": "header",
+          "content": "icons"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_one",
+          "label": "icon 01"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_two",
+          "label": "icon 02"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_three",
+          "label": "icon 03"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 50,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "label": "icon size",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Optiona button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "btn btn--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "btn btn--secondary",
+              "label": "Secondary button"
+            }
+          ],
+          "default": "btn btn--primary"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sales - fei"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+
+            

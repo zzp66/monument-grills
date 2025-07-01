@@ -1,0 +1,234 @@
+<style>
+  .recipes_wrapper {
+    display: flex;
+    gap: 74px;
+}
+  .recipes_detail {
+    width: calc(100% - 340px);
+        padding-top: 40px;
+}
+  .recipes_title {
+    font-size: 36px;
+}
+  .social-share.recipes_socild {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+  .recipes_right {
+    width: 340px;
+}
+  .recipes_right h2 {
+    font-size: 24px;
+}
+
+  .recipes_media {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    border-bottom: 2px dashed #ccc;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+}
+.recipes_banner {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+  .ingredients_item {
+    display: flex;
+    gap: 30px;
+        margin-bottom: 35px;
+}
+  .ingredients_item img {
+    width: 50%;
+}
+  .video_item {
+    margin-bottom: 35px;
+}
+ .video_item video {
+    width: 100%;
+    height: 500px;
+    background-color: #000;
+       vertical-align: middle;
+}
+  .step_item {
+    background: #F5F3F2;
+    padding: 24px;
+}
+  .step_item h2 {
+    font-size: 24px;
+}
+  .step_item p {
+    line-height: 1.5;
+}
+  .ingredients_item h2 {
+    font-size: 24px;
+}
+  .content_item {
+    margin: 30px 0;
+}
+ .recipes_section .social__link {
+    width: auto;
+    height: auto;
+    padding: 10px 20px;
+    color: rgb(var(--text-color));
+   border-radius: 50px;
+   gap: 8px;
+       font-size: 16px;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, .1);
+}
+ .recipes_section .social__link svg{
+    width:15px;
+    height:15px
+  }
+   .recipes_section .social {
+    margin: 0;
+    gap: 10px;
+}
+  .recipes_section .print-button{
+    padding: 10px 20px;
+    color: rgb(var(--text-color));
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, .1);
+    border-radius: 50px;
+    gap: 8px;
+    font-size: 16px;
+    background: #fff;
+    width: 110px;
+    height: 44px;
+  }
+</style>
+<section class="recipes_section" style="display:none">
+  <div class="container">
+    <div class="recipes_wrapper">
+        <div class="recipes_detail">
+            <h1 class="recipes_title">{{ article.title | escape }}</h1>
+            <div class="social-share recipes_socild">
+                <!-- <p class="social-share__heading mb-0 font-bold">{{ 'general.social.share_heading' | t }}:</p> -->
+                {% render 'social-share-2', share_title: article.title, share_url: article.url, share_image: article.image %}
+              <button class="print-button" onclick="window.print()">Print</button> 
+            </div>
+            <div class="recipes_media">
+              <div><strong>Author:</strong> {{ article.author }}{% if section.settings.show_date %} | {% endif %}</div>
+              <div><strong>Published: </strong>{{ article.published_at | time_tag: format: 'date' }}</div>
+            </div>
+            <div class="recipes__content">
+              <img src="{{ section.settings.image1 | img_url:'master' }}" class="recipes_banner" />
+              <div class="content_item">{{ section.settings.content }}</div>
+              <div class="ingredients_item">
+                <img src="{{ section.settings.ingredients_image | img_url:'master' }}" />
+                <div>
+                  <h2>{{ section.settings.ingredients_title }}</h2>
+                  <div>{{ section.settings.ingredients_desc }}</div>
+                </div>
+              </div>
+              <div class="video_item">
+                   {{ section.settings.video | video_tag:
+                        image_size: '1600x',
+                        autoplay: true,
+                        loop: false,
+                        muted: true,
+                        preload: 'auto',
+                        controls: true
+                    }}
+              </div>
+              <div class="step_item">
+                <h2>{{ section.settings.step_title }}</h2>
+                <div>
+                  {{ section.settings.steps_desc }}
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="recipes_right">
+            <div class="author_item">
+              <img src="{{ section.settings.author_img }}" />
+              <h3>{{ section.settings.author_name }}</h3>
+              <div>{{ section.settings.author_desc }}</div>
+            </div>
+          <div class="">
+            <h2>Related Posts</h2>
+              
+          </div>
+          <div class="">
+            <h2>Related Products</h2>
+            
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Recipes new",
+  "class": "section--recipes",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Article header"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "banner",
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "content"
+    },
+   {
+      "type": "image_picker",
+      "id": "ingredients_image",
+      "label": "ingredients image",
+    },
+          
+   {
+      "type": "text",
+      "id": "ingredients_title",
+      "label": "ingredients title"
+    },
+   {
+      "type": "richtext",
+      "id": "ingredients_desc",
+      "label": "ingredients desc"
+    },
+    {
+        "type": "video",
+        "id": "video",
+        "label": "video"
+      },
+    {
+      "type": "text",
+      "id": "step_title",
+      "label": "step title"
+    },
+    {
+      "type": "richtext",
+      "id": "steps_desc",
+      "label": "step desc"
+    },
+     {
+      "type": "image_picker",
+      "id": "author_img",
+      "label": "autho image",
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "author name"
+    },
+    {
+      "type": "richtext",
+      "id": "author_desc",
+      "label": "author desc"
+    }
+  ],
+   "presets": [
+    {
+      "name": "Recipes new"
+     
+    }
+  ]
+}
+{% endschema %}

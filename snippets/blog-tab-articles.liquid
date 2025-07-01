@@ -1,0 +1,92 @@
+{% liquid
+  assign data = section.blocks | where: 'type', 'post-clean'
+%}
+{% if data.size > 0 %}
+  {%- for block in data -%}
+    {%- liquid
+        assign articles = block.settings.articles_id
+        assign article_cover_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+    
+        assign article_cover = articles.image
+        assign article_title = articles.title
+        assign article_url = articles.url
+        assign article_excerpt = articles.excerpt
+         
+        assign overlay_position = block.settings.overlay_position | split: ' '
+      -%}
+
+      <div class="post-block block-{{ block.id }} block {% if section.settings.is_special_layout != false and forloop.index > 3 %}three-block{% else %}{% endif %} relative flex flex-col gallery-block h-full{% if section.settings.gallery_cols_min == '2' and block.settings.columns >= 2 %} md-down:col-span-2{% endif %} row-span-{{ block.settings.rows }} lg:col-span-{{ block.settings.columns }} {% if is_link %} hover:grow-media{% endif %} {% if block_min_height != blank %} min-block{% endif %}" {% if block.settings.article_bg != blank %}style="background-color:{{ block.settings.article_bg }};"{% endif %} {%- unless forloop.first %}tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>
+        <div class="gallery-block__image{% if block.settings.video_shopify != blank %} video-section{% endif %} {% if section.settings.is_text_below_the_picture != blank %}{% else %} overflow-hidden{% endif %} flex relative w-full h-full {{ overlay_position | first }} {{ overlay_position | last }}{% if is_link %} {% if section.settings.is_text_below_the_picture != blank %}{% else %} card__media{% endif %}{% endif %}">
+          <div class="media media--has-overlay flex top-0 left-0 w-full h-full has-motion {% if section.settings.is_image_has_rounded_corners != blank %}image-has-rounded-corners{% endif %}">
+            {%- if article_cover != blank -%}
+              {% render 'image',
+                image: article_cover,
+                widths: '480, 800, 980, 1024, 1440, 1920',
+                src_width: 980,
+                src_placeholder: true,
+                sizes: article_cover_sizes,
+                lazy_load: lazy_load_images,
+                section_index: section.index,
+                class: 'img-fit article-cover'
+              %}
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit' }}
+            {%- endif -%}
+          </div>
+  
+          {%- if article_title != blank or article_excerpt != blank or article_url != blank -%}
+            <div class="gallery-block__image-text{% if text_color_scheme == "white" %} gallery-block__image-text--transparent{% endif %} color-scheme color-scheme--{{ text_color_scheme }} text-overlay--grow {{ block.settings.text_alignment }} relative"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %} {% if block.settings.article_bg != blank %}style="background-color:{{ block.settings.article_bg }};"{% endif %} {% if section.settings.is_text_below_the_picture != blank %}style="display:none;"{% endif %}>
+             
+            {%- if article_title != blank -%}
+                <{{ block.settings.heading_size }} class="text-current mb-0 rte {{ block.settings.heading_size }} {% if block.settings.title_weight != blank %}font-weight{% endif %} {% if block.settings.title_uppercase %} font-uppercase{% endif %}">
+                  {{- article_title | newline_to_br -}}
+                </{{ block.settings.heading_size }}>
+              {%- endif -%}
+  
+              {% if article_excerpt != blank and block.settings.show_article_excerpt != blank %}
+                <div class="blog-article-excerpt">
+                  {{ article_excerpt | escape }}
+                </div>
+              {% endif %}
+  
+              {%- if block.settings.button_label != blank -%}
+                <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.text_alignment == 'text-start' %} justify-start{% elsif section.settings.text_alignment == 'text-end' %} justify-end{% else %} justify-center{% endif %}">
+                  <{% if block.settings.button_link == blank %}button{% else %}a{% endif %} class="{{ block.settings.button_style }}" {% if block.settings.button_link == blank and is_link == false %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.article_url }}"{% endif %}>
+                    {{- block.settings.button_label | escape -}}
+                  </{% if block.settings.button_link == blank %}button{% else %}a{% endif %}>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+        {% if section.settings.is_text_below_the_picture != blank %}
+          {%- if article_title != blank or article_excerpt != blank or article_url != blank -%}
+            <div class="gallery-block__image-text{% if text_color_scheme == "white" %} gallery-block__image-text--transparent{% endif %} color-scheme color-scheme--{{ text_color_scheme }} text-overlay--grow {{ block.settings.text_alignment }} relative"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+              
+  
+              {%- if article_title != blank -%}
+                <{% if block.settings.heading_size != blank %}{{ block.settings.heading_size }}{% endif %} class="text-current mb-0 rte {% if block.settings.title_weight != blank %}font-weight {% endif %} {% if block.settings.title_uppercase != blank %}font-uppercase{% endif %}">
+                  {{- article_title | newline_to_br -}}
+                </{% if block.settings.heading_size != blank %}{{ block.settings.heading_size }}{% endif %}>
+              {%- endif -%}
+  
+              {% if article_excerpt != blank and block.settings.show_article_excerpt != blank %}
+                <div class="blog-article-excerpt">
+                  {{ article_excerpt | escape }}
+                </div>
+              {% endif %}
+  
+              {%- if block.settings.button_label != blank -%}
+                <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.text_alignment == 'text-start' %} justify-start{% elsif section.settings.text_alignment == 'text-end' %} justify-end{% else %} justify-center{% endif %}">
+                  <{% if block.settings.button_link == blank %}button{% else %}a{% endif %} class="{{ block.settings.button_style }}" {% if block.settings.button_link == blank and is_link == false %}role="link" aria-disabled="true"{% else %}href="{{ article_url }}"{% endif %}>
+                    {{- block.settings.button_label | escape -}}
+                  </{% if block.settings.button_link == blank %}button{% else %}a{% endif %}>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {% endif %}
+  
+      </div>
+  {%- endfor -%}
+{% endif %}

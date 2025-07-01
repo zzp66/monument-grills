@@ -1,0 +1,310 @@
+<style>
+.newsletter-popup {
+  
+  position: fixed;
+  left: -100%;
+  bottom: 0;
+  background: white;
+  padding: 0;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: left 0.5s ease-in-out;
+  max-width: 450px;
+      overflow: hidden;
+}
+
+.newsletter-popup.show {
+  left: 0;
+      transition: all 0.5s ease-in-out;
+}
+
+.popup-content {
+  width: 100%;
+  text-align: left;
+}
+
+.popup-content h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    /* padding-right: 20px; */
+}
+
+.popup-content p {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.close-popup {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    color: #666;
+    transition: color 0.3s ease;
+    background: #fff;
+    height: 28px;
+    line-height: 1;
+    padding: 0;
+    width: 28px;
+    border-radius: 50%;
+}
+
+.close-popup:hover {
+  color: #000;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.newsletter-form input[type="email"] {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.newsletter-form input[type="email"]:focus {
+  outline: none;
+  border-color: #999;
+}
+
+.newsletter-form button[type="submit"] {
+    padding: 10px 12px;
+    background: #cb0f0f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.newsletter-form button[type="submit"]:hover {
+  background: #333;
+}
+
+.error-message,
+.success-message {
+  margin: 5px 0;
+  font-size: 13px;
+  text-align: center;
+}
+
+.error-message {
+  color: #dc3545;
+}
+
+.success-message {
+  color: #28a745;
+}
+.popup__boxs {
+    padding: 30px 40px;
+    text-align: center;
+}
+  p.success-message {
+    font-size: 20px;
+    color: #000;
+    margin: 0;
+}
+@media (max-width: 768px) {
+  .newsletter-popup {
+        left: 0;
+        right: 0;
+        max-width: calc(70% - 20px);
+    display:none!important
+  }
+  .popup__boxs {
+    padding: 30px 20px;
+}
+  .popup-content h2 {
+    font-size: 16px;
+  }
+  
+  .popup-content p {
+    font-size: 13px;
+  }
+  #newsletter-popup{
+    display:none!important
+  }
+}
+</style>
+
+<div id="newsletter-popup" class="newsletter-popup" style="display: none;">
+  <div class="popup-content">
+    <button class="close-popup">&times;</button>
+    <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/popbanner.jpg?v=1746580280" class="popup__banner" alt="monumentgrills" />
+    <div class="popup__boxs"><h2>{{ section.settings.popup_title }}</h2>
+    <p>{{ section.settings.popup_text }}</p>
+    <form id="newsletter-form" class="newsletter-form">
+      <input type="email" id="newsletter-email" placeholder="Email" required>
+      <button type="submit">Subscribe Now</button>
+      <p class="error-message" style="display: none;">You have subscribed!</p>
+      <p class="success-message" style="display: none;">Success！</p>
+    </form>
+    </div>
+  </div>
+</div> 
+
+{% schema %}
+{
+  "name": "Newsletter Popup",
+  "settings": [
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "title",
+    },
+    {
+      "type": "textarea",
+      "id": "popup_text",
+      "label": "content",
+    },
+    {
+      "type": "number",
+      "id": "popup_delay",
+      "label": "delay(s)",
+      "default": 5
+    },
+    {
+      "type": "number",
+      "id": "popup_frequency",
+      "label": "frequency(day)",
+      "default": 7
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Popup",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const popup = document.getElementById('newsletter-popup');
+  const closeBtn = document.querySelector('.close-popup');
+  const form = document.getElementById('newsletter-form');
+  const errorMessage = document.querySelector('.error-message');
+  const successMessage = document.querySelector('.success-message');
+
+  // 获取 Cookie
+  function getCookie(name) {
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
+
+  // 设置 Cookie
+  function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
+  }
+
+  // 检查是否应该显示弹窗
+  function shouldShowPopup() {
+    const subscribed = getCookie('newsletter_subscribed');
+    const lastShown = getCookie('newsletter_last_shown');
+    const lastClosed = getCookie('newsletter_last_closed');
+    const frequency = {{ section.settings.popup_frequency }} * 24 * 60 * 60 * 1000;
+
+    if (subscribed) return false;
+    if (lastClosed && (new Date().getTime() - parseInt(lastClosed) < frequency)) return false;
+    if (lastShown && (new Date().getTime() - parseInt(lastShown) < frequency)) return false;
+
+    return true;
+  }
+
+  // 显示弹窗
+  if (shouldShowPopup()) {
+    setTimeout(() => {
+      popup.style.display = 'block';
+      requestAnimationFrame(() => {
+        popup.classList.add('show');
+      });
+      setCookie('newsletter_last_shown', new Date().getTime(), {{ section.settings.popup_frequency }});
+    }, {{ section.settings.popup_delay }} * 1000);
+  }
+
+  // 关闭弹窗
+  closeBtn.addEventListener('click', () => {
+    popup.classList.remove('show');
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 500);
+    setCookie('newsletter_last_closed', new Date().getTime(), {{ section.settings.popup_frequency }});
+  });
+window.addEventListener('click', function(event) {
+    if (popup.style.display === 'block' && !popup.contains(event.target)) {
+      popup.classList.remove('show');
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 500);
+      setCookie('newsletter_last_closed', new Date().getTime(), {{ section.settings.popup_frequency }});
+    }
+  });
+  // 处理表单提交
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('newsletter-email').value;
+
+    // 重置消息
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+
+    // 检查是否已订阅
+    if (getCookie('newsletter_subscribed')) {
+      errorMessage.textContent = 'You have subscribed';
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    try {
+      // 这里用表单方式提交到 /contact
+      const formData = new FormData();
+      formData.append('form_type', 'customer');
+      formData.append('utf8', '✓');
+      formData.append('contact[tags]', 'newsletter');
+      formData.append('contact[email]', email);
+
+      const response = await fetch('/contact', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        setCookie('newsletter_subscribed', 'true', 365);
+        successMessage.textContent = 'Success！';
+        successMessage.style.display = 'block';
+        setTimeout(() => {
+          popup.classList.remove('show');
+          setTimeout(() => {
+            popup.style.display = 'none';
+          }, 500);
+        }, 2000);
+      } else {
+        throw new Error('Network Error');
+      }
+    } catch (error) {
+      errorMessage.textContent = 'Subscription failed, please try again later';
+      errorMessage.style.display = 'block';
+    }
+  });
+});
+</script>

@@ -1,0 +1,104 @@
+<style>
+  .marquee-img-container {
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+  height: 80px; /* 根据图片高度调整 */
+  position: relative;
+}
+.marquee-img {
+  white-space: nowrap;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 80px;
+}
+.marquee-img-item {
+  display: inline-block;
+  margin-right: 40px; /* 图片间距 */
+}
+.marquee-img-item img {
+  height: 60px; /* 统一图片高度 */
+  vertical-align: middle;
+  border-radius: 8px;
+}
+</style>
+<section class="marquee__section" style="display:">
+  <div class="container">
+<div class="marquee-img-container">
+  <div class="marquee-img">
+    {% for block in section.blocks %}
+      <span class="marquee-img-item"><img src="{{ block.settings.image | img_url:'master' }}" alt=""></span>
+    {% endfor %}
+  </div>
+</div>
+  </div>
+</section>
+<script>
+  $(function() {
+  var $marquee = $('.marquee-img');
+  var $container = $('.marquee-img-container');
+  var speed = 1;
+  var left = 0;
+
+  // 复制内容实现无缝滚动
+  $marquee.append($marquee.html());
+  var imgWidth = $marquee.width() / 2;
+
+ function scroll() {
+    left += speed;
+    if (left >= 0) {
+      left = -imgWidth;
+    }
+    $marquee.css('left', left + 'px');
+  }
+
+  var timer = setInterval(scroll, 40);
+
+  $container.hover(
+    function() {
+      clearInterval(timer);
+    },
+    function() {
+      timer = setInterval(scroll, 40);
+    }
+  );
+});
+</script>
+{% schema %}
+{
+  "name": "Marquee image",
+  "class": "cc-marquee",
+  "settings": [
+   
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        }
+        
+        
+      
+
+        
+       
+       
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee image",
+     
+    }
+  ]
+ 
+}
+{% endschema %}

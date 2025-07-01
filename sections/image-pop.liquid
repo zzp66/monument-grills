@@ -1,0 +1,188 @@
+<style>
+.custom-section-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+.custom-section__image img {
+  max-width: 100%;
+  border-radius: 12px;
+  /* box-shadow: 0 2px 16px rgba(0,0,0,0.08); */
+}
+.custom-section__content {
+}
+.custom-section__content h2 {
+  font-size: 2.8rem;
+  margin-bottom: 16px;
+  color: #222;
+}
+.custom-section__content > div {
+  font-size: 1.8rem;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+#custom-popup-modal {
+  display: none;
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#custom-popup-modal.active {
+  display: flex;
+}
+
+#custom-popup-close {
+  position: absolute;
+  right: 16px; top: 12px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #888;
+  transition: color 0.2s;
+}
+#custom-popup-close:hover {
+  color: #222;
+}
+#custom-popup-html {
+  margin-top: 12px;
+  color: #333;
+  font-size: 16px;
+      max-height: 800px;
+    overflow-y: scroll;
+}
+  .imgtext__popup{
+        background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    min-width: 300px;
+    max-width: 650px;
+    position: fixed;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  div#custom-popup-html h3 {
+    font-size: 20px;
+    font-weight: bold;
+}
+@media (max-width: 991px) {
+  .custom-section {
+    flex-direction: column;
+    gap: 24px;
+    padding: 32px 0;
+  }
+  .custom-section__content {
+    max-width: 100%;
+    padding: 0 !important;
+  }
+  #custom-popup-html {
+ 
+    font-size: 16px;
+    max-height: 500px;
+    overflow: auto;
+}
+  .imgtext__popup {
+    min-width: auto;
+    width: 90%;
+}
+  .custom-section-box {
+    padding: 0 0 50px;
+    flex-flow: column;
+}
+  .custom-section__content > div {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+}
+</style>
+<section class="img_text-section" style="display:">
+  <div class="container">
+    <!-- sections/image-content-popup.liquid -->
+<div class="custom-section-box" style="display: flex; align-items: center;">
+  <div class="custom-section__image" style="flex: 1;">
+    <img src="{{ section.settings.image | img_url: 'master' }}" alt="图片" style="max-width: 100%;">
+  </div>
+  <div class="custom-section__content" style="flex: 1; padding-left: 40px;">
+    <h2>{{ section.settings.title }}</h2>
+    <div>{{ section.settings.content }}</div>
+    <button id="custom-popup-btn" class="btn btn--primary" style="margin-top: 20px;">{{ section.settings.button_text }}</button>
+  </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="custom-popup-modal" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+  <div class="imgtext__popup">
+    <span id="custom-popup-close" style="position:absolute; right:10px; top:10px; cursor:pointer; font-size:20px;">&times;</span>
+    <div id="custom-popup-html">
+      {{ section.settings.popup_html }}
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<script>
+  $(document).ready(function(){
+    $('#custom-popup-btn').on('click', function(){
+      $('#custom-popup-modal').fadeIn();
+    });
+    $('#custom-popup-close').on('click', function(){
+      $('#custom-popup-modal').fadeOut();
+    });
+    // 点击弹窗外部关闭
+    $('#custom-popup-modal').on('click', function(e){
+      if(e.target === this){
+        $(this).fadeOut();
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "image text with pop",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "title"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "content",
+      "default": "content"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "button",
+      "default": "Read More"
+    },
+    {
+      "type": "html",
+      "id": "popup_html",
+      "label": "html"
+    }
+  ],
+  "presets": [
+    {
+      "name": "image text with pop"
+    }
+  ]
+}
+{% endschema %}

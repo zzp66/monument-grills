@@ -1,0 +1,6 @@
+[data-swatch]::before {
+  background-color: rgba(var(--text-color) / 0.08);
+}
+
+[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-1_250x250.png?v=15138556984201759795) }[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-2_250x250.png?v=5313536159053768455) }[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-3_250x250.png?v=5863756610831852471) }[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-4_250x250.png?v=17043125687973856984) }[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-5_250x250.png?v=15055478921242394822) }[data-swatch="gift design"]:before { background-image: url(//monumentgrills.com/cdn/shop/files/GIFTCARD-6_250x250.png?v=4524516989777995597) }
+

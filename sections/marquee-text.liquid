@@ -1,0 +1,111 @@
+<style>
+ .marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  height:60px;
+  position: relative;
+}
+.marquee {
+  white-space: nowrap;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: #fff;
+}
+.marquee-item {
+  display: inline-block;
+  margin-right: 60px;
+  line-height:60px;
+  text-transform:uppercase
+}
+  @media(max-width:768px){
+    .marquee__section .container{
+      padding:0
+    }
+  }
+</style>
+<section class="marquee__section" style="display:">
+  <div class="container">
+<div class="marquee-container">
+  <div class="marquee">
+    {% for block in section.blocks %}
+      <span class="marquee-item">{{ block.settings.text }}</span>
+    {% endfor %}
+  </div>
+</div>
+    </div>
+  </section>
+<script>
+  
+ $(function() {
+   
+  var $marquee = $('.marquee');
+  var $container = $('.marquee-container');
+  var speed = 0.5;
+  var left = 0;
+
+  // 复制内容实现无缝滚动
+  $marquee.append($marquee.html());
+
+  // 只取原始内容宽度
+  var textWidth = $marquee.width() / 2;
+
+  function scroll() {
+    left += speed;
+    if (left >= 0) {
+      left = -textWidth;
+    }
+    $marquee.css('left', left + 'px');
+  }
+  var timer = setInterval(scroll, 20);
+
+  $container.hover(
+    function() {
+      clearInterval(timer);
+    },
+    function() {
+      timer = setInterval(scroll, 20);
+    }
+  );
+   console.log('marquee js loaded');
+});
+</script>
+{% schema %}
+{
+  "name": "Marquee text",
+  "class": "cc-marquee",
+  "settings": [
+   
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+         {
+          "type": "text",
+          "id": "text",
+          "label": "content"
+        }
+        
+        
+      
+
+        
+       
+       
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee text",
+     
+    }
+  ]
+ 
+}
+{% endschema %}

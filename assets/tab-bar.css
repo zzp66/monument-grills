@@ -1,0 +1,21 @@
+.cc-tab-bar .carousel .slider ul li{
+    opacity: .7;
+    cursor: pointer;
+}
+.cc-tab-bar .carousel .slider ul li.active{
+    opacity: 1;
+}
+.cc-tab-bar .tab-content{
+  display:none;
+}
+.cc-tab-bar .tab-content.active{
+  display:block;
+}
+.cc-tab-bar .tab-content .list{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px 20px;
+}
+.cc-tab-bar .tab-content .list .item{
+  position: relative;
+}

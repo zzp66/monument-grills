@@ -1,0 +1,21 @@
+<script>
+  grecaptcha.ready(function() {
+    grecaptcha.execute('6Lea2wEqAAAAAAjxPRFlATu5u5OtirdfZdvHk4wb', {action: 'contact-us'}).then(function(token) {
+      fetch('https://recaptchaenterprise.googleapis.com/v1/projects/monument-1719458889425/assessments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recaptchaToken: token
+        })
+      }).then(
+        response => response.json()
+      ).then(data => {
+        console.log(data);
+      }).catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  });
+</script>

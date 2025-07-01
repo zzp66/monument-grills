@@ -1,0 +1,519 @@
+{%- if section.blocks.size > 0 -%}
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'text-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'blog.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- else -%}
+    {{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+    {{ 'blog.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  # constants
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+
+  assign img = section.settings.background_desktop
+  assign m_img = section.settings.background_mobile
+
+  assign overlay_position = section.settings.overlay_position | split: ' '
+  assign mobile_overlay_position = section.settings.mobile_overlay_position | split: ' '
+  assign color_scheme = section.settings.color_scheme
+  assign bg_color = false
+
+  if color_scheme == 'default'
+    assign bg_color = settings.bg_color
+  elsif color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+  endif
+
+  if bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+  if color_scheme == "white"
+    assign brightness = section.settings.transparent_content_color | color_brightness
+    assign alpha = section.settings.transparent_content_color | color_extract: 'alpha'
+    if brightness < 190 and alpha > 0
+      assign transparent_text_contrast = "255 255 255"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_lighten: 10
+    else
+      assign transparent_text_contrast = "0 0 0"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_darken: 10
+    endif
+  endif
+
+  assign show_search_types = false
+  if settings.show_search_types and shop.types
+    assign show_search_types = true
+  endif
+      
+-%}
+
+{%- style -%}
+  .blod{
+    font-weight: bold;
+  }
+  .cc-shousuo h1,
+  .cc-shousuo .text-overlay__block{
+    margin-bottom:0;
+  }
+  .banner__search{
+    margin:2em 0;
+  }
+  .image-banner .text-overlay h2{
+    margin-bottom:0;
+  }
+  .image-banner .text-overlay .text-overlay__block{
+    margin-top:0.5em;
+  }
+  #{{ section.id }} { background: none; }
+
+  @media (max-width:850px){
+    #{{ section.id }}.use-image-banner{
+      padding:0;
+    }
+    #{{ section.id }} .{{ mobile_overlay_position }}{
+      
+    }
+      
+  }
+  {%- if color_scheme == "white" -%}
+    #{{ section.id }} {
+      --color-scheme-white-text: {{ section.settings.transparent_content_color.red }} {{ section.settings.transparent_content_color.green }} {{ section.settings.transparent_content_color.blue }};
+      --color-scheme-white-hover: {{ transparent_hover_color.red }} {{ transparent_hover_color.green }} {{ transparent_hover_color.blue }};
+      --color-scheme-white-text-contrast: {{ transparent_text_contrast }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+        #{{ section.id }} .mobile-stacked--spaced .text-overlay { color: inherit; }
+        #{{ section.id }} .mobile-top-center .container{
+          position:absolute;
+          top:2em;
+        }
+        
+        #{{ section.id }} .mobile-top-center .container .text-overlay{
+          margin:1em auto;
+        }
+      }
+    {%- endif -%}
+
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .image-banner {
+        min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+      }
+    }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+    }
+   
+
+  {%- elsif section.settings.height_mode == 'auto' -%}
+    {%- liquid
+      if img != blank
+        assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign img_padding = '56.25%'
+      endif
+      if m_img != blank
+        assign m_img_padding = 1 | divided_by: m_img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign m_img_padding = img_padding
+      endif
+    -%}
+    #{{ section.id }} .image-banner::after {
+      content: '';
+      padding-top: {{ img_padding }};
+    }
+
+    {%- if m_img != blank -%}
+      @media (max-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: {{ m_img_padding }};
+        }
+      }
+    {%- endif -%}
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { padding-top: {{ m_img_padding }};}
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: 0;
+        }
+      }
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if section.settings.tint_opacity > 0 -%}
+    #{{ section.id }} .media::after {
+      background-color: rgba({{ section.settings.tint_color.red }}, {{ section.settings.tint_color.green }}, {{ section.settings.tint_color.blue }}, {{ section.settings.tint_opacity | divided_by: 100.0 }});
+    }
+  {%- endif -%}
+
+  {%- if bg_color -%}
+    #{{ section.id }} .text-overlay { background: {{ bg_color }}; }
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' and color_scheme == 'default' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- else -%}
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- endif -%}
+  
+  @media (max-width: {{ breakpoint_sm_down }}px) {
+    #{{ section.id }} .mobile-top-center .container{
+      position:absolute;
+      top:1em;
+    }
+    #{{ section.id }} .mobile-middle-center .container{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    #{{ section.id }} .mobile-bottom-center .container{
+      position:absolute;
+      bottom:1em;
+    }
+    
+    #{{ section.id }} .mobile-top-center .container .text-overlay,
+    #{{ section.id }} .mobile-middle-center .container .text-overlay,
+    #{{ section.id }} .mobile-bottom-center .container .text-overlay{
+      margin:10px auto;
+    }
+    
+  }
+  {% if block.settings.header_uppercase %}
+    .uppercase{
+      text-transform:uppercase;
+    }
+  {% endif %}}
+{%- endstyle -%}
+
+<div class="section {% if section.settings.full_width %}section--full-width cc-shousuo {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width and bg_color == false or bg_color == settings.bg_color %} mobile-stacked--spaced{% endif %}{% endif %}{% unless color_scheme == 'default' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} {% if section.settings.full_screen %}{% else %} container use-image-banner{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+  <div class="container md-down:p-xl grid justify-start">
+    <div class="item blog-title-box">
+      
+    </div>
+    <div class="item blog-item-box"></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "blog list -- wenfei",
+  "class": "cc-blog-list",
+  "settings": [
+    {
+      "type": "header",
+      "content": "跳转ID设置"
+    },
+    {
+      "type": "text",
+      "id": "link_id",
+      "label": "Link ID"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Button",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Layout Title"
+    },
+    {
+      "type": "text",
+      "id": "blog_collections_title",
+      "label": "Blog Collections Name"
+    },
+    {
+      "type": "select",
+      "id": "blog_collections_title_size",
+      "label": "Title size",
+      "options": [
+        {
+          "value": "h6",
+          "label": "Extra extra small"
+        },
+        {
+          "value": "h5",
+          "label": "Extra small"
+        },
+        {
+          "value": "h4",
+          "label": "Small"
+        },
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Extra large"
+        },
+        {
+          "value": "h0",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "checkbox",
+      "id": "mob_center_text",
+      "label": "Center text on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_stacked",
+      "label": "Show text below image on mobile",
+      "info": "Does not apply to \"Full screen height\".",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_overlay_position",
+      "label": "Mobile Text position",
+      "options": [
+        {
+          "value": "mobile-top-center",
+          "label": "Mobile Top center"
+        },
+        {
+          "value": "mobile-middle-center",
+          "label": "Mobile Middle center"
+        },
+        {
+          "value": "mobile-bottom-center",
+          "label": "Mobile Bottom center"
+        }
+      ],
+      "default": "mobile-top-center"
+    },
+    {
+      "type": "header",
+      "content": "Blog Background"
+    },
+    {
+      "type": "color",
+      "id": "blog_bg",
+      "label": "Blog Background"
+    },
+    {
+      "type": "header",
+      "content": "ALL Blog URL"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Blog collections link (optional)"
+    },
+    {
+      "type": "select",
+      "id": "btn_style",
+      "label": "Buttons",
+      "options": [
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--secondary"
+    },
+    
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "white",
+          "label": "Transparent background"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section background full width",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "transparent_content_color",
+      "label": "Text and button color",
+      "info": "Only applies when the \"Transparent background\" color scheme is chosen and the text shows over an image.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tint_color",
+      "label": "Image tint color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "tint_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Image tint opacity",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type":"blog_item",
+      "name":"Select Blog Article",
+      "settings":[
+        {
+          "type":"text",
+          "id":"article_title",
+          "label":"Article title"
+        },
+        {
+          "type":"article",
+          "id":"article_obj",
+          "label":"Select Article"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "blog list -- wenfei",
+      "blocks": [
+        {
+          "type": "blog_item"
+        },
+        {
+          "type": "blog_item"
+        },
+        {
+          "type": "blog_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

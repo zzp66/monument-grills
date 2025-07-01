@@ -1,0 +1,334 @@
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'gallery.css' | asset_url }}" media="print" onload="this.media='all'">
+
+  {%- if section.settings.mobile_carousel -%}
+    <link rel="stylesheet" href="{{ 'gallery-mobile-carousel.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- endif -%}
+{%- else -%}
+  {{ 'gallery.css' | asset_url | stylesheet_tag }}
+
+  {%- if section.settings.mobile_carousel -%}
+    {{ 'gallery-mobile-carousel.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- endif -%}
+
+
+{%- liquid
+  # constants
+  assign breakpoint_md = 769
+
+  if section.settings.gallery_cols_min == '1'
+    assign grid_classes = 'sm:grid-cols-2'
+  else
+    assign grid_classes = 'grid-cols-2'
+  endif
+
+  if section.settings.gallery_cols_max == 4
+    assign grid_classes = grid_classes | append: ' lg:grid-cols-4'
+  elsif section.settings.gallery_cols_max == 3
+    assign grid_classes = grid_classes | append: ' lg:grid-cols-3'
+  endif
+
+  assign text_color_scheme = section.settings.color_scheme
+
+  if text_color_scheme == "white"
+    assign brightness = section.settings.transparent_content_color | color_brightness
+    assign alpha = section.settings.transparent_content_color | color_extract: 'alpha'
+    if brightness < 190 and alpha > 0
+      assign transparent_text_contrast = "255 255 255"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_lighten: 10
+    else
+      assign transparent_text_contrast = "0 0 0"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_darken: 10
+    endif
+  endif
+
+  assign section_color_scheme = section.settings.section_color_scheme
+  assign section_bg_color = false
+
+  if section_color_scheme == '1'
+    assign section_bg_color = settings.color_scheme_1_bg
+  elsif section_color_scheme == '2'
+    assign section_bg_color = settings.color_scheme_2_bg
+  elsif section_color_scheme == '3'
+    assign section_bg_color = settings.color_scheme_3_bg
+  endif
+
+  if section_bg_color == settings.bg_color or section_bg_color == 'rgba(0,0,0,0)'
+    assign section_bg_color = false
+  endif
+-%}
+
+{%- style -%}
+  {% for block in section.blocks %}
+    {%- if block.settings.tint_opacity > 0 -%}
+      .block-{{ block.id }} .media::after {
+        background-color: rgba({{ block.settings.tint_color.red }}, {{ block.settings.tint_color.green }}, {{ block.settings.tint_color.blue }}, {{ block.settings.tint_opacity | divided_by: 100.0 }});
+      }
+    {%- endif -%}
+  {% endfor %}
+
+  #{{ section.id }} .gallery-block { min-height: {{ section.settings.fixed_height_mobile }}px; }
+  {% unless section.settings.mobile_carousel %}#{{ section.id }} .gallery-block.row-span-2, #{{ section.id }} .gallery-block.row-span-3 { min-height: {{ section.settings.fixed_height_mobile | times: 1.75 }}px; }{% endunless %}
+
+  {%- if text_color_scheme == "white" -%}
+    #{{ section.id }} {
+      --color-scheme-white-text: {{ section.settings.transparent_content_color.red }} {{ section.settings.transparent_content_color.green }} {{ section.settings.transparent_content_color.blue }};
+      --color-scheme-white-hover: {{ transparent_hover_color.red }} {{ transparent_hover_color.green }} {{ transparent_hover_color.blue }};
+      --color-scheme-white-text-contrast: {{ transparent_text_contrast }};
+    }
+  {%- endif -%}
+
+  @media (min-width: {{ breakpoint_md }}px) {
+    #{{ section.id }} .gallery-block { min-height: calc({{ section.settings.fixed_height_desktop }}px + 8vw); }
+    #{{ section.id }} .gallery-block.row-span-2 { min-height: calc(calc({{ section.settings.fixed_height_desktop }}px + 8vw) * 2); }
+    #{{ section.id }} .gallery-block.row-span-3 { min-height: calc(calc({{ section.settings.fixed_height_desktop }}px + 8vw) * 3); }
+  }
+{%- endstyle -%}
+
+<div class="section{% unless section_color_scheme == 'none' %} color-scheme color-scheme--{{ section_color_scheme }} section--padded section--full-width{% endunless %}">
+  {%- if section.settings.title != blank or section.settings.button_label != blank -%}
+    <div class="{% if section.settings.full_screen %}{% else %} container{% endif %}">
+      <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+        {%- if section.settings.title != blank -%}
+          <h2 class="h4 section__heading mb-0 flex-auto {{ section.settings.heading_align }}">
+            {{- section.settings.title | escape -}}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link }}" class="link">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {% if section.settings.mobile_carousel %}<div class="gallery-mobile-carousel">{% endif %}
+
+  <div class="{% if section.settings.full_screen %}{% else %} container{% endif %}" id="{{ section.id }}">
+    <div class="gallery grid img-text {{ grid_classes }}">
+      {%- for block in section.blocks -%}
+        {% liquid
+          assign overlay_position = block.settings.overlay_position | split: ' '
+        %}
+        {% case block.type %}
+          {% when 'img' %}
+              <div class="{{ block.id }} logo block relative flex h-full hover:grow-media" {%- unless forloop.first %}tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>
+                <div class="about-logo overflow-hidden flex relative w-full h-full {{ overlay_position | first }} {{ overlay_position | last }} card__media">
+                   <h6 class="sub-title">{{ block.settings.sub_title }}</h6>
+                   {% if block.settings.logo != blank %}
+                      {%- capture sizes %}{% render 'sizes-attribute', grid: true, min: section.settings.gallery_cols_min, sm: block.settings.img_columns %}{% endcapture -%}
+                      {% render 'image',
+                        image: block.settings.logo,
+                        widths: '480, 800, 980',
+                        src_width: 800,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        quality: 1,
+                        section_index: section.index,
+                        class: 'img-fit'
+                      %}
+                    {% endif %}
+                  
+                    <div class="text-overlay__block">
+                      {{ block.settings.logo_des }}
+                    </div>
+                </div>
+              </div>
+          {% when 'text' %}
+              <div class="{{ block.id }} text block relative flex h-full hover:grow-media" {%- unless forloop.first %}tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>
+                <div class="about-story overflow-hidden flex relative w-full h-full {{ overlay_position | first }} {{ overlay_position | last }} card__media">
+                   <h6 class="title">{{ block.settings.header_title }}</h6>
+                   <div class="text-overlay__block">
+                      {{ block.settings.header_des }}
+                   </div>
+                   <h6 class="title">{{ block.settings.header_title2 }}</h6>
+                   <div class="text-overlay__block">
+                      {{ block.settings.header_des2 }}
+                   </div>
+                </div>
+              </div>
+        {% endcase %}
+      {%- endfor -%}
+      {% style %}
+        .img-text{
+          display:flex;
+          flex-direction: row;
+        }
+        .img-text .logo{
+          flex: 1;
+          flex-basis: 40%;
+        }
+        .img-text .text{
+          flex: 1;
+          flex-basis: 60%;
+          padding-left: 3em;
+        }
+        .about-logo,
+        .about-story{
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
+        .img-text .about-logo img{
+          max-width:70%;
+        }
+        .about-logo img{
+          position: relative;
+          margin-bottom: 1em;
+        }
+        @media (max-width:768px){
+          .img-text{
+            flex-direction: column;
+          }
+          .img-text .text{
+            padding-left: 0em;
+          }
+          .img-text .about-logo img{
+             margin-bottom: 1em;
+          }
+        }
+      {% endstyle %}
+    </div>
+  </div>
+  {% if section.settings.mobile_carousel %}</div>{% endif %}
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Media-grid-body --fei",
+    "class": "cc-gallery cc-grid-body",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Full screen",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Section header"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Media grid"
+      },
+      {
+        "type": "select",
+        "id": "heading_align",
+        "label": "Heading alignment",
+        "options": [
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-end",
+            "label": "Right"
+          }
+        ],
+        "default": "text-start"
+      },
+      {
+        "type": "select",
+        "id": "section_color_scheme",
+        "label": "Color scheme",
+        "options": [
+          {
+            "value": "none",
+            "label": "Default"
+          },
+          {
+            "value": "1",
+            "label": "Scheme 1"
+          },
+          {
+            "value": "2",
+            "label": "Scheme 2"
+          },
+          {
+            "value": "3",
+            "label": "Scheme 3"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Text style"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "img",
+        "name":"Logo Name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo Image"
+          },
+          {
+            "type": "richtext",
+            "id": "logo_des",
+            "label": "Logo Des"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "My Story",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "header",
+            "content": "Layout"
+          },
+          {
+            "type": "text",
+            "id":   "header_title",
+            "label": "Story Title"
+          },
+          {
+            "type": "richtext",
+            "id": "header_des",
+            "label": "Story Des"
+          },
+          {
+            "type": "text",
+            "id":   "header_title2",
+            "label": "Story Title2"
+          },
+          {
+            "type": "richtext",
+            "id": "header_des2",
+            "label": "Story Des2"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Media-grid-body --fei"
+      }
+    ]
+  }
+{% endschema %}

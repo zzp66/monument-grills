@@ -1,0 +1,807 @@
+{% if section.blocks.size > 0 %}
+
+
+
+{{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+{% if section.settings.use_popup != blank %}
+  {{ 'popup.css' | asset_url | stylesheet_tag }}
+  {{ 'modal.css' | asset_url | stylesheet_tag }} 
+  {{ 'video.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'pop-up.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+
+{%- liquid
+  assign color_scheme = section.settings.color_scheme
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_lg = 1024
+  assign bg_color = false
+
+  if color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg
+  endif
+
+  if section.settings.layout == 'carousel'
+    assign carousel = true
+    if section.settings.column_size == 'small'
+      assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 md:auto-cols-3 lg:auto-cols-4 '
+    elsif section.settings.column_size == 'medium'
+      assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2 lg:auto-cols-3'
+    else
+      assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2'
+    endif
+
+  else
+    assign carousel = false
+  endif
+
+  if bg_color == settings.bg_color or bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+-%}
+{%- if carousel == false -%}
+  {% style %}
+    {% if section.settings.column_size == 'small' %}
+      @media (min-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .multi-column {
+          width: calc(50% - var(--column-gap));
+        }
+      }
+      @media (min-width: {{ breakpoint_md }}px) {
+        #{{ section.id }} .multi-column {
+          width: calc((100% / 3) - var(--column-gap));
+        }
+      }
+      @media (min-width: {{ breakpoint_lg }}px) {
+        #{{ section.id }} .multi-column {
+          width: calc(25% - var(--column-gap));
+        }
+      }
+    {% else %}
+      @media (min-width: {{ breakpoint_md }}px) {
+        #{{ section.id }} .multi-column {
+          width: calc(50% - var(--column-gap));
+        }
+      }
+      {% if section.settings.column_size == 'medium' %}
+        @media (min-width: {{ breakpoint_lg }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc((100% / 3) - var(--column-gap));
+          }
+        }
+      {% endif %}
+    {% endif %}
+  {% endstyle %}
+{%- endif -%}
+
+{%- unless section.settings.full_width -%}
+  <div class="container">
+{%- endunless -%}
+
+<div class="section{% unless bg_color == false %} section--padded{% if section.settings.full_width %} section--full-width{% endif %}{% endunless %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}{% if bg_color == false %} color-scheme--transparent{% endif %}" id="{{ section.id }}"{% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %} style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;background:{{ section.settings.bg_color }};">
+  <div class="container flex {{ section.settings.text_position }} {{ section.settings.text_align }}{% if section.settings.mob_center_text %} md-down:text-center{% endif %}">
+    <div class="nav-warp">
+       
+    <div class="tab-content">
+      {% if section.settings.nav_name_one != blank %}
+      <div class="nav-title">
+        <h4>{{ section.settings.nav_name_one }}</h4>
+      </div>
+      {% endif %}
+      {% if section.settings.nav_name_two != blank %}
+      <div class="nav-title">
+        <h4>{{ section.settings.nav_name_two }}</h4>
+      </div>
+      {% endif %}
+      {% if section.settings.nav_name_three != blank %}
+      <div class="nav-title">
+        <h4>{{ section.settings.nav_name_three }}</h4>
+      </div>
+      {% endif %}
+      <ul class="list">
+        {%- liquid
+            if section.settings.full_width
+              if section.settings.height_mode == 'screen'
+                assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+              endif
+            else
+              capture sizes
+                render 'sizes-attribute'
+              endcapture
+            endif
+
+            if section.index == 1 or section.settings.prevent_animation
+              assign lazy_load_images = false
+            else
+              assign lazy_load_images = true
+            endif
+          -%}
+         {%- for block in section.blocks -%}
+          {% case block.type %}
+            {% liquid
+              assign using_video_tag = false
+              assign autoplay = block.settings.video_autoplay
+              assign video_url = block.settings.video_url
+              assign video_shopify = block.settings.video_shopify
+              assign video_size = block.settings.video_size
+              assign video_class = 'youtube-video'
+              
+            %}
+            {%- when 'pro-imgs' -%}
+              {% if block.settings.show_manuals != blank %}
+                {% liquid
+                  assign img = block.settings.product_img
+                  assign btn_icon = block.settings.btn_icon
+                  assign btn_icon_alt = block.settings.img_alt
+
+                  assign video_btn_icon = block.settings.video_btn_icon
+                  assign video_url = block.settings.video_url
+
+                  if img != blank
+                    assign desktop_image_class = 'img-fit img-pro sm:block'
+                    assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+                  else
+                    assign desktop_image_class = 'img-fit img-pro'
+                    assign img_padding = '56.25%'
+                  endif
+                %}
+                <li class="item">
+                    {% if img != blank %}
+                      <div class="tab-img">
+                        {%- render 'image',
+                          image: img,
+                          widths: '480, 980, 1200, 1400',
+                          src_width: 480,
+                          src_placeholder: true,
+                          sizes: sizes,
+                          lazy_load: lazy_load_images,
+                          class: desktop_image_class
+                        -%}
+                      </div>
+                      <div class="info">
+                        <h6>{{ block.settings.product_title | escape }}</h6>
+                        {%- if block.settings.download_url != blank %}
+                          {%- capture sizes -%}
+                            {%- render 'sizes-attribute', min: 'page', sm: 'page', md: sizes_md, lg: '536px', xl: false, max: false -%}
+                          {%- endcapture -%}
+                          {% style %}
+                            
+                            
+                          {% endstyle %}
+                          <div class="link-box">
+                            {% if block.settings.download_url != blank %}
+                              <a class="{{ block.settings.download_button_style }} btn-pdf" role="link" aria-disabled="false" href="{{ block.settings.download_url }}" download target="_blank">
+                                {%- render 'image',
+                                    image: btn_icon,
+                                    widths: '30, 50, 100, 150, 200',
+                                    src_width: 30,
+                                    src_placeholder: true,
+                                    sizes: sizes,
+                                    alt_text: btn_icon_alt,
+                                    lazy_load: lazy_load_images,
+                                    class: 'img-fit btn-icon'
+                                  -%}
+                                <span>Download</span>
+                              </a>
+                            {% endif %}
+                            {% if block.settings.video_url != blank %}
+                              <button class="{{ block.settings.video_button_style }} btn-video" role="link" aria-disabled="false" data-link="{{ video_url }}">
+                                {%- render 'image',
+                                    image: video_btn_icon,
+                                    widths: '30, 50, 100, 150, 200',
+                                    src_width: 30,
+                                    src_placeholder: true,
+                                    sizes: sizes,
+                                    lazy_load: lazy_load_images,
+                                    class: 'img-fit btn-icon'
+                                  -%}
+                                <span>Watch the Video</span>
+                              </button>
+                            {% endif %}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %}
+                  </li>
+               {% endif %}
+          {% endcase %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% style %}
+      #{{ section.id }} .img-pro::after {
+        content: '';
+        padding-top: {{ img_padding }};
+      }
+      .cc-imgs .nav-warp{
+        width:100%;
+      }
+      .cc-imgs .navs .btn{
+        font-size: 24px;
+        font-weight: bold;
+        opacity: .7;
+        cursor: pointer;
+        background: transparent;
+        color: #000;
+        text-transform: uppercase;
+        border-radius: 0;
+        border-color: transparent;
+        border-bottom: 3px solid transparent;
+      }
+      .cc-imgs .navs .btn.active{
+          opacity: 1;
+          border-bottom: 3px solid #c20000;
+      }
+      .cc-imgs .tab-content .list .item{
+        position: relative;
+      }
+      .cc-imgs .tab-content{
+        padding-top:2em;
+      }
+      .cc-imgs .tab-content .list{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 20px 20px;
+      }
+      
+      .cc-imgs .tab-content .list .item .img-fit{
+        position: relative;
+      }
+      .cc-imgs .tab-content .list .item .btn{
+        border-radius: 6px;
+        padding: 8px 16px;
+      }
+      .cc-imgs .tab-content .list .item .info{
+        padding-top:15px;
+      }
+      .cc-imgs .tab-content .list .item .info h6{
+          font-size: 16px;
+          margin-bottom: 2em;
+      }
+      .cc-imgs .tab-content .nav-title{
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .cc-imgs .tab-content .nav-title h4{
+          display: block;
+          width: 100%;
+          text-align: left;
+          padding-bottom: 6px;
+          margin-bottom: 15px;
+          border-bottom: 1px solid #eee;
+      }
+      .cc-imgs .link-box{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cc-imgs .info .btn-pdf,
+      .cc-imgs .info .btn-video{
+        display:flex;
+        flex:1;
+        align-items: center;
+        position: relative;
+        max-width: fit-content;
+        padding: 6px 8px !important;
+      }
+      .cc-imgs .info .btn-video{
+        margin-left:4px;
+      }
+      .cc-imgs .info .btn-pdf .btn-icon,
+      .cc-imgs .info .btn-video .btn-icon{
+        width: auto;
+        height: 24px;
+      }
+      .cc-imgs .info .btn-pdf span,
+      .cc-imgs .info .btn-video span{
+        font-size:14px;
+      }
+      .cc-imgs .info .btn-video:hover{
+        border-color:#c00000;
+      }
+      .cwf-popup .modal__window{
+        width:1260px;
+        height:56.25vw;
+        top: 50%;
+        transform: translateY(-50%) !important;
+      }
+      .cwf-popup .modal__window .video-section{
+        height:100%;
+      }
+      .cwf-popup .modal__window .modal__content{
+        background:#040200;
+        
+      }
+      @media (max-width:768px){
+        .cwf-popup .modal__window{
+          height:100vw;
+        }
+        .cwf-popup .modal__window .modal__content{
+          padding:calc(4 * var(--space-unit)) var(--gutter)
+        }
+        .cc-imgs .link-box{
+          flex-direction: column;
+        }
+        .cc-imgs .info .btn-pdf,
+        .cc-imgs .info .btn-video{
+          width: 100%;
+          max-width: initial;
+          justify-content: center;
+        }
+        .cc-imgs .info .btn-pdf span,
+        .cc-imgs .info .btn-video span{
+          font-size:12px;
+        }
+        .cc-imgs .info .btn-video{
+          margin-left:0;
+          margin-top:10px;
+        }
+        .cc-imgs .tab-content .list{
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    {% endstyle %}
+    </div>
+  </div>
+</div>
+
+
+
+ <!-- video start -->
+{%- capture video_component -%}
+  <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                   data-video-url="{{ video_url }}" 
+                   data-video-id="{{ section.id }}"
+                   data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                   data-background=false
+                   data-description=false>
+    {%- if using_video_tag -%}
+      {{ video_shopify | video_tag: playsinline: true, autoplay: autoplay, muted: autoplay, controls: true, poster: '', class: video_class  | replace: '<img ', '<img loading="lazy" hidden ' }}
+    {%- else -%}
+      <div></div>
+    {%- endif -%}
+  </video-component>
+{%- endcapture -%}
+
+{% capture youtube_url %}
+    <iframe class="youtube-url" width="100%" height="100%" src="{{ video_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endcapture %}
+ <!-- video end -->
+
+<div class="cwf-popup popup-section modal invisible fixed top-0 left-0 w-full h-full flex justify-center {{ section.settings.text_align }}" data-mode data-show-on-mobile="true">
+    <div class="modal__window flex relative bg-theme-bg text-theme-text text-start has-motion flex flex-col" role="dialog" aria-modal="true" tabindex="-1">
+      <button type="button" class="modal__close-btn absolute text-current js-close-modal">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+      <div class="flex-auto modal__content modal__content--p-large relative">
+        <div class="video-section relative mx-auto flex-col{% if video_size == 'sm' %} max-w-screen-md{% elsif video_size == 'md' %} max-w-screen-lg{% endif %}">
+           <deferred-media class="deferred-media block top-0 left-0 w-full h-full no-js-hidden">
+              {{ youtube_url }}
+            </deferred-media>
+            <noscript>
+              <div class="absolute top-0 left-0 w-full h-full">
+                {{ youtube_url }}
+              </div>
+            </noscript>
+        </div>
+      </div>
+    </div>
+</div>
+    
+<script>
+  setTimeout(() => {
+    while (!$) {}
+    var scrollPosition = '';
+    $( document ).ready(function() {
+      $('.cwf-popup').removeAttr('open');
+      $('.list .item').on('click','button',function(e){
+        $('.cwf-popup').attr('open',true);
+        e.stopPropagation();
+        scrollPosition = $(window).scrollTop();
+
+        var youtube_url = $(this).attr('data-link');
+        $('.cwf-popup .video-section').find('iframe').attr('src',youtube_url);
+      });
+  
+      $('.cwf-popup .js-close-modal').on('click',function(){
+        $(window).scrollTop(scrollPosition);
+        $('.cwf-popup').removeAttr('open');
+      });
+    });
+  }, 100);
+
+
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    var navItems = document.querySelectorAll('.navs > li');
+    var contentItems = document.querySelectorAll('.tab-content .list .item');
+    
+    function clearActiveClasses() {
+      navItems.forEach(function (nav) {
+        nav.classList.remove('active');
+      });
+      contentItems.forEach(function (content) {
+        content.classList.remove('active');
+      });
+    }
+    
+    function setActive(index) {
+      clearActiveClasses();
+      navItems[index].classList.add('active');
+      contentItems[index].classList.add('active');
+    }
+    
+    navItems.forEach(function (nav, index) {
+      nav.addEventListener('click', function () {
+        setActive(index);
+      });
+    });
+  });
+</script>
+
+{%- unless section.settings.full_width -%}
+  </div>
+{%- endunless -%}
+{% endif %}
+{% schema %}
+{
+  "name": "imgs -- wenfei",
+  "class": "cc-imgs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_popup",
+      "label": "use popup",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Image height",
+      "info": "Restricted to 1080px maximum.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original image height"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height (set below)"
+        },
+        {
+          "value": "screen",
+          "label": "Full screen height"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "header",
+      "content": "Nav Title"
+    },
+    {
+      "type": "text",
+      "id": "nav_name_one",
+      "label": "First Nav"
+    },
+    {
+      "type": "text",
+      "id": "nav_name_two",
+      "label": "Second Nav"
+    },
+    {
+      "type": "text",
+      "id": "nav_name_three",
+      "label": "Third Nav"
+    },
+    {
+      "type": "select",
+      "id": "column_size",
+      "label": "Column size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "column_align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Button",
+      "default": 10
+    },
+    {
+      "type":"color",
+      "id":"bg_color",
+      "label":"Bg Color"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "justify-start",
+          "label": "Left"
+        },
+        {
+          "value": "justify-center",
+          "label": "Center"
+        },
+        {
+          "value": "justify-end",
+          "label": "Right"
+        }
+      ],
+      "default": "justify-center"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "checkbox",
+      "id": "mob_center_text",
+      "label": "Center text on mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section background full width",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pro-imgs",
+      "name": "Product item",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_manuals",
+          "label": "Show Manuals",
+          "default": true
+        },
+        {
+          "type":"image_picker",
+          "id":"product_img",
+          "label":"Product image"
+        },
+        {
+          "type": "text",
+          "id": "img_alt",
+          "label": "Product img alt"
+        },
+        {
+          "type":"text",
+          "id":"product_title",
+          "label":"Product Title"
+        },
+        {
+          "type": "header",
+          "content": "Download Button"
+        },
+        {
+          "type":"image_picker",
+          "id":"btn_icon",
+          "label":"Btn icon"
+        },
+        {
+          "type": "url",
+          "id": "download_url",
+          "label": "Product Download Url"
+        },
+        {
+          "type": "select",
+          "id": "download_button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "btn btn--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "btn btn--secondary",
+              "label": "Secondary button"
+            }
+          ],
+          "default": "btn btn--primary"
+        },
+        {
+          "type": "header",
+          "content": "Video Button"
+        },
+      
+        {
+          "type":"image_picker",
+          "id":"video_btn_icon",
+          "label":"Video Btn icon"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Youtube Url"
+        },
+        {
+          "type": "video",
+          "id": "video_shopify",
+          "label": "Video upload",
+          "info": "Hosted by Shopify."
+        },
+        {
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Autoplay",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "video_button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "btn btn--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "btn btn--secondary",
+              "label": "Secondary button"
+            }
+          ],
+          "default": "btn btn--secondary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "imgs -- wenfei",
+      "blocks": [
+        {
+          "type": "pro-imgs"
+        },
+        {
+          "type": "pro-imgs"
+        },
+        {
+          "type": "pro-imgs"
+        },
+        {
+          "type": "pro-imgs"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

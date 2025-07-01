@@ -1,0 +1,354 @@
+<div class="container">
+<div class="new_accounts">
+<div class="account-nav">
+    <a href="/account" class="user_Overview"><svg t="1742893548483" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2626" width="200" height="200"><path d="M406.766493 519.191123C402.472299 519.191123 398.112041 518.365316 393.916945 516.581574 294.159525 474.432413 229.71359 377.185445 229.71359 268.872671 229.71359 120.623897 350.347396-0.00991 498.59617-0.00991 646.844945-0.00991 767.445719 120.623897 767.445719 268.872671 767.445719 373.849187 705.741461 469.873961 610.245203 513.509574 593.629977 521.073961 574.041848 513.806865 566.444428 497.224671 558.880041 480.609445 566.18017 461.021316 582.795396 453.456929 654.838751 420.523768 701.381203 348.050994 701.381203 268.872671 701.381203 157.025445 610.410364 66.054606 498.59617 66.054606 386.781977 66.054606 295.778106 157.025445 295.778106 268.872671 295.778106 350.594477 344.40159 423.92609 419.649074 455.736155 436.429461 462.83809 444.32417 482.228026 437.189203 499.041445 431.871009 511.626735 419.649074 519.191123 406.766493 519.191123" fill="#231814" p-id="2627"></path><path d="M673.71999 996.54689 673.686957 996.54689 103.087732 996.018374C67.148635 995.95231 34.413667 978.147923 15.519215 948.385858-2.714591 919.680826-4.960785 884.171148 9.44128 853.385084 59.485151 746.525729 190.623215 566.532955 506.708893 561.644181 831.614183 555.698374 949.803603 748.474632 991.325151 863.327794 1002.225796 893.486245 997.832506 925.989987 979.202312 952.547923 959.878441 980.096826 927.936248 996.54689 893.780893 996.54689L811.365409 996.54689C793.131603 996.54689 778.333151 981.781471 778.333151 963.514632 778.333151 945.247794 793.131603 930.482374 811.365409 930.482374L893.780893 930.482374C906.432248 930.482374 918.125667 924.536568 925.128506 914.62689 928.69599 909.50689 933.981151 899.002632 929.191474 885.756697 885.787086 765.750503 776.351215 623.282374 507.765925 627.708697 241.59199 631.837729 122.411603 767.930632 69.295732 881.396439 64.406957 891.768568 65.166699 903.296826 71.310699 912.975277 78.04928 923.578632 89.973925 929.920826 103.186828 929.953858L673.753022 930.482374C691.986828 930.515406 706.752248 945.280826 706.752248 963.547665 706.752248 981.781471 691.953796 996.54689 673.71999 996.54689" fill="#231814" p-id="2628"></path></svg>Overview</a>
+    <ul class="account__menu">
+      <li>
+        <div class="account__menu-title">Orders <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" class="transition-all duration-300 rotate-180 h-[16px] w-[16px]"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.8898 11.1097C13.2267 11.4465 13.7728 11.4465 14.1096 11.1097C14.4464 10.7729 14.4464 10.2268 14.1096 9.88992L9.60959 5.38993C9.27276 5.0531 8.72666 5.0531 8.38983 5.38993L3.88983 9.88993C3.553 10.2268 3.553 10.7729 3.88983 11.1097C4.22666 11.4465 4.77276 11.4465 5.10959 11.1097L8.99971 7.21956L12.8898 11.1097Z" fill="#999"></path></svg></div>
+        <div class="account__menu-list" style="display:none">
+          <div class="inkitem showorder">MyOrders</div>
+          <a href="/apps/aftership" class="inkitem">Track Your Order</a>
+        </div>
+      </li>
+      <div class="accout__line"></div>
+      <li>
+        <div class="account__menu-title">Account<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" class="transition-all duration-300 rotate-180 h-[16px] w-[16px]"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.8898 11.1097C13.2267 11.4465 13.7728 11.4465 14.1096 11.1097C14.4464 10.7729 14.4464 10.2268 14.1096 9.88992L9.60959 5.38993C9.27276 5.0531 8.72666 5.0531 8.38983 5.38993L3.88983 9.88993C3.553 10.2268 3.553 10.7729 3.88983 11.1097C4.22666 11.4465 4.77276 11.4465 5.10959 11.1097L8.99971 7.21956L12.8898 11.1097Z" fill="#999"></path></svg></div>
+        <div class="account__menu-list" style="display:none">
+          <div class="inkitem showProfile">My Profile</div>
+          <a href="{{ routes.account_addresses_url }}" class="inkitem">Shipping {{ 'customer.addresses.title' | t }}</a>
+        </div>
+      </li>
+      <div class="accout__line"></div>
+      <li>
+        <div class="account__menu-title">Membership<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" class="transition-all duration-300 rotate-180 h-[16px] w-[16px]"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.8898 11.1097C13.2267 11.4465 13.7728 11.4465 14.1096 11.1097C14.4464 10.7729 14.4464 10.2268 14.1096 9.88992L9.60959 5.38993C9.27276 5.0531 8.72666 5.0531 8.38983 5.38993L3.88983 9.88993C3.553 10.2268 3.553 10.7729 3.88983 11.1097C4.22666 11.4465 4.77276 11.4465 5.10959 11.1097L8.99971 7.21956L12.8898 11.1097Z" fill="#999"></path></svg></div>
+        <div class="account__menu-list" style="display:none">
+          <a href="/pages/monument-grills-rewards-program#smile-home" class="inkitem">Rewards</a>
+        </div> 
+      </li>
+      <div class="accout__line"></div>
+      <li>
+        <div class="account__menu-title">Customer Service<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" class="transition-all duration-300 rotate-180 h-[16px] w-[16px]"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.8898 11.1097C13.2267 11.4465 13.7728 11.4465 14.1096 11.1097C14.4464 10.7729 14.4464 10.2268 14.1096 9.88992L9.60959 5.38993C9.27276 5.0531 8.72666 5.0531 8.38983 5.38993L3.88983 9.88993C3.553 10.2268 3.553 10.7729 3.88983 11.1097C4.22666 11.4465 4.77276 11.4465 5.10959 11.1097L8.99971 7.21956L12.8898 11.1097Z" fill="#999"></path></svg></div>
+        <div class="account__menu-list" style="display:none">
+          <a href="/pages/support" class="inkitem">Help Center</a>
+          <a href="/pages/assembly-manuals-and-videos" class="inkitem">Manuals</a>
+        </div>
+        <div class="accout__line"></div>
+      </li>
+    </ul>
+    <a class="user_out" href="{{ routes.account_logout_url }}"{% if settings.preload_links %} data-no-instant{% endif %}>
+      {{- 'customer.account.log_out' | t -}}
+    </a>
+
+  
+   
+    
+    
+
+</div>
+
+
+
+<div class="account_detais">
+
+<div style="display:none">
+  {% section 'main-gift-card' %}
+
+</div>
+     
+  <div class="account_items dashboard" data-section="dashboard">
+  <div class="account_user">
+    <h2>Hi, {{ customer.email }}</h2>
+    <p>Welcome to your account!</p>
+  </div>
+  <div class="user_numbers" style="display:">
+    <a href="/account#smile-home" style="
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;">
+      {% if customer %} <big class="sweettooth-points-balance"></big>{% endif %}
+      <span>FlameCoins</span>
+    </a>
+  <div class="right__prders">
+    <big>{{ customer.orders_count }}</big>
+    <span>Orders</span>
+  </div>
+    
+    <div>
+    {% assign gift_card_count = 0 %}
+    {% for order in customer.orders %}
+      {% for line_item in order.line_items %}
+        {% if line_item.gift_card %}
+          {% assign gift_card_count = gift_card_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    <big class="gift-card-count">{{ gift_card_count }}</big>
+    <span>Gift cards</span>
+  </div>
+
+   
+    
+  </div> 
+  </div>
+  
+ <div class="account_items earn" data-section="earn">
+   <h5><span class="tab_earn active">Ways to Earn</span><span class="tab_redeem">Redeem for Rewards</span></h5>
+   <div class="con_earn">
+    <ul class="earn_list">
+      <li class="earn_item">
+        <img src="https://monumentgrills.com/cdn/shop/files/2_1a2dea70-9ace-455d-8edd-82e018a14ccf.png?v=1721876209&width=48" />
+        <div class="earn_info">
+          <p class="ai_title">Place an Order</p>
+          <p class="ai_coins">Spend $1, Get 1 Point</p>
+          <a href="/account#smile-points-activity-rules">Complete Now</a>
+        </div>
+      </li>
+      <li class="earn_item">
+        <img src="https://monumentgrills.com/cdn/shop/files/7_024959ba-768d-42ab-8bc3-374ef635474f.png?v=1721876209&width=48" />
+        <div class="earn_info">
+          <p class="ai_title">Birthday Cheers</p>
+          <p class="ai_coins">500 Points</p>
+          <a href="/account#smile-points-activity-rules">Complete Now</a>
+        </div>
+      </li>
+      <!-- <li class="earn_item">
+        <img src="https://monumentgrills.com/cdn/shop/files/4_b6a94aba-8807-4211-8f3c-29429e0c582b.png?v=1721876209&width=48" />
+        <div class="earn_info">
+          <p class="ai_title">Follow on Facebook</p>
+          <p class="ai_coins">50 Points</p>
+          <a href="/account#smile-points-activity-rules">Complete Now</a>
+        </div>
+      </li>
+      <li class="earn_item">
+        <img src="https://monumentgrills.com/cdn/shop/files/ins.png?v=1722315661&width=48" />
+        <div class="earn_info">
+          <p class="ai_title">Follow on Instagram</p>
+          <p class="ai_coins">50 Points</p>
+          <a href="/account#smile-points-activity-rules">Complete Now</a>
+        </div>
+      </li> -->
+    </ul>
+     <div class="explore__box">
+       Unlock even more ways to earn points and enjoy exclusive rewards.<a href="/pages/monument-grills-rewards-program" class="btn btn--primary" target="_blank">Explore More</a>
+     </div>
+   </div>
+   <div class="con_redeem" style="display:none">
+   <ul class="Redeem__ists">
+     <li>
+       <div class="Redeem_pics"><img src="https://monumentgrills.com/cdn/shop/files/002.png?v=1724045825&width=600" /></div>
+       <div class="Redeem_info">
+       <h3>G22 Stainless Tabletop Gas Grill</h3>
+       <p>$219.99</p>
+       <div class="redeem__bottom">
+         <div>8000<i class="points__icon"></i></div>
+         <a href="/account#smile-points-products">Redeem</a>
+       </div>
+       </div>
+     </li>
+     <li>
+       <div class="Redeem_pics"><img src="https://monumentgrills.com/cdn/shop/files/001.png?v=1724045376&width=600" /></div>
+        <div class="Redeem_info">
+       <h3>A007 Smoker Box</h3>
+       <p>$25.99</p>
+       <div class="redeem__bottom">
+         <div>1300<i class="points__icon"></i></div>
+         <a href="/account#smile-points-products">Redeem</a>
+       </div>
+        </div>
+     </li>
+      <li>
+       <div class="Redeem_pics"><img src="https://monumentgrills.com/cdn/shop/files/003.png?v=1724045844&width=600" /></div>
+        <div class="Redeem_info">
+       <h3>A006 Cleaning Brush</h3>
+       <p>$29.99</p>
+       <div class="redeem__bottom">
+         <div>1550<i class="points__icon"></i></div>
+         <a href="/account#smile-points-products">Redeem</a>
+       </div>
+        </div>
+     </li>
+   </ul>
+      <div class="explore__box">
+       Unlock even more ways to earn points and enjoy exclusive rewards.<a href="/pages/monument-grills-rewards-program" class="btn btn--primary" target="_blank">Explore More</a>
+     </div>
+   </div>
+  </div>
+
+  
+ <div class="account_items orders" id="order-history" data-show="orders">
+      <!-- <h1 class="text-center">{{ 'customer.account.title' | t }}</h1> -->
+
+        <h5>{{ 'customer.orders.title' | t }}</h5>
+<div class="cus__table-warrper">
+        {%- paginate customer.orders by 20 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="orders w-full">
+              <caption class="visually-hidden">{{ 'customer.orders.title' | t }}</caption>
+              <thead>
+              <tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th class="text-end">{{ 'customer.orders.total' | t }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td class="orders__number" data-label="{{ 'customer.orders.order_number' | t }}">
+                    <a class="link" href="{{ order.customer_url }}">{{ order.name }}</a>
+                  </td>
+                  <td class="orders__date" data-label="{{ 'customer.orders.date' | t }}">
+                    {{- order.created_at | time_tag: format: 'date' -}}
+                  </td>
+                  <td class="orders__pay" data-label="{{ 'customer.orders.payment_status' | t }}">
+                    {{- order.financial_status_label -}}
+                  </td>
+                  <td class="orders__fulfil" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                    {{- order.fulfillment_status_label -}}
+                  </td>
+                  <td class="orders__total text-end" data-label="{{ 'customer.orders.total' | t }}">
+                    {{- order.total_price | money_with_currency -}}
+                  </td>
+                  <td class="orders__link">
+                    <a class="btn btn--secondary w-full" href="{{ order.customer_url }}">{{ 'customer.orders.view_order' | t }}</a>
+                  </td>
+                </tr>
+              {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+            <p class="mb-8 no__orders">{{ 'customer.orders.none' | t }}</p>
+          {%- endif -%}
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+  </div>
+     
+  <div class="account_items edit_user" style="display:none">
+  {% render 'user-profile-form' %}
+</div>
+  <!-- <div class="">
+        <h5>{{ 'customer.account.details' | t }}</h5>
+        <div class="address-box mt-6 mx-auto">
+          {{ customer.default_address | format_address }}
+          <a class="link" href="{{ routes.account_addresses_url }}">
+            {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+          </a>
+        </div>
+      </div> -->
+   
+
+  
+
+
+  
+</div>
+</div>
+</div>
+<!--  -->
+
+
+<!--  -->
+<script>
+  $(document).ready(function() {
+$('.right__prders').click(function(){
+    $('.earn').hide();
+    $('.orders').show();
+       $('.edit_user').hide();
+       $('.boxaddresses').hide();
+});
+       $('.dashboard').show(); 
+    $('.earn').show();
+    $('.orders').hide();
+
+    $('.showorder').on('click', function() {
+      $(this).addClass("active");
+        $('.showProfile').removeClass("active");
+       $('.dashboard').hide(); 
+    $('.earn').hide();
+    $('.orders').show();
+       $('.edit_user').hide();
+       $('.boxaddresses').hide();
+     
+    });
+
+    $('.showProfile').on('click', function() {
+      $(this).addClass("active");
+      $('.showorder').removeClass("active");
+       $('.dashboard').hide(); 
+    $('.earn').hide();
+    $('.orders').hide();
+    $('.edit_user').show();
+       $('.boxaddresses').hide();
+     
+    });
+  
+  $('.account__menu-title').click(function() {
+    $(this).toggleClass('active')
+           .next('.account__menu-list')
+           .slideToggle(300);
+    
+    $(this).find('svg').toggleClass('rotate-0 rotate-180');
+    
+  
+  });
+  
+$('.tab_earn').click(function(){
+  $(this).addClass("active");
+  $('.tab_redeem').removeClass("active");
+   $('.con_earn').show();
+   $('.con_redeem').hide();
+})
+    $('.tab_redeem').click(function(){
+       $(this).addClass("active");
+  $('.tab_earn').removeClass("active");
+   $('.con_earn').hide();
+   $('.con_redeem').show();
+})
+});
+
+ 
+
+</script>
+{% schema %}
+  {
+    "name": "account",
+    "class": "account",
+    "settings": [
+      {
+        "type": "header",
+        "content": "test"
+      },
+      {
+           "type": "text",
+           "id": "pass",
+           "label": "TOKEN",
+        "default":"111fa9ef80662ca3d4651a825932caf6"
+         }
+      
+    ],
+    "blocks": [
+      {
+        "type": "@app",
+      },
+      {
+        "type": "sss",
+        "name":"ssss",
+       "settings": [
+         {
+           "type": "text",
+           "id": "sss",
+           "label": "sss"
+         }
+       ]
+      }
+    ],
+    "presets": []
+  }
+{% endschema %}

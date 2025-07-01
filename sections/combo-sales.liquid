@@ -1,0 +1,464 @@
+{%- if section.blocks.size > 0 -%}
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'featured-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'product.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'combo-sales.css' | asset_url }}" media="print" onload="this.media='all'">
+  {% else %}
+    {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
+    {{ 'product.css' | asset_url | stylesheet_tag }}
+    {{ 'combo-sales.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+{% endif %}
+
+{%- if settings.enable_quick_add -%}
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-select.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% liquid
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+%}
+
+<div
+  class="section {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container cc-combo-sales{% endif %}"
+  id="{{ section.id }}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: 0 auto;"
+>
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'combo-pic' %}
+       {% liquid
+          assign use_combo_img = block.settings.use_combo_img
+          assign pc_combo_img = block.settings.pc_combo_img
+          assign mobile_combo_img = block.settings.mobile_combo_img
+
+           if section.settings.full_width
+              if block.settings.height_mode == 'screen'
+                assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+              endif
+            else
+              capture sizes
+                render 'sizes-attribute'
+              endcapture
+            endif
+
+            if mobile_combo_img != blank
+              assign mobile_image_class = 'img-fit mobile-img sm:hidden'
+            else
+              assign mobile_image_class = 'img-fit'
+            endif
+
+            if pc_combo_img != blank
+              assign desktop_image_class = 'pc-img img-fit'
+            endif
+        %}
+        <div class="image-banner__image media media--has-overlay absolute top-0 left-0 w-full h-full">
+          {% if use_combo_img != blank %}
+            {%- if mobile_combo_img != blank -%}
+              {%- render 'image',
+                image: mobile_combo_img,
+                widths: '480, 980, 1200, 1400',
+                src_width: 980,
+                src_placeholder: true,
+                sizes: sizes,
+                lazy_load: lazy_load_images,
+                class: mobile_image_class
+              -%}
+            {%- endif -%}
+            
+            {%- render 'image',
+              image: pc_combo_img,
+              widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+              src_width: 1400,
+              src_placeholder: true,
+              sizes: sizes,
+              lazy_load: lazy_load_images,
+              class: desktop_image_class
+            -%}
+          {% else %}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+          {% endif %}
+        </div>
+      {% when 'combo-collection' %} 
+        {% if block.settings.use_collection != blank %}
+            <div class="combo-collection">
+                {% liquid
+                    assign combo_product_layout = block.settings.combo_product_layout
+                    assign select_collection = block.settings.select_collection
+                    assign collection = select_collection.products
+
+                    assign products_to_show = block.settings.products_to_show
+                    
+                    if combo_product_layout == 'carousel'
+                      assign carousel = true
+                    elsif block.settings.layout == 'grid'
+                      assign carousel = false
+                    endif
+                  
+                     if settings.prod_card_image_ratio == 'shortest'
+                      assign image_ratio = 0
+                      for product in select_collection limit: block.settings.products_to_show
+                        if product.featured_media.preview_image.aspect_ratio > image_ratio
+                          assign image_ratio = product.featured_media.preview_image.aspect_ratio
+                        endif
+                      endfor
+                    elsif settings.prod_card_image_ratio == 'tallest'
+                      assign image_ratio = 99
+                      for product in select_collection limit: block.settings.products_to_show
+                        if product.featured_media.preview_image.aspect_ratio < image_ratio
+                          assign image_ratio = product.featured_media.preview_image.aspect_ratio
+                        endif
+                      endfor
+                    else
+                      assign image_ratio = settings.prod_card_image_ratio
+                    endif
+                  %}
+                  {% style %}
+                    :root{
+                      --num: {{ products_to_show }}
+                    }
+                    .combo-sales .cc-combo-sales .combo-collection .carousel .slider_w{
+                      display:grid;
+                      grid-template-columns: repeat(var(--num), 1fr);
+                      grid-gap: 20px 20px;
+                      width: 100%;
+                    }
+                    @media (max-width:768px){
+                      .combo-sales .cc-combo-sales .combo-collection .carousel .slider_w{
+                        grid-template-columns: repeat(1, 1fr);
+                      }
+                    }
+                  {% endstyle %}
+                  {% if carousel %}
+                      <carousel-slider class="carousel block" {% if combo_product_layout == 'carousel_on_mobile' %} disable-desktop="true" {% endif %}>
+                          <div class="container relative featured-collection-products">
+                              <div class="slider is-grabbable" id="slider-{{ section.id }}">
+                                  <div class="container products-grid-container shrink-0">
+                                      <ul class="{% if carousel %}slider__grid slider_w{% endif %} grid {% if combo_product_layout == 'carousel_on_mobile' and block.settings.card_size_mobile == 'small' and settings.card_contain %} sm:gap-x-theme sm:gap-y-8{% else %} gap-x-theme gap-y-8{% endif %}{% if block.settings.card_size_mobile == 'small' and settings.card_contain %} small__grid{% endif %}" role="list">
+                                         {% for product in collection limit: block.settings.products_to_show %}
+                                            <li
+                                              {% if carousel %}
+                                                class="slider__item"
+                                              {% endif -%}
+                                              {% if settings.animations_enabled != 'disabled' %}
+                                                data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+                                              {% endif %}
+                                            >
+                                              {% render 'product-card',
+                                                product: product,
+                                                collection: select_collection,
+                                                image_ratio: image_ratio,
+                                                show_rating: block.settings.show_rating
+                                              %}
+                                            </li>
+                                         {% endfor %}
+                                      </ul>
+                                  </div>
+                              </div>
+                          </div>
+                      </carousel-slider>
+                  {% endif %}
+            </div>
+        {% endif %}
+      {% else %}
+        
+    {% endcase %}
+  {% endfor %}
+</div>
+
+
+    
+{% schema %}
+  {
+    "name": "combo sales -- fei",
+    "class": "combo-sales",
+    "settings": [
+      {
+        "type": "header",
+        "content": "跳转ID设置"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Full screen",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "SEO"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevent_animation",
+        "label": "Load the section without animation",
+        "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "combo-pic",
+        "name": "Combo image",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "header",
+            "content": "Setting combo image"
+          },
+          {
+            "type": "checkbox",
+            "id": "use_combo_img",
+            "label": "Use combo image",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "pc_combo_img",
+            "label": "PC Combo img"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_combo_img",
+            "label": "Mobile Combo img"
+          },
+          {
+            "type": "url",
+            "id": "img_url",
+            "label": "Image link (optional)",
+            "info": "未开发"
+          },
+          {
+            "type": "range",
+            "id": "fixed_height_desktop",
+            "min": 200,
+            "max": 1000,
+            "step": 10,
+            "unit": "px",
+            "label": "Minimum fixed height on large screens",
+            "default": 400
+          },
+          {
+            "type": "range",
+            "id": "fixed_height_mobile",
+            "min": 250,
+            "max": 500,
+            "step": 10,
+            "unit": "px",
+            "label": "Minimum fixed height on mobile",
+            "default": 350
+          },
+          {
+            "type": "select",
+            "id": "height_mode",
+            "label": "Image height",
+            "info": "Restricted to 1080px maximum.",
+            "options": [
+              {
+                "value": "auto",
+                "label": "Original image height"
+              },
+              {
+                "value": "fixed",
+                "label": "Fixed height (set below)"
+              },
+              {
+                "value": "screen",
+                "label": "Full screen height"
+              }
+            ],
+            "default": "auto"
+          }
+        ]
+      },
+      {
+        "type": "combo-collection",
+        "name": "Combo collection",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "header",
+            "content": "Setting collection"
+          },
+          {
+            "type": "checkbox",
+            "id": "use_collection",
+            "label": "Use combo collection",
+            "default": false
+          },
+          {
+            "type": "collection",
+            "id": "select_collection",
+            "label": "Select collection"
+          },
+          {
+            "type": "select",
+            "id": "combo_product_layout",
+            "label": "Layout",
+            "options": [
+              {
+                "value": "carousel",
+                "label": "Carousel"
+              },
+              {
+                "value": "carousel_on_mobile",
+                "label": "Carousel on mobile"
+              },
+              {
+                "value": "grid",
+                "label": "Grid"
+              }
+            ],
+            "default": "carousel"
+          },
+          {
+            "type": "select",
+            "id": "card_size_mobile",
+            "label": "Product card size on mobile",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "small"
+          },
+          {
+            "type": "select",
+            "id": "card_size",
+            "label": "Product card size on large screens",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "small"
+          },
+          {
+            "type": "range",
+            "id": "products_to_show",
+            "label": "Maximum products to show",
+            "min": 2,
+            "max": 2,
+            "step": 1,
+            "default": 2
+          },
+          {
+              "type": "select",
+              "id": "image_ratio",
+              "label": "Image aspect ratio",
+              "options": [
+                {
+                  "value": "natural",
+                  "label": "Natural"
+                },
+                {
+                  "value": "fill",
+                  "label": "Fill"
+                },
+                {
+                  "value": "1.77",
+                  "label": "Landscape"
+                },
+                {
+                  "value": "1",
+                  "label": "Square"
+                },
+                {
+                  "value": "0.75",
+                  "label": "Portrait"
+                }
+              ],
+              "default": "fill"
+            },
+          {
+            "type": "select",
+            "id": "slider_show_arrows",
+            "label": "Arrow buttons visibility on large screens",
+            "info": "Not shown on mobile.",
+            "options": [
+              {
+                "value": "always",
+                "label": "Always"
+              },
+              {
+                "value": "hover",
+                "label": "On hover"
+              },
+              {
+                "value": "never",
+                "label": "Never"
+              }
+            ],
+            "default": "always"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_rating",
+            "label": "Show Rating",
+            "default": true
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "combo sales -- fei"
+      }
+    ]
+  }
+{% endschema %}

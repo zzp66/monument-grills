@@ -1,0 +1,183 @@
+<style>
+  .howitwork_sec {
+    margin-top: 60px;
+}
+  h2.howitwork_title {
+    text-align: center;
+        margin-bottom: 40px;
+}
+.howitwork-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 0 80px;
+}
+  .howitwork-item img {
+    width: 60px;
+    margin: 20px 0;
+}
+  .howitwork_wrapper h3 {
+    color: #0C0C0C;
+    font-weight: 600;
+    font-size: 30px;
+}
+  .howitwork_info p {
+    color: #333333;
+  }
+  .howitwork_wrapper a {
+    border: 1px solid #BC0F0F;
+    display: inline-flex;
+    color: #bc0f0f;
+    width: 200px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+  .tongzhi {
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+}
+  .tongzhi_bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+}
+  @media(max-width:991px){
+  
+    .tongzhi_bar {
+    align-items: flex-start;
+    gap: 5px;
+    padding: 10px 0;
+    font-size: 14px;
+}
+    .tongzhi_bar img {
+    width: 20px;
+}
+  .howitwork-wrapper {
+    display: flex;
+    gap: 20px 0;
+    flex-wrap: wrap;
+}
+    .howitwork-item {
+    width: 50%;
+}
+    .howitwork-item:nth-child(1){
+          width: 100%;
+    }
+    .howitwork-item img {
+    width: 40px;
+    margin: 10px 0;
+}
+     .howitwork-item:nth-child(1) .howitwork_info{
+          width: 50%;
+    margin: 0 auto;
+    }
+    .howitwork_info p {
+    font-size: 14px;
+}
+    .howitwork_wrapper a {
+   
+    width: 150px;
+    height: 35px;
+    margin-top: 0;
+    font-size: 15px;
+}
+    .howitwork_wrapper h3 {
+  
+    font-size: 18px;
+}
+  }
+</style>
+<div class="tongzhi">
+ <div class="container">
+   <div class="tongzhi_bar">
+   <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/laba-tb.png?v=1747822472" />The 15th of Every Month Is Monument Grills' Member Day – Enjoy Double Reward Points on All Purchases!
+ </div>
+ </div>
+</div>
+<section class="howitwork_sec" style="display:">
+  <div class="container">
+
+  <h2 class="howitwork_title">{{ section.settings.head }}</h2>
+  <div class="howitwork_container">
+        <div class="howitwork-wrapper">
+          {% for block in section.blocks %}
+            <div class="howitwork-item">
+            <div class="howitwork-num">Step {{ forloop.index }}</div>
+                <img src="{{ block.settings.image | img_url:'master' }}" />
+                <div class="howitwork_wrapper">
+                  <h3>{{ block.settings.title }}</h3>
+                  <div class="howitwork_info">{{ block.settings.content }}</div>
+                  <a href="{{ block.settings.url }}">{{ block.settings.button }}</a>
+                </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+  </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How It Work",
+  "class": "cc-howitwork",
+  "settings": [
+   
+     {
+          "type": "text",
+          "id": "head",
+          "label": "title"
+        }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+         {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+         {
+          "type": "text",
+          "id": "button",
+          "label": "button"
+        },
+         {
+          "type": "text",
+          "id": "url",
+          "label": "url"
+        }
+      
+
+        
+       
+       
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How It Work",
+     
+    }
+  ]
+ 
+}
+{% endschema %}

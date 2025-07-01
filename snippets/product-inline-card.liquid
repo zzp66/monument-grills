@@ -1,0 +1,206 @@
+{%- liquid
+  if collection and settings.card_url_within_coll and product.collections contains collection
+    assign product_url = product.url | within: collection
+  else
+    assign product_url = product.url
+  endif
+
+  if product_url contains "?"
+    assign product_url = product_url | split: "?" | first
+  endif
+
+  assign current_variant = product.selected_or_first_available_variant
+  
+
+  if image_ratio == nil
+    if settings.prod_card_image_ratio == 'shortest' or settings.prod_card_image_ratio == 'tallest'
+      assign image_ratio = 1
+    else
+      assign image_ratio = settings.prod_card_image_ratio
+    endif
+  elsif image_ratio == 0 or image_ratio == 99
+    assign image_ratio = 1
+  endif
+
+  assign product_not_for_sale = false
+  if product.template_suffix contains 'coming-soon' or product.template_suffix contains 'countdown'
+    assign product_not_for_sale = true
+  endif
+
+  assign card_class = ""
+  if product.template_suffix contains 'preorder'
+    assign card_class = " card--product-preorder"
+  elsif product.template_suffix contains 'coming-soon'
+    assign card_class = " card--product-coming-soon"
+  elsif product.template_suffix contains 'countdown'
+    assign card_class = " card--product-countdown"
+  endif
+-%}
+
+{% style %}
+  .card-inline{
+    border-bottom: 1px solid #eee;
+  }
+  .card-inline:last-child{
+    border-bottom:none;
+  }
+  .card-inline .card__info{
+    padding:15px 0;
+  }
+  .card-inline .card__info-inner{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-inline .card__info-inner .price{
+    padding-top:0;
+  }
+  .card-inline .card__info-inner .price .price__default strong{
+    font-size:1em;
+    font-weight:400;
+  }
+  .card-inline .card__info-inner .title{
+    flex-basis: 60%;
+    max-width: 60%;
+  }
+  .card-inline .card__info-inner .title .card__title a{
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+  }
+  .card-inline .card__info-inner .parts-number{
+    flex-basis: 4%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #ddd;
+    margin-right: 1em;
+  }
+  .card-inline .card__info-inner .parts-number p{
+    width: 70%;
+    text-align: left;
+    margin-bottom: 0;
+  }
+  .card-inline .card__info-inner .card__subtitle{
+    color:#555;
+    font-size:14px;
+  }
+  .card-inline .card__info-inner .price{
+    /* flex-basis:10%;
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center; */
+    flex:1;
+  }
+  .card-inline .card__info-inner .card__quick-add{
+    flex:1;
+    display:flex;
+    flex-direction: row;
+    justify-content:flex-end;
+    align-items: center;
+  }
+  .card-inline .card__info-inner button[disabled]{
+    width:104px;
+  }
+  @media (max-width:850px){
+    .card-inline .card__info-inner{
+      height:auto;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .card-inline .card__info-inner .card__quick-add,
+    .card-inline .card__info-inner .price,
+    .card-inline .card__info-inner .title{
+      flex-basis:100%;
+      max-width: 100%;
+    }
+    .card-inline .card__info-inner .card__quick-add{
+      margin-top:1em;
+    }
+   .card-inline .card__info-inner .title a span{
+     
+   }
+  }
+{% endstyle %}
+
+{%- if product and product != empty -%}
+  <product-card class="card-inline card--product{{ card_class }} h-full{% if settings.card_contain %} card--product-contained{% endif %}{% unless settings.show_dividers %} card--no-lines{% endunless %}{% if show_compare %} card--product-compare{% endif %} relative flex">
+    <div class="card__info-container flex flex-col flex-auto relative">
+      <div class="card__info w-full">
+        <div class="card__info-inner{% if settings.card_price_bottom %} flex flex-col h-full{% else %} inline-block{% endif %} w-full">
+          <div class="title">
+            <p class="card__title font-bold{% if settings.show_dividers %} mb-1{% else %} mt-1 mb-0{% endif %}">
+              <span>{{ index }}</span> - <a href="{{ product_url }}" class="card-link text-current js-prod-link">
+                 {{- product.title | escape -}}
+              </a>
+            </p>
+  
+            {%- if settings.card_show_subtitle and product.metafields.descriptors.subtitle != blank -%}
+              <p class="card__subtitle text-sm text-current mb-1{% unless settings.show_dividers %} mt-1{% endunless %}">
+                {{ product.metafields.descriptors.subtitle }}
+              </p>
+            {% else %}
+              <p class="card__subtitle text-sm text-current mb-1{% unless settings.show_dividers %} mt-1{% endunless %}">
+                #{{ product.variants.first.sku }}
+              </p>
+            {%- endif -%}
+          </div>
+          {%- render 'price', product: product, class: "sale-price" -%}
+         {%- if settings.enable_quick_add and disable_quickbuy != true -%}
+          <div class="card__quick-add
+            {% if settings.card_atc_mobile == "text_button_bottom" %}mob:card__quick-add--below{% endif %}
+            {% if settings.card_atc_mobile == "icon" %}mob:card__quick-add--icon{% endif %}
+            {% if settings.card_atc_desktop == "text_button_bottom" %}desktop:card__quick-add--below{% endif %}
+            {% if settings.card_atc_desktop == "icon" %}desktop:card__quick-add--icon{% endif %}
+          ">
+            {%- assign product_form_id = 'quick-add-' | append: section_id | append: product.id -%}
+  
+            {%- if product_not_for_sale == false -%}
+              <product-form>
+                <div class="alert mb-8 bg-error-bg text-error-text js-form-error text-start" role="alert" hidden></div>
+                {%- form 'product', product, class: 'js-product-form', id: product_form_id, novalidate: 'novalidate' -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
+  
+                  {%- capture button_text -%}
+                    {%- if product.template_suffix contains 'preorder' -%}
+                      {{- 'products.product.preorder' | t -}}
+                    {%- else -%}
+                      {{- 'products.product.add_to_cart' | t -}}
+                    {%- endif -%}
+                  {%- endcapture -%}
+  
+                  <button class="btn btn--primary w-full {%- if current_variant.available == false %} sold-out-btn{% endif %}"
+                          data-add-to-cart-text="{{- button_text | escape -}}"
+                          name="add"
+                          aria-haspopup="dialog"
+                          {%- if current_variant.available == false %}disabled{% endif %}>
+                    <span class="quick-add-btn-icon">
+                      <span class="visually-hidden">{{- button_text -}}</span>
+                      {% render 'icon-add-to-cart' %}
+                    </span>
+                    <span class="quick-add-btn-text">
+                      {%- if current_variant.available == false %}Sold out{% else %}{{- button_text -}}{% endif %}
+                    </span>
+                  </button>
+                  <a href="{{ product_url }}" class="btn btn--secondary quick-add-view-btn">
+                    {{- 'products.product.view_details' | t -}}
+                  </a>
+                  {% style %}
+                    .sold-out-btn{
+                      background: #aaa;
+                      border-color: #aaa;
+                      color: #111;
+                    }
+                  {% endstyle %}
+                {%- endform -%}
+              </product-form>
+            {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </product-card>
+{%- endif -%}

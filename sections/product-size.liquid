@@ -1,0 +1,247 @@
+<div class="container" id="{{ section.id }}">
+  <div class="section" style="background: {{ section.settings.bg_color }}">
+    {% if section.settings.show_this != blank %}
+        <div class="section__header items-center flex{% if section.settings.title_layout == 'text-center' %} flex-col text-center{% elsif section.settings.title_layout == 'text-right' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %} style="color:{{ section.settings.font_color }}">
+          {%- if section.settings.title != blank -%}
+            <h2 class="h4 mb-0 flex-auto section__heading {{ section.settings.title_layout }}">
+              {{- section.settings.title | escape -}}
+            </h2>
+          {%- endif -%}
+          {% if section.settings.description != blank %}
+            <p class="{{ section.settings.title_layout }}">
+              {{ section.settings.description }}
+            </p>
+          {% endif %}
+        </div>
+         <ul class="img-list">
+            {%- liquid
+              assign sizes = false
+              assign class = 'object-center'
+            -%}
+          {% for block in section.blocks %}
+              {%- assign front_image = block.settings.img_front_dimensions -%}
+            {%- assign mobile_front_image = block.settings.img_front_mobile_dimensions -%}
+              {%- assign side_image = block.settings.img_side_dimensions -%}
+              {%- capture sizes -%}
+                {%- render 'sizes-attribute', min: '100vw', sm: 'page', md: false, lg: false, xl: 'page', max: 'page' -%}
+              {%- endcapture -%}
+              {% case block.type %}
+                {% when 'img_front' %}
+                <li class="media pc-media media--has-overlay">
+                  <div class="image-banner__image media media--has-overlay top-0 left-0 w-full h-full">
+                    {%- if front_image != blank -%}
+                      {% render 'image',
+                        image: front_image,
+                        widths: '750, 856, 1440, 1680, 1920, 2560',
+                        src_width: 1680,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        section_index: section.index,
+                        class: class
+                      %}
+                    {%- else -%}
+                      {%- assign class = class | prepend: 'media__placeholder ' -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+                    {%- endif -%}
+                  </div>
+                </li>
+                <li class="media mobile-media media--has-overlay">
+                  <div class="image-banner__image media media--has-overlay top-0 left-0 w-full h-full">
+                    {%- if mobile_front_image != blank -%}
+                      {% render 'image',
+                        image: mobile_front_image,
+                        widths: '750, 856, 1440, 1680, 1920, 2560',
+                        src_width: 1680,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        section_index: section.index,
+                        class: class
+                      %}
+                    {%- else -%}
+                      {%- assign class = class | prepend: 'media__placeholder ' -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+                    {%- endif -%}
+                  </div>
+                </li>
+                  {% when 'img_side' %}
+                <li class="media media--has-overlay">
+                  <div class="image-banner__image media media--has-overlay top-0 left-0 w-full h-full">
+                    {%- if side_image != blank -%}
+                      {% render 'image',
+                        image: side_image,
+                        widths: '750, 856, 1440, 1680, 1920, 2560',
+                        src_width: 1680,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        section_index: section.index,
+                        class: class
+                      %}
+                    {%- else -%}
+                      {%- assign class = class | prepend: 'media__placeholder ' -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+                    {%- endif -%}
+                  </div>
+                </li>
+              {% endcase %}
+          {% endfor %}
+        </ul>
+    {% endif %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Product size -- wenfei",
+    "tag":"section",
+    "class":"cwf",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type":"checkbox",
+        "id":"show_this",
+        "label":"Is Show",
+        "info":"show, checked!!!",
+        "default":true
+      },
+      {
+        "type": "select",
+        "id": "title_layout",
+        "label": "Title position on large screens",
+        "options": [
+          {
+            "value": "text_left",
+            "label": "Left"
+          },
+          {
+            "value":"text-center",
+            "label":"Center"
+          },
+          {
+            "value": "text_right",
+            "label": "Right"
+          }
+        ],
+        "default": "text_left"
+      },
+      {
+        "type":"text",
+        "id":"title",
+        "label":"Title",
+        "default":"Product Size"
+      },
+      {
+        "type":"textarea",
+        "id":"description",
+        "label":"Description",
+        "default":"Description"
+      },
+      {
+        "type":"color",
+        "id":"font_color",
+        "label":"Title Color"
+      },
+      {
+        "type":"color",
+        "id":"bg_color",
+        "label":"Background Color",
+        "default":"#f3f3f3"
+      }
+    ],
+    "max_blocks": 2,
+    "blocks":[
+      {
+        "type":"img_front",
+        "name":"Image Front",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "img_front_dimensions",
+            "label": "Device Front Dimensions(in)"
+          },
+          {
+            "type": "image_picker",
+            "id": "img_front_mobile_dimensions",
+            "label": "Device Front Dimensions(in)"
+          },
+          {
+            "type":"text",
+            "id":"img_front_alt",
+            "label":"Front Dimensions Alt info"
+          }
+        ]
+      },
+      {
+        "type":"img_side",
+        "name":"Image Side",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "img_side_dimensions",
+            "label": "Device Side Dimensions(in)"
+          },
+          {
+            "type": "image_picker",
+            "id": "img_side_mobile_dimensions",
+            "label": "Device Side Dimensions(in)"
+          },
+          {
+            "type":"text",
+            "id":"img_side_alt",
+            "label":"Side Dimensions Alt info"
+          }
+        ]
+      }
+    ],
+    "presets":[
+      {
+      "name": "Product size -- wenfei",
+      "blocks":[
+        {
+          "type": "img_front"
+        }
+      ]
+    }
+    ]
+  }
+{% endschema %}
+{% style %}
+  .cwf .section{
+    position: relative;
+    padding: 4em;
+  }
+  .cwf .section__header{
+  }
+  .cwf .img-list{
+    /* display: grid; */
+    /* grid-template-columns: 60% 40%;
+    grid-gap: 20px 20px; */
+    display:flex;
+    max-width:90%;
+    margin:auto;
+    position: relative;
+  }
+  .cwf .img-list .image-banner__image{
+    display:flex;
+  }
+  .cwf .img-list .mobile-media{
+    display:none;
+  }
+  @media (max-width:768px){
+    .cwf .section{
+      padding:1em;
+    }
+    .cwf .img-list{
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .cwf .img-list .pc-media{
+      display:none;
+    }
+    .cwf .img-list .mobile-media{
+      display:block;
+    }
+  }
+{% endstyle %}

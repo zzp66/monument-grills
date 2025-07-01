@@ -1,0 +1,355 @@
+{% liquid
+  assign part_title = section.settings.part_title
+  assign color_scheme = section.settings.color_scheme
+%}
+
+{% style %}
+  .wenfei-text-list{
+    background: {{ section.settings.full_screen_bg }};
+    max-width: 100%;
+  }
+  .wenfei-text-list .contaier{
+    padding:0;
+  }
+  .wenfei-text-list .list-warp{
+    display:flex;
+    align-items: center;
+  }
+  .wenfei-text-list .list-warp.left{
+    flex-direction: row;
+  }
+  .wenfei-text-list .list-warp.right{
+    flex-direction: row-reverse;
+  }
+  .wenfei-text-list .list-warp .product-img{
+    flex:1;
+    flex-basis: 30%;
+  }
+  .wenfei-text-list .list-warp ul{
+    padding: calc(8* var(--space-unit));
+    flex:1;
+  }
+  .wenfei-text-list .list-warp li.item{
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    flex:1;
+  }
+  .wenfei-text-list .list-warp li.item span{
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background: #111;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    flex: none;
+  }
+  .wenfei-text-list .list-warp li.item p{
+    margin-bottom:0;
+    margin-left:10px;
+  }
+  .wenfei-text-list .list-warp li.item a{
+    display:inline-block;
+    margin-left:10px;
+    text-decoration: underline;
+  }
+  @media (max-width:850px){
+    .wenfei-text-list .list-warp,
+    .wenfei-text-list .list-warp.left{
+      flex-direction: column;
+      flex-warp:warp;
+    }
+    .wenfei-text-list .list-warp.right{
+      flex-direction: column;
+    }
+    .wenfei-text-list .container{
+      padding:0;
+    }
+    .wenfei-text-list .list-warp ul{
+      padding-top:0;
+    }
+  }
+{% endstyle %}
+
+{% if section.settings.show_text %}
+  <div class="{% if section.settings.full_screen %}{% else %} container{% endif %}" id="{{ section.id }}">
+    <div class="section" id="{{ section.settings.link_id }}">
+      
+      <div class="list-warp product-features-info {{ section.settings.layout_postion }}" style="background:{{ section.settings.section_bg }}">
+        <div class="product-img">
+          <hotspots-image class="shoppable-image__image block relative overflow-hidden"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+            {% if section.settings.product_part_image != blank %}
+               {%- capture sizes -%}
+                  {%- render 'sizes-attribute', min: 'page', sm: 'page', md: false, lg: false, xl: '896px', max: false -%}
+                {%- endcapture -%}
+                {% liquid
+                  if section.settings.img_alt != 'blank'
+                    assign img_alt = section.settings.img_alt
+                  endif
+                %}
+            
+                {% render 'image',
+                  image: section.settings.product_part_image,
+                  widths: '690, 896, 1408, 1792, 1920',
+                  src_width: 896,
+                  sizes: sizes,
+                  alt_text:img_alt
+                  class: 'block mx-auto w-full'
+                %}
+              {% else %}
+                <div class="media relative" style="padding-top: 56.25%;">
+                  {{ 'collection-2' | placeholder_svg_tag: 'media__placeholder img-fit' }}
+                </div>
+            {% endif %}
+          </hotspots-image>
+        </div>
+        <ul clas="list {% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}" style="{% if section.settings.full_screen %}padding: calc(8 * var(--space-unit));{% endif %}">
+          <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+              <h2 class="section__heading mb-0 flex-auto {{ section.settings.heading_align }} {{ section.settings.heading_size }}">
+                {{- part_title | escape -}}
+              </h2>
+          </div>
+          {% for block in section.blocks %}
+            {% if block.settings.name_link %}
+              <li class="item">
+                  <span style="background: {{ block.settings.dot_bg_color }};color: {{ block.settings.dot_text_color }}">{{ forloop.index }}</span><a class="name-link" href="{{ block.settings.name_link }}" target="_blank" class="item-name" style="color:{{ block.settings.product_part_name_color }}">{{ block.settings.product_part_name }}</a>
+              </li>
+            {% else %}
+              
+              <li class="item">
+                {% if block.settings.product_part_name != blank %}
+                  <span style="background: {{ block.settings.dot_bg_color }};color: {{ block.settings.dot_text_color }}">{{ forloop.index }}</span>
+                  <p class="item-name" style="color:{{ block.settings.product_part_name_color }}">{{ block.settings.product_part_name }}</p>
+                {% endif %}
+              </li>
+            
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "Parts dot -- wenfei",
+  "tag": "section",
+  "class": "wenfei-text-list",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Quick jump"
+    },
+    {
+      "type": "text",
+      "id": "link_id",
+      "label": "Link ID"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type":"color",
+      "id":"full_screen_bg",
+      "label":"Full screen background color"
+    },
+    {
+      "type":"text",
+      "id":"part_title",
+      "label":"Title",
+      "default":"Packing List"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h6",
+          "label": "Extra extra small"
+        },
+        {
+          "value": "h5",
+          "label": "Extra small"
+        },
+        {
+          "value": "h4",
+          "label": "Small"
+        },
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Extra large"
+        },
+        {
+          "value": "h0",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h3"
+    },
+    {
+      "type":"color",
+      "id":"section_bg",
+      "label":"Part background"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_part_image",
+      "label": "Part Image"
+    },
+    {
+      "type":"text",
+      "id":"img_alt",
+      "label":"Image Alt Text",
+      "info":"必填，用于 SEO"
+    },
+    {
+      "type": "select",
+      "id": "layout_postion",
+      "label": "layout position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text",
+      "label": "Show text",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "1"
+    }
+  ],
+  "max_blocks": 30,
+  "blocks": [
+    {
+      "type": "dot",
+      "name": "dot name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_part_name",
+          "label": "Part Name",
+          "default":"Part Name"
+        },
+        {
+          "type":"color",
+          "id":"product_part_name_color",
+          "label":"Part Name color"
+        },
+        {
+          "type": "url",
+          "id": "name_link",
+          "label": "Add name link"
+        },
+        {
+          "type": "header",
+            "content": "Dot Color Setting"
+        },
+        {
+          "type":"color",
+          "id":"dot_bg_color",
+          "label":"Dot background color"
+        },
+        {
+          "type":"color",
+          "id":"dot_text_color",
+          "label":"Dot text color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Parts dot -- wenfei",
+      "blocks": [
+        {
+          "type": "dot"
+        },
+        {
+          "type": "dot"
+        },
+        {
+          "type": "dot"
+        },
+        {
+          "type": "dot"
+        },
+        {
+          "type": "dot"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

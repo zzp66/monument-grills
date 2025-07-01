@@ -1,0 +1,551 @@
+<style>
+
+section.rewards_section {
+    padding-top: 80px;
+      padding-bottom: 100px;
+}
+/* Tab 按钮样式 */
+.reward-buttons {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: center;
+      gap: 60px;
+}
+
+.reward-btn, .reward-btn3 {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 15px 50px;
+    color: #333333;
+    background: #EEEEEE;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+
+.reward-btn.active {
+    background: #BC0F0F;
+    color: #FFFFFF;
+}
+
+/* 内容区域样式 */
+.reward-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reward-content.active {
+  display: block;
+  opacity: 1;
+}
+
+/* 网格布局 */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* 项目卡片样式 */
+.rewards-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background-color: white;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rewards-item:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* 图片样式 */
+.item-image {
+    overflow: hidden;
+    background: #EEEEEE;
+    border-radius: 10px 10px 0 0;
+}
+.rewards__content {
+    padding: 20px;
+}
+.item-image img {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.item-image img:hover {
+  transform: scale(1.05);
+}
+.reward-bpttom {
+    display: flex;
+    justify-content: space-between;
+      align-items: center;
+}
+.rewards__content h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0C0C0C;
+}
+  .rewards__content p {
+    color: #666;
+    line-height: 1.3;
+    font-weight: 100;
+        font-size: 16px;
+}
+  .reward-bpttom big {
+    color: #BC0F0F;
+    font-size: 28px;
+    font-weight: bold;
+}
+  .reward-bpttom div {
+    color: #666;
+    font-size: 16px;
+}
+  .rewards__content a{
+        font-size: 14px;
+    line-height: 1;
+    min-height: auto;
+    font-weight: normal;
+  }
+/* 动画类 */
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  h2.howitwork_title {
+    text-align: center;
+        margin-bottom: 40px;
+}
+  .reward_products .rewards__content p{
+        color: #000;
+    line-height: 1.3;
+    font-weight: 600;
+    font-size: 20px;
+        height: 50px;
+  }
+@media (max-width: 768px) {
+.reward-buttons {
+   overflow: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
+      align-items: center;
+}
+  .reward-btn, .reward-btn3 {
+         min-width: 110px;
+        text-align: center;
+    font-size: 14px;
+  
+    padding: 10px 15px;
+  
+    font-weight: normal;
+}
+  .rewards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+  .reward-bpttom {
+    align-items: flex-start;
+    flex-flow: column;
+}
+  .reward-bpttom big {
+    font-size: 22px;
+}
+  .rewards__content p {
+ 
+    font-size: 14px;
+}
+  .rewards__content h3 {
+    font-size: 20px;
+  }
+  .rewards__content a {
+    font-size: 14px;
+    display: block;
+    width: 100%;
+}
+  .rewards-item {
+    transform: translateY(0px) !important;
+}
+  section.rewards_section {
+    padding-bottom: 50px;
+    padding-top: 40px;
+}
+}
+
+
+</style>
+<section class="rewards_section" style="display:">
+<div class="container">
+<div class="rewards-list-container">
+    <h2 class="howitwork_title">{{ section.settings.head }}</h2>
+
+  <div class="reward-buttons">
+    <button class="reward-btn active" data-tab="tab1">{{ section.settings.tab1_title }}</button>
+    <!-- <button class="reward-btn" data-tab="tab2">{{ section.settings.tab2_title }}</button> -->
+    <button class="reward-btn" data-tab="tab3">{{ section.settings.tab3_title }}</button>
+    <a href="#EarnPoints_sec" class="reward-btn3">Earn Points</a>
+  </div>
+
+  <div class="reward-content active" id="tab1">
+    <div class="rewards-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab1' %}
+          <div class="rewards-item reward_products">
+            <div class="rewards__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+            <div class="rewards__content">
+              <!-- <h3>{{ block.settings.name }}</h3> -->
+              <p>{{ block.settings.desc }}</p>
+              <div class="reward-bpttom">
+              <div><big>{{ block.settings.points }}</big> Points</div>
+              <a href="/pages/monument-grills-rewards-program#smile-points-products" class="btn btn--primary">Redeem</a>
+            </div>
+            </div>
+          </div>
+            
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- <div class="reward-content" id="tab2">
+    <div class="rewards-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab2' %}
+          <div class="rewards-item">
+            <div class="rewards__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+            <div class="rewards__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.desc }}</p>
+              <div class="reward-bpttom">
+              <div><big>{{ block.settings.points }}</big> Points</div>
+              <a href="/pages/monument-grills-rewards-program#smile-points-products" class="btn btn--primary">Redeem</a>
+            </div>
+            </div>
+          </div>
+            
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div> -->
+
+  <div class="reward-content" id="tab3">
+    <div class="rewards-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab3' %}
+           <div class="rewards-item">
+            <div class="rewards__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+            <div class="rewards__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.desc }}</p>
+               <div class="reward-bpttom">
+              <div><big>{{ block.settings.points }}</big> Points</div>
+              <a href="/pages/monument-grills-rewards-program#smile-points-products" class="btn btn--primary">Redeem</a>
+            </div>
+            </div>
+          </div>
+           
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+</div>
+</div>
+  </section>
+  <script>
+    (function($) {
+  'use strict';
+
+  $(document).ready(function() {
+    // 初始化变量
+    const $tabButtons = $('.reward-btn');
+    const $tabContents = $('.reward-content');
+    const $rewardsItems = $('.rewards-item');
+    
+    // 初始化函数
+    function init() {
+      showActiveTab($tabButtons.first());
+      initializeItems();
+      handleResponsive();
+    }
+
+    // 显示活动标签页
+    function showActiveTab($button) {
+      const tabId = $button.data('tab');
+      
+      // 更新按钮状态
+      $tabButtons.removeClass('active');
+      $button.addClass('active');
+      
+      // 更新内容状态
+      $tabContents.removeClass('active').hide();
+      const $activeContent = $(`#${tabId}`);
+      $activeContent.addClass('active').fadeIn(300);
+      
+      // 重置并显示项目
+      resetItems($activeContent);
+      showItems($activeContent);
+    }
+
+    // 初始化所有项目
+    function initializeItems() {
+      $rewardsItems.css({
+        opacity: 0,
+        transform: 'translateY(20px)'
+      });
+    }
+
+    // 重置项目状态
+    function resetItems($container) {
+      $container.find('.rewards-item').css({
+        opacity: 0,
+        transform: 'translateY(20px)'
+      });
+    }
+
+    // 显示项目动画
+    function showItems($container) {
+      $container.find('.rewards-item').each(function(index) {
+        $(this).delay(index * 100).animate({
+          opacity: 1,
+          transform: 'translateY(0)'
+        }, 300);
+      });
+    }
+
+    // 处理响应式布局
+    function handleResponsive() {
+      const windowWidth = $(window).width();
+      const $rewardsGrid = $('.rewards-grid');
+      
+      if (windowWidth <= 480) {
+        $rewardsGrid.css('grid-template-columns', 'repeat(2, 1fr)');
+      } else if (windowWidth <= 768) {
+        $rewardsGrid.css('grid-template-columns', 'repeat(2, 1fr)');
+      } else if (windowWidth <= 1024) {
+        $rewardsGrid.css('grid-template-columns', 'repeat(3, 1fr)');
+      } else {
+        $rewardsGrid.css('grid-template-columns', 'repeat(4, 1fr)');
+      } 
+    }
+
+    // 图片加载效果
+    function handleImageLoad() {
+      $('.item-image img').each(function() {
+        if (this.complete) {
+          $(this).addClass('fade-in');
+        } else {
+          $(this).on('load', function() {
+            $(this).addClass('fade-in');
+          });
+        }
+      });
+    }
+
+    // 按钮悬停效果
+    function initButtonHover() {
+      $('.btn').hover(
+        function() {
+          $(this).stop().animate({ opacity: 0.8 }, 200);
+        },
+        function() {
+          $(this).stop().animate({ opacity: 1 }, 200);
+        }
+      );
+    }
+
+    // 事件监听
+    $tabButtons.on('click', function() {
+      showActiveTab($(this));
+    });
+
+    $(window).on('resize', function() {
+      handleResponsive();
+    });
+
+    // 初始化所有功能
+    init();
+    handleImageLoad();
+    initButtonHover();
+
+    // 性能优化：防抖函数
+    function debounce(func, wait) {
+      let timeout;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+
+    // 使用防抖处理窗口调整
+    $(window).on('resize', debounce(function() {
+      handleResponsive();
+    }, 250));
+
+    // 添加触摸设备支持
+    if ('ontouchstart' in window) {
+      $('.rewards-item').on('touchstart', function() {
+        $(this).css('transform', 'scale(0.98)');
+      }).on('touchend', function() {
+        $(this).css('transform', 'scale(1)');
+      });
+    }
+  });
+})(jQuery);
+  </script>
+{% schema %}
+{
+  "name": "Rewards List",
+  "settings": [
+      
+{
+      "type": "text",
+      "id": "head",
+      "label": "head",
+    },
+    {
+      "type": "text",
+      "id": "tab1_title",
+      "label": "Tab 1 Title",
+      "default": "Products"
+    },
+    {
+      "type": "text",
+      "id": "tab2_title",
+      "label": "Tab 2 Title",
+      "default": "Gift Card"
+    },
+    {
+      "type": "text",
+      "id": "tab3_title",
+      "label": "Tab 3 Title",
+      "default": "Coupon"
+    }
+    
+  ],
+  "blocks": [
+    {
+      "type": "tab1",
+      "name": "Products",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "desc"
+        },
+        {
+          "type": "text",
+          "id": "points",
+          "label": "Number"
+        }
+       
+      ]
+    },
+    {
+      "type": "tab2",
+      "name": "Gift Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gift Card Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Gift Card Title"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "desc"
+        },
+        {
+          "type": "text",
+          "id": "points",
+          "label": "Number"
+        }
+      ]
+    },
+    {
+      "type": "tab3",
+      "name": "Coupon",
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Coupon Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Coupon Title"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "desc"
+        },
+        {
+          "type": "text",
+          "id": "points",
+          "label": "Number"
+        }
+      ]
+    }
+    
+  ],
+  "presets": [
+    {
+      "name": "Rewards List"
+     
+    }
+  ]
+}
+{% endschema %}

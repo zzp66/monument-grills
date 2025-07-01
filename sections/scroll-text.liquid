@@ -1,0 +1,24 @@
+<style>
+
+
+  @media(max-width:991px){
+    
+  }
+</style>
+<section class="scroll__section">
+  <div class="container">
+    <div class="scroll_wrapper">
+        <div class="scroll__list">
+          {% for block in section.blocks %}
+            <div class="scroll__iem">
+              {{ block.settings.text }}
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  
+</script>

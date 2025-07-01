@@ -1,0 +1,1163 @@
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'featured-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'product.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'featured.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- else -%}
+  {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
+  {{ 'product.css' | asset_url | stylesheet_tag }}
+  {{ 'featured.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- if settings.enable_quick_add -%}
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-select.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- liquid
+  assign collection = section.settings.collection
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+  
+
+  assign img = section.settings.image
+  assign m_img = section.settings.mobile_image
+
+  assign carousel_desktop_small_promo = ' sm:auto-cols-3 md:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4 small-cards-desktop'
+  assign carousel_desktop_medium_promo = ' sm:auto-cols-2 lg:auto-cols-3'
+  assign carousel_desktop_large_promo = ' sm:auto-cols-2'
+  assign carousel_desktop_small = ' md:auto-cols-3 lg:auto-cols-4 xl:auto-cols-5 small-cards-desktop'
+  assign carousel_desktop_medium = ' sm:auto-cols-3 xl:auto-cols-4'
+  assign carousel_desktop_large = ' sm:auto-cols-2 lg:auto-cols-3'
+
+  assign grid_desktop_small_promo = ' sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 small-cards-desktop'
+  assign grid_desktop_medium_promo = ' md:grid-cols-2 lg:grid-cols-3'
+  assign grid_desktop_large_promo = ' sm:grid-cols-2'
+  assign grid_desktop_small = ' md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 small-cards-desktop'
+  assign grid_desktop_medium = ' sm:grid-cols-3 xl:grid-cols-4'
+  assign grid_desktop_large = ' sm:grid-cols-2 lg:grid-cols-3'
+
+  if img != blank
+    assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+  else
+    assign img_padding = '56.25%'
+  endif
+  
+  if m_img != blank
+    assign m_img_padding = 1 | divided_by: m_img.aspect_ratio | times: 100 | append: '%'
+  else
+    assign m_img_padding = img_padding
+  endif
+
+  
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+  if section.settings.height_mode == 'screen'
+    assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+  endif
+  
+  capture sizes
+    render 'sizes-attribute'
+  endcapture
+  
+
+  if section.settings.card_size_mobile == 'small'
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-2 small-cards-mobile'
+    assign grid_mobile_cols = 'grid-cols-2 small-cards-mobile'
+  else
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-1'
+    assign grid_mobile_cols = 'grid-cols-1'
+  endif
+
+  if section.settings.layout == 'carousel'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'carousel_on_mobile'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'grid'
+    assign carousel = false
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  endif
+
+  if settings.prod_card_image_ratio == 'shortest'
+    assign image_ratio = 0
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio > image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  elsif settings.prod_card_image_ratio == 'tallest'
+    assign image_ratio = 99
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio < image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  else
+    assign image_ratio = settings.prod_card_image_ratio
+  endif
+
+  assign color_scheme = section.settings.color_scheme
+  assign bg_color = false
+
+  if color_scheme == 'default'
+    assign bg_color = settings.bg_color
+  elsif color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+  endif
+
+  if bg_color == settings.bg_color or bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+
+  assign using_video_tag = false
+  assign autoplay = section.settings.video_autoplay
+  assign video_cover = section.settings.video_cover_poster_image
+
+  if section.settings.video_upload != blank
+    assign using_video_tag = true
+  endif
+        
+-%}
+
+{%- capture video_component -%}
+    <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %} block w-full h-full"
+                     {%- unless using_video_tag %}data-video-url="{{ section.settings.video_external | escape }}" {% endunless -%}
+                     data-video-id="{{ section.id }}"
+                     data-autoplay="{% if autoplay %}true{% else %}false{% endif %}"
+                     data-background="false"
+                     data-description="{{ section.settings.video_description | escape }}">
+      {%- if using_video_tag -%}
+        {{ section.settings.video_upload | video_tag: playsinline: true, autoplay: autoplay, muted: true, loop: true, controls: true, poster: video_cover | replace: '<img ', '<img loading="lazy" hidden ' }}
+      {%- else -%}
+        <div></div>
+      {%- endif -%}
+    </video-component>
+{%- endcapture -%}
+
+
+        
+{% style %}
+  {%- if m_img != blank -%}
+      @media (max-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: {{ m_img_padding }};
+        }
+      }
+    {%- endif -%}
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { padding-top: {{ m_img_padding }};}
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: 0;
+        }
+      }
+      
+    {%- endif -%}
+  @media (max-width:850px){
+    .featured-image{
+      display:none;
+    }
+    .cwf-media{
+      padding-top: 0 !important;
+    }
+    .cwf-media .mobile-featured-image{
+      position: relative;
+    }
+  }
+{% endstyle %}
+
+<div class="section">
+  {%- if section.settings.title != blank or section.settings.show_view_all -%}
+    <div class="container">
+      <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+        {%- if section.settings.title != blank -%}
+          <h2 class="h4 mb-0 flex-auto section__heading {{ section.settings.heading_align }}">
+            {{- section.settings.title | escape -}}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.show_view_all -%}
+          <a href="{{ collection.url }}" class="link">{{ 'sections.featured_collection.view_all' | t }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_promo_info -%}
+    <div class="featured-collection-container relative w-full mx-auto"{% if section.settings.image_ratio == 'fill' and section.settings.layout != 'carousel' and section.settings.image %} data-css-var-height=".card--product"{% endif %}>
+      <script src="{{ 'countdown-timer.js' | asset_url }}" defer="defer"></script>
+      {% style %}
+        #{{ section.id }} .countdown-timer { 
+          min-height: {{ section.settings.fixed_height_mobile }}px;
+        }
+      
+        .end-timer{
+          display: flex;
+          justify-content: center;
+          margin-bottom: 2em;
+        }
+        .hide-info{
+          display:none;
+        }
+        @media (max-width:850px){
+          .hide-info{
+            display:block;
+          }
+        }
+      {% endstyle %}
+      {% comment %}
+      {% if section.settings.end_date != blank %}
+        <div class="end-timer">
+          <div class="section__block--countdown text-overlay__block{% if section.settings.enlarge_end_text %} countdown-large-endtext{% endif %}">
+            {% render 'countdown-timer',
+              end_date: section.settings.end_date,
+              end_time: section.settings.end_time,
+              end_text: section.settings.end_text,
+              end_midnight: true,
+              hide_on_end: section.settings.hide_on_end
+            %}
+          </div>
+        </div>
+      {% endif %}
+      {% endcomment %}
+      
+      <div class="flex flex-col md:flex-row">
+        <div class="featured-collection-info md:mb-0 flex shrink-0 flex-col{% if section.settings.layout == 'carousel' %} featured-collection-info--carousel items-stretch{% endif %}"{% if settings.animations_enabled != "disabled" %}data-cc-animate{% endif %}>
+            {% if section.settings.image %}
+              {%- liquid
+              assign image_ratio_int = section.settings.image_ratio
+              if image_ratio_int == "natural" or image_ratio_int == "fill"
+                assign image_ratio_int = section.settings.image.aspect_ratio
+              endif
+
+              assign image_fill = false
+              if section.settings.image_ratio == "fill"
+                assign image_fill = true
+              endif
+            -%}
+
+            <div class="featured-collection-image{% if image_fill %} h-full{% endif %} {% if section.settings.use_video != blank %} no-show{% endif %}">
+              {% if section.settings.promo_title != blank %}
+                  <div class="info panel {% if section.settings.hide_info != blank %}hide-info{% endif %} {% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %}">
+                    <h2 class="mb-0 flex-auto section__heading {% if section.settings.promo_content_color %} text-color{% endif %} {% if section.settings.font_weight %} font-weight{% endif %}{% if section.settings.font_capitalize %} font-capitalize{% endif %}">
+                      {{- section.settings.promo_title | escape -}}
+                    </h2>
+                    <h6 class="{% if section.settings.promo_content_color %} text-color {% endif %}">{{ section.settings.promo_content }}</h6>
+                    {%- if section.settings.button_label != blank %}
+                      <a class="{{ section.settings.button_style }}" {% if section.settings.button_url == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.button_url }}"{% endif %} style="border-color:{{ section.settings.btn_border_color }};background:{{ section.settings.btn_bg_color }};color:{{ section.settings.btn_text_color }};">
+                        {{- section.settings.button_label | escape -}}
+                      </a>
+                    {%- endif -%}
+                  </div>
+              {% endif %}
+              {% style %}
+                  .font-weight{
+                    font-weight:bold;
+                  }
+                  .font-capitalize{
+                    text-transform:uppercase;
+                  }
+                  .text-color,
+                  .text-color p
+                  {
+                    color:{{ section.settings.promo_content_color }};
+                  }
+                @media (max-width:850px){
+                  .featured-image{
+                    
+                  }
+                }
+              {% endstyle %}
+              
+              <{% if section.settings.promo_url != blank %}a{% else %}div{% endif %} {% if section.settings.promo_url != blank %}href="{{ section.settings.promo_url }}" target="_blank"{% endif %} class="media cwf-media relative w-full{% if image_fill %} h-full{% if carousel %} md:pt-0{% endif %}{% endif %}" style="padding-top: {{ 1 | divided_by: image_ratio_int | times: 100 }}%;{% if section.settings.promo_url != blank %}display:block;cursor:pointer;{% endif %}">
+                  {%- liquid
+                     if section.settings.height_mode == 'screen'
+                        assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+                      endif
+                      capture sizes
+                        render 'sizes-attribute'
+                      endcapture
+        
+                      if m_img != blank
+                        assign desktop_image_class = 'img-fit featured-image sm:block'
+                      else
+                        assign desktop_image_class = 'img-fit featured-image'
+                      endif
+                  -%}
+                {%- if img != blank -%}
+                  {%- if m_img != blank -%}
+                    {%- render 'image',
+                      image: m_img,
+                      widths: '480, 980, 1200, 1400',
+                      src_width: 980,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      lazy_load: lazy_load_images,
+                      class: 'img-fit mobile-featured-image'
+                    -%}
+                  {%- endif -%}
+                  {%- render 'image',
+                    image: img,
+                    widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+                    src_width: 1400,
+                    src_placeholder: true,
+                    sizes: sizes,
+                    lazy_load: lazy_load_images,
+                    class: desktop_image_class
+                  -%}
+                {%- else -%}
+                  {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+                {%- endif -%}
+              </{% if section.settings.promo_url != blank %}a{% else %}div{% endif %}>
+            </div>
+              
+            {% if section.settings.use_video != blank %}
+              {{ 'video.css' | asset_url | stylesheet_tag }}
+              <script src="{{ 'video.js' | asset_url }}" defer="defer"></script>
+              <div class="featured-video">
+                <div class="media cwf-media relative w-full h-full{% if carousel %} md:pt-0{% endif %}">
+                  <div class="section" id="{{ section.id }}">
+                    <div class="video-block container block {% if section.settings.full_screen == blank %}block-center{% else %} full-block-center{% endif %} w-full absolute top-0 left-0 h-full" style="{% if section.settings.is_brand_day != blank %}position:absolute;{% else %}{% endif %}">
+                      
+                      {%- if section.settings.lazyload == false -%}
+                        <div class="video-section__bg-video pointer-events-none absolute top-0 left-0 w-full h-full">
+                          {{ video_component }}
+                        </div>
+                      {%- else -%}
+                        <deferred-media class="pc-video video-section__bg-video block pointer-events-none absolute top-0 left-0 w-full h-full no-js-hidden">
+                          <template>{{ video_component }}</template>
+                        </deferred-media>
+                        
+                        
+                        
+              
+                        <noscript>
+                          <div class="video-section__bg-video pointer-events-none absolute top-0 left-0 w-full h-full">
+                            {{ video_component }}
+                          </div>
+                        </noscript>
+                      {%- endif -%}
+                      {% comment %}
+                      <div class="media media--has-overlay absolute top-0 left-0 w-full h-full">
+                        {%- liquid
+                          assign sizes = false
+                          assign class = 'img-fit object-center video-played-hidden'
+                        -%}
+                        {%- if section.settings.video_cover_poster_image != blank or section.settings.video_upload != blank -%}
+                          {%- assign poster_image = section.settings.video_cover_poster_image | default: section.settings.video_upload.preview_image -%}
+                          {% render 'image',
+                            image: poster_image,
+                            widths: '750, 856, 1440, 1680, 1920, 2560',
+                            src_width: 1680,
+                            src_placeholder: true,
+                            sizes: sizes,
+                            lazy_load: lazy_load_images,
+                            class: class
+                          %}
+                        {%- else -%}
+                          {%- assign class = class | prepend: 'media__placeholder ' -%}
+                          {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+                        {%- endif -%}
+                      </div>
+                      {% endcomment %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+          {%- if section.settings.layout == 'grid' or section.settings.layout == 'carousel_on_mobile' -%}
+  
+          {%- endif -%}
+        </div>
+        <div class="featured-collection-text{% unless section.settings.image.aspect_ratio == "fill" %} flex flex-col grow{% endunless %}{% if bg_color %} p-6{% else %}{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}" style="background: {{ section.settings.product_bg }};">
+          {% if section.settings.product_img != blank %}
+            <div class="hot-icon">
+              {% render 'image',
+                  image: section.settings.product_hot_icon,
+                  widths: '64, 128, 320, 460, 600, 700, 800, 900, 1200',
+                  src_width: 128,
+                  src_placeholder: true,
+                  sizes: false,
+                  class: 'img-fit img-fit--contain' %}
+            </div>
+            <div class="sale-code">
+              {% render 'image',
+                  image: section.settings.product_code_icon,
+                  widths: '64, 128, 320, 460, 600, 700, 800, 900, 1200',
+                  src_width: 128,
+                  src_placeholder: true,
+                  sizes: false,
+                  class: 'img-fit img-fit--contain' %}
+            </div>
+            <div class="products-grid-container hot-product shrink-0">
+              <div class="pro-img">
+                {% render 'image',
+                  image: section.settings.product_img,
+                  widths: '320, 460, 600, 700, 800, 900, 1200',
+                  src_width: 460,
+                  src_placeholder: true,
+                  sizes: false,
+                  class: 'img-fit img-fit--cover' %}
+              </div>
+              {% style %}
+                .cc-featured .featured-collection-container .featured-collection-text .info-color{
+                  color:{{ section.settings.sale_title_color }};
+                  font-weight:blod;
+                }
+                @media (max-width:768px){
+                  .cc-featured .featured-collection-container .featured-collection-text{
+                    margin: 20px 20px 0 20px;
+                  }
+                }
+              {% endstyle%}
+              {% if section.settings.sale_title != blank %}
+                <P class="sales-info {% if section.settings.sale_title_color %} info-color {% endif %}">{{ section.settings.sale_title | escape }}</P>
+              {% endif %}
+              {% if section.settings.show_timer %}
+                {% style %}
+                  .product-timer .countdown__item{
+                     margin-bottom: 2em;
+                  }
+                  .product-timer .countdown__item .countdown__number{
+                    font-size:18px;
+                  }
+                  {% if section.settings.use_custom_colors %}
+                    --text-color: {{ section.settings.bg_color.rgb }};
+                    --bg-color: {{ section.settings.count_color.rgba }};
+                  {% endif %}
+                {% endstyle %}
+                <div class="product-timer">
+                  <div class="section__block--countdown{% if section.settings.enlarge_end_text %} countdown-large-endtext{% endif %}">
+                    {% render 'countdown-timer',
+                      end_date: section.settings.end_date,
+                      end_time: section.settings.end_time,
+                      end_text: section.settings.end_text,
+                      end_midnight: true,
+                      hide_on_end: section.settings.hide_on_end
+                    %}
+                </div>
+                </div>
+              {% endif %}
+              
+              <h5 class="title">{{ section.settings.product_title | escape }}</h5>
+              {% if section.settings.show_progress_bar != blank %}
+                {% render 'progress-bar',
+                    progress_bar_name_color: section.settings.progress_bar_name_color,
+                    progress_bar_width: section.settings.progress_bar_width,
+                    progress_bar_height: section.settings.progress_bar_height,
+                    progress_bar_bg: section.settings.progress_bar_bg,
+                    progress_bar_value_fill: section.settings.progress_bar_value_fill,
+                    progress_bar_value_percentage: section.settings.progress_bar_value_percentage,
+                    progress_bar_percentage_text_color: section.settings.progress_bar_percentage_text_color,
+                    progress_mode: section.settings.progress_mode,
+                    progress_bar_name: section.settings.progress_bar_name,
+                    remaining_stock: section.settings.remaining_stock
+                %}
+              {% endif %}
+              <a class="btn btn--primary w-full" href="{{ section.settings.product_url }}" data-add-to-cart-text="Add to cart" name="add" aria-haspopup="dialog">
+                <span class="quick-add-btn-text">{{ section.settings.product_buy_btn | escape }}
+                </span>
+              </a>
+            </div>
+          {% endif %}
+          
+        </div>
+      {%- endif -%}
+        
+      {%- if section.settings.show_promo_info -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+{% style %}
+  .featured-video .media .video-block video{
+    object-fit: cover;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Featured -- wenfei",
+  "tag": "section",
+  "class": "cc-featured",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Set Progress bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "label": "Show Progress ba",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "progress_mode",
+      "label": "Progress Style",
+      "options": [
+        {
+          "value": "1",
+          "label": "Style 1"
+        },
+        {
+          "value": "2",
+          "label": "Style 2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "text",
+      "id": "progress_bar_width",
+      "label": "Bar Width",
+      "default": "100"
+    },
+    {
+      "type": "text",
+      "id": "progress_bar_height",
+      "label": "Bar Height",
+      "default": "10"
+    },
+    {
+      "type":"text",
+      "id":"remaining_stock",
+      "label":"Stocks remaining",
+      "default":"90"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_bg",
+      "label": "Bar BG",
+      "default":"#e2e2e2"
+    },
+    {
+      "type": "text",
+      "id": "progress_bar_name",
+      "label": "Name",
+      "default":"Stock"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_name_color",
+      "label": "Name color"
+    },
+    {
+      "type": "text",
+      "id": "progress_bar_value_width",
+      "label": "Bar Value Width",
+      "info": "%",
+      "default":"0"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_value_fill",
+      "label": "Bar Value Width BG",
+      "default": "#c00000"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_value_percentage",
+      "label": "Bar Percentage Value",
+      "default":"#f2f2f2"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_percentage_text_color",
+      "label": "Bar Percentage Value color",
+      "default":"#111"
+    },
+    {
+      "type": "header",
+      "content": "Setting Time"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_timer",
+      "label": "Show Timer",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date",
+      "info": "Format: YYYY-MM-DD. If you don't enter a date, midnight tonight will be used."
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "End time (optional)",
+      "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_end",
+      "label": "Hide the timer when the date and time elapses",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "countdown_size",
+      "label": "Count size",
+      "options": [
+        {
+          "value": "18",
+          "label": "Extra extra small"
+        },
+        {
+          "value": "21",
+          "label": "Extra small"
+        },
+        {
+          "value": "24",
+          "label": "Small"
+        },
+        {
+          "value": "27",
+          "label": "Medium"
+        },
+        {
+          "value": "30",
+          "label": "Large"
+        },
+        {
+          "value": "33",
+          "label": "Extra large"
+        },
+        {
+          "value": "36",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "24"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "info": "Uses colors specified below.",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "count_color",
+      "label": "Count number",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Count background/colon",
+      "default": "#070707"
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured product"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-start"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"View all\" link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "product",
+      "id": "ff_product",
+      "label": "Product"
+    },
+     {
+      "type": "image_picker",
+      "id": "product_img",
+      "label": "Product Image"
+    },
+    {
+      "type": "color",
+      "id": "product_bg",
+      "label": "BG"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_hot_icon",
+      "label": "Hot icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_code_icon",
+      "label": "Sale Code"
+    },
+    {
+      "type": "text",
+      "id": "sale_title",
+      "label": "Sales info"
+    },
+    {
+      "type": "color",
+      "id": "sale_title_color",
+      "label": "Info color"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title"
+    },
+    {
+      "type":"url",
+      "id": "product_url",
+      "label": "Product Url"
+    },
+    {
+      "type": "text",
+      "id": "product_buy_btn",
+      "label": "Product Button label",
+      "default": "Go to buy"
+    },
+    
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_info",
+      "label": "hide info",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "carousel_on_mobile",
+          "label": "Carousel on mobile"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "card_size_mobile",
+      "label": "Product card size on mobile",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "select",
+      "id": "card_size",
+      "label": "Product card size on large screens",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Maximum products to show",
+      "min": 1,
+      "max": 24,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Promotion card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_info",
+      "label": "Show promotion",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "use_video",
+      "label": "Use Video",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "lazyload",
+      "label": "Lazy load the video",
+      "info": "This will load the video only when it's about to come into view. Turn this off if you'd rather the video had the best chance of auto-playing on older devices, or if this section is visible when the page loads.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "promo_url",
+      "label": "Image or Video add url"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_stacked",
+      "label": "Show text below image on mobile",
+      "info": "Does not apply to \"Full screen height\".",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "1.77",
+          "label": "Landscape"
+        },
+        {
+          "value": "1",
+          "label": "Square"
+        },
+        {
+          "value": "0.75",
+          "label": "Portrait"
+        }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "header",
+      "content": "Video Upload"
+    },
+    {
+      "type": "video",
+      "id": "video_upload",
+      "label": "Video upload"
+    },
+   
+    {
+      "type": "url",
+      "id": "video_external",
+      "label": "External video",
+      "info":"fei----youtube url"
+    },
+    {
+      "type": "text",
+      "id": "video_description",
+      "label": "Video description"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_cover_poster_image",
+      "label": "Cover image",
+      "info": "Required. Shows while the video is loading, or if it cannot autoplay."
+    },
+    {
+      "type": "select",
+      "id": "video_size",
+      "label": "Video size",
+      "info": "Applies to large screens only.",
+      "options": [
+        {
+          "value": "sm",
+          "label": "Small"
+        },
+        {
+          "value": "md",
+          "label": "Medium"
+        },
+        {
+          "value": "lg",
+          "label": "Large"
+        }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay",
+      "info": "Some devices will not autoplay videos under certain circumstances. In accordance with Google's guidelines, autoplaying videos will be muted by default. [Learn more](https://cleancanvas.co.uk/support/enterprise/using-videos)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Text Settings"
+    },
+    {
+      "type": "text",
+      "id": "promo_title",
+      "label": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "font_weight",
+      "label": "Enlarge Font Weight",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "font_capitalize",
+      "label": "Enlarge Font Capitalize",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "promo_content",
+      "label": "Text"
+    },
+    {
+      "type":"color",
+      "id":"promo_content_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Button",
+      "info": "The button will link to the URL specified above."
+    },
+    {
+      "type": "color",
+      "id": "btn_border_color",
+      "label": "Btn Border Color"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Btn BG Color"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Btn text Color"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Promotion card color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Promotion card button",
+      "options": [
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--primary"
+    },
+    {
+      "type": "select",
+      "id": "button_position",
+      "label": "Button Position",
+      "options": [
+        {
+          "value": "top center",
+          "label": "Top Center"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom Center"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured -- wenfei"
+    }
+  ],
+  "disabled_on": {
+    "templates": [
+      "password"
+    ],
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
+}
+{% endschema %}

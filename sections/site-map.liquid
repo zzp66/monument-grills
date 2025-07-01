@@ -1,0 +1,757 @@
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    # constants
+    assign breakpoint_sm = 600
+    assign breakpoint_md = 769
+    assign breakpoint_lg = 1024
+
+    if section.settings.layout == 'carousel'
+      assign carousel = true
+      if section.settings.column_size == 'small'
+        assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 md:auto-cols-3 lg:auto-cols-3 '
+      elsif section.settings.column_size == 'medium'
+        assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2 lg:auto-cols-3'
+      else
+        assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2'
+      endif
+
+    else
+      assign carousel = false
+    endif
+
+    
+  -%}
+  {% style %}
+    .sitemap-box ul li a{
+        margin-bottom:10px;
+        text-decoration: underline;
+      }
+      .sitemap-box ul li a:hover{
+        color:#c00000;
+      }
+  {% endstyle %}
+  {%- if carousel == false -%}
+    {% style %}
+      
+      
+      {% if section.settings.column_size == 'small' %}
+        @media (min-width: {{ breakpoint_sm }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(50% - var(--column-gap));
+          }
+        }
+        @media (min-width: {{ breakpoint_md }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc((100% / 3) - var(--column-gap));
+          }
+        }
+        @media (min-width: {{ breakpoint_lg }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(25% - var(--column-gap));
+          }
+        }
+      {% else %}
+        @media (min-width: {{ breakpoint_md }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(50% - var(--column-gap));
+          }
+        }
+        {% if section.settings.column_size == 'medium' %}
+          @media (min-width: {{ breakpoint_lg }}px) {
+            #{{ section.id }} .multi-column {
+              width: calc((100% / 3) - var(--column-gap));
+            }
+          }
+        {% endif %}
+      {% endif %}
+    {% endstyle %}
+  {%- endif -%}
+
+  <div class="section" id="{{ section.id }}">
+    {%- if section.settings.title != blank or section.settings.button_label != blank -%}
+      <div class="container">
+        <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+          {%- if section.settings.title != blank -%}
+            <{{ section.settings.title_size }} class="ection__heading mb-0 flex-auto {{ section.settings.heading_align }}">
+              {{- section.settings.title | escape -}}
+            </{{ section.settings.title_size }}>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if carousel -%}
+      <carousel-slider class="carousel block" inactive>
+        <div class="container relative">
+          <div class="slider" id="slider-{{ section.id }}">
+    {%- endif -%}
+
+    <div class="{% if section.settings.full_width != blank %}{% else %}container{% endif %}{% if section.settings.show_sitemap_html != blank %} sitemap-box{% endif %}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+      <ul class="{% if carousel %}slider__grid grid {{ grid_classes }}{% else %} flex flex-wrap{% endif %} gap-x-theme gap-y-theme" role="list">
+        {%- for block in section.blocks -%}
+          {% if block.settings.link_name_1 != blank or 
+                block.settings.link_name_2 != blank or 
+                block.settings.link_name_3 != blank or
+                block.settings.link_name_4 != blank or
+                block.settings.link_name_5 != blank or
+                block.settings.link_name_6 != blank or
+                block.settings.link_name_7 != blank or
+                block.settings.link_name_8 != blank or
+                block.settings.link_name_9 != blank or
+                block.settings.link_name_10 != blank or
+                block.settings.link_name_11 != blank or
+                block.settings.link_name_12 != blank or
+                block.settings.link_name_13 != blank or
+                block.settings.link_name_14 != blank or
+                block.settings.link_name_15 != blank or
+                block.settings.link_name_16 != blank or
+                block.settings.link_name_17 != blank or
+                block.settings.link_name_18 != blank or
+                block.settings.link_name_19 != blank or
+                block.settings.link_name_20 != blank or
+                block.settings.column_title != blank
+          %}
+          <li class="multi-column block-{{ block.id }}{% if carousel %} slider__item{% endif %}" {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %} {% if block.settings.enlarge_schema_typeof != blank %} typeof="schema:WebPage"{% endif %}>
+              <div class="card relative flex flex-col h-full">
+                <{{ block.settings.column_title_size }} class="section__block mb-4 section__block--subheading subheading md-down:px-gutter {% if block.settings.title_weight != blank %} font-weight{% endif %}{% if block.settings.title_uppercase != blank %} font-uppercase{% endif %}" {% if block.settings.enlarge_schema_typeof != blank %}typeof="schema:WebPage"{% endif %}>
+                  <span class="contained-heading inline-block">{{- block.settings.column_title | escape -}}</span>
+                </{{ block.settings.column_title_size }}>
+                {% if block.settings.link_name_1 != blank %}
+                  <a href="{{ block.settings.link_url_1 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_1 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_2 != blank %}
+                  <a href="{{ block.settings.link_url_2 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_2 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_3 != blank %}
+                  <a href="{{ block.settings.link_url_3 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_3 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_4 != blank %}
+                  <a href="{{ block.settings.link_url_4 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_4 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_5 != blank %}
+                  <a href="{{ block.settings.link_url_5 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_5 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_6 != blank %}
+                  <a href="{{ block.settings.link_url_6 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_6 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_7 != blank %}
+                  <a href="{{ block.settings.link_url_7 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_7 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_8 != blank %}
+                  <a href="{{ block.settings.link_url_8 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_8 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_9 != blank %}
+                  <a href="{{ block.settings.link_url_9 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_9 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_10 != blank %}
+                  <a href="{{ block.settings.link_url_10 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_10 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_11 != blank %}
+                  <a href="{{ block.settings.link_url_11 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_11 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_12 != blank %}
+                  <a href="{{ block.settings.link_url_12 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_12 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_13 != blank %}
+                  <a href="{{ block.settings.link_url_13 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_13 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_14 != blank %}
+                  <a href="{{ block.settings.link_url_14 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_14 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_15 != blank %}
+                  <a href="{{ block.settings.link_url_15 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_15 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_16 != blank %}
+                  <a href="{{ block.settings.link_url_16 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_16 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_17 != blank %}
+                  <a href="{{ block.settings.link_url_17 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_17 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_18 != blank %}
+                  <a href="{{ block.settings.link_url_18 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_18 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_19 != blank %}
+                  <a href="{{ block.settings.link_url_19 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_19 }}</a>
+                {% endif %}
+                {% if block.settings.link_name_20 != blank %}
+                  <a href="{{ block.settings.link_url_20 }}" {% if block.settings.enlarge_target != blank %}target="_blank"{% endif %} {% if block.settings.enlarge_schema_property != blank %} property="schema:sameAs"{% endif %}>{{ block.settings.link_name_20 }}</a>
+                {% endif %}
+              </div>
+          </li>
+          {% endif %}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    {%- if carousel -%}
+          </div>
+          {%- if settings.slider_show_arrows != 'never' -%}
+            <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
+              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
+                <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+                {% render 'icon-chevron-right' %}
+              </button>
+              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
+                <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+                {% render 'icon-chevron-left' %}
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      </carousel-slider>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Site map - fei",
+  "class": "cc-site-map",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sitemap_html",
+      "label": "Show sitemap html",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section background full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Button",
+      "default": 10
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Site map links"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h3",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Extra large"
+        },
+        {
+          "value": "h0",
+          "label": "Extra extra large"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-start"
+    },
+    
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "column_size",
+      "label": "Column size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "select",
+      "id": "column_align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enlarge_schema_property",
+          "label": "Enlarge schema property",
+          "default": false,
+          "info":"SEO"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_schema_typeof",
+          "label": "Enlarge schema typeof",
+          "default": false,
+          "info":"SEO"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_target",
+          "label": "Enlarge target",
+          "default": false,
+          "info":"SEO"
+        },
+        {
+          "type":"checkbox",
+          "id":"title_weight",
+          "label":"Font Weight",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"title_uppercase",
+          "label":"Font Uppercase",
+          "default":false
+        },
+        {
+          "type":"text",
+          "id": "column_title",
+          "label": "Column title"
+        },
+        {
+            "type": "select",
+            "id": "column_title_size",
+            "label": "Column title size",
+            "options": [
+              {
+                "value":"strong",
+                "label":"Strong tag"
+              },
+              {
+                "value":"span",
+                "label":"Span tag"
+              },
+              {
+                "value":"p",
+                "label":"P tag"
+              },
+              {
+                "value": "h6",
+                "label": "Extra extra small"
+              },
+              {
+                "value": "h5",
+                "label": "Extra small"
+              },
+              {
+                "value": "h4",
+                "label": "Small"
+              },
+              {
+                "value": "h3",
+                "label": "Medium"
+              }
+          ],
+          "default": "h5"
+        },
+        
+        {
+          "type":"header",
+          "content":"SEO links 1"
+        },
+        {
+          "type":"text",
+          "id":"link_name_1",
+          "label":"Link name 1"
+        },
+        {
+          "type":"url",
+          "id":"link_url_1",
+          "label":"Link url 1"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 2"
+        },
+        {
+          "type":"text",
+          "id":"link_name_2",
+          "label":"Link name 2"
+        },
+        {
+          "type":"url",
+          "id":"link_url_2",
+          "label":"Link url 2"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 3"
+        },
+        {
+          "type":"text",
+          "id":"link_name_3",
+          "label":"Link name 3"
+        },
+        {
+          "type":"url",
+          "id":"link_url_3",
+          "label":"Link url 3"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 4"
+        },
+        {
+          "type":"text",
+          "id":"link_name_4",
+          "label":"Link name 4"
+        },
+        {
+          "type":"url",
+          "id":"link_url_4",
+          "label":"Link url 4"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 5"
+        },
+        {
+          "type":"text",
+          "id":"link_name_5",
+          "label":"Link name 5"
+        },
+        {
+          "type":"url",
+          "id":"link_url_5",
+          "label":"Link url 5"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 6"
+        },
+        {
+          "type":"text",
+          "id":"link_name_6",
+          "label":"Link name 6"
+        },
+        {
+          "type":"url",
+          "id":"link_url_6",
+          "label":"Link url 6"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 7"
+        },
+        {
+          "type":"text",
+          "id":"link_name_7",
+          "label":"Link name 7"
+        },
+        {
+          "type":"url",
+          "id":"link_url_7",
+          "label":"Link url 7"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 8"
+        },
+        {
+          "type":"text",
+          "id":"link_name_8",
+          "label":"Link name 8"
+        },
+        {
+          "type":"url",
+          "id":"link_url_8",
+          "label":"Link url 8"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 9"
+        },
+        {
+          "type":"text",
+          "id":"link_name_9",
+          "label":"Link name 9"
+        },
+        {
+          "type":"url",
+          "id":"link_url_9",
+          "label":"Link url 9"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 10"
+        },
+        {
+          "type":"text",
+          "id":"link_name_10",
+          "label":"Link name 10"
+        },
+        {
+          "type":"url",
+          "id":"link_url_10",
+          "label":"Link url 10"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 11"
+        },
+        {
+          "type":"text",
+          "id":"link_name_11",
+          "label":"Link name 11"
+        },
+        {
+          "type":"url",
+          "id":"link_url_11",
+          "label":"Link url 11"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 12"
+        },
+        {
+          "type":"text",
+          "id":"link_name_12",
+          "label":"Link name 12"
+        },
+        {
+          "type":"url",
+          "id":"link_url_12",
+          "label":"Link url 12"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 13"
+        },
+        {
+          "type":"text",
+          "id":"link_name_13",
+          "label":"Link name 13"
+        },
+        {
+          "type":"url",
+          "id":"link_url_13",
+          "label":"Link url 13"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 14"
+        },
+        {
+          "type":"text",
+          "id":"link_name_14",
+          "label":"Link name 14"
+        },
+        {
+          "type":"url",
+          "id":"link_url_14",
+          "label":"Link url 14"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 15"
+        },
+        {
+          "type":"text",
+          "id":"link_name_15",
+          "label":"Link name 15"
+        },
+        {
+          "type":"url",
+          "id":"link_url_15",
+          "label":"Link url 15"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 16"
+        },
+        {
+          "type":"text",
+          "id":"link_name_16",
+          "label":"Link name 16"
+        },
+        {
+          "type":"url",
+          "id":"link_url_16",
+          "label":"Link url 16"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 17"
+        },
+        {
+          "type":"text",
+          "id":"link_name_17",
+          "label":"Link name 17"
+        },
+        {
+          "type":"url",
+          "id":"link_url_17",
+          "label":"Link url 17"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 18"
+        },
+        {
+          "type":"text",
+          "id":"link_name_18",
+          "label":"Link name 18"
+        },
+        {
+          "type":"url",
+          "id":"link_url_18",
+          "label":"Link url 18"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 19"
+        },
+        {
+          "type":"text",
+          "id":"link_name_19",
+          "label":"Link name 19"
+        },
+        {
+          "type":"url",
+          "id":"link_url_19",
+          "label":"Link url 19"
+        },
+        {
+          "type":"header",
+          "content":"SEO links 20"
+        },
+        {
+          "type":"text",
+          "id":"link_name_20",
+          "label":"Link name 20"
+        },
+        {
+          "type":"url",
+          "id":"link_url_20",
+          "label":"Link url 20"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Site map - fei",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
+}
+{% endschema %}

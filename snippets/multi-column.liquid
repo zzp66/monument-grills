@@ -1,0 +1,427 @@
+{%- liquid
+  assign blocks = section.blocks | where: 'type', 'column'
+-%}
+{% style %}
+  .banner-column-warp .item-banner-column .card .card__media img{
+    position: relative;
+  }
+{% endstyle %}
+{%- for block in section.blocks -%}
+  {%- liquid
+    if section.settings.column_image_ratio == "natural"
+      if block.settings.image != blank
+        assign image_ratio = block.settings.image.aspect_ratio
+      else
+        assign image_ratio = 1.77
+      endif
+    endif
+
+    assign block_count = section.blocks.size
+  -%}
+  
+  {% if forloop.length > 4 %}
+    {% style %}
+         #{{ section.id }} .multi-column-carousel .multi-column-carousel-box ul{
+            column-gap: 10px;
+          }
+         @media (max-width: 768px){
+            #{{ section.id }} .multi-column-carousel .multi-column-carousel-box ul{
+              width: 100%;
+              grid-auto-columns: 80%;
+              column-gap: 10px;
+            }
+         }
+      {% endstyle %}
+  {% else %}
+    {% style %}
+         #{{ section.id }} .multi-column-carousel .multi-column-carousel-box ul{
+            column-gap: 30px;
+          }
+          @media (max-width: 768px){
+              #{{ section.id }} .multi-column-carousel .multi-column-carousel-box ul{
+                width: 100%;
+                grid-auto-columns: 80%;
+                column-gap: 10px;
+              }
+           }
+      {% endstyle %}
+  {% endif %}
+  {% if forloop.length == 1 %}
+    {% style %}
+      .card-full{
+          flex-direction: column;
+          max-width: 100%;
+          height: auto;
+          overflow: hidden;
+          margin: 0 auto;
+      }
+      .card-full .card__media{
+          padding-top: 0 !important;
+          flex: auto;
+      }
+      .card-full .card__info{
+          flex: auto;
+          padding: calc(8 * var(--space-unit));
+      }
+     
+      @media (max-width:768px){
+        .card-full{
+          height: auto;
+        }
+        .card-full .card__media{
+          flex: 0 0 50%;
+          min-height: 90vw;
+        }
+      }
+    {% endstyle %}
+    {% if block.settings.image != blank or block.settings.video_shopify != blank %}
+        <li class="multi-column item-banner-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
+          <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
+            {%- if block.settings.enable_media -%}
+              {%- liquid
+                if section.settings.column_size == 'small'
+                  assign cols = 3
+                else
+                  assign cols = 2
+                endif
+                capture sizes
+                  render 'sizes-attribute', grid: true, min: 1, md: cols
+                endcapture
+              -%}
+
+              <div class="card__media media relative w-full{% if section.settings.column_image_ratio == "natural" %} {{ section.settings.column_media_align }}{% endif %}" style="{% unless section.settings.column_image_ratio == "natural" %}padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;{% endunless %}{% if section.settings.column_image_ratio == "natural" and block.settings.video_shopify %}padding-top: 56.25%;{% endif %}{% if block.settings.media_scale < 100 %} transform: scale({{ block.settings.media_scale | divided_by: 100.0 }});{% endif %}">
+                {%- if block.settings.image != blank or block.settings.video_shopify != blank -%}
+                  {%- if block.settings.video_shopify != blank -%}
+                    <deferred-media class="media absolute top-0 left-0 w-full h-full">
+                      <template>
+                        <video-component class="has-iframe absolute top-0 left-0 w-full h-full no-js-hidden"
+                         data-autoplay="true"
+                         data-background="true">
+                          {{ block.settings.video_shopify | video_tag: class: 'img-fit promo__mp4 pointer-events-none', playsinline: true, autoplay: true, muted: true, loop: true, controls: false, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                        </video-component>
+                      </template>
+                    </deferred-media>
+                  {%- endif -%}
+
+                  {%- if block.settings.image != blank %}
+                    {%- liquid
+                      assign image_class = "video-played-hidden"
+                      unless section.settings.column_image_ratio == "natural"
+                        assign image_class = image_class | append: " img-fit"
+                      endunless
+                      if section.settings.column_image_ratio == "natural" and block.settings.video_shopify != blank
+                        assign image_class = image_class | append: " img-fit"
+                      endif
+
+                    -%}
+                    
+                    {%- render 'image',
+                      image: block.settings.image,
+                      widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+                      src_width: 1400,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      lazy_load: lazy_load_images,
+                      class: img-fit hidden sm:block
+                    -%}
+                    {% comment %}
+                    {% render 'image',
+                      image: block.settings.image,
+                      widths: '460, 700, 860, 1296',
+                      src_width: 700,
+                      sizes: sizes,
+                      section_index: section.index,
+                      class: image_class,
+                      lazy_load: lazy_load_images
+                    %}
+                    {% endcomment %}
+                  {%- endif -%}
+                {%- else -%}
+                  {%- liquid
+                    assign placeholder_class = "media__placeholder"
+                    unless section.settings.column_image_ratio == "natural"
+                      assign placeholder_class = placeholder_class | append: " img-fit"
+                    endunless
+                  -%}
+                  {{- 'image' | placeholder_svg_tag: placeholder_class -}}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <div class="card__info flex flex-col flex-auto items-start pt-6{% if section.settings.column_align == 'center' %} text-center items-center{% endif %}">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="card__title ">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              
+
+              {%- if block.settings.text != blank -%}
+                <div class="card__rte flex-auto rte">
+                  {{ block.settings.text }}
+                </div>
+                {% style %}
+                  .card__info ul{
+                    margin-left:0;
+                  }
+                {% endstyle %}
+              {%- endif -%}
+
+              
+              {% if block.settings.button_link != blank %}
+                <div class="mt-8{% if section.settings.color_scheme == 'none' and carousel == false %} mb-8{% endif %}">
+                  <a class="card__button btn {{ block.settings.button_style }} btn--icon btn--lg has-ltr-icon" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} {% if block.settings.add_target != blank %} target="_blank"{% endif %} {% if block.settings.is_nofollow != blank %} rel="nofollow"{% endif %}>
+                    {%- if block.settings.button_label != blank -%}
+                      {{- block.settings.button_label | escape -}}
+                    {%- else -%}
+                      <span class="visually-hidden">{{ "general.labels.please_select" | t }}{% if block.settings.heading != blank %} {{ block.settings.heading }}{% endif %}</span>
+                      {%- render 'icon-arrow-right' -%}
+                    {%- endif -%}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </li>
+    {% endif %}
+    
+  {% else %}
+    {% if block.settings.image != blank or block.settings.video_shopify != blank %}
+       <li class="multi-column item-banner-column {% if section.settings.column_text_on_picture != blank %}text-on-picture{% endif %} grow w-full max-w-none{% if carousel %} slider__item{% endif %} " {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
+        {% if section.settings.column_text_on_picture != blank %}
+           {% style %}
+              .text-on-picture .card .card__media{
+                 position: relative;
+              }
+             .text-on-picture .card .card__info{
+                position: absolute;
+                width: 100%;
+                height: auto;
+                left: 50%;
+                top: 50%;
+                z-index: 2;
+                padding:0;
+                transform: translate(-50%, -50%);
+             }
+             .text-on-picture .card .card__info h3{
+               color:#fff;
+               margin: 0;
+               padding: 0 20px;
+             }
+           {% endstyle %}
+         {% endif %}
+         <div class="card{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full {% if section.settings.enable_text_the_top != blank %}text-top{% endif %} {% if section.settings.enable_text_on_image != blank %} text-on-image{% endif %}" style="{% if section.settings.full_screen %}max-width:100%;{% endif %}">
+          {%- if block.settings.enable_media -%}
+            {%- liquid
+              if section.settings.column_size == 'small'
+                assign cols = 3
+              else
+                assign cols = 2
+              endif
+              capture sizes
+                render 'sizes-attribute', grid: true, min: 1, md: cols
+              endcapture
+
+              
+            -%}
+
+            <div class="card__media media relative w-full{% if section.settings.column_image_ratio == "natural" %} {{ section.settings.column_media_align }}{% endif %}" style="{% unless section.settings.column_image_ratio == "natural" %}padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;{% endunless %}{% if section.settings.column_image_ratio == "natural" and block.settings.video_shopify %}padding-top: 56.25%;{% endif %}{% if block.settings.media_scale < 100 %} transform: scale({{ block.settings.media_scale | divided_by: 100.0 }});{% endif %}">
+              {%- if block.settings.image != blank or block.settings.video_shopify != blank -%}
+                {%- if block.settings.video_shopify != blank -%}
+                  <deferred-media class="media absolute top-0 left-0 w-full h-full">
+                    <template>
+                      <video-component class="has-iframe absolute top-0 left-0 w-full h-full no-js-hidden"
+                       data-autoplay="true"
+                       data-background="true">
+                        {{ block.settings.video_shopify | video_tag: class: 'img-fit promo__mp4 pointer-events-none', playsinline: true, autoplay: true, muted: true, loop: true, controls: false, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                      </video-component>
+                    </template>
+                  </deferred-media>
+                {%- endif -%}
+
+                {%- if block.settings.image != blank %}
+                  {%- liquid
+                    assign image_class = "video-played-hidden"
+                    unless section.settings.column_image_ratio == "natural"
+                      assign image_class = image_class | append: " img-fit"
+                    endunless
+                    if section.settings.column_image_ratio == "natural" and block.settings.video_shopify != blank
+                      assign image_class = image_class | append: " img-fit"
+                    endif
+
+                    if section.settings.img_alt != 'blank'
+                      assign img_alt = block.settings.img_alt
+                    endif
+                  -%}
+                  {% render 'image',
+                    image: block.settings.image,
+                    widths: '460, 700, 860, 1296',
+                    src_width: 700,
+                    sizes: sizes,
+                    section_index: section.index,
+                    class: image_class,
+                    lazy_load: lazy_load_images,
+                    alt_text:img_alt
+                  %}
+                {%- endif -%}
+              {%- else -%}
+                {%- liquid
+                  assign placeholder_class = "media__placeholder"
+                  unless section.settings.column_image_ratio == "natural"
+                    assign placeholder_class = placeholder_class | append: " img-fit"
+                  endunless
+                -%}
+                {{- 'image' | placeholder_svg_tag: placeholder_class -}}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+            <div class="card__info flex flex-col flex-auto items-start pt-6{% if section.settings.column_align == 'center' %} text-center items-center{% endif %}">
+            {% style %}
+
+              #{{ section.id }} .card .card__info .card__title{
+                margin-bottom:0;
+              }
+             #{{ section.id }} .card .card__info .card__title.title-weight{
+                font-weight:bold;
+              }
+              #{{ section.id }} .multiple-text .text-color{
+                display: flex;
+                align-items: flex-end;
+                height: 32px;
+              }
+             #{{ section.id }} .card .card__info .card__rte.text-color{
+               color: #fff;
+             }
+            {% endstyle %}
+            {%- if block.settings.heading != blank -%}
+              <{{ block.settings.heading_size }} class="card__title {% if block.settings.heading_font_weight != blank %}title-weight {% endif %}{% if section.settings.column_font_glow != blank %}column-font-glow{% endif %}" {% if block.settings.is_use_cur_heading_size != blank %} style="font-size: {{ block.settings.cur_heading_size }}px;margin-bottom:0;"{% endif %}>{{ block.settings.heading | escape }}</{{ block.settings.heading_size }}>
+            {%- endif -%}
+
+            {% if block.settings.is_use_multiple_text_links != blank and block.settings.multiple_text != blank %}
+              <div class="multiple-text">
+                  <{{ block.settings.text_size }} class="main-display-font {% if block.settings.is_use_multiple_text_weight != blank %}font-weight{% else %}multiple-text-tag{% endif %}" {% if block.settings.multiple_text_color != blank %}style="color:{{ block.settings.multiple_text_color }};"{% endif %}>{{ block.settings.multiple_text }}</{{ block.settings.text_size }}>
+                  <div class="card__rte flex-auto rte{% if block.settings.text_color != blank %} text-color{% endif %}">
+                    {{ block.settings.text }}
+                  </div>
+              </div>
+            {% elsif block.settings.text != blank %}
+              <div class="card__rte flex-auto rte{% if block.settings.text_color != blank %} text-color{% endif %}">
+                {{ block.settings.text }}
+              </div>
+            {% else %}
+              <div class="card__rte flex-auto rte{% if block.settings.text_color != blank %} text-color{% endif %}">
+                {{ block.settings.text }}
+              </div>
+            {% endif %}
+            {% comment %}
+            {%- if block.settings.text != blank -%}
+              <div class="card__rte flex-auto rte">
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+            {% endcomment %}
+
+            {% if block.settings.author != blank %}
+                <div class="card__rte flex-auto rte author-date">
+                  <div class="author">
+                    By {{ block.settings.author }}
+                  </div>
+                  <div class="push-date">
+                    {{ block.settings.column_date }}
+                  </div>
+                </div>
+              {% style %}
+                .author-date{
+                  display: flex;
+                  width: 100%;
+                  margin-top: 2em;
+                  font-size: 16px;
+                  font-weight: bold;
+                }
+                .author-date .author{
+                  margin-right:15px;
+                }
+              {% endstyle %}
+            {% endif %}
+
+            
+                
+               
+              {% if block.settings.button_link != blank %}
+                <div class="mt-8{% if section.settings.color_scheme == 'none' and carousel == false %} mb-8{% endif %}">
+                    <a class="card__button btn {{ block.settings.button_style }}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} {% if block.settings.add_target != blank %} target="_blank"{% endif %} {% if block.settings.is_nofollow != blank %} rel="nofollow"{% endif %}>
+                      {%- if block.settings.button_label != blank -%}
+                        {{- block.settings.button_label | escape -}}
+                      {%- else -%}
+                        <span class="visually-hidden">{{ "general.labels.please_select" | t }}{% if block.settings.heading != blank %} {{ block.settings.heading }}{% endif %}</span>
+                        {%- render 'icon-arrow-right' -%}
+                      {%- endif -%}
+                    </a>
+                  </div>
+              {% else %}
+              {% endif %}
+          </div>
+            {% if block.settings.show_icon != blank %}
+              {%- liquid
+               assign img = block.settings.icon
+
+               if img != blank
+                 assign desktop_image_class = 'img-fit sm:block'
+               else
+                 assign desktop_image_class = 'img-fit column-icon'
+               endif
+              -%}
+              <div class="icon">
+                {%- render 'image',
+                    image: img,
+                    widths: '120, 240, 480, 960, 1920, 2560, 3200',
+                    src_width: 240,
+                    src_placeholder: true,
+                    sizes: sizes,
+                    lazy_load: lazy_load_images,
+                    class: desktop_image_class
+                  -%}
+              </div>
+              {% style %}
+                {% if block.settings.show_icon != blank %}
+                  .cc-multi-column .slider .slider__grid{
+                    padding:40px;
+                  }
+                {% endif %}
+                
+                .slider__grid{
+                  padding-left: 30px;
+                  padding-right: 30px;
+                }
+                .card {
+                  position: relative;
+                }
+                .card .icon{
+                  display:block;
+                  width: auto;
+                  height: auto;
+                  position: absolute;
+                  top: {{ block.settings.top_left }}%;
+                  left: 0;
+                  transform: translate(-20px, -50%);
+                }
+                .card .icon img{
+                  max-width:20%;
+                  position: relative;
+                }
+                @media (max-width: 768.98px) {
+                  .card .icon{
+                    max-width: 70%;
+                    top: {{ block.settings.top_left }}%;
+                    left: 7px;
+                  }
+                  .cc-multi-column .slider .slider__grid{
+                    column-gap: 20px !important;
+                  }
+                }
+            {% endstyle %}
+          {% endif %}
+        </div>
+      </li>
+    {% endif %}
+  {% endif %}
+{%- endfor -%}

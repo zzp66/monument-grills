@@ -1,0 +1,540 @@
+{%- if section.blocks.size > 0 -%}
+  {%- if section.index > 2 -%}
+    <link rel="stylesheet" href="{{ 'text-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'blog.css' | asset_url }}" media="print" onload="this.media='all'">
+  {%- else -%}
+    {{ 'text-overlay.css' | asset_url | stylesheet_tag }}
+    {{ 'blog.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  # constants
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+
+  assign img = section.settings.ad_blog_cover
+  assign _sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+
+  assign overlay_position = section.settings.overlay_position | split: ' '
+  assign color_scheme = section.settings.color_scheme
+  assign bg_color = false
+
+  if color_scheme == 'default'
+    assign bg_color = settings.bg_color
+  elsif color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+  endif
+
+  if bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+
+  if color_scheme == "white"
+    assign brightness = section.settings.transparent_content_color | color_brightness
+    assign alpha = section.settings.transparent_content_color | color_extract: 'alpha'
+    if brightness < 190 and alpha > 0
+      assign transparent_text_contrast = "255 255 255"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_lighten: 10
+    else
+      assign transparent_text_contrast = "0 0 0"
+      assign transparent_hover_color = section.settings.transparent_content_color | color_darken: 10
+    endif
+  endif
+-%}
+
+{%- style -%}
+  .blod{
+    font-weight: bold;
+  }
+  #{{ section.id }} .article-item a{
+    margin-bottom: 10px;
+    
+  }
+  #{{ section.id }} .article-item a{
+    font-size:{{ section.settings.article_title_size }}px;
+    color:#555;
+  }
+
+  @media (max-width:850px){
+    #{{ section.id }}.use-image-banner{
+      padding:0;
+    }
+    
+  }
+  {%- if color_scheme == "white" -%}
+    #{{ section.id }} {
+      --color-scheme-white-text: {{ section.settings.transparent_content_color.red }} {{ section.settings.transparent_content_color.green }} {{ section.settings.transparent_content_color.blue }};
+      --color-scheme-white-hover: {{ transparent_hover_color.red }} {{ transparent_hover_color.green }} {{ transparent_hover_color.blue }};
+      --color-scheme-white-text-contrast: {{ transparent_text_contrast }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+        #{{ section.id }} .mobile-stacked--spaced .text-overlay { color: inherit; }
+        #{{ section.id }} .mobile-top-center .container{
+          position:absolute;
+          top:2em;
+        }
+        
+        #{{ section.id }} .mobile-top-center .container .text-overlay{
+          margin:1em auto;
+        }
+      }
+    {%- endif -%}
+
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .image-banner {
+        min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+      }
+    }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+    }
+   
+
+  {%- elsif section.settings.height_mode == 'auto' -%}
+    {%- liquid
+      if img != blank
+        assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign img_padding = '56.25%'
+      endif
+      if m_img != blank
+        assign m_img_padding = 1 | divided_by: m_img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign m_img_padding = img_padding
+      endif
+    -%}
+    #{{ section.id }} .image-banner::after {
+      content: '';
+      padding-top: {{ img_padding }};
+    }
+
+    {%- if m_img != blank -%}
+      @media (max-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: {{ m_img_padding }};
+        }
+      }
+    {%- endif -%}
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { padding-top: {{ m_img_padding }};}
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: 0;
+        }
+      }
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if section.settings.tint_opacity > 0 -%}
+    #{{ section.id }} .media::after {
+      background-color: rgba({{ section.settings.tint_color.red }}, {{ section.settings.tint_color.green }}, {{ section.settings.tint_color.blue }}, {{ section.settings.tint_opacity | divided_by: 100.0 }});
+    }
+  {%- endif -%}
+
+  {%- if bg_color -%}
+    #{{ section.id }} .text-overlay { background: {{ bg_color }}; }
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' and color_scheme == 'default' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- else -%}
+    {%- if section.settings.mobile_stacked and section.settings.height_mode != 'screen' -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .text-overlay { padding-bottom: 0; }
+      }
+    {%- endif -%}
+  {%- endif -%}
+  
+  @media (max-width: {{ breakpoint_sm_down }}px) {
+    #{{ section.id }} .mobile-top-center .container{
+      position:absolute;
+      top:1em;
+    }
+    #{{ section.id }} .mobile-middle-center .container{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    #{{ section.id }} .mobile-bottom-center .container{
+      position:absolute;
+      bottom:1em;
+    }
+    
+    #{{ section.id }} .mobile-top-center .container .text-overlay,
+    #{{ section.id }} .mobile-middle-center .container .text-overlay,
+    #{{ section.id }} .mobile-bottom-center .container .text-overlay{
+      margin:10px auto;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width and bg_color == false or bg_color == settings.bg_color %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} use-text-blog-banner-2{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
+  <div class="text-blog-banner blog-banner relative flex {{ overlay_position | last }} {{ section.settings.height_mode }}-height {% unless color_scheme == 'default' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}">
+    <div id="{{ section.settings.link_id }}" class="{% if section.settings.full_screen != blank %}{% else %}container{% endif %}{% unless bg_color %}{% if section.settings.full_width or section.settings.mobile_stacked %} md-down:p-xl{% endif %}{% endunless %} grid {{ overlay_position | first }}{% if section.settings.mob_center_text %} md-down:center{% endif %}">
+        <div class="item new-blog {{ section.settings.overlay_text_align }} {% if section.settings.mob_center_text %} md-down:text-center{% endif %}" {% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %}>
+          <div class="article-list">
+            <h3>{{ section.settings.blog_title }}</h3>
+            <p class="mt-0 mb-4">{{ section.settings.blog_description }}</p>
+            <div class="article-item">
+              {% liquid
+                  assign select_blogs = section.settings.select_blogs
+                  assign article_number = section.settings.article_number
+              %}
+              {% for article in select_blogs.articles limit: article_number %}
+                  <a class="a-link link" href="{{ article.url }}" target="_blank"><span class="icon triangle"></span>{{ article.title }}</a>
+              {% endfor %}
+            </div>
+            <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
+              {%- if section.settings.btn_label != blank %}
+                <a class="{{ section.settings.btn_style }} mt-6" {% if section.settings.btn_url == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.btn_url }}"{% endif %}>
+                  {{- section.settings.btn_label | escape -}}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+        <div class="item featured-blog {{ section.settings.overlay_text_align }} {% if section.settings.mob_center_text %} md-down:text-center{% endif %}"{% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %}>
+          {% if section.settings.ad_blog_cover != blank %}
+            <{% if section.settings.ad_blog_url != blank %}a{% else %}div{% endif %} class="featured-blog-link" {% if block.settings.ad_blog_url != blank %}href="{{ block.settings.ad_blog_url }}" target="_blank" {% endif %}>
+              {%- render 'image',
+                  image: img,
+                  widths: '600, 900, 1200, 1400',
+                  src_width: 600,
+                  src_placeholder: true,
+                  sizes: _sizes,
+                  lazy_load: lazy_load_images,
+                  class: 'img-fit blog-cover'
+                -%}
+            </{% if block.settings.ad_blog_url != blank %}a{% else %}div{% endif %}>
+          {% endif %}
+        </div>
+      </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "blog banner 2 -- wenfei",
+  "class": "cc-blog-banner-2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "跳转ID设置"
+    },
+    {
+      "type": "text",
+      "id": "link_id",
+      "label": "Link ID"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Button",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Layout Blogs"
+    },
+    {
+      "type":"blog",
+      "id":"select_blogs",
+      "label":"Select Articles",
+      "info": "只能选择一个blog的系列，从这个系列中显示前4篇文章."
+    },
+    {
+      "type": "range",
+      "id": "article_number",
+      "min": 4,
+      "max": 10,
+      "step": 1,
+      "label": "Article Number",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "article_title_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "label": "Article Title Size",
+      "default": 16
+    },
+    {
+      "type":"text",
+      "id":"blog_title",
+      "label":"Blog title"
+    },
+    {
+      "type": "richtext",
+      "id": "blog_description",
+      "label": "Blog description",
+      "default": "<p>- Almost gone!</p>"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button Url"
+    },
+    {
+      "type": "select",
+      "id": "btn_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--primary"
+    },
+    {
+      "type": "header",
+      "content": "Blog Img"
+    },
+    {
+      "type": "image_picker",
+      "id":"ad_blog_cover",
+      "label":"Blog Cover",
+      "info":"image size => 1:1.5"
+    },
+    {
+      "type":"url",
+      "id":"ad_blog_url",
+      "label":"Blog Cover Url"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Image height",
+      "info": "Restricted to 1080px maximum.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original image height"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height (set below)"
+        },
+        {
+          "value": "screen",
+          "label": "Full screen height"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "fixed_height_desktop",
+      "min": 400,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum fixed height on large screens",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "fixed_height_mobile",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum fixed height on mobile",
+      "default": 350
+    },
+    {
+      "type": "header",
+      "content": "Text overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-center"
+    },
+    
+    {
+      "type": "checkbox",
+      "id": "mob_center_text",
+      "label": "Center text on mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_stacked",
+      "label": "Show text below image on mobile",
+      "info": "Does not apply to \"Full screen height\".",
+      "default": false
+    },
+    
+    {
+      "type": "select",
+      "id": "mobile_overlay_position",
+      "label": "Mobile Text position",
+      "options": [
+        {
+          "value": "mobile-top-center",
+          "label": "Mobile Top center"
+        },
+        {
+          "value": "mobile-middle-center",
+          "label": "Mobile Middle center"
+        },
+        {
+          "value": "mobile-bottom-center",
+          "label": "Mobile Bottom center"
+        }
+      ],
+      "default": "mobile-top-center"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "white",
+          "label": "Transparent background"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section background full width",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "transparent_content_color",
+      "label": "Text and button color",
+      "info": "Only applies when the \"Transparent background\" color scheme is chosen and the text shows over an image.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tint_color",
+      "label": "Image tint color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "tint_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Image tint opacity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

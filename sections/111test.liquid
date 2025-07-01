@@ -1,0 +1,349 @@
+{% if customer %}
+<div class="user-profile-form page-width">
+  <form id="customerProfileForm" class="user-profile-form__wrapper">
+    <h2 class="user-profile-form__title">更新个人信息</h2>
+    
+    <!-- 消息显示区域 -->
+    <div id="profile-message" class="user-profile-form__message" role="alert" aria-live="polite"></div>
+    
+    <div class="user-profile-form__fields">
+      <div class="field">
+        <label for="first_name">名字</label>
+        <input type="text" 
+               id="first_name" 
+               name="first_name"
+               value="{{ customer.metafields.custom.first_name }}" 
+               required />
+      </div>
+      
+      <div class="field">
+        <label for="last_name">姓氏</label>
+        <input type="text" 
+               id="last_name" 
+               name="last_name"
+               value="{{ customer.metafields.custom.last_name }}" 
+               required />
+      </div>
+
+      <div class="field">
+        <label for="date_of_birth">出生日期</label>
+        <input type="date" 
+               id="date_of_birth" 
+               name="date_of_birth"
+               value="{{ customer.metafields.custom.date_of_birth }}" 
+               required />
+      </div>
+      
+      <div class="field">
+        <label for="phone">电话号码</label>
+        <input type="tel" 
+               id="phone" 
+               name="phone"
+               value="{{ customer.metafields.custom.phone_number_1 }}" 
+               required />
+      </div>
+      
+      <div class="field">
+        <label for="country">国家/地区</label>
+        <input type="text" 
+               id="country" 
+               name="country"
+               value="{{ customer.metafields.custom.country_region }}" 
+               required />
+      </div>
+
+      <div class="field">
+        <label for="customer_password">请输入密码以确认更改</label>
+        <input type="password" 
+               id="customer_password" 
+               name="customer_password"
+               required
+               placeholder="输入您的密码" />
+      </div>
+      
+      <div class="user-profile-form__submit">
+        <button type="submit" class="button button--primary">
+          保存更改
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<style>
+.user-profile-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.user-profile-form__wrapper {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-profile-form__title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.user-profile-form__message {
+  position: relative;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  display: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-profile-form__message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+
+.user-profile-form__message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+.user-profile-form__message.success::before {
+  content: '✓';
+  margin-right: 8px;
+}
+
+.user-profile-form__message.error::before {
+  content: '✕';
+  margin-right: 8px;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.user-profile-form__message {
+  animation: slideDown 0.3s ease-out;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #666;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.field input::placeholder {
+  color: #999;
+}
+
+.button--primary {
+  background-color: #000;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.button--primary:hover {
+  background-color: #333;
+}
+
+.button--primary:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .user-profile-form {
+    padding: 10px;
+  }
+  
+  .user-profile-form__wrapper {
+    padding: 15px;
+  }
+  
+  .field {
+    margin-bottom: 15px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const STOREFRONT_PUBLIC_TOKEN = '111fa9ef80662ca3d4651a825932caf6';
+  
+  async function handleSaveProfile(e) {
+    e.preventDefault();
+    const messageDiv = document.getElementById('profile-message');
+    const submitButton = document.querySelector('.button--primary');
+    
+    try {
+      submitButton.disabled = true;
+      submitButton.textContent = '保存中...';
+      messageDiv.style.display = 'none';
+
+      // 1. 获取访问令牌
+      const loginMutation = `
+        mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+          customerAccessTokenCreate(input: $input) {
+            customerAccessToken {
+              accessToken
+              expiresAt
+            }
+            customerUserErrors {
+              code
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const loginResponse = await fetch('/api/2024-01/graphql.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_PUBLIC_TOKEN
+        },
+        body: JSON.stringify({
+          query: loginMutation,
+          variables: {
+            input: {
+              email: '{{ customer.email }}',
+              password: document.getElementById('customer_password').value
+            }
+          }
+        })
+      });
+
+      const loginData = await loginResponse.json();
+      console.log('Login response:', loginData);
+
+      if (loginData.data?.customerAccessTokenCreate?.customerUserErrors?.length > 0) {
+        throw new Error('登录失败：' + loginData.data.customerAccessTokenCreate.customerUserErrors[0].message);
+      }
+
+      const accessToken = loginData.data?.customerAccessTokenCreate?.customerAccessToken?.accessToken;
+      if (!accessToken) {
+        throw new Error('无法获取访问令牌');
+      }
+
+      // 2. 更新客户信息
+      const updateMutation = `
+        mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
+          customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
+            customer {
+              id
+              firstName
+              lastName
+            }
+            customerUserErrors {
+              code
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const updateResponse = await fetch('/api/2024-01/graphql.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_PUBLIC_TOKEN
+        },
+        body: JSON.stringify({
+          query: updateMutation,
+          variables: {
+            customerAccessToken: accessToken,
+            customer: {
+              firstName: document.getElementById('first_name').value,
+              lastName: document.getElementById('last_name').value
+            }
+          }
+        })
+      });
+
+      const updateData = await updateResponse.json();
+      console.log('Update response:', updateData);
+
+      if (updateData.data?.customerUpdate?.customerUserErrors?.length > 0) {
+        throw new Error('更新失败：' + updateData.data.customerUpdate.customerUserErrors[0].message);
+      }
+
+      messageDiv.textContent = '信息更新成功！';
+      messageDiv.classList.add('success');
+      messageDiv.classList.remove('error');
+      messageDiv.style.display = 'block';
+      
+      // 滚动到消息位置
+      messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // 3秒后自动刷新页面
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+
+    } catch (error) {
+      console.error('Error details:', error);
+      messageDiv.textContent = error.message;
+      messageDiv.classList.add('error');
+      messageDiv.classList.remove('success');
+      messageDiv.style.display = 'block';
+      
+      // 滚动到错误消息位置
+      messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = '保存更改';
+    }
+  }
+
+  const form = document.getElementById('customerProfileForm');
+  if (form) {
+    form.addEventListener('submit', handleSaveProfile);
+  }
+});
+</script>
+{% endif %}

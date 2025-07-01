@@ -1,0 +1,57 @@
+
+
+{% if popups.size > 0 %}
+   {%- for block in popups -%}
+     {% case block.type %}
+        {% when 'column' %}
+         <modal-dialog class="popup-section modal modal-content fixed top-0 left-0 w-full h-full flex items-center justify-center" id="modal-{{ block.id }}" {{ block.shopify_attributes }}>
+            <div class="modal__window relative bg-theme-bg text-theme-text text-start overflow-hidden has-motion" role="dialog" aria-label="{{ block.settings.pop_title }}" aria-modal="true" tabindex="-1">
+                <button id="close_btn" type="button" class="modal__close-btn absolute js-close-modal">
+                  {% render 'icon-close' %}
+                  <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+                </button>
+              <div class="modal__header flex-auto h-full rte">
+                {%- if block.settings.pop_title != blank -%}
+                  <{{ block.settings.pop_title_size }} class="{% if block.settings.is_font_weight != blank %}font-weight{% endif %}">{{ block.settings.pop_title }}</{{ block.settings.pop_title_size }}>
+                {%- endif -%}
+              </div>
+              <div class="modal__content flex-auto h-full rte">
+                <div class=" {% if block.settings.custom_liquid != blank %}normal-box{% else %}normal-des{% endif %}">
+                    {% liquid
+                      assign pop_custom_liquid = block.settings.custom_liquid
+                      assign pop_custom_text = block.settings.custom_text
+                      assign iframe_url = block.settings.iframe_url
+                    %}
+                    {% if pop_custom_liquid != blank %}
+                      <div class="support-info__block custom-liquid">
+                        {{ pop_custom_liquid }}
+                      </div>
+                    {% elsif pop_custom_text != blank %}
+                      <div class="support-info__block custom-text">
+                        {{ pop_custom_text }}
+                      </div>
+                    {% elsif iframe_url != blank %}
+                      <div class="support-info__block iframe-url">
+                        {{ iframe_url }}
+                      </div>
+                    {% else %}
+                      <div class="support-info__block cus-tom-liquid">
+                        {{ pop_custom_liquid }}
+                      </div>
+                    {% endif %}
+                </div>
+              </div>
+              {% if block.settings.is_use_footer_button != blank %}
+                  <div class="modal__footer flex-auto h-full rte">
+                      {% if block.settings.footer_button_label != blank %}
+                          <button id="countdown_btn" type="button" class="absolute js-close-modal {{ block.settings.footer_button_style }}" disabled>
+                            <span id="countdown"></span>
+                          </button>
+                      {% endif %}
+                  </div>
+              {% endif %}
+            </div>
+          </modal-dialog>
+     {% endcase %}
+    {% endfor %}
+{% endif %}

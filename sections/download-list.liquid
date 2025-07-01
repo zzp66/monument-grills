@@ -1,0 +1,820 @@
+<style>
+  .download-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Tab 按钮样式 */
+.tab-buttons {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: space-around;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.tab-btn {
+    cursor: pointer;
+      text-transform: uppercase;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 20px 0;
+    border-bottom: 3px solid transparent;
+  color:#000
+}
+section.download_section {
+    margin-bottom: 80px;
+}
+.tab-btn:hover {
+  
+}
+
+.tab-btn.active {
+      border-bottom: 3px solid #cb0f0f;
+    font-weight: bold;
+}
+
+/* 内容区域样式 */
+.tab-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
+}
+
+/* 网格布局 */
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+/* 项目卡片样式 */
+.download-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background-color: white;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.download-item:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* 图片样式 */
+.item-image {
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.item-image img {
+    width: 65%;
+    /* height: 200px; */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.item-image img:hover {
+  transform: scale(1.05);
+}
+
+/* 标题样式 */
+.item-title {
+    font-size: 40px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0;
+    padding: 30px 0;
+}
+
+/* 按钮容器 */
+.item-buttons {
+    display: flex;
+    margin-top: auto;
+    align-items: center;
+    background: #f7f7f7;
+  border-top: 1px solid #e5e7eb;
+      border-radius: 0 0 10px 10px;
+    overflow: hidden;
+}
+
+/* 按钮样式 */
+.btn {
+  display: block;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-manual {
+border-right: 1px solid #e5e7eb;
+      border-radius: 0 0 0 10px;
+}
+
+.btn-manual:hover {
+  background-color: ;
+}
+
+.btn-video {
+     border-radius: 0 0 10px 0;
+}
+
+.item-buttons a {
+    background: #f7f7f7;
+    color: #000;
+    width: 50%;
+    font-size: 12px;
+    display: flex;
+    height: 60px;
+    line-height: 60px;
+    padding: 0;
+    text-align: center;
+    border-radius: 0;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+  .btn-manual:before {
+    content: '';
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/pdf_red.png?v=1744597907);
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+    display: block;
+}
+  .btn-manual:hover {
+  background-color: #cb0f0f;
+  color:#fff
+}
+   .btn-manual:hover:before {
+    content: '';
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/pdf_white.png?v=1744597908);
+     width: 35px;
+    height: 35px;
+    background-size: cover;
+    display: block;
+}
+.btn-video:hover {
+  background-color: #cb0f0f;
+  color:#fff
+}
+
+/* 动画类 */
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.download__content {
+    text-align: center;
+      margin-bottom: 20px;
+}
+  .download__content h3 {
+    font-size: 15px;
+    font-weight: bold;
+}
+  .download__content p {
+    font-size: 12px;
+}
+@media (max-width: 1024px) {
+  .download-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+a.btn.btn-video:before {
+    content: '';
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/video1.png?v=1747213320);
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+}
+  a.btn.btn-video {
+    width: 60%;
+}
+  a.btn.btn-manual {
+    width: 40%;
+}
+  a.btn.btn-video:hover:before{
+     content: '';
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/video2.png?v=1747213320);
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+  }
+@media (max-width: 768px) {
+  .download-grid {
+    grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+  }
+  
+  .tab-buttons {
+        gap: 20px;
+        justify-content: flex-start;
+            flex-wrap: nowrap;
+            overflow: scroll;
+    margin-bottom: 30px;
+  }
+  
+  .tab-btn {
+        width: 120px;
+        text-align: center;
+        flex: none;
+    font-size: 13px;
+            padding-top: 0;
+  }
+
+  .download-list-container {
+    padding: 0;
+}
+  .download__top{
+        display: flex;
+    align-items: center;
+  }
+  .item-image{
+        width: 40%;
+    margin: 0;
+  }
+  .download__content{
+        margin: 0;
+    width: 60%;
+  }
+  .download__content p {
+    font-size: 12px;
+    margin: 0;
+}
+  .item-buttons a {
+  
+    height: 40px;
+    line-height: 40px;
+}
+  .download-item {
+    transform: translateY(0px) !important;
+}
+}
+
+
+</style>
+<section class="download_section">
+<div class="container">
+<div class="download-list-container">
+  <div class="tab-buttons">
+    <button class="tab-btn active" data-tab="tab1">{{ section.settings.tab1_title }}</button>
+    <button class="tab-btn" data-tab="tab2">{{ section.settings.tab2_title }}</button>
+    <button class="tab-btn" data-tab="tab3">{{ section.settings.tab3_title }}</button>
+    <button class="tab-btn" data-tab="tab4">{{ section.settings.tab4_title }}</button>
+    <button class="tab-btn" data-tab="tab5">{{ section.settings.tab5_title }}</button>
+  </div>
+
+  <div class="tab-content active" id="tab1">
+    <div class="download-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab1' %}
+          <div class="download-item">
+            <div class="download__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+            <div class="download__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.sku }}</p>
+            </div>
+          </div>
+            <div class="item-buttons">
+              <a href="{{ block.settings.manual_link }}" class="btn btn-manual" target="_blank">{{ block.settings.manual_text }}</a>
+              <a href="{{ block.settings.video_link }}" class="btn btn-video" target="_blank">{{ block.settings.video_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab2">
+    <div class="download-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab2' %}
+          <div class="download-item">
+             <div class="download__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+             <div class="download__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.sku }}</p>
+            </div>
+             </div>
+            <div class="item-buttons">
+              <a href="{{ block.settings.manual_link }}" class="btn btn-manual" target="_blank">{{ block.settings.manual_text }}</a>
+              <a href="{{ block.settings.video_link }}" class="btn btn-video" target="_blank">{{ block.settings.video_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab3">
+    <div class="download-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab3' %}
+          <div class="download-item">
+             <div class="download__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+             <div class="download__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.sku }}</p>
+            </div>
+             </div>
+            <div class="item-buttons">
+              <a href="{{ block.settings.manual_link }}" class="btn btn-manual" target="_blank">{{ block.settings.manual_text }}</a>
+              <a href="{{ block.settings.video_link }}" class="btn btn-video" target="_blank">{{ block.settings.video_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+   <div class="tab-content" id="tab4">
+    <div class="download-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab4' %}
+          <div class="download-item">
+             <div class="download__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+             <div class="download__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.sku }}</p>
+            </div>
+             </div>
+            <div class="item-buttons">
+              <a href="{{ block.settings.manual_link }}" class="btn btn-manual" target="_blank">{{ block.settings.manual_text }}</a>
+              <a href="{{ block.settings.video_link }}" class="btn btn-video" target="_blank">{{ block.settings.video_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+   <div class="tab-content" id="tab5">
+    <div class="download-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tab5' %}
+          <div class="download-item">
+             <div class="download__top">
+            <div class="item-image">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+            </div>
+             <div class="download__content">
+              <h3>{{ block.settings.name }}</h3>
+              <p>{{ block.settings.sku }}</p>
+            </div>
+             </div>
+            <div class="item-buttons">
+              <a href="{{ block.settings.manual_link }}" class="btn btn-manual" target="_blank">{{ block.settings.manual_text }}</a>
+              <a href="{{ block.settings.video_link }}" class="btn btn-video" target="_blank">{{ block.settings.video_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+</div>
+</div>
+  </section>
+  <script>
+    (function($) {
+  'use strict';
+
+  $(document).ready(function() {
+    // 初始化变量
+    const $tabButtons = $('.tab-btn');
+    const $tabContents = $('.tab-content');
+    const $downloadItems = $('.download-item');
+    
+    // 初始化函数
+    function init() {
+      showActiveTab($tabButtons.first());
+      initializeItems();
+      handleResponsive();
+    }
+
+    // 显示活动标签页
+    function showActiveTab($button) {
+      const tabId = $button.data('tab');
+      
+      // 更新按钮状态
+      $tabButtons.removeClass('active');
+      $button.addClass('active');
+      
+      // 更新内容状态
+      $tabContents.removeClass('active').hide();
+      const $activeContent = $(`#${tabId}`);
+      $activeContent.addClass('active').fadeIn(300);
+      
+      // 重置并显示项目
+      resetItems($activeContent);
+      showItems($activeContent);
+    }
+
+    // 初始化所有项目
+    function initializeItems() {
+      $downloadItems.css({
+        opacity: 0,
+        transform: 'translateY(20px)'
+      });
+    }
+
+    // 重置项目状态
+    function resetItems($container) {
+      $container.find('.download-item').css({
+        opacity: 0,
+        transform: 'translateY(20px)'
+      });
+    }
+
+    // 显示项目动画
+    function showItems($container) {
+      $container.find('.download-item').each(function(index) {
+        $(this).delay(index * 100).animate({
+          opacity: 1,
+          transform: 'translateY(0)'
+        }, 300);
+      });
+    }
+
+    // 处理响应式布局
+    function handleResponsive() {
+      const windowWidth = $(window).width();
+      const $downloadGrid = $('.download-grid');
+      
+      if (windowWidth <= 480) {
+        $downloadGrid.css('grid-template-columns', '1fr');
+      } else if (windowWidth <= 768) {
+        $downloadGrid.css('grid-template-columns', 'repeat(2, 1fr)');
+      } else if (windowWidth <= 1024) {
+        $downloadGrid.css('grid-template-columns', 'repeat(3, 1fr)');
+      } else {
+        $downloadGrid.css('grid-template-columns', 'repeat(4, 1fr)');
+      } 
+    }
+
+    // 图片加载效果
+    function handleImageLoad() {
+      $('.item-image img').each(function() {
+        if (this.complete) {
+          $(this).addClass('fade-in');
+        } else {
+          $(this).on('load', function() {
+            $(this).addClass('fade-in');
+          });
+        }
+      });
+    }
+
+    // 按钮悬停效果
+    function initButtonHover() {
+      $('.btn').hover(
+        function() {
+          $(this).stop().animate({ opacity: 0.8 }, 200);
+        },
+        function() {
+          $(this).stop().animate({ opacity: 1 }, 200);
+        }
+      );
+    }
+
+    // 事件监听
+    $tabButtons.on('click', function() {
+      showActiveTab($(this));
+    });
+
+    $(window).on('resize', function() {
+      handleResponsive();
+    });
+
+    // 初始化所有功能
+    init();
+    handleImageLoad();
+    initButtonHover();
+
+    // 性能优化：防抖函数
+    function debounce(func, wait) {
+      let timeout;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+
+    // 使用防抖处理窗口调整
+    $(window).on('resize', debounce(function() {
+      handleResponsive();
+    }, 250));
+
+    // 添加触摸设备支持
+    if ('ontouchstart' in window) {
+      $('.download-item').on('touchstart', function() {
+        $(this).css('transform', 'scale(0.98)');
+      }).on('touchend', function() {
+        $(this).css('transform', 'scale(1)');
+      });
+    }
+  });
+})(jQuery);
+  </script>
+{% schema %}
+{
+  "name": "Download List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tab1_title",
+      "label": "Tab 1 Title",
+      "default": "Products"
+    },
+    {
+      "type": "text",
+      "id": "tab2_title",
+      "label": "Tab 2 Title",
+      "default": "Accessories"
+    },
+    {
+      "type": "text",
+      "id": "tab3_title",
+      "label": "Tab 3 Title",
+      "default": "Documents"
+    },
+     {
+      "type": "text",
+      "id": "tab4_title",
+      "label": "Tab 4 Title",
+      "default": "Documents"
+    },
+    {
+      "type": "text",
+      "id": "tab5_title",
+      "label": "Tab 5 Title",
+      "default": "Documents"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab1",
+      "name": "Tab 1 Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "sku",
+          "label": "Product sku"
+        },
+        {
+          "type": "url",
+          "id": "manual_link",
+          "label": "Manual Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_text",
+          "label": "Manual Button Text",
+          "default": "Manual"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "video_text",
+          "label": "Video Button Text",
+          "default": "Assembly Video"
+        }
+      ]
+    },
+    {
+      "type": "tab2",
+      "name": "Tab 2 Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Accessory Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "sku",
+          "label": "Product sku"
+        },
+        {
+          "type": "url",
+          "id": "manual_link",
+          "label": "Manual Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_text",
+          "label": "Manual Button Text",
+          "default": "Manual"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "video_text",
+          "label": "Video Button Text",
+          "default": "Assembly Video"
+        }
+      ]
+    },
+    {
+      "type": "tab3",
+      "name": "Tab 3 Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Accessory Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "sku",
+          "label": "Product sku"
+        },
+        {
+          "type": "url",
+          "id": "manual_link",
+          "label": "Manual Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_text",
+          "label": "Manual Button Text",
+          "default": "Manual"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "video_text",
+          "label": "Video Button Text",
+          "default": "Assembly Video"
+        }
+      ]
+    },
+     {
+      "type": "tab4",
+      "name": "Tab 4 Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Accessory Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "sku",
+          "label": "Product sku"
+        },
+        {
+          "type": "url",
+          "id": "manual_link",
+          "label": "Manual Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_text",
+          "label": "Manual Button Text",
+          "default": "Manual"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "video_text",
+          "label": "Video Button Text",
+          "default": "Assembly Video"
+        }
+      ]
+    },
+     {
+      "type": "tab5",
+      "name": "Tab 5 Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Accessory Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "sku",
+          "label": "Product sku"
+        },
+        {
+          "type": "url",
+          "id": "manual_link",
+          "label": "Manual Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_text",
+          "label": "Manual Button Text",
+          "default": "Manual"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "video_text",
+          "label": "Video Button Text",
+          "default": "Assembly Video"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Download List"
+     
+    }
+  ]
+}
+{% endschema %}

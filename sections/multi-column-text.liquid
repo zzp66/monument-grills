@@ -1,0 +1,843 @@
+{%- comment -%}theme-check-disable LiquidTag{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    # constants
+    assign breakpoint_sm = 600
+    assign breakpoint_md = 769
+    assign breakpoint_lg = 1024
+
+    if section.settings.layout == 'carousel'
+      assign carousel = true
+      if section.settings.column_size == 'small'
+        assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 md:auto-cols-3 lg:auto-cols-4 '
+      elsif section.settings.column_size == 'medium'
+        assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2 lg:auto-cols-3'
+      else
+        assign grid_classes = 'grid-flow-col auto-cols-1 md:auto-cols-2'
+      endif
+    else
+      assign carousel = false
+    endif
+
+    assign color_scheme = section.settings.color_scheme
+  -%}
+  {%- if carousel == false -%}
+    {% style %}
+      {% if section.settings.column_size == 'small' %}
+        @media (min-width: {{ breakpoint_sm }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(50% - var(--column-gap));
+          }
+        }
+        @media (min-width: {{ breakpoint_md }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc((100% / 3) - var(--column-gap));
+          }
+        }
+        @media (min-width: {{ breakpoint_lg }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(25% - var(--column-gap));
+          }
+        }
+      {% else %}
+        @media (min-width: {{ breakpoint_md }}px) {
+          #{{ section.id }} .multi-column {
+            width: calc(50% - var(--column-gap));
+          }
+        }
+        {% if section.settings.column_size == 'medium' %}
+          @media (min-width: {{ breakpoint_lg }}px) {
+            #{{ section.id }} .multi-column {
+              width: calc((100% / 3) - var(--column-gap));
+            }
+          }
+        {% endif %}
+      {% endif %}
+    {% endstyle %}
+
+  {% else %}
+    {% style %}
+      .carousel .slider .slider__grid .multi-column .card__info{
+          padding: calc(8* var(--space-unit));
+      }
+      .carousel .slider .slider__grid .multi-column .card-full{
+          border-radius: 15px;
+      }
+      .carousel .slider .slider__grid .multi-column .card__info img{
+          position: relative;
+          max-width: 100%;
+          padding: 20px;
+          object-fit: contain;
+      }
+      .carousel .slider .slider__grid .multi-column .card__info p{
+          font-weight: bold;
+      }
+    {% endstyle %}
+  {%- endif -%}
+
+  <div class="section" id="{{ section.id }}">
+    {%- if section.settings.title != blank or section.settings.button_label != blank -%}
+      <div class="{% if section.settings.full_screen %}{% else %} container{% endif %}">
+        <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+          {%- if section.settings.title != blank -%}
+            <h2 class="h4 section__heading mb-0 flex-auto {{ section.settings.heading_align }}">
+              {{- section.settings.title | escape -}}
+            </h2>
+          {%- endif -%}
+          
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link }}" class="{{ section.settings.button_style }}">{{ section.settings.button_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if carousel -%}
+    <carousel-slider class="carousel block" inactive>
+      <div class="container relative">
+        <div class="slider" id="slider-{{ section.id }}">
+    {%- endif -%}
+
+      <div class="{% if section.settings.full_screen %}{% else %} container{% endif %}">
+        <ul class="{% if carousel %}slider__grid grid {{ grid_classes }}{% else %} flex flex-wrap cwf-grid{% endif %} gap-x-theme{% if color_scheme == 'none' and carousel == false %} gap-y-12 md:gap-y-6{% else %} {% endif %}" role="list">
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'button' %}
+                
+
+              {% when 'column' %}
+                <li class="multi-column multi-column-text grow w-full max-w-none{% if carousel %} slider__item{% endif %} " {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
+                {% if block.settings.show_track_order != blank %}
+                  <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
+                     <div class="card__info flex flex-col flex-auto items-start pt-6{% if section.settings.column_align == 'center' %} text-center items-center{% endif %}">
+                      {%- if block.settings.heading != blank -%}
+                        <h3 class="h5 card__title">{{ block.settings.heading | escape }}</h3>
+                      {%- endif -%}
+                      
+                      {%- if block.settings.text != blank -%}
+                        <div class="card__rte flex-auto rte">
+                          {{ block.settings.text }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="search-order">
+                        {% comment %}
+                        {% render 'fedex-number', block: section.blocks, section: section.settings %}
+                        {% endcomment %}
+
+                        {% render 'aftership' %}
+                      </div>
+                    </div>
+                  </div>
+                  {% style %}
+                    .multi-column .card__info{
+                      padding: calc(8* var(--space-unit));
+                    }
+                    .search-order{
+                      width: 100%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-start;
+                    }
+                    .search-order .fedex-btn{
+                      width: 100px;
+                      margin-left: 15px;
+                    }
+                    .search-order input{
+                      padding: 8px 16px;
+                      border: 1px solid #aaa;
+                    }
+                  {% endstyle %}
+                  <script>
+                    setTimeout(() => {
+                      while (!jQuery) {}
+              
+                      jQuery( document ).ready(function() {
+                        jQuery('.fedex-btn').on('click',function(e){
+                          e.preventDefault();
+                          var fedEx_number = jQuery(this).siblings('#fedex_number').val();
+                          var url = '/apps/aftership/' + fedEx_number;
+                          window.open(url, '_blank');
+                          jQuery(this).siblings('#fedex_number').val('');
+                        })
+                      })
+                    },100);
+                  </script>
+                {% elsif block.settings.show_link != blank %}
+                    <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
+                     <div class="card__info_text flex flex-col flex-auto items-start {% if section.settings.column_align == 'center' %} text-center items-center{% endif %}">
+                      {%- if block.settings.heading != blank -%}
+                        <h3 class="h5 card__title">{{ block.settings.heading | escape }}</h3>
+                      {%- endif -%}
+    
+                      {%- if block.settings.text != blank -%}
+                        <div class="card__rte flex-auto rte">
+                          {{ block.settings.text }}
+                        </div>
+                      {%- endif -%}
+
+                      {% if block.settings.button_link %}
+                        <button class="fedex-btn card__button{% if block.settings.button_label == blank %}{% if section.settings.button_style == 'link' %} btn--primary{% else %} {{ section.settings.button_style }}{% endif %} btn btn--icon btn--lg has-ltr-icon{% else %} {{ section.settings.button_style }}{% endif %}">
+                          {%- if block.settings.button_label != blank -%}
+                            {{- block.settings.button_label | escape -}}
+                          {%- else -%}
+                            <span class="visually-hidden">{{ "general.labels.please_select" | t }}{% if block.settings.heading != blank %} {{ block.settings.heading }}{% endif %}</span>
+                            {%- render 'icon-arrow-right' -%}
+                          {%- endif -%}
+                        </button>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
+                     <div class="card__info flex flex-col flex-auto items-start {% if section.settings.column_align == 'center' %} text-center items-center{% endif %}">
+                        {% liquid
+                          assign heading_image = block.settings.heading_image
+                          assign class = 'img-fit object-center media-logo'
+                        %}
+                        {%- capture sizes -%}
+                          {%- render 'sizes-attribute', min: '100vw', sm: 'page', md: false, lg: false, xl: 'page', max: 'page' -%}
+                       {%- endcapture -%}
+                       {% if block.settings.use_heading_img != blank %}
+                          {% render 'image',
+                            image: heading_image,
+                            widths: '120, 240, 480, 960, 1440',
+                            src_width: 240,
+                            src_placeholder: true,
+                            sizes: sizes,
+                            section_index: section.index,
+                            class: class
+                          %}
+                       {% else %}
+                          {%- if block.settings.heading != blank -%}
+                            <h3 class="card__title">{{ block.settings.heading | escape }}</h3>
+                          {%- endif -%}
+                       {% endif %}
+    
+                      {%- if block.settings.text != blank -%}
+                        <div class="card__rte flex-auto rte">
+                          {{ block.settings.text }}
+                        </div>
+                      {%- endif -%}
+    
+                      {% if block.settings.button_link %}
+                        <div class="mt-8{% if section.settings.color_scheme == 'none' and carousel == false %} mb-8{% endif %}">
+                          <a class="card__button{% if block.settings.button_label == blank %}{% if section.settings.button_style == 'link' %} btn--primary{% else %} {{ section.settings.button_style }}{% endif %} btn btn--icon btn--lg has-ltr-icon{% else %} {{ section.settings.button_style }}{% endif %}" {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                            {%- if block.settings.button_label != blank -%}
+                              {{- block.settings.button_label | escape -}}
+                            {%- else -%}
+                              <span class="visually-hidden">{{ "general.labels.please_select" | t }}{% if block.settings.heading != blank %} {{ block.settings.heading }}{% endif %}</span>
+                              {%- render 'icon-arrow-right' -%}
+                            {%- endif -%}
+                          </a>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% style %}
+                    .media-logo{
+                      position: relative;
+                    }
+                    .cwf-grid .multi-column{
+                      padding: calc(8 * var(--space-unit));
+                      border-radius: 15px;
+                    }
+                    .cwf-grid .card-full .card__info .card__rte{
+                      min-height:60px;
+                    }
+                    .cwf-grid{
+                      display: grid;
+                      gap: 30px;
+                      grid-template-columns: repeat({{ section.settings.column_num }}, 1fr);
+                    }
+                    .cwf-grid li{
+                        width: 100% !important;
+                        height: 100%;
+                        background: #f4f4f4;
+                        padding: calc(8 * var(--space-unit));
+                    }
+                    .cwf-grid .card-full .card__info .media-logo {
+                        object-position: center;
+                        object-fit: contain;
+                        height: 5.5vw;
+                        margin-bottom: 2em;
+                    }
+                    .cwf-grid .card-full .card__media{
+                        padding-top: 0 !important;
+                        flex: auto;
+                    }
+                    .cwf-grid .card-full .card__info{
+                        flex: auto;
+                        padding-top:0;
+                    }
+                    .cwf-grid .card-full .card__info_tex p a{
+                      color:#c00000;
+                    }
+                    
+                    @media (max-width:768px){
+                      .cwf-grid{
+                        grid-template-columns: repeat(1, 1fr);
+                        gap: 20px;
+                      }
+                      .cwf-grid li{
+                        padding:1em;
+                      }
+                      .cwf-grid .card-full .card__info .card__rte,
+                      .cwf-grid .card-full{
+                        height:auto;
+                      }
+                      
+                      .card-full .card__media{
+                        flex: 0 0 50%;
+                        min-height: 90vw;
+                      }
+                    }
+                  {% endstyle %}
+                {% endif %}
+              </li>
+            {% endcase %}
+          {%- endfor -%}
+        </ul>
+        {% if section.settings.button_name != blank %}
+          <div class="section__block section-btn mt-6 mb-4">
+            <a class="{{ section.settings.button_style }} {% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %}" {% if section.settings.button_a == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.button_a }}"{% endif %}>
+                {{- section.settings.button_name | escape -}}
+            </a>
+          </div>
+          {% style %}
+            .section-btn{
+              display: flex;
+              justify-content: center;
+            }
+          {% endstyle %}
+        {% endif %}
+        
+      </div>
+
+    {%- if carousel -%}
+          </div>
+          {%- if settings.slider_show_arrows != 'never' -%}
+            <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
+              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
+                <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+                {% render 'icon-chevron-right' %}
+              </button>
+              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
+                <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+                {% render 'icon-chevron-left' %}
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+    </carousel-slider>
+    {%- endif -%}
+    {% if section.settings.no_link_btn != blank %}
+      <div class="section__block section-btn container flex justify-center mt-6 mb-4">
+        <button id="{{ section.settings.button_id }}" class="{{ section.settings.button_style }}">{{ section.settings.no_link_btn }}</button>
+      </div>
+    {% endif %}
+  </div>
+{%- endif -%}
+
+{% if section.settings.show_pop != blank %}
+  {{ 'icons-with-text.css' | asset_url | stylesheet_tag }}
+  {{ 'popup.css' | asset_url | stylesheet_tag }}
+  {{ 'modal.css' | asset_url | stylesheet_tag }}    
+  <script src="{{ 'pop-up.js' | asset_url }}" defer="defer"></script>
+  {% style %}
+    .popup-section h5{
+       border-bottom: 1px solid #eee;
+       font-weight: bold;
+       color: #111;
+    }
+    .popup-section .select-img{
+      padding-top: 2em;
+    }
+    .popup-section .select-img ul{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px 20px;
+      
+    }
+    .popup-section .select-img ul li img{
+      position: relative;
+      max-width: 100%;
+    }
+    @media (max-width:850px){
+      .popup-section .modal__window{
+        background:#fff;
+      }
+      .popup-section .select-img ul{
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  {% endstyle %}
+
+  <div class="recognition-popup popup-section modal invisible fixed top-0 left-0 w-full h-full flex justify-center" data-mode data-show-on-mobile="true">
+    <div class="modal__window flex relative bg-theme-bg text-theme-text text-start has-motion flex flex-col" role="dialog" aria-modal="true" tabindex="-1">
+      <button type="button" class="modal__close-btn absolute text-current js-close-modal">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+      <div class="flex-auto modal__content modal__content--p-large relative text-center">
+        <h5 class="pop-name relative text-center pb-6">RECOGNIZED AS 'GRILL OF THE YEAR' BY MAJOR MEDIA OUTLETS</h5>
+        <div class="select-img">
+          {%- capture sizes -%}
+            {%- render 'sizes-attribute', min: 'page', sm: 'page', md: '800px', lg: '1200px', xl: false, max: false -%}
+          {%- endcapture -%}
+          <ul class="picture-box">
+            {% for b in section.blocks %}
+              {% case b.type %}
+                {% when 'popup' %}
+                <li class="item">
+                  {% liquid
+                   assign class = 'img-fit picture'
+                   assign picture = b.settings.pic_id
+                  %}
+                  {% if picture != blank %}
+                      {% render 'image',
+                        image: picture,
+                        widths: '120, 240, 480, 960, 1440',
+                        src_width: 240,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        section_index: section.index,
+                        class: class
+                      %}
+                  {% endif %}
+                </li>
+              {% endcase %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+setTimeout(() => {
+  while (!$) {}
+  var scrollPosition = '';
+  $( document ).ready(function() {
+    $('.recognition-popup').removeAttr('open');
+    $('#bestRecognition').on('click',function(e){
+      $('.recognition-popup').attr('open',true);
+      e.stopPropagation();
+      scrollPosition = $(window).scrollTop();
+      var index = $(this).index();
+      
+    });
+
+    $('.recognition-popup .js-close-modal').on('click',function(){
+      $(window).scrollTop(scrollPosition);
+      $('.recognition-popup').removeAttr('open');
+    });
+  });
+}, 100);
+  
+</script>
+
+
+{% schema %}
+{
+  "name": "Multi-column-text -- fei",
+  "class": "cc-multi-column-text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Button Layout"
+    },
+    {
+      "type": "text",
+      "id": "button_name",
+      "label": "Button label",
+      "info":"<a></a>"
+    },
+    {
+      "type": "url",
+      "id": "button_a",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "no_link_btn",
+      "label": "No Link Btn",
+      "info":"<button></button>"
+    },
+    {
+      "type": "text",
+      "id": "button_id",
+      "label": "Button ID"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "btn btn--primary",
+          "label": "Primary button"
+        },
+        {
+          "value": "btn btn--secondary",
+          "label": "Secondary button"
+        }
+      ],
+      "default": "btn btn--primary"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pop",
+      "label": "Show POP-UP",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_animation",
+      "label": "Load the section without animation",
+      "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Full screen",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "column_num",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Column Number",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Multi-column"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "text-start",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-end",
+          "label": "Right"
+        }
+      ],
+      "default": "text-start"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "View more label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "View more link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "column_size",
+      "label": "Column size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "column_align",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "media_align",
+      "label": "Media alignment",
+      "info": "Applies to small images with a \"Natural\" aspect ratio.",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        }
+      ],
+      "default": "text-center"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "shortest",
+          "label": "Height of shortest image"
+        },
+        {
+          "value": "tallest",
+          "label": "Height of tallest image"
+        },
+        {
+          "value": "1.77",
+          "label": "Landscape"
+        },
+        {
+          "value": "1",
+          "label": "Square"
+        },
+        {
+          "value": "0.75",
+          "label": "Portrait"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        {
+          "value": "none",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "Scheme 1"
+        },
+        {
+          "value": "2",
+          "label": "Scheme 2"
+        },
+        {
+          "value": "3",
+          "label": "Scheme 3"
+        }
+      ],
+      "default": "1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "popup",
+      "name":"popup",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "pic_id",
+          "label": "picture"
+        }
+      ]
+    },
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "id": "enable_media",
+          "type": "checkbox",
+          "label": "Enable media",
+          "default": true
+        },
+        {
+          "id":"round",
+          "type":"checkbox",
+          "label":"Image Round",
+          "default":false
+        },
+        {
+          "id":"show_track_order",
+          "type":"checkbox",
+          "label": "Show Track Order",
+          "default":false
+        },
+        {
+          "id":"show_link",
+          "type":"checkbox",
+          "label": "Show Link",
+          "default":false
+        },
+        {
+          "type": "header",
+          "content": "设置媒体素材"
+        },
+        {
+          "type": "video",
+          "id": "video_shopify",
+          "label": "Video upload",
+          "info": "Hosted by Shopify. Video will autoplay and be muted. [Read more](https://cleancanvas.co.uk/support/enterprise/using-videos)"
+        },
+        {
+          "type": "range",
+          "id": "media_scale",
+          "min": 65,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Media scale",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "设置信息"
+        },
+        {
+          "id":"use_heading_img",
+          "type": "checkbox",
+          "label": "用图换字",
+          "default":false
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Column"
+        },
+        {
+          "type": "image_picker",
+          "id": "heading_image",
+          "label": "Heading Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair text with an image to focus on a product, collection or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Leave blank for an arrow button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi-column-text -- fei",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
+}
+{% endschema %}
+{% style %}
+e  @media (max-width:850px){
+    .cc-multi-column .container{
+      padding:0;
+    }
+  }
+  @media (max-width: 599.98px){
+    .cc-multi-column .slider .slider__grid{
+      column-gap: 8px;
+    }
+    .cc-multi-column .slider{
+      padding-bottom: 0;
+    }
+  }
+{% endstyle %}

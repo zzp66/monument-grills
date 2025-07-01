@@ -1,0 +1,142 @@
+
+{% style %}
+  .new-video_section .video-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  
+.new-video_section .video-player {
+    width: 100%;
+    height: 700px;
+    display: block;
+    object-fit: cover;
+}
+
+  .new-video_section  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+    font-size: 64px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+ .new-video_section  .video-container:hover .video-overlay {
+    opacity: 1;
+  }
+
+  .new-video_section  .play-button {
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+ .new-video_section  .play-button:hover {
+    transform: scale(1.1);
+  }
+
+ .new-video_section  .play-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 0 15px 25px;
+    border-color: transparent transparent transparent #c00000;
+    margin-left: 5px;
+  }
+  .new-video_section .video-overlay {
+    background: rgb(0 0 0 / 30%);
+}
+  @media(max-width:768px){
+    .new-video_section .video-player {
+          height: 350px;
+      }
+    .new-video_section .video-overlay{
+          font-size: 32px;
+    }
+  }
+{% endstyle %}
+<section class="new-video_section">
+<div class="video-container">
+  <video 
+    class="video-player" 
+    autoplay 
+    muted 
+    loop 
+    playsinline
+    poster="{{ video_poster | default: '' }}"
+  >
+    <source src="{{ section.settings.video_shopify }}" type="video/mp4">
+    您的浏览器不支持视频播放。
+  </video>
+  <div class="video-overlay">
+   {{ section.settings.title }}
+  </div>
+</div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": "Video New",
+  
+  "class": "cc-new-video",
+  "settings": [
+ 
+    {
+      "type": "text",
+      "id": "video_shopify",
+      "label": "Video url"
+    },
+   
+    
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Cover image"
+    },
+     {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        }
+
+
+ 
+   
+ 
+    
+   
+  ],
+
+  "presets": [
+    {
+      "name": "Video New",
+     
+    }
+  ]
+ 
+}
+{% endschema %}
+{% style %}
+  @media (max-width:850px){
+   
+    }
+  }
+{% endstyle %}

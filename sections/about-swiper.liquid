@@ -1,0 +1,199 @@
+{% style %}
+  .about-slider-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+
+  .about-slider {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .about_slide-section .swiper-slide {
+  
+  
+  }
+
+  .about_slide-section .swiper-slide-active {
+   
+  }
+
+  .about_slide-section .slide-content {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+  }
+
+  .about_slide-section .slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about_slide-section .slide-text {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: #fff;
+    width: 80%;
+    margin: auto;
+    transform: translateY(-50%);
+    opacity:0
+  }
+.swiper-slide-active .slide-text{
+   opacity:1
+}
+  .about_slide-section .slide-title {
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 25px;
+        line-height: 1;
+    color: #fff;
+    text-align: center;
+  }
+
+  .about_slide-section .slide-description {
+    font-size: 24px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .about_slide-section .swiper-button-next,
+  .about_slide-section .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+    background:#fff;
+    border-radius: 50%;
+    color: #cb0f0f
+  }
+
+  .about_slide-section .swiper-button-next:after,
+  .about_slide-section .swiper-button-prev:after {
+    font-size: 20px;
+  }
+
+  .about_slide-section .swiper-button-next {
+    right: 5%; 
+  }
+
+  .about_slide-section .swiper-button-prev {
+    left: 5%; 
+  }
+  section.about_slide-section {
+    margin-top: 102px;
+    margin-bottom: 102px;
+  }
+  @media(max-width:768px){
+    section.about_slide-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+    .about_slide-section .slide-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+    }
+    .about_slide-section .slide-description {
+    font-size: 16px;
+}
+    .about_slide-section .slide-text {
+      width: 100%;
+    }
+    .about_slide-section .slide-content {
+    height: 450px;
+}
+  }
+{% endstyle %}
+<section class="about_slide-section">
+<div class="about-slider-container">
+  <div class="about-slider swiper">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide">
+          <div class="slide-content">
+            <img src="{{ block.settings.image | img_url:'master' }}" alt="{{  block.settings.title }}" class="slide-image">
+            <div class="slide-text">
+              <h3 class="slide-title">{{ block.settings.title }}</h3>
+              <p class="slide-description">{{ block.settings.description }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-button-next as_bn"></div>
+    <div class="swiper-button-prev as_bp"></div>
+  </div>
+</div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new Swiper('.about-slider', {
+      slidesPerView: 1.4,
+      spaceBetween: 24,
+	  centeredSlides: true,
+      centeredSlidesBounds: true,
+	  loop: true,
+      autoplay:true,
+      navigation: {
+        nextEl: '.as_bn',
+        prevEl: '.as_bp',
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1.4,
+          spaceBetween: 10
+        },
+        768: {
+           slidesPerView: 1.4,
+          spaceBetween: 24,
+           centeredSlides: true,
+      centeredSlidesBounds: true,
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "about swiper",
+  "settings": [
+   
+   
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "description"
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "about swiper",
+    
+    }
+  ]
+}
+{% endschema %} 

@@ -1,0 +1,238 @@
+
+<div class="user-profile-container">
+  <h1 class="user-profile-title">个人信息</h1>
+  
+  <div id="profile-message" class="user-profile-form__message" style="display: none;"></div>
+  
+  <form id="customerProfileForm" class="user-profile-form">
+    <div class="form-group">
+      <label for="first_name">名字</label>
+      <input 
+        type="text" 
+        id="first_name" 
+        name="first_name" 
+        value="{{ customer.first_name }}" 
+        required
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="last_name">姓氏</label>
+      <input 
+        type="text" 
+        id="last_name" 
+        name="last_name" 
+        value="{{ customer.last_name }}" 
+        required
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="phone">电话号码</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        name="phone" 
+        value="{{ customer.phone }}" 
+        required
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="customer_password">输入密码以确认更改</label>
+      <input 
+        type="password" 
+        id="customer_password" 
+        name="customer_password" 
+        required
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="submit-button">保存更改</button>
+    </div>
+  </form>
+</div>
+<script>
+const API_URL = '/api/2024-01/graphql.json';
+const STOREFRONT_ACCESS_TOKEN = '111fa9ef80662ca3d4651a825932caf6';
+
+const MUTATIONS = {
+  CREATE_ACCESS_TOKEN: `
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+      customerAccessTokenCreate(input: $input) {
+        customerAccessToken {
+          accessToken
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `,
+
+  UPDATE_CUSTOMER: `
+    mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
+      customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
+        customer {
+          id
+          firstName
+          lastName
+          phone
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `
+};
+
+class ProfileManager {
+  constructor() {
+    this.form = document.getElementById('customerProfileForm');
+    this.submitButton = this.form.querySelector('button[type="submit"]');
+    this.initialize();
+  }
+
+  initialize() {
+    this.form.addEventListener('submit', this.handleSubmit.bind(this));
+  }
+
+  async fetchGraphQL(query, variables) {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_ACCESS_TOKEN
+        },
+        body: JSON.stringify({ query, variables })
+      });
+
+      const data = await response.json();
+      if (data.errors) {
+        throw new Error(data.errors[0].message);
+      }
+      return data;
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  }
+
+  showMessage(message, type = 'error') {
+    const messageDiv = document.getElementById('profile-message');
+    if (messageDiv) {
+      messageDiv.textContent = message;
+      messageDiv.className = `user-profile-form__message ${type}`;
+      messageDiv.style.display = 'block';
+      messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  setButtonState(isLoading) {
+    if (this.submitButton) {
+      this.submitButton.disabled = isLoading;
+      this.submitButton.textContent = isLoading ? '正在保存...' : '保存更改';
+    }
+  }
+
+  async createAccessToken(email, password) {
+    const response = await this.fetchGraphQL(MUTATIONS.CREATE_ACCESS_TOKEN, {
+      input: {
+        email: email,
+        password: password
+      }
+    });
+
+    const { customerAccessTokenCreate } = response.data;
+    if (customerAccessTokenCreate.customerUserErrors.length > 0) {
+      throw new Error('密码验证失败，请确认密码是否正确');
+    }
+
+    return customerAccessTokenCreate.customerAccessToken.accessToken;
+  }
+
+  async updateCustomerInfo(accessToken, formData) {
+    const response = await this.fetchGraphQL(MUTATIONS.UPDATE_CUSTOMER, {
+      customerAccessToken: accessToken,
+      customer: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone
+      }
+    });
+
+    const { customerUpdate } = response.data;
+    if (customerUpdate.customerUserErrors.length > 0) {
+      throw new Error(customerUpdate.customerUserErrors[0].message);
+    }
+
+    return customerUpdate.customer;
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    this.setButtonState(true);
+
+    try {
+      const formData = {
+        firstName: this.form.querySelector('#first_name').value.trim(),
+        lastName: this.form.querySelector('#last_name').value.trim(),
+        phone: this.form.querySelector('#phone').value.trim(),
+        password: this.form.querySelector('#customer_password').value
+      };
+
+      // 基本验证
+      if (!formData.firstName || !formData.lastName) {
+        throw new Error('姓名不能为空');
+      }
+      if (!formData.phone) {
+        throw new Error('请输入电话号码');
+      }
+      if (!formData.password) {
+        throw new Error('请输入密码以确认更改');
+      }
+
+      // 创建访问令牌
+      const accessToken = await this.createAccessToken(
+        '{{ customer.email }}',
+        formData.password
+      );
+
+      // 更新客户信息
+      await this.updateCustomerInfo(accessToken, formData);
+
+      // 显示成功消息
+      this.showMessage('个人信息更新成功！', 'success');
+
+      // 延迟刷新页面
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+    } catch (error) {
+      console.error('更新失败:', error);
+      this.showMessage(error.message || '更新失败，请稍后重试');
+    } finally {
+      this.setButtonState(false);
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('customerProfileForm');
+  if (form) {
+    new ProfileManager();
+  }
+});
+</script>

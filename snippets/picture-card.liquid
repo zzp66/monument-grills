@@ -1,0 +1,69 @@
+{% liquid
+  assign card_class = ""
+  if product.template_suffix contains 'preorder'
+    assign card_class = " card--product-preorder"
+  elsif product.template_suffix contains 'coming-soon'
+    assign card_class = " card--product-coming-soon"
+  elsif product.template_suffix contains 'countdown'
+    assign card_class = " card--product-countdown"
+  endif
+
+  assign image_quality = 1
+  if product.featured_media.preview_image.aspect_ratio > 1 and settings.prod_card_image_ratio != "1.77" and settings.prod_card_image_fit == "cover"
+    assign image_quality = 2
+  endif
+
+  if section.settings.card_size == 'small'
+    capture sizes
+      render 'sizes-attribute', grid: true, min: 2, sm: 3, md: 4, xl: 5
+    endcapture
+  elsif section.settings.card_size == 'large'
+    capture sizes
+      render 'sizes-attribute', grid: true, min: 1, sm: 2, xl: 3
+    endcapture
+  else
+    capture sizes
+      render 'sizes-attribute', grid: true, min: 1, sm: 3, md: 4
+    endcapture
+  endif
+%}
+
+{% if block.settings.product_picker != empty %}
+  <div class="card card--product{{ card_class }}">
+    <div class="card__media">
+      {% if block.settings.product_picker != blank %}
+        {% render 'image',
+          image: block.settings.product_picker,
+          widths: '320, 460, 600, 700, 800, 900, 1200',
+          src_width: 460,
+          src_placeholder: true,
+          sizes: sizes,
+          class: class,
+          disable_focal_point: true,
+          quality: image_quality
+        %}
+      {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+      {% endif %}
+    </div>
+    <div class="card__info-container flex flex-col flex-auto relative">
+      <div class="card__info cc__card__info w-full">
+        <p class="card__title font-bold {% if section.settings.p_align == 'text-center' %} flex-col text-center{% elsif section.settings.p_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme">
+          {{- block.settings.product_name | escape -}}
+        </p>
+        {% if block.settings.show_button != blank %}
+          <div class="section__block section__block--button">
+            <a class="btn btn--primary" href="{{ block.settings.button_url }}">{{ block.settings.button_name | escape }}</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% style %}
+  .card__info-container .cc__card__info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+{% endstyle %}

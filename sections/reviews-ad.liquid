@@ -1,0 +1,337 @@
+<script src="https://cdn-widgetsrepository.yotpo.com/v1/loader/UQM2B4IW5kRH6em3tk8mbfGKc7242zHRB54vhx50" async></script>
+{% liquid
+    assign breakpoint_sm = 600
+    assign breakpoint_md = 769
+    assign breakpoint_xxl = 1536
+    assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+%}
+
+<div class="section {% if section.settings.full_screen != blank %} {% else %}container {% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;background:{{ section.settings.reviews_bg }};">
+  <div class="reviews-box">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'ad-img' %}
+        {% liquid
+            assign img = block.settings.ad_image
+            if img != blank
+              assign desktop_image_class = 'img-fit  sm:block'
+            else
+              assign desktop_image_class = 'img-fit'
+            endif
+
+            assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+            if section.index == 1 or section.settings.prevent_animation
+              assign lazy_load_images = false
+            else
+              assign lazy_load_images = true
+            endif
+        %}
+          <div class="reviews-img">
+              <div class="header-info">
+                {%- if block.settings.ad_title != blank -%}
+                  <{{ block.settings.heading_size }} class="text-overlay__heading {% if block.settings.setting_title_color != blank %}title-color {% endif %}{% if block.settings.header_weight != blank %} font-weight{% endif %}{% if block.settings.header_uppercase != blank %} font-uppercase{% endif %}" {{ block.shopify_attributes }} 
+                    >
+                    {% render 'multiline-text' with block.settings.ad_title %}
+                  </{{ block.settings.heading_size }}>
+                {%- endif -%}
+
+                {%- if block.settings.description != blank -%}
+                  <p class="text-overlay__block reading-width rte" {{ block.shopify_attributes }}>
+                    {{ block.settings.description }}
+                  </p>
+                {%- endif -%}
+
+                {%- if block.settings.btn_label != blank %}
+                <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-2 mb-4 justify-center" {{ block.shopify_attributes }}>
+                    <a class="{{ block.settings.btn_style }}" {% if block.settings.is_nofollow != false %}rel="nofollow"{% endif %} {% if block.settings.btn_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.btn_link }}"{% endif %}>
+                      {{- block.settings.btn_label | escape -}}
+                    </a>
+                </div>
+                {%- endif -%}
+            </div>
+              {%- render 'image',
+                image: img,
+                widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+                src_width: 1400,
+                src_placeholder: true,
+                sizes: sizes,
+                lazy_load: lazy_load_images,
+                class: desktop_image_class
+              -%}
+        </div>
+        {% when 'ad-all-reviews' %}
+          {% if block.settings.ad_all_reviews != blank %}
+            
+            <div class="reviews-all">
+              <div class="yotpo-widget-instance" 
+                   data-yotpo-instance-id="703930" 
+                   data-yotpo-element-loaded="true"
+                   data-yotpo-mode="most_recent"
+                   data-yotpo-type="product"
+                   data-yotpo-count="9"
+                   data-yotpo-show-bottomline="1"
+                   data-yotpo-testimonials-page-link="https://monumentgrills.com/pages/monument-grills-all-reviews"
+                ></div>
+            </div>
+          {% endif %}
+      {% endcase %}
+    {% endfor %}
+</div></div>
+{% style %}
+  .reviews-ad{
+    background:{{ section.settings.reviews_bg }};
+  }
+  .reviews-box{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .reviews-box .reviews-img .header-info{
+    padding:1em;
+  }
+  .reviews-box .reviews-img{
+    width:340px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+     background: #fff;
+    margin-right:20px;
+    min-height: 495px;
+  }
+  .reviews-box .reviews-img img{
+    position: relative;
+    margin-top: 1em;
+  }
+  .reviews-box .reviews-all{
+   width: calc(100% - 340px);
+   flex: 1;
+    background: #fff;
+  }
+  .reviews-box .reviews-all .yotpo-reviews-carousel-widget{
+    
+  }
+  .reviews-box .reviews-all .yotpo-reviews-carousel-widget h2{
+    display:none;
+  }
+  .reviews-box .reviews-all .yotpo-reviews-carousel-widget .glide--swipeable ul li{
+    width: 300px !important;
+  }
+ @media (max-width: {{ breakpoint_sm }}px) {
+   .reviews-box{
+      flex-warp: warp;
+   }
+   .reviews-box .reviews-img{
+     flex-basis: 100%
+   }
+ }
+{% endstyle %}
+{% schema %}
+  {
+    "name": "reviews AD - fei",
+    "class": "reviews-ad",
+    "settings": [
+       {
+          "type": "header",
+          "content": "跳转ID设置"
+        },
+        {
+          "type": "text",
+          "id": "link_id",
+          "label": "Link ID"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_screen",
+          "label": "Full screen",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "reviews_bg",
+          "label": "BG"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "label": "Padding Top",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "label": "Padding Button",
+          "default": 10
+        },
+       {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          },
+          {
+            "value": "grid",
+            "label": "Grid"
+          }
+        ],
+        "default": "carousel"
+      },
+      {
+        "type": "header",
+        "content": "SEO"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevent_animation",
+        "label": "Load the section without animation",
+        "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "ad-img",
+        "name":"Ad image",
+        "settings": [
+          {
+            "type": "text",
+            "id": "ad_title",
+            "label": "Heading",
+            "default": "Multi-column"
+          },
+          {
+            "type": "select",
+            "id": "heading_size",
+            "label": "Heading size",
+            "options": [
+              {
+                "value": "h6",
+                "label": "Extra extra small"
+              },
+              {
+                "value": "h5",
+                "label": "Extra small"
+              },
+              {
+                "value": "h4",
+                "label": "Small"
+              },
+              {
+                "value": "h3",
+                "label": "Medium"
+              },
+              {
+                "value": "h2",
+                "label": "Large"
+              },
+              {
+                "value": "h1",
+                "label": "Extra large"
+              },
+              {
+                "value": "h0",
+                "label": "Extra extra large"
+              }
+            ],
+            "default": "h2"
+          },
+          {
+            "type":"color",
+            "id":"setting_title_color",
+            "label":"color"
+          },
+          {
+            "type":"checkbox",
+            "id":"header_weight",
+            "label":"Font Weight",
+            "default":false
+          },
+          {
+            "type":"checkbox",
+            "id":"header_uppercase",
+            "label":"Font Uppercase",
+            "default":false
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "btn_label",
+            "label": "Button Label"
+          },
+          {
+            "type": "url",
+            "id": "btn_link",
+            "label": "Button url"
+          },
+          {
+            "type": "select",
+            "id": "btn_style",
+            "label": "Buttons",
+            "options": [
+              {
+                "value": "link",
+                "label": "Link"
+              },
+              {
+                "value": "btn btn--primary",
+                "label": "Primary button"
+              },
+              {
+                "value": "btn btn--secondary",
+                "label": "Secondary button"
+              }
+            ],
+            "default": "btn btn--secondary"
+          },
+          {
+            "type":"checkbox",
+            "id":"is_nofollow",
+            "label":"is nofollow link"
+          },
+          {
+            "type": "image_picker",
+            "id": "ad_image",
+            "label": "AD image"
+          }
+        ]
+      },
+      {
+        "type":"ad-all-reviews",
+        "name":"All Reviews",
+        "settings": [
+          {
+            "type":"checkbox",
+            "id": "ad_all_reviews",
+            "label":"All Reviews",
+            "default":false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "reviews AD - fei"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,235 @@
+<style>
+  .image-faq-sections {
+     background: #000!important;
+    color: #fff;
+}
+
+.image-faq-container {
+  display: flex;
+  gap: 40px;
+}
+
+.image-container {
+  flex: 1;
+  position: relative;
+}
+
+.faq-image {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.faq-image.active {
+  display: block;
+}
+
+.faq-image-item {
+    width: 100%;
+    height: 530px;
+    object-fit: cover;
+}
+
+.faq-container {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
+.faq-item {
+    background: #F8F8F8;
+}
+
+.faq-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  
+  padding: 20px;
+      position: relative;
+}
+
+.faq-title h3 {
+  margin: 0;
+  font-size: 22px;
+    font-weight: bold;
+}
+
+.faq-toggle {
+     transition: all .4s ease;
+}
+
+.faq-content {
+ max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  font-size: 16px;
+  line-height: 1.6;
+      padding: 0 20px;
+}
+
+.faq-item.active .faq-content {
+   max-height: 1000px; 
+  color: #333;
+}
+.faq__btns {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.faq-item.active .faq-toggle {
+  transform: rotate(180deg)
+}
+ .faq-item.active path {
+        stroke: #cb0f0f;
+  }
+
+.image-faq-sections .section-header{
+    display: block;
+    text-align: center;
+ }
+  .image-faq-sections .section{
+    padding-bottom: 0;
+  }
+  .explend__head{
+        text-align: center;
+    margin-bottom: 40px;
+        margin-top: 60px;
+  }
+  @media (max-width: 991px){
+    .explend__head{
+    margin-bottom: 20px;
+          margin-top: 30px;
+  }
+    .image-faq-container {
+    gap: 5px;
+    flex-flow: column;
+}
+   .faq-image-item {
+    height: auto;
+   }
+   
+    .faq-title h3 {
+    margin: 0;
+    font-size: 18px;
+    }
+    span.faq-toggle svg {
+    width: 15px;
+}
+  }
+</style>
+<div class="explend_section" style="display:">
+   <div class="container">
+<h2 class="explend__head">{{section.settings.title2  }}</h2>
+<div class="image-faq-section">
+  <div class="image-faq-container">
+   
+    <div class="image-container">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="faq-image {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+            {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'faq-image-item' }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+   
+    <div class="faq-container">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="faq-item {% if forloop.first %} active {% endif %}"  data-index="{{ forloop.index0 }}">
+            <div class="faq-title">
+              <h3>{{ block.settings.title }}</h3>
+              <span class="faq-toggle"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="presentation" class="icon"><path d="M20 8.5 12.5 16 5 8.5" stroke="currentColor" stroke-width="1.5" fill="none"></path></svg></span>
+            </div>
+            <div class="faq-content" style="display:">
+              {{ block.settings.content }}
+          {% if block.settings.learnlink !=blank %}
+              <div class="faq__btns">
+                <a href="{{ block.settings.learnlink }}" class="btn btn--primary" target="_blank">EXPLORE RECIPES</a>
+              </div>
+            {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('.faq-title').on('click', function() {
+      const $faqItem = $(this).closest('.faq-item');
+      const index = $faqItem.data('index');
+      const isActive = $faqItem.hasClass('active');
+
+      if (!isActive) {
+        // 只在未展开时，收起其他并展开自己
+        $faqItem.addClass('active').find('.faq-content').slideDown();
+        $faqItem.siblings().removeClass('active').find('.faq-content').slideUp();
+
+        // 切换图片
+        $('.faq-image').removeClass('active');
+        $(`.faq-image[data-index="${index}"]`).addClass('active');
+      } else {
+        // 如果已展开，收起自己
+        $faqItem.removeClass('active').find('.faq-content').slideUp();
+        // 图片不变
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Expand with Image",
+  "class":"image-expand-sections",
+  "settings": [
+    {
+          "type": "text",
+          "id": "title2",
+          "label": "Title"
+        },
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        
+        {
+          "type": "url",
+          "id": "learnlink",
+          "label": "button link"
+        }
+      
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Expand with Image"
+     
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,243 @@
+{% style %}
+  .section-btns .affiliate-warp{
+    list-style:none;
+    padding:0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px 20px;
+  }
+  .section-btns .affiliate-warp .item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .section-btns .affiliate-warp .item .btn-affiliate{
+    margin:2em auto 1em;
+  }
+  .section-btns .affiliate-warp .item img{
+    position: relative;
+    object-fit: contain;
+  }
+  @media (max-width:768px){
+    .section-btns .affiliate-warp{
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+{% endstyle %}
+
+<div class="section section-btns section--padded{% if section.settings.full_width %} section--full-width{% endif %}" id="{{ section.id }}"{% if settings.animations_enabled != "disabled" and section.settings.prevent_animation == false %} data-cc-animate{% endif %} style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="hide" id="{% if section.settings.link_id != blank %}{{ section.settings.link_id }}{% endif %}"></div>
+  <div class="{% if section.settings.full_width != blank %}container{% endif %} flex {{ section.settings.text_position }} {{ section.settings.text_align }}{% if section.settings.mob_center_text %} md-down:text-center{% endif %}">
+    <div class="max-w-text-overlay">
+       <ul class="affiliate-warp">
+      {% for block in section.blocks %}
+            {%- case block.type -%}
+              {% when 'affiliate' %}
+                 {% liquid
+                   if section.index == 1 or section.settings.prevent_animation
+                      assign lazy_load_images = false
+                   else
+                      assign lazy_load_images = true
+                   endif
+                   
+                    assign affiliate_logo = block.settings.affiliate_logo
+                    assign affiliate_name = block.settings.affiliate_name
+                    assign affiliate_button_style = block.settings.affiliate_button_style
+                    assign affiliate_url = block.settings.affiliate_url
+                 %}
+
+                  {%- capture sizes -%}
+                    {%- render 'sizes-attribute', min: 'page', sm: 'page', md: breakpoint_md, lg: '536px', xl: false, max: false -%}
+                  {%- endcapture -%}
+                 {% if affiliate_url != blank %}
+                   <li class="item">
+                      {%- render 'image',
+                        image: affiliate_logo,
+                        widths: '240, 480, 960',
+                        src_width: 480,
+                        src_placeholder: true,
+                        sizes: sizes,
+                        lazy_load: lazy_load_images,
+                        class: 'img-fit affiliate-logo'
+                      -%}
+                     
+                     <a class="{{ affiliate_button_style }} btn-affiliate" role="link" aria-disabled="false" href="{{ affiliate_url }}" target="_blank">
+                       {{ affiliate_name }}
+                     </a>
+                   </li>
+                {% endif %}
+            {% endcase %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Affiliate btns -- wenfei",
+    "class": "cwf-affiliate",
+    "settings": [
+      {
+        "type": "header",
+        "content": "跳转ID设置"
+      },
+      {
+        "type": "text",
+        "id": "link_id",
+        "label": "Link ID"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make section background full width",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "mob_center_text",
+        "label": "Center text on mobile",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "SEO"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevent_animation",
+        "label": "Load the section without animation",
+        "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Use Layout Gird"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Top",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "label": "Padding Button",
+        "default": 10
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text position",
+        "options": [
+          {
+            "value": "justify-start",
+            "label": "Left"
+          },
+          {
+            "value": "justify-center",
+            "label": "Center"
+          },
+          {
+            "value": "justify-end",
+            "label": "Right"
+          }
+        ],
+        "default": "justify-center"
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-end",
+            "label": "Right"
+          }
+        ],
+        "default": "text-center"
+      },
+    ],
+    "blocks": [
+      {
+        "type":"affiliate",
+        "name":"Affiliate button",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "affiliate_logo",
+            "label": "affiliate logo"
+          },
+          {
+            "type": "text",
+            "id": "affiliate_name",
+            "label": "Button Name"
+          },
+          {
+            "type":"url",
+            "id":"affiliate_url",
+            "label":"Button Url"
+          },
+          {
+            "type": "select",
+            "id": "affiliate_button_style",
+            "label": "Button style",
+            "options": [
+              {
+                "value": "link",
+                "label": "Link"
+              },
+              {
+                "value": "btn btn--primary",
+                "label": "Primary button"
+              },
+              {
+                "value": "btn btn--secondary",
+                "label": "Secondary button"
+              }
+            ],
+            "default": "btn btn--primary"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Affiliate btns -- wenfei",
+        "blocks": [
+          {
+            "type":"affiliate"
+          },
+          {
+            "type":"affiliate"
+          },
+          {
+            "type":"affiliate"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

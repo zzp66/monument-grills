@@ -1,0 +1,243 @@
+<style>
+  .release-tabs-section {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+.Signature_section {
+  margin-top: 100px;
+    margin-bottom: 105px;
+}
+.release-tabs-title {
+    text-align: center;
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    line-height: 1;
+}
+.release-tabs-nav {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    position: relative;
+    width: 556px;
+}
+.release-tab-nav-item {
+    font-size: 30px;
+    font-weight: 500;
+    padding: 28px 0 0 0;
+    cursor: pointer;
+    position: relative;
+    color: #222;
+    transition: color 0.2s;
+    line-height: 1;
+}
+  .release-tabs-nav:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    background: #F5F5F7;
+    height: 8px;
+    width: 100%;
+}
+.release-tab-nav-item.active {
+  color: #c00;
+}
+.release-tab-nav-item.active::after {
+    content: '';
+    display: block;
+    height: 8px;
+    width: 100%;
+    background: #c00;
+    border-radius: 50px;
+    margin: 0;
+    position: absolute;
+    top: 0;
+      z-index: 1;
+}
+.release-tabs-content {
+  margin-top: 50px;
+}
+.release-tab-panel {
+  display: none;
+}
+.release-tab-panel.active {
+  display: block;
+}
+.release-tab-panel-inner {
+  display: flex;
+  background: #f5f5f5;
+  overflow: hidden;
+  min-height: 320px;
+}
+.release-tab-panel-left {
+    width: 650px;
+  padding: 40px 115px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.release-tab-panel-left h3 {
+    font-size: 46px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.release-tab-panel-desc {
+    font-size: 24px;
+    color: #333;
+    line-height: 1.3;
+}
+.release-tab-panel-right {
+    width: 950px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+.release-tab-panel-right img {
+  width: 100%;
+ 
+}
+@media (max-width: 991px) {
+  .release-tab-panel-inner {
+    flex-direction: column;
+  }
+  
+  .release-tabs-title {
+    font-size: 32px;
+            margin-bottom: 30px;
+}
+    .release-tabs-nav {
+    width: 90%;
+  }
+  .release-tab-nav-item {
+    font-size: 18px;
+    padding: 20px 0 0;
+  }
+  .release-tab-panel-left {
+    width: 100%;
+            padding: 30px;
+  }
+  .release-tab-panel-left h3 {
+    font-size: 24px;
+  }
+  .release-tab-panel-desc {
+    font-size: 14px;
+  }
+  .release-tab-panel-right {
+    width: 100%;
+  }
+  .Signature_section {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+  .release-tabs-nav:after, .release-tab-nav-item.active::after{
+  
+    height: 4px;
+}
+  .release-tabs-content {
+    margin-top: 30px;
+}
+  .release-tab-panel {
+    padding: 0 20px;
+  }
+}
+</style>
+<section class="Signature_section">
+    <div class="Signature_container">
+        <div class="release-tabs-section">
+  <h2 class="release-tabs-title">{{ section.settings.title }}</h2>
+  <div class="release-tabs-nav">
+    {% for block in section.blocks %}
+      <div class="release-tab-nav-item{% if forloop.index==3 %} active{% endif %}" data-tab="{{ forloop.index0 }}">
+        {{ block.settings.tab_title }}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="release-tabs-content">
+    {% for block in section.blocks %}
+      <div class="release-tab-panel{% if forloop.index==3 %} active{% endif %}" data-tab="{{ forloop.index0 }}">
+        <div class="release-tab-panel-inner">
+          <div class="release-tab-panel-left">
+            <h3>{{ block.settings.content_title }}</h3>
+            <div class="release-tab-panel-desc">{{ block.settings.content_desc }}</div>
+          </div>
+          <div class="release-tab-panel-right">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: '900x600' }}" alt="{{ block.settings.content_title }}">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+    </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const navItems = document.querySelectorAll('.release-tab-nav-item');
+  const panels = document.querySelectorAll('.release-tab-panel');
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const tab = this.getAttribute('data-tab');
+      navItems.forEach(i => i.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.querySelector('.release-tab-panel[data-tab="' + tab + '"]').classList.add('active');
+    });
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "Signature Releases Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Signature Releases"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title"
+        },
+        {
+          "type": "text",
+          "id": "content_title",
+          "label": "Content Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content_desc",
+          "label": "Content Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Right Image"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Signature Releases Tabs",
+      "blocks": [
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" }
+      ]
+    }
+  ]
+}
+{% endschema %}

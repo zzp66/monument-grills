@@ -1,0 +1,74 @@
+{%- liquid
+  assign hide_on_end = hide_on_end | default: false
+  if end_time != blank
+    assign end_date = end_date | append: 'T' | append: end_time
+  endif
+  if start_time != blank
+    assign start_date = start_date | append: 'T' | append: start_time
+  endif
+
+  assign end_timestamp = end_date | date: '%Y-%m-%dT%H:%M%z'
+  assign start_timestamp = start_date | date: '%Y-%m-%dT%H:%M%z'
+  assign now_date = "now" | date: '%Y-%m-%dT%H:%M%z'
+
+  assign time_difference = end_timestamp | minus: start_timestamp
+  assign days = time_difference | divided_by: 86400
+  assign hours = time_difference | modulo: 86400 | divided_by: 3600
+  assign minutes = time_difference | modulo: 3600 | divided_by: 60
+  assign seconds = time_difference | modulo: 60
+-%}   
+
+<countdown-timer class="countdown" role="timer" data-end-date="{% if end_date != blank %}{{ end_date }}{% endif %}" aria-label="{{ 'sections.countdown.end_date' | t: date: a11y_end_date }}">
+  {%- if now_date <= end_date  -%}
+    
+    <div class="countdown__grid inline-grid no-js-hidden">
+      <div class="countdown__item text-center">
+        <strong class="countdown__number inline-block relative js-days">{{ days }}</strong>
+        <div class="countdown__unit text-sm">{{ 'sections.countdown.days' | t }}</div>
+      </div>
+      <div class="countdown__item text-center">
+        <strong class="countdown__number inline-block relative js-hours">{{ hours }}</strong>
+        <div class="countdown__unit text-sm">{{ 'sections.countdown.hours' | t }}</div>
+      </div>
+      <div class="countdown__item text-center">
+        <strong class="countdown__number inline-block relative js-mins">{{ minutes }}</strong>
+        <div class="countdown__unit text-sm">{{ 'sections.countdown.minutes' | t }}</div>
+      </div>
+      <div class="countdown__item text-center">
+        <strong class="countdown__number inline-block relative js-secs">{{ seconds }}</strong>
+        <div class="countdown__unit text-sm">{{ 'sections.countdown.seconds' | t }}</div>
+      </div>
+    </div>
+  {% else %}
+  {%- endif -%}
+
+  <div class="js-hidden">
+    {{ 'sections.countdown.end_date' | t: date: a11y_end_date }}
+  </div>
+
+  {%- if now > end_date and end_text -%}
+    <div class="countdown__text rte">
+      {{- end_text -}}
+    </div>
+  {%- endif -%}
+</countdown-timer>
+
+{% style %}
+  {% if pc_size != blank %}
+    .countdown__grid{
+      gap:20px;
+    }
+  {% endif %}
+  .countdown__number{
+    font-size: {{ pc_size }}px;
+  }
+  .countdown__unit{
+    color: {{ label_c }} !important;
+  }
+  
+  @media (max-width: 850px) {
+    .countdown__number{
+      font-size: {{ mobile_size }}px;
+    }
+  }
+{% endstyle %}

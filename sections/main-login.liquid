@@ -1,0 +1,375 @@
+<div class="container sec__logins">
+  <h2>Access Your Account</h2>
+  <div  class="login_reg">
+    <div class="regi__box">
+      <div class="section__header text-center">
+      <h3>New customer</h3>
+      <p>Check out faster, unlock member benefits, track your orders, and more!</p>
+      <a href="/account/register" class="btn btn--primary" style="    margin-top: 20px;">Create Account</a>
+      </div>
+        {%- if shop.checkout.guest_login -%}
+    <h3 class="text-center mt-10 guest_top">{{ 'customer.login.guest_title' | t }}</h3>
+
+    {%- form 'guest_login', class: 'form form-width mx-auto' -%}
+      <button class="btn btn--secondary gurst__btn">{{ 'customer.login.guest_continue' | t }}</button>
+    {%- endform -%}
+  {%- endif -%}
+    </div>
+  <div id="login">
+    <div class="section__header text-center">
+      <!-- <h1 class="h2">{{ 'customer.login.title' | t }}</h1> -->
+      <h3>Returning customer</h3>
+      <p>If you have an account, sign in with your email address.</p>
+    </div>
+
+    {%- if recover_success == true -%}
+      <div class="alert reading-width mb-8 mx-auto bg-success-bg text-success-text" tabindex="-1" autofocus>
+        {{ 'customer.recover_password.success' | t }}
+      </div>
+    {%- endif -%}
+
+    {%- form 'customer_login', class: 'form form-width mx-auto', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="alert mb-8 bg-error-bg text-error-text" tabindex="-1" autofocus>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="form__field required">
+        <!-- <label class="label" for="customer-email">{{ 'customer.login.email' | t }}</label> -->
+        <input type="email"
+               class="input w-full"
+               id="customer-email"
+               name="customer[email]"
+               autocomplete="email" placeholder="Email"
+               {%- if form.errors contains 'form' %}
+                 aria-invalid="true"
+               {%- endif %}
+               aria-required="true"
+               required>
+      </div>
+
+      {%- if form.password_needed -%}
+  <div class="form__field required">
+    <div class="login-password relative">
+      <input type="password"
+             class="login-password__input input w-full"
+             id="customer-password"
+             name="customer[password]"
+             {%- if form.errors contains 'form' %}
+               aria-invalid="true"
+             {%- endif %}
+             aria-required="true" placeholder="Password"
+             required>
+    </div>
+  </div>
+  
+
+  <!-- 添加复选框区域 -->
+  <div class="login-options">
+    {% style %}
+      .login-options {
+        margin: 15px 0;
+      }
+      .login-checkbox-group {
+           display: flex;
+          gap: 10px;
+          flex-flow: column;
+            padding-left: 20px;
+      }
+      .login-checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .login-checkbox-item input[type="checkbox"] {
+        cursor: pointer;
+      }
+      .login-checkbox-item label {
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .login-checkbox-group input {
+   margin: 0;
+    height: 13px;
+}
+      .recove__btns{
+            display: flex;
+    justify-content: center;
+    margin-top: 10px!important;
+      }
+      @media (max-width: 767px) {
+        .login-checkbox-group {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    {% endstyle %}
+
+    <div class="form__field login-checkbox-group">
+      <div class="login-checkbox-item">
+        <input type="checkbox" id="show-password" class="show-password-checkbox">
+        <label for="show-password">Show Password</label>
+      </div>
+      
+      <div class="login-checkbox-item">
+        <input type="checkbox" id="remember-me" name="customer[remember_me]">
+        <label for="remember-me">Remember Me</label>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+      <div class="mt-6 login_inbtn">
+        <button class="btn btn--primary">{{ 'customer.login.sign_in' | t }}</button>
+      </div>
+<div class="form__field mt-6 recove__btns">
+    <a class="login-password__recover-link link flex items-center text-sm js-recover" href="#recover">
+      {{- 'customer.login.forgot_password' | t -}} ?
+    </a>
+  </div>
+      <!-- <p class="mt-8 mb-0 text-center">
+        {{ 'customer.login.new_customer' | t }}
+        <a class="link" href="{{ routes.account_register_url }}">{{ 'customer.login.create_account' | t }}</a>
+      </p> -->
+    {%- endform -%}
+  </div>
+
+  <div class="js-hidden" id="recover">
+    <div class="section__header reading-width text-center">
+      <h3>{{ 'customer.recover_password.title' | t }}</h3>
+      <p>{{ 'customer.recover_password.subtext' | t }}</p>
+    </div>
+
+    {%- form 'recover_customer_password', class: 'form form-width mx-auto' -%}
+      {%- assign recover_success = form.posted_successfully? -%}
+
+      <div class="form__field required">
+        <!-- <label class="label" for="recover-email">{{ 'customer.login.email' | t }}</label> -->
+        <input type="email"
+               class="input w-full"
+               id="recover-email"
+               name="email"
+               autocomplete="email"
+               {%- if form.errors %}
+                 aria-invalid="true"
+                 aria-describedby="recover-email-error"
+                 autofocus
+               {%- endif %} placeholder="Email"
+               aria-required="true"
+               required>
+        {%- if form.errors -%}
+          <p class="form__field-error" id="recover-email-error">
+            {{ form.errors.messages['form'] }}
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="mt-6 login_inbtn">
+        <button class="btn btn--primary">{{ 'customer.recover_password.submit' | t }}</button>
+      </div>
+
+      <p class="mt-8 text-center">
+        <a class="link js-login" href="#login">{{ 'customer.recover_password.cancel' | t }}</a>
+      </p>
+    {%- endform -%}
+  </div>
+
+
+  
+</div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  // 获取所有需要的DOM元素
+  const loginForm = document.getElementById('login');
+  const recoverForm = document.getElementById('recover');
+  const showPasswordCheckbox = document.getElementById('show-password');
+  const passwordInput = document.getElementById('customer-password');
+  const rememberMeCheckbox = document.getElementById('remember-me');
+  const emailInput = document.getElementById('customer-email');
+  const customerLoginForm = document.querySelector('form[action="/account/login"]');
+  const recoverLink = document.querySelector('.js-recover');
+  const loginLink = document.querySelector('.js-login');
+
+  // 切换登录和找回密码表单的函数
+  function toggleContent(recover) {
+    if (loginForm && recoverForm) {
+      loginForm.classList.toggle('js-hidden', recover);
+      recoverForm.classList.toggle('js-hidden', !recover);
+    }
+  }
+
+  // 处理显示密码功能
+  function initShowPassword() {
+    if (showPasswordCheckbox && passwordInput) {
+      showPasswordCheckbox.addEventListener('change', function() {
+        passwordInput.type = this.checked ? 'text' : 'password';
+      });
+    }
+  }
+
+  // 处理记住我功能
+  function initRememberMe() {
+    if (rememberMeCheckbox && emailInput) {
+      // 检查是否有保存的邮箱
+      const savedEmail = localStorage.getItem('customerEmail');
+      if (savedEmail) {
+        emailInput.value = savedEmail;
+        rememberMeCheckbox.checked = true;
+      }
+
+      // 监听表单提交
+      if (customerLoginForm) {
+        customerLoginForm.addEventListener('submit', function(e) {
+          try {
+            if (rememberMeCheckbox.checked) {
+              localStorage.setItem('customerEmail', emailInput.value);
+            } else {
+              localStorage.removeItem('customerEmail');
+            }
+          } catch (error) {
+            console.error('Error handling remember me:', error);
+          }
+        });
+      }
+    }
+  }
+
+  // 初始化表单切换事件监听
+  function initFormToggle() {
+    if (recoverLink) {
+      recoverLink.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        toggleContent(true);
+        history.pushState('', document.title, `${window.location.pathname}#recover`);
+      });
+    }
+
+    if (loginLink) {
+      loginLink.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        toggleContent(false);
+        history.pushState('', document.title, window.location.pathname);
+      });
+    }
+  }
+
+  // 初始化密码验证
+  function initPasswordValidation() {
+    if (passwordInput) {
+      // 添加密码强度验证
+      passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        // 这里可以添加密码强度检查逻辑
+      });
+    }
+  }
+
+  // 初始化表单验证
+  function initFormValidation() {
+    if (customerLoginForm) {
+      customerLoginForm.addEventListener('submit', function(e) {
+        if (emailInput && !emailInput.value.trim()) {
+          e.preventDefault();
+          alert('Please enter your email address');
+          return;
+        }
+
+        if (passwordInput && !passwordInput.value.trim()) {
+          e.preventDefault();
+          alert('Please enter your password');
+          return;
+        }
+      });
+    }
+  }
+
+  // 处理自动填充样式
+  function handleAutofill() {
+    if (emailInput) {
+      emailInput.addEventListener('animationstart', function(e) {
+        if (e.animationName === 'onAutoFillStart') {
+          // 处理自动填充开始
+          this.classList.add('is-autofilled');
+        }
+      });
+
+      emailInput.addEventListener('animationend', function(e) {
+        if (e.animationName === 'onAutoFillCancel') {
+          // 处理自动填充结束
+          this.classList.remove('is-autofilled');
+        }
+      });
+    }
+  }
+
+  // 错误处理函数
+  function handleError(error, context) {
+    console.error(`Error in ${context}:`, error);
+    // 这里可以添加错误提示UI
+  }
+
+  // 初始化所有功能
+  function initAll() {
+    try {
+      // 检查URL hash并设置正确的表单显示
+      if (window.location.hash === '#recover') {
+        toggleContent(true);
+      }
+
+      // 初始化所有功能
+      initShowPassword();
+      initRememberMe();
+      initFormToggle();
+      initPasswordValidation();
+      initFormValidation();
+      handleAutofill();
+
+      // 添加表单重置处理
+      if (customerLoginForm) {
+        customerLoginForm.addEventListener('reset', function() {
+          setTimeout(() => {
+            if (rememberMeCheckbox) {
+              rememberMeCheckbox.checked = false;
+            }
+            if (showPasswordCheckbox) {
+              showPasswordCheckbox.checked = false;
+            }
+            if (passwordInput) {
+              passwordInput.type = 'password';
+            }
+          }, 0);
+        });
+      }
+
+    } catch (error) {
+      handleError(error, 'initialization');
+    }
+  }
+
+  // 启动初始化
+  initAll();
+});
+
+// 添加自动填充检测的CSS
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes onAutoFillStart { from {} to {} }
+  @keyframes onAutoFillCancel { from {} to {} }
+  input:-webkit-autofill {
+    animation-name: onAutoFillStart;
+  }
+  input:not(:-webkit-autofill) {
+    animation-name: onAutoFillCancel;
+  }
+`;
+document.head.appendChild(style);
+</script>
+
+{% schema %}
+{
+  "name": "Login",
+  "class": "cc-main-login section section--template"
+}
+{% endschema %}

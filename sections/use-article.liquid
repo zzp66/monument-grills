@@ -1,0 +1,555 @@
+{{ 'use-article.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign breakpoint_sm = 600
+  assign breakpoint_md = 769
+  assign breakpoint_xxl = 1536
+  assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
+
+  assign img = section.settings.image_desktop
+  assign m_img = section.settings.image_mobile
+
+  assign overlay_position = section.settings.overlay_position | split: ' '
+  assign mobile_overlay_position = section.settings.mobile_overlay_position | split: ' '
+
+  if section.index == 1 or section.settings.prevent_animation
+    assign lazy_load_images = false
+  else
+    assign lazy_load_images = true
+  endif
+%}
+
+{% style %}
+   #{{ section.id }} .image-banner .text-overlay .text-overlay__block{
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+  #{{ section.id }} { background: none; }
+  {%- if section.settings.height_mode == 'fixed' -%}
+    #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_mobile }}px; }
+
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { min-height: {{ section.settings.fixed_height_mobile }}px; }
+        #{{ section.id }} .mobile-stacked--spaced .text-overlay { color: inherit; }
+        #{{ section.id }} .mobile-top-center .container{
+          position:absolute;
+          top:2em;
+        }
+        
+        #{{ section.id }} .mobile-top-center .container .text-overlay{
+          margin:1em auto;
+        }
+      }
+    {%- endif -%}
+    
+    @media (min-width: {{ breakpoint_sm }}px) {
+      #{{ section.id }} .image-banner {
+        min-height: calc({{ section.settings.fixed_height_mobile }}px + ({{ section.settings.fixed_height_desktop }} - {{ section.settings.fixed_height_mobile }}) * ((100vw - {{ breakpoint_sm }}px) / {{ breakpoint_xxl | minus: breakpoint_sm }}));
+      }
+      #{{ section.id }} .image-banner .article-header-banner {
+        width: 80%;
+        height:400px;
+        background-image:url({{ section.settings.image_desktop }});
+          
+      }
+    @media (min-width: {{ breakpoint_md }}px) {
+      #{{ section.id }} .image-banner { min-height: {{ section.settings.fixed_height_desktop }}px; }
+    }
+
+  {%- elsif section.settings.height_mode == 'auto' -%}
+    {%- liquid
+      if img != blank
+        assign img_padding = 1 | divided_by: img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign img_padding = '56.25%'
+      endif
+      if m_img != blank
+        assign m_img_padding = 1 | divided_by: m_img.aspect_ratio | times: 100 | append: '%'
+      else
+        assign m_img_padding = img_padding
+      endif
+    -%}
+    
+    #{{ section.id }} .image-banner::after {
+      content: '';
+      padding-top: {{ img_padding }};
+    }
+
+    {%- if m_img != blank -%}
+      @media (max-width: {{ breakpoint_sm }}px) {
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: {{ m_img_padding }};
+        }
+      }
+    {%- endif -%}
+    {%- if section.settings.mobile_stacked -%}
+      @media (max-width: {{ breakpoint_sm_down }}px) {
+        #{{ section.id }} .image-banner__image { padding-top: {{ m_img_padding }};}
+        #{{ section.id }} .image-banner::after,
+        #{{ section.id }} .media::after {
+          padding-top: 0;
+        }
+      }
+    {%- endif -%}
+  {%- endif -%}
+{% endstyle %}
+
+<div class="section article-box{% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width and bg_color == false or bg_color == settings.bg_color %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container use-image-banner{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;{% if img == blank %}display:none;{% endif %}">
+  <div class="image-banner relative flex {{ overlay_position | last }} {% if section.settings.mobile_position != blank %}{{ mobile_overlay_position }}{% endif %} {{ section.settings.height_mode }}-height ">
+    <div class="relative {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %}w-full sm:w-auto{% endif %}">
+      <div class="article-banner image-banner__image media media--has-overlay absolute top-0 left-0 w-full h-full" {% if section.settings.use_video != blank %}style="display:none;"{% endif %}>
+        {%- if img != blank -%}
+          {%- liquid
+            if section.settings.full_width
+              if section.settings.height_mode == 'screen'
+                assign sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+              endif
+            else
+              capture sizes
+                render 'sizes-attribute'
+              endcapture
+            endif
+
+            if m_img != blank
+              assign desktop_image_class = 'img-fit blur-bg sm:block'
+            else
+              assign desktop_image_class = 'img-fit blur-bg'
+            endif
+          -%}
+
+          {%- if m_img != blank -%}
+            {%- render 'image',
+              image: m_img,
+              widths: '480, 980, 1200, 1400',
+              src_width: 980,
+              src_placeholder: true,
+              sizes: sizes,
+              lazy_load: lazy_load_images,
+              class: 'img-fit mobile-img sm:hidden'
+            -%}
+          {%- endif -%}
+
+          {%- render 'image',
+            image: img,
+            widths: '480, 980, 1200, 1400, 1600, 1920, 2560, 3200',
+            src_width: 1400,
+            src_placeholder: true,
+            sizes: sizes,
+            lazy_load: lazy_load_images,
+            class: desktop_image_class
+          -%}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'media__placeholder img-fit dark' }}
+        {%- endif -%}
+      </div>
+    {%- if section.blocks.size > 0 -%}
+      <div id="{{ section.settings.link_id }}" class="article-header-banner{% unless bg_color %}{% if section.settings.full_width or section.settings.mobile_stacked %} md-down:p-xl{% endif %}{% endunless %} flex {{ overlay_position | first }}{% if section.settings.mob_center_text %} md-down:center{% endif %}">
+        {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {% when 'article-img' %}
+              {% if block.settings.pc_article_picture != blank %}
+                {% liquid
+                  assign pc_article_picture = block.settings.pc_article_picture
+                  
+                %}
+                <div class="article-cover">
+                   {%- render 'image',
+                      image: pc_article_picture,
+                      widths: '480, 980, 1200, 1400',
+                      src_width: 980,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      lazy_load: lazy_load_images,
+                      class: 'img-fit article-cover-img'
+                    -%}
+                </div>
+              {% endif %}
+              <div class="article-cover-info">
+                {%- when 'heading' 
+                  {% liquid
+                    assign blog_title = block.settings.heading
+                    if blog_title != blank
+                      assign article_title = blog_title
+                    else
+                      assign argicle_title = article.title
+                    endif
+                  %}
+                  {%- if block.settings.heading != blank -%}
+                    <h1 id="{{ block.settings.header_link_id }}" class="{% if block.settings.header_class != blank %}{{ block.settings.header_class }}{% endif %} text-overlay__heading heading-color {% if block.settings.header_uppercase %} uppercase{% endif %} {% if block.settings.one_color %} color-text{% endif %} " {{ block.shopify_attributes }} 
+                      >
+                      {% render 'multiline-text' with block.settings.heading %}
+                    </h1>
+                  {%- endif -%}
+  
+                {%- when 'text' -%}
+                  {%- if block.settings.text != blank -%}
+                    <{% if block.settings.enlarge_text != blank %}h6{% else %}p{% endif %} class="text-overlay__block reading-width rte" {{ block.shopify_attributes }}>
+                      {{ block.settings.text }}
+                    </{% if block.settings.enlarge_text != blank %}h6{% else %}p{% endif %}>
+                  {%- endif -%}
+              </div>
+              {% when 'tool' %}
+              {% if block.settings.show_tool != blank %}
+                <div class="share-tools">
+                  <div class="tools-box">
+                    <div class="share" id="share_btn">
+                      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/icon-1225-6.png?v=1735108118" class="img-tool img-fit no-js-hidden" width="200" height="200" />
+                      <span>Share</span>
+                    </div>
+                    <div class="fg-line"></div>
+                    <div class="print" id="print_btn">
+                      <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/icon-1225-5.png?v=1735108118" class="img-tool img-fit no-js-hidden" width="200" height="200" />
+                      <span>Print</span>
+                    </div>
+                  </div>
+                  <div class="share-list">
+                    {% render 'social-share', share_title: article.title, share_url: article.url, share_image: article.image %}
+                  </div>
+                </div>
+              {% endif %}
+            {%- endcase -%}
+          {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+  </div>
+</div>
+</div>
+
+<script>
+  $(function(){
+    $('#print_btn').on('click',function(){
+      window.print();
+    });
+    $('.share-tools').hover(function(){
+      $(this).children('.share-list').toggleClass('show');
+    });
+  });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   document.getElementById('print_btn').addEventListener('click', function() {
+//         window.print();
+//   });
+  
+//   document.getElementById('share_btn').addEventListener('hover', function() {
+//     document.querySelector('.share-list').classList.add('show');
+//   });
+  
+//   document.getElementById('share_btn').addEventListener('mouseleave', function() {
+//     document.querySelector('.share-list').classList.remove('show');
+//   });
+// });
+</script>
+
+{% schema %}
+  {
+    "name": "use article - fei",
+    "class": "use-article",
+    "settings": [
+       {
+          "type": "header",
+          "content": "跳转ID设置"
+        },
+        {
+          "type": "text",
+          "id": "link_id",
+          "label": "Link ID"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_screen",
+          "label": "Full screen",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "label": "Padding Top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "label": "Padding Button",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Article settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tags",
+          "label": "Show tags",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Layout images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image",
+          "info": "For best results, use a landscape shaped image with a width of 3200px."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image (optional)",
+          "info": "For best results, use a square or portrait shaped image. If no mobile image is provided, the large screen image will be used."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Image link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "height_mode",
+          "label": "Image height",
+          "info": "Restricted to 1080px maximum.",
+          "options": [
+            {
+              "value": "auto",
+              "label": "Original image height"
+            },
+            {
+              "value": "fixed",
+              "label": "Fixed height (set below)"
+            },
+            {
+              "value": "screen",
+              "label": "Full screen height"
+            }
+          ],
+          "default": "auto"
+        },
+        {
+          "type": "range",
+          "id": "fixed_height_desktop",
+          "min": 200,
+          "max": 1000,
+          "step": 10,
+          "unit": "px",
+          "label": "Minimum fixed height on large screens",
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "fixed_height_mobile",
+          "min": 250,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Minimum fixed height on mobile",
+          "default": 350
+        },
+        {
+          "type": "select",
+          "id": "overlay_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "text-start",
+              "label": "Left"
+            },
+            {
+              "value": "text-center",
+              "label": "Center"
+            },
+            {
+              "value": "text-end",
+              "label": "Right"
+            }
+          ],
+          "default": "text-center"
+        },
+        {
+          "type": "checkbox",
+          "id": "mob_center_text",
+          "label": "Center text on mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_stacked",
+          "label": "Show text below image on mobile",
+          "info": "Does not apply to \"Full screen height\".",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "text_bg",
+          "label": "Add Font Background",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_position",
+          "label": "Mobile Position",
+          "info":"选中，才可以触发 mobile 位置",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "mobile_overlay_position",
+          "label": "Mobile Text position",
+          "options": [
+            {
+              "value": "mobile-top-center",
+              "label": "Mobile Top center"
+            },
+            {
+              "value": "mobile-middle-center",
+              "label": "Mobile Middle center"
+            },
+            {
+              "value": "mobile-bottom-center",
+              "label": "Mobile Bottom center"
+            }
+          ],
+          "default": "mobile-top-center"
+        },
+       {
+          "type": "color",
+          "id": "transparent_content_color",
+          "label": "Text and button color",
+          "info": "Only applies when the \"Transparent background\" color scheme is chosen and the text shows over an image.",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "tint_color",
+          "label": "Image tint color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "tint_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "Image tint opacity",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "SEO"
+        },
+        {
+          "type": "checkbox",
+          "id": "prevent_animation",
+          "label": "Load the section without animation",
+          "info": "If this section is visible when the page loads, enabling this setting can reduce CLS and may improve site speed scores. [Read more](https://cleancanvas.co.uk/support/enterprise/performance-guide)",
+          "default": false
+        }
+    ],
+    "blocks": [
+      
+      {
+        "type": "heading",
+        "name": "Heading",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default":"Banner Title",
+            "info": "Enter <br> for a line-break."
+          },
+          {
+            "type":"text",
+            "id":"header_class",
+            "label":"Add Class",
+            "info":"h2, h3, h4, h5"
+          },
+          {
+            "type":"checkbox",
+            "id":"header_weight",
+            "label":"Font Weight"
+          },
+          {
+            "type":"checkbox",
+            "id":"header_uppercase",
+            "label":"Font Uppercase",
+            "default":false
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          },
+          {
+            "type": "checkbox",
+            "id": "enlarge_text",
+            "label": "Enlarge text",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type":"article-img",
+        "name":"Article image",
+        "limit":1,
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "pc_article_picture",
+            "label": "Aricle image"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_article_picture",
+            "label": "Aricle image on mobile"
+          }
+        ]
+      },
+      {
+        "type":"tool",
+        "name":"Tool",
+        "limit":1,
+        "settings":[
+          {
+            "type":"checkbox",
+            "id":"show_tool",
+            "label":"Show tools"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "use article - fei"
+      }
+    ]
+  }
+{% endschema %}

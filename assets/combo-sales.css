@@ -1,0 +1,41 @@
+.combo-sales .cc-combo-sales{
+  display:flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+}
+.combo-sales .cc-combo-sales .image-banner__image{
+  flex:1;
+  flex-basis: 40%;
+  position: relative;
+}
+.combo-sales .cc-combo-sales .image-banner__image img{
+  position: relative;
+}
+.combo-sales .cc-combo-sales .combo-collection{
+  flex:1;
+  flex-basis: 60%;
+  position: relative;
+}
+.combo-sales .cc-combo-sales .combo-collection .carousel .featured-collection-products{
+  max-width: calc(var(--page-width, 756px) + var(--gutter) * 2);
+}
+.combo-sales .cc-combo-sales .combo-collection .carousel .slider_w .slider__item .yotpo-widget-instance,
+.combo-sales .cc-combo-sales .combo-collection .carousel .slider_w .slider__item .card__swatches{
+  display:none;
+}
+.combo-sales .cc-combo-sales .combo-collection .carousel .slider_w .slider__item .card:not(.card--related) .price{
+  padding-top:0;
+}
+@media (max-width:768px){
+ .combo-sales .cc-combo-sales{
+    flex-direction: column;
+  }
+  .combo-sales .cc-combo-sales .image-banner__image,
+  .combo-sales .cc-combo-sales .combo-collection{
+    flex-basis: 100%;
+  }
+ .combo-sales .cc-combo-sales .image-banner__image img.pc-img{
+   display:none;
+ }
+}
