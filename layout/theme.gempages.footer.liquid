@@ -339,8 +339,8 @@
   {%- endif -%}
 
   {%- if settings.swatch_colors != blank -%}
-    <link rel="stylesheet" hreflang="en" href="{{ 'swatches.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}"></noscript>
+    <link rel="stylesheet" hreflang="en" href="{{ 'swatches-new.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'swatches-new.css' | asset_url }}"></noscript>
   {%- endif -%}
 
   {{ content_for_header }}
