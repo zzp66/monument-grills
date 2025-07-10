@@ -197,10 +197,10 @@
                             </div>
                           {% else %}
                             <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.text_alignment == 'text-start' %} justify-start{% elsif section.settings.text_alignment == 'text-end' %} justify-end{% else %} justify-center{% endif %}">
+                            {% if block.settings.more_link !=blank %}<a href="{{ block.settings.more_link }}" class="btn btn--secondary" target="_blank">Learn More</a>{% endif %}
                               <{% if block.settings.button_link == blank %}button{% else %}a{% endif %} data-popup="{{ block.settings.class }}" class="{{ block.settings.button_style }} {{ block.settings.class }}" {% if block.settings.add_target != blank %} target="_blank"{% endif %} {% if block.settings.button_link == blank and is_link == false %} role="link" aria-disabled="true"{% else %} href="{{ block.settings.button_link }}" target="_blank"{% endif %}  style="background:{{ block.settings.button_color }};border-color:{{ block.settings.button_color }};color:{{ block.settings.button_text_color }};">
                                 {{- block.settings.button_label | escape -}}
                               </{% if block.settings.button_link == blank %}button{% else %}a{% endif %}>
-                            {% if block.settings.more_link !=blank %}<a href="{{ block.settings.more_link }}" class="btn btn--secondary" target="_blank">Learn More</a>{% endif %}
                             </div>
                           {% endif %}
                         </div>

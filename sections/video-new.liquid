@@ -1,4 +1,3 @@
-
 {% style %}
   .new-video_section .video-container {
     position: relative;
@@ -7,35 +6,63 @@
     margin: 0 auto;
     overflow: hidden;
   }
-  
-.new-video_section .video-player {
+
+  .new-video_section .video-player {
     width: 100%;
     height: 700px;
     display: block;
     object-fit: cover;
-}
+  }
 
-  .new-video_section  .video-overlay {
+  .new-video_section .video-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: opacity 0.3s ease;
+  }
+  .video-title {
     font-size: 64px;
     font-weight: bold;
     color: #fff;
   }
+  .video-subtitle {
+    font-size: 24px;
+    font-weight: 500;
+    color: #fff;
+  }
+  .video-btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 
- .new-video_section  .video-container:hover .video-overlay {
+  .video-btn a.video-btn-url {
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #c00000;
+    color: #fff;
+    border: 2px solid transparent;
+    transition-duration: 0.4s;
+  }
+  .video-btn a.video-btn-url:hover {
+    background: #fff;
+    color: #c00000;
+    border: 2px solid #fff;
+  }
+
+  .new-video_section .video-container:hover .video-overlay {
     opacity: 1;
   }
 
-  .new-video_section  .play-button {
-    background: rgba(255,255,255,0.9);
+  .new-video_section .play-button {
+    background: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 50%;
     width: 60px;
@@ -47,11 +74,11 @@
     transition: transform 0.3s ease;
   }
 
- .new-video_section  .play-button:hover {
+  .new-video_section .play-button:hover {
     transform: scale(1.1);
   }
 
- .new-video_section  .play-icon {
+  .new-video_section .play-icon {
     width: 0;
     height: 0;
     border-style: solid;
@@ -61,82 +88,93 @@
   }
   .new-video_section .video-overlay {
     background: rgb(0 0 0 / 30%);
-}
-  @media(max-width:768px){
+  }
+  @media (max-width: 768px) {
     .new-video_section .video-player {
-          height: 350px;
-      }
-    .new-video_section .video-overlay{
-          font-size: 32px;
+      height: 350px;
+    }
+    .video-title {
+      font-size: 32px;
+    }
+    .video-subtitle {
+      font-size: 16px;
     }
   }
 {% endstyle %}
 <section class="new-video_section">
-<div class="video-container">
-  <video 
-    class="video-player" 
-    autoplay 
-    muted 
-    loop 
-    playsinline
-    poster="{{ video_poster | default: '' }}"
-  >
-    <source src="{{ section.settings.video_shopify }}" type="video/mp4">
-    您的浏览器不支持视频播放。
-  </video>
-  <div class="video-overlay">
-   {{ section.settings.title }}
+  <div class="video-container">
+    <video
+      class="video-player"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="{{ video_poster | default: '' }}"
+    >
+      <source src="{{ section.settings.video_shopify }}" type="video/mp4">
+      您的浏览器不支持视频播放。
+    </video>
+    <div class="video-overlay">
+      <div class="video-title">{{ section.settings.title }}</div>
+      <div class="video-subtitle">{{ section.settings.subtitle }}</div>
+      {% if section.settings.btn != blank %}
+        <div class="video-btn">
+          <a href="{{ section.settings.btn_url }}" class="video-btn-url">{{ section.settings.btn }}</a>
+        </div>
+      {% endif %}
+    </div>
   </div>
-</div>
 </section>
-
-
 
 {% schema %}
 {
   "name": "Video New",
-  
+
   "class": "cc-new-video",
   "settings": [
- 
     {
       "type": "text",
       "id": "video_shopify",
       "label": "Video url"
     },
-   
-    
+
     {
       "type": "image_picker",
       "id": "poster_image",
       "label": "Cover image"
     },
-     {
-          "type": "text",
-          "id": "title",
-          "label": "Heading"
-        }
-
-
- 
-   
- 
-    
-   
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button Link"
+    }
   ],
 
   "presets": [
     {
-      "name": "Video New",
-     
+      "name": "Video New"
     }
   ]
- 
 }
 {% endschema %}
 {% style %}
   @media (max-width:850px){
-   
+
     }
   }
 {% endstyle %}

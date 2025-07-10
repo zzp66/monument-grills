@@ -23,27 +23,26 @@
     justify-content: space-between;
   }
 
-
-
   .awards-image {
     margin: 0 45px;
-  
-  
   }
 
-.awards-info {
+  .awards-info {
     font-size: 18px;
     text-align: center;
     line-height: 1.4;
-  padding: 0 15px;
-}
-.awards-title {     font-size: 24px;     font-weight: 500;     margin-bottom: 8px;     color: #333;     text-align: center;     line-height: 1.2;     text-transform: uppercase;        padding: 0 15px;
-                    
-
-}
-
-
-  
+    padding: 0 15px;
+  }
+  .awards-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: center;
+    line-height: 1.2;
+    text-transform: uppercase;
+    padding: 0 15px;
+  }
 
   .awards-price {
     font-size: 18px;
@@ -57,7 +56,7 @@
     height: 40px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .swiper-button-next:after,
@@ -70,92 +69,124 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-section.awards_section {
-    background: #EFEEEE;
-      padding: 75px 0 105px;
-      margin-bottom: 104px;
-}
-  .award__head{
+  section.awards_section {
+    background: #efeeee;
+    padding: 75px 0 105px;
+    margin-bottom: 104px;
+  }
+  .award__head {
     text-align: center;
+    margin: 0;
+  }
+  .awards-title-box {
     margin-bottom: 60px;
+  }
+  .award-btn-box {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .award-btn-box a {
+    padding: 10px 20px;
+    background: #c00000;
+    border-radius: 5px;
+    overflow: hidden;
+    color: #fff;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition-duration: 0.4s;
+  }
+  .award-btn-box a:hover {
+    color: #c00000;
+    background: #fff;
+    border: 2px solid #c00000;
   }
   @media screen and (max-width: 991px) {
     .awards-slider-container {
       padding: 0 15px;
     }
+    .awards-title-box {
+      margin-bottom: 40px;
+    }
     .awards-title {
-    font-size: 14px;
+      font-size: 14px;
     }
     .awards-info {
-    font-size: 14px;
+      font-size: 14px;
     }
     .awards-card {
-    padding: 20px 0 25px;
-    height: 330px;
+      padding: 20px 0 25px;
+      height: 330px;
     }
-    .award__head {
-    margin-bottom: 30px;
-  }
     section.awards_section {
-    padding: 50px 0 50px;
-    margin-bottom: 50px;
-}
-    .awards_page{
-          position: relative;
-    margin-top: 20px;
-    background: #ccc;
+      padding: 50px 0 50px;
+      margin-bottom: 50px;
+    }
+    .awards_page {
+      position: relative;
+      margin-top: 20px;
+      background: #ccc;
     }
     .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-    background: #c00000;
+      background: #c00000;
     }
   }
 {% endstyle %}
 <section class="awards_section">
-  <h2 class="award__head">{{ section.settings.head }}</h2>
-<div class="awards-slider-container">
-  <div class="awards-slider awarswiper">
-    <div class="swiper-wrapper">
-      {% for block in section.blocks %}
-        <div class="swiper-slide">
-          <div class="awards-card">
-             <div class="awards-title">{{ block.settings.title }}</div>
-            <img src="{{ block.settings.image | img_url: 'master' }}" 
-                 alt="{{ block.settings.title }}"
-                 class="awards-image"
-                 loading="lazy">
-             
+  <div class="awards-title-box">
+    <h2 class="award__head">{{ section.settings.head }}</h2>
+    {% if section.settings.head_btn != blank %}
+      <div class="award-btn-box">
+        <a href="{{ section.settings.head_btn_a }}">
+          <div class="award-btn">{{ section.settings.head_btn }}</div>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="awards-slider-container">
+    <div class="awards-slider awarswiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide">
+            <div class="awards-card">
+              <div class="awards-title">{{ block.settings.title }}</div>
+              <img
+                src="{{ block.settings.image | img_url: 'master' }}"
+                alt="{{ block.settings.title }}"
+                class="awards-image"
+                loading="lazy"
+              >
+
               <div class="awards-info">{{ block.settings.desc }}</div>
+            </div>
           </div>
-        </div>
-      {% endfor %}
-    </div>
+        {% endfor %}
+      </div>
 
       <div class="swiper-pagination awards_page"></div>
-    
+    </div>
   </div>
-</div>
 </section>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     new Swiper('.awarswiper', {
       slidesPerView: 4,
       spaceBetween: 24,
       loop: false,
-     pagination: {
-            el: ".awards_page",
-            type: "progressbar",
-          },
+      pagination: {
+        el: '.awards_page',
+        type: 'progressbar',
+      },
       breakpoints: {
         320: {
           slidesPerView: 2,
           spaceBetween: 12,
-          
         },
         768: {
           slidesPerView: 4,
-          spaceBetween: 24
-        }
-      }
+          spaceBetween: 24,
+        },
+      },
     });
   });
 </script>
@@ -163,21 +194,31 @@ section.awards_section {
 {% schema %}
 {
   "name": "Awards",
-   "settings": [
-   
+  "settings": [
     {
       "type": "text",
       "id": "head",
       "label": "title"
+    },
+    {
+      "type": "text",
+      "id": "head_btn",
+      "label": "Button Text",
+      "default": "Learn More",
+      "info": "该字段未填时，不会显示按钮"
+    },
+    {
+      "type": "url",
+      "id": "head_btn_a",
+      "label": "Button Link"
     }
-    
   ],
   "blocks": [
     {
       "type": "item",
       "name": "item",
       "settings": [
-         {
+        {
           "type": "text",
           "id": "title",
           "label": "title"
@@ -187,13 +228,12 @@ section.awards_section {
           "id": "image",
           "label": "image"
         },
-       
+
         {
           "type": "textarea",
           "id": "desc",
           "label": "description"
         }
-        
       ]
     }
   ],
@@ -203,4 +243,4 @@ section.awards_section {
     }
   ]
 }
-{% endschema %} 
+{% endschema %}
