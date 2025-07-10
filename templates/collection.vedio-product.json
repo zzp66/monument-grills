@@ -1,1 +1,535 @@
-{"sections":{"collection-banner":{"type":"main-collection-banner","disabled":true,"settings":{"show_collection_title":true,"show_product_count":true,"show_collection_description":true,"text_align":"text-start","collection_image":"natural","use_product_image":false,"text_width":"standard","color_scheme":"default"}},"ecom_count_down_section_V8Eiy3":{"type":"ecom-count-down-section","custom_css":[],"settings":{}},"collection-products":{"type":"main-collection-products","blocks":{"wide_promotion_EBLgLz":{"type":"wide-promotion","settings":{"position":"top","view":"grid_list","hide_on_filter":true,"min_height":240,"icon_position":"top_right","prevent_animation":true,"image":"{{ collection.metafields.custom.wide_promotion_image.value }}","link_url":"{{ collection.metafields.custom.wide_url.value }}","content":"{{ collection.title }}","text_type_scale":"h6","collection_description":"<p>{{ collection.description }}<\/p>","pc_collection_des":"30","mobile_collection_des":"24px","collection_description_tag":"h2","text_width":800,"text_alignment":"justify-center items-center text-center","button_label":"","button_style":"btn btn--primary","text_color":"#ffffff","tint_color":"#000000","tint_opacity":0}},"image_promotion_iG6BmF":{"type":"image-promotion","settings":{"use_video":true,"video_external":"","upload_video":"{{ collection.metafields.custom.media_promotion_image.value }}","upload_video_url":"\/collections\/combo-kit-1","video_description":"","video_size":"md","video_autoplay":true,"position":1,"view":"grid_list","hide_on_filter":false,"min_height":240,"image":"{{ collection.metafields.custom.media_promotion_image.value }}","link_url":"{{ collection.metafields.custom.media_url.value }}","content":"<p>{{ collection.metafields.custom.media_title.value }}<\/p>","sub_font_weight":true,"text_type_scale":"--h4-font-size","sub_title":"{{ collection.metafields.custom.media_sub_title.value }}","sub_title_size":"1em","sub_title_color":"#ffffff","text_width":500,"text_alignment":"justify-center items-start text-center","button_label":"","button_style":"btn btn--primary","bg_primary":"#c00000","text_primary":"#ffffff","text_secondary":"#c00000","text_color":"#ffffff","tint_color":"#000000","tint_opacity":0}},"our_services_rfFkt4":{"type":"our-services","settings":{"pc_custom_icon":"shopify:\/\/shop_images\/pc_Our_services_20241125.jpg","height_mode":"auto","link":"","prevent_animation":false}}},"block_order":["wide_promotion_EBLgLz","image_promotion_iG6BmF","our_services_rfFkt4"],"custom_css":[".promo__content {padding: 10px;}"],"settings":{"list_layout":false,"hide_add_cart":false,"products_per_page":24,"card_size_mobile":"small","card_size":"medium","show_layout_toggle":true,"enable_filtering":true,"filters_open_lg":true,"stick_on_scroll":true,"show_filter_counts":false,"expand_filters":false,"show_filter_deadends":false,"max_filter_options":6,"enable_sorting":true,"show_feat_sort_opt":false,"sort_first":true}},"icons_with_text_YNqG6w":{"type":"icons-with-text","blocks":{"item_Hc3GEE":{"type":"item","settings":{"icon":"truck","custom_icon":"shopify:\/\/shop_images\/icons8-free-shipping-100.png","heading":"Free shipping","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>Over $54.99<\/p>","link":""}},"item_9VHM3m":{"type":"item","settings":{"icon":"price_tag","custom_icon":"shopify:\/\/shop_images\/icons8-refund-100.png","heading":"Refund Guarantee","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>30 Days<\/p>","link":""}},"item_iWE3e6":{"type":"item","settings":{"icon":"return","custom_icon":"shopify:\/\/shop_images\/icons8-e-commerce-100.png","heading":"Installment Payment","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>4 interest-free periods<\/p>","link":""}},"item_m8E6pR":{"type":"item","settings":{"icon":"chat_bubble","custom_icon":"shopify:\/\/shop_images\/icons8-request-service-100.png","heading":"Booking Installation","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>Online Reservation<\/p>","link":""}}},"block_order":["item_Hc3GEE","item_9VHM3m","item_iWE3e6","item_m8E6pR"],"disabled":true,"settings":{"link_id":"","padding_top":30,"padding_bottom":30,"show_gird":false,"show_row":false,"mobile_show_gird":false,"heading":"","title_type_scale":"medium","heading_align":"text-start","font_weight":false,"font_uppercase":false,"data_list":false,"hr_line":true,"data_color":"","number1_name":"","number1_des":"","number2_name":"","number2_des":"","show_online_display":false,"icon_size":68,"text_type_scale":"medium","icon_position":"above","mobile_stack":false,"show_all_on_mobile":true,"section_height":"medium","bg":"#f9f9f9","color_scheme":"1","full_width":true,"dividers":"none","prevent_animation":false}},"collections_reviews_f9JjQY":{"type":"collections-reviews","settings":{"link_id":"","full_screen":false,"full_width":true,"padding_top":10,"padding_bottom":10,"page_text":"All Reviews","page_link":"https:\/\/monumentgrills.com\/pages\/monument-grills-all-reviews","speed_s":"5000","reviews_count":"9","reviews_bg":"rgba(0,0,0,0)"}},"media_with_text_KX77Uj":{"type":"media-with-text","blocks":{"heading_AcrUbd":{"type":"heading","settings":{"heading":"{{ collection.metafields.custom.product_story.value }}","one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_size":"h3","title_weight":false,"title_uppercase":false,"heading_h1":false}},"text_nDLaMt":{"type":"text","settings":{"text":"<p>{{ collection.metafields.custom.story_description | metafield_tag }}<\/p>","enlarge_text":false}}},"block_order":["heading_AcrUbd","text_nDLaMt"],"settings":{"full_screen":false,"rounded_design":false,"grid_layout":false,"angle_size":"","padding_top":10,"padding_bottom":10,"full_screen_bg":"","image":"{{ collection.metafields.custom.stories_with_pictures.value }}","img_url":"","img_alt":"","video_external":"","video_description":"","video_autoplay":false,"layout":"right","image_fit":"contain","media_width":50,"media_scale":100,"text_align":"text-start","color_scheme":"none","only_content_color_scheme":false}},"media_with_text_q7rDyW":{"type":"media-with-text","blocks":{"heading_r6G4mF":{"type":"heading","settings":{"heading":"{{ collection.metafields.custom.innovative_technology.value }}","one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_size":"h3","title_weight":false,"title_uppercase":false,"heading_h1":false}},"text_4fHtKA":{"type":"text","settings":{"text":"{{ collection.metafields.custom.technical_points | metafield_tag }}","enlarge_text":false}}},"block_order":["heading_r6G4mF","text_4fHtKA"],"settings":{"full_screen":false,"rounded_design":false,"grid_layout":false,"angle_size":"","padding_top":10,"padding_bottom":10,"full_screen_bg":"","image":"{{ collection.metafields.custom.technical_pictures.value }}","img_url":"","img_alt":"","video_external":"","video_description":"","video_autoplay":false,"layout":"left","image_fit":"contain","media_width":50,"media_scale":100,"text_align":"text-start","color_scheme":"none","only_content_color_scheme":false}},"media_with_text_jdXqLV":{"type":"media-with-text","blocks":{"heading_mqkaf8":{"type":"heading","settings":{"heading":"{{ collection.metafields.custom._recipe_title.value }}","one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_size":"h3","title_weight":false,"title_uppercase":false,"heading_h1":false}},"text_9jaYyt":{"type":"text","settings":{"text":"<p>{{ collection.metafields.custom.recipe_description | metafield_tag }}<\/p>","enlarge_text":false}},"button_LtVpgE":{"type":"button","settings":{"button_label":"EXPLORE RECIPES","button_link":"{{ collection.metafields.custom.recipe_url.value }}","button_style":"btn btn--primary","btn_font_color":"","btn_bg_color":"","is_use_icon":false,"button_icon_color":"","button_icon_alt":"","icon_layout":"right","image_fit":"contain","button_label2":"","button_link2":"","button_style2":"btn btn--primary"}}},"block_order":["heading_mqkaf8","text_9jaYyt","button_LtVpgE"],"settings":{"full_screen":false,"rounded_design":false,"grid_layout":false,"angle_size":"","padding_top":10,"padding_bottom":10,"full_screen_bg":"","image":"{{ collection.metafields.custom.recipe_pictures.value }}","img_url":"","img_alt":"","video_external":"","video_description":"","video_autoplay":false,"layout":"right","image_fit":"contain","media_width":50,"media_scale":100,"text_align":"text-start","color_scheme":"none","only_content_color_scheme":false}},"faq_npKtRY":{"type":"faq","blocks":{"question_JibXPk":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item01_title.value }}","text":"{{ collection.metafields.custom.faq_item01_description | metafield_tag }}","read_number":0}},"question_HQHFyh":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item02_title.value }}","text":"{{ collection.metafields.custom.faq_item02_description | metafield_tag }}","read_number":0}},"question_f48MCC":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item03_title.value }}","text":"{{ collection.metafields.custom.faq_item03_description | metafield_tag }}","read_number":0}},"question_JPjNFw":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item04_title.value }}","text":"{{ collection.metafields.custom.faq_item04description | metafield_tag }}","read_number":0}},"question_tz7x4h":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item05_title.value }}","text":"{{ collection.metafields.custom.faq_item05_description | metafield_tag }}","read_number":0}},"question_Gqi7BU":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item06_title.value }}","text":"{{ collection.metafields.custom.faq_item06_description | metafield_tag }}","read_number":0}},"question_bKx6em":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item07_title.value }}","text":"{{ collection.metafields.custom.faq_item07_description | metafield_tag }}","read_number":0}},"question_7YKPVB":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item08_title.value }}","text":"{{ collection.metafields.custom.faq_item08_description | metafield_tag }}","read_number":0}},"question_xNxLVF":{"type":"question","settings":{"icon":"none","heading":"{{ collection.metafields.custom.faq_item09_title.value }}","text":"{{ collection.metafields.custom.faq_item09_description | metafield_tag }}","read_number":0}}},"block_order":["question_JibXPk","question_HQHFyh","question_f48MCC","question_JPjNFw","question_tz7x4h","question_Gqi7BU","question_bKx6em","question_7YKPVB","question_xNxLVF"],"settings":{"heading":"{{ collection.metafields.custom.faq_title.value }}","heading_align":"text-center","color_scheme":"1","full_width":true}}},"order":["collection-banner","ecom_count_down_section_V8Eiy3","collection-products","icons_with_text_YNqG6w","collections_reviews_f9JjQY","media_with_text_KX77Uj","media_with_text_q7rDyW","media_with_text_jdXqLV","faq_npKtRY"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_title": true,
+        "show_product_count": true,
+        "show_collection_description": true,
+        "text_align": "text-start",
+        "collection_image": "natural",
+        "use_product_image": false,
+        "text_width": "standard",
+        "color_scheme": "default"
+      }
+    },
+    "collection-products": {
+      "type": "main-collection-products",
+      "blocks": {
+        "wide_promotion_EBLgLz": {
+          "type": "wide-promotion",
+          "settings": {
+            "position": "top",
+            "view": "grid_list",
+            "hide_on_filter": true,
+            "min_height": 240,
+            "icon_position": "top_right",
+            "prevent_animation": true,
+            "image": "{{ collection.metafields.custom.wide_promotion_image.value }}",
+            "link_url": "{{ collection.metafields.custom.wide_url.value }}",
+            "content": "{{ collection.title }}",
+            "text_type_scale": "h6",
+            "collection_description": "<p>{{ collection.description }}</p>",
+            "pc_collection_des": "30",
+            "mobile_collection_des": "24px",
+            "collection_description_tag": "h2",
+            "text_width": 800,
+            "text_alignment": "justify-center items-center text-center",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "text_color": "#ffffff",
+            "tint_color": "#000000",
+            "tint_opacity": 0
+          }
+        },
+        "image_promotion_iG6BmF": {
+          "type": "image-promotion",
+          "settings": {
+            "use_video": true,
+            "video_external": "",
+            "upload_video": "{{ collection.metafields.custom.media_promotion_image.value }}",
+            "upload_video_url": "/collections/combo-kit-1",
+            "video_description": "",
+            "video_size": "md",
+            "video_autoplay": true,
+            "position": 1,
+            "view": "grid_list",
+            "hide_on_filter": false,
+            "min_height": 240,
+            "image": "{{ collection.metafields.custom.media_promotion_image.value }}",
+            "link_url": "{{ collection.metafields.custom.media_url.value }}",
+            "content": "<p>{{ collection.metafields.custom.media_title.value }}</p>",
+            "sub_font_weight": true,
+            "text_type_scale": "--h4-font-size",
+            "sub_title": "{{ collection.metafields.custom.media_sub_title.value }}",
+            "sub_title_size": "1em",
+            "sub_title_color": "#ffffff",
+            "text_width": 500,
+            "text_alignment": "justify-center items-start text-center",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "bg_primary": "#c00000",
+            "text_primary": "#ffffff",
+            "text_secondary": "#c00000",
+            "text_color": "#ffffff",
+            "tint_color": "#000000",
+            "tint_opacity": 0
+          }
+        },
+        "our_services_rfFkt4": {
+          "type": "our-services",
+          "settings": {
+            "pc_custom_icon": "shopify://shop_images/pc_Our_services_20241125.jpg",
+            "height_mode": "auto",
+            "link": "",
+            "prevent_animation": false
+          }
+        }
+      },
+      "block_order": [
+        "wide_promotion_EBLgLz",
+        "image_promotion_iG6BmF",
+        "our_services_rfFkt4"
+      ],
+      "custom_css": [
+        ".promo__content {padding: 10px;}"
+      ],
+      "settings": {
+        "list_layout": false,
+        "hide_add_cart": false,
+        "products_per_page": 24,
+        "card_size_mobile": "small",
+        "card_size": "medium",
+        "show_layout_toggle": true,
+        "enable_filtering": true,
+        "filters_open_lg": true,
+        "stick_on_scroll": true,
+        "show_filter_counts": false,
+        "expand_filters": false,
+        "show_filter_deadends": false,
+        "max_filter_options": 6,
+        "enable_sorting": true,
+        "show_feat_sort_opt": false,
+        "sort_first": true
+      }
+    },
+    "icons_with_text_YNqG6w": {
+      "type": "icons-with-text",
+      "blocks": {
+        "item_Hc3GEE": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "custom_icon": "shopify://shop_images/icons8-free-shipping-100.png",
+            "heading": "Free shipping",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>Over $54.99</p>",
+            "link": ""
+          }
+        },
+        "item_9VHM3m": {
+          "type": "item",
+          "settings": {
+            "icon": "price_tag",
+            "custom_icon": "shopify://shop_images/icons8-refund-100.png",
+            "heading": "Refund Guarantee",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>30 Days</p>",
+            "link": ""
+          }
+        },
+        "item_iWE3e6": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "custom_icon": "shopify://shop_images/icons8-e-commerce-100.png",
+            "heading": "Installment Payment",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>4 interest-free periods</p>",
+            "link": ""
+          }
+        },
+        "item_m8E6pR": {
+          "type": "item",
+          "settings": {
+            "icon": "chat_bubble",
+            "custom_icon": "shopify://shop_images/icons8-request-service-100.png",
+            "heading": "Booking Installation",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>Online Reservation</p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_Hc3GEE",
+        "item_9VHM3m",
+        "item_iWE3e6",
+        "item_m8E6pR"
+      ],
+      "disabled": true,
+      "settings": {
+        "link_id": "",
+        "padding_top": 30,
+        "padding_bottom": 30,
+        "show_gird": false,
+        "show_row": false,
+        "mobile_show_gird": false,
+        "heading": "",
+        "title_type_scale": "medium",
+        "heading_align": "text-start",
+        "font_weight": false,
+        "font_uppercase": false,
+        "data_list": false,
+        "hr_line": true,
+        "data_color": "",
+        "number1_name": "",
+        "number1_des": "",
+        "number2_name": "",
+        "number2_des": "",
+        "show_online_display": false,
+        "icon_size": 68,
+        "text_type_scale": "medium",
+        "icon_position": "above",
+        "mobile_stack": false,
+        "show_all_on_mobile": true,
+        "section_height": "medium",
+        "bg": "#f9f9f9",
+        "color_scheme": "1",
+        "full_width": true,
+        "dividers": "none",
+        "prevent_animation": false
+      }
+    },
+    "collections_reviews_f9JjQY": {
+      "type": "collections-reviews",
+      "settings": {
+        "link_id": "",
+        "full_screen": false,
+        "full_width": true,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "page_text": "All Reviews",
+        "page_link": "https://monumentgrills.com/pages/monument-grills-all-reviews",
+        "speed_s": "5000",
+        "reviews_count": "9",
+        "reviews_bg": "rgba(0,0,0,0)"
+      }
+    },
+    "media_with_text_KX77Uj": {
+      "type": "media-with-text",
+      "blocks": {
+        "heading_AcrUbd": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ collection.metafields.custom.product_story.value }}",
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_size": "h3",
+            "title_weight": false,
+            "title_uppercase": false,
+            "heading_h1": false
+          }
+        },
+        "text_nDLaMt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ collection.metafields.custom.story_description | metafield_tag }}</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_AcrUbd",
+        "text_nDLaMt"
+      ],
+      "settings": {
+        "full_screen": false,
+        "rounded_design": false,
+        "grid_layout": false,
+        "angle_size": "",
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "full_screen_bg": "",
+        "image": "{{ collection.metafields.custom.stories_with_pictures.value }}",
+        "img_url": "",
+        "img_alt": "",
+        "video_external": "",
+        "video_description": "",
+        "video_autoplay": false,
+        "layout": "right",
+        "image_fit": "contain",
+        "media_width": 50,
+        "media_scale": 100,
+        "text_align": "text-start",
+        "color_scheme": "none",
+        "only_content_color_scheme": false
+      }
+    },
+    "media_with_text_q7rDyW": {
+      "type": "media-with-text",
+      "blocks": {
+        "heading_r6G4mF": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ collection.metafields.custom.innovative_technology.value }}",
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_size": "h3",
+            "title_weight": false,
+            "title_uppercase": false,
+            "heading_h1": false
+          }
+        },
+        "text_4fHtKA": {
+          "type": "text",
+          "settings": {
+            "text": "{{ collection.metafields.custom.technical_points | metafield_tag }}",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_r6G4mF",
+        "text_4fHtKA"
+      ],
+      "settings": {
+        "full_screen": false,
+        "rounded_design": false,
+        "grid_layout": false,
+        "angle_size": "",
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "full_screen_bg": "",
+        "image": "{{ collection.metafields.custom.technical_pictures.value }}",
+        "img_url": "",
+        "img_alt": "",
+        "video_external": "",
+        "video_description": "",
+        "video_autoplay": false,
+        "layout": "left",
+        "image_fit": "contain",
+        "media_width": 50,
+        "media_scale": 100,
+        "text_align": "text-start",
+        "color_scheme": "none",
+        "only_content_color_scheme": false
+      }
+    },
+    "media_with_text_jdXqLV": {
+      "type": "media-with-text",
+      "blocks": {
+        "heading_mqkaf8": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ collection.metafields.custom._recipe_title.value }}",
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_size": "h3",
+            "title_weight": false,
+            "title_uppercase": false,
+            "heading_h1": false
+          }
+        },
+        "text_9jaYyt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ collection.metafields.custom.recipe_description | metafield_tag }}</p>",
+            "enlarge_text": false
+          }
+        },
+        "button_LtVpgE": {
+          "type": "button",
+          "settings": {
+            "button_label": "EXPLORE RECIPES",
+            "button_link": "{{ collection.metafields.custom.recipe_url.value }}",
+            "button_style": "btn btn--primary",
+            "btn_font_color": "",
+            "btn_bg_color": "",
+            "is_use_icon": false,
+            "button_icon_color": "",
+            "button_icon_alt": "",
+            "icon_layout": "right",
+            "image_fit": "contain",
+            "button_label2": "",
+            "button_link2": "",
+            "button_style2": "btn btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_mqkaf8",
+        "text_9jaYyt",
+        "button_LtVpgE"
+      ],
+      "settings": {
+        "full_screen": false,
+        "rounded_design": false,
+        "grid_layout": false,
+        "angle_size": "",
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "full_screen_bg": "",
+        "image": "{{ collection.metafields.custom.recipe_pictures.value }}",
+        "img_url": "",
+        "img_alt": "",
+        "video_external": "",
+        "video_description": "",
+        "video_autoplay": false,
+        "layout": "right",
+        "image_fit": "contain",
+        "media_width": 50,
+        "media_scale": 100,
+        "text_align": "text-start",
+        "color_scheme": "none",
+        "only_content_color_scheme": false
+      }
+    },
+    "faq_npKtRY": {
+      "type": "faq",
+      "blocks": {
+        "question_JibXPk": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item01_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item01_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_HQHFyh": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item02_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item02_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_f48MCC": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item03_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item03_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_JPjNFw": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item04_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item04description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_tz7x4h": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item05_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item05_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_Gqi7BU": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item06_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item06_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_bKx6em": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item07_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item07_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_7YKPVB": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item08_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item08_description | metafield_tag }}",
+            "read_number": 0
+          }
+        },
+        "question_xNxLVF": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ collection.metafields.custom.faq_item09_title.value }}",
+            "text": "{{ collection.metafields.custom.faq_item09_description | metafield_tag }}",
+            "read_number": 0
+          }
+        }
+      },
+      "block_order": [
+        "question_JibXPk",
+        "question_HQHFyh",
+        "question_f48MCC",
+        "question_JPjNFw",
+        "question_tz7x4h",
+        "question_Gqi7BU",
+        "question_bKx6em",
+        "question_7YKPVB",
+        "question_xNxLVF"
+      ],
+      "settings": {
+        "heading": "{{ collection.metafields.custom.faq_title.value }}",
+        "heading_align": "text-center",
+        "color_scheme": "1",
+        "full_width": true
+      }
+    }
+  },
+  "order": [
+    "collection-banner",
+    "collection-products",
+    "icons_with_text_YNqG6w",
+    "collections_reviews_f9JjQY",
+    "media_with_text_KX77Uj",
+    "media_with_text_q7rDyW",
+    "media_with_text_jdXqLV",
+    "faq_npKtRY"
+  ]
+}
