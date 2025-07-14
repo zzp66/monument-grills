@@ -1,0 +1,106 @@
+<style>
+  .hero-banner {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    min-height: 500px;
+    padding: 114px 30px 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-banner .hero-background {
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .hero-background.mobile {
+    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/reviews_hero_mobile3.jpg);
+    background-color: transparent;
+    background-position: center center;
+  }
+  .hero-background.desktop {
+    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/reviews_hero_desktop3.jpg);
+    background-color: transparent;
+    background-position: center center;
+  }
+
+  .hero-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-container .page-title {
+    color: #fff;
+  }
+
+  .page-title-btn-box a.page-title-btn {
+    background: #fbb040;
+    border: 1px solid #fbb040;
+    border-radius: 40px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1.2;
+    box-sizing: border-box;
+    vertical-align: middle;
+    transition: border-color 0.18s linear, color 0.18s linear, background 0.18s linear;
+    text-align: center;
+  }
+
+  .hero-container @media (max-width: 767px) {
+    .hero-banner > .hero-container > * {
+      max-width: 70%;
+    }
+  }
+  @media (min-width: 768px) {
+    .hero-banner > .hero-container > * {
+      max-width: 475px;
+    }
+    .hero-banner > .hero-container > p {
+      max-width: 350px;
+    }
+  }
+</style>
+<div class="reviews-banner">
+  <div class="hero-banner">
+    <div class="hero-background mobile"></div>
+    <div class="hero-background desktop"></div>
+    <div class="hero-container">
+      <h1 id="page-title-heading" class="page-title">
+        Over 60,000 <br>
+        5-star reviews
+      </h1>
+      <p class="page-title-info">Read why Litter-Robot is the highest-rated self-cleaning litter box in the world.</p>
+      <div class="page-title-btn-box">
+        <a class="page-title-btn" href="#reviews">Read reviews</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reviews Banner",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reviews Banner"
+    }
+  ]
+}
+{% endschema %}

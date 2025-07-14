@@ -1,0 +1,66 @@
+<style>
+  .reviews-grid-img {
+    background-color: #fff;
+  }
+  .reviews-grid-img-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+      'c-net google facebook'
+      'c-net quote quote';
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+  }
+  .review-grid-item {
+    position: relative;
+    padding: 30px;
+  }
+  .review-grid-item.c-net {
+    grid-area: c-net;
+    padding-bottom: 0;
+  }
+  img.c-net-img1 {
+  }
+  img.c-net-img2 {
+  }
+  img.c-net-img3 {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .review-grid-item.google {
+    grid-area: google;
+  }
+  .review-grid-item.google img {
+  }
+  .review-grid-item.facebook {
+    grid-area: facebook;
+  }
+  .review-grid-item.facebook img {
+  }
+  .review-grid-item.facebook p {
+  }
+  .review-grid-item.quote {
+    grid-area: quote;
+  }
+  img.quote-img1 {
+  }
+</style>
+<div class="reviews-grid-img">
+  <div class="reviews-grid-img-wrapper">
+    <div class="review-grid-item c-net"></div>
+    <div class="review-grid-item google"></div>
+    <div class="review-grid-item quote"></div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Reviews Grid Img",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reviews Grid Img"
+    }
+  ]
+}
+{% endschema %}

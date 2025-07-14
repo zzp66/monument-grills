@@ -1,23 +1,35 @@
+<style>
+  .reviews-box {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .yotpo-seo-page-layout {
+    margin: auto 20px;
+  }
+  .yotpo-head .yotpo-headline[data-v-4e56e6dd] {
+    font-size: 54px;
+    font-weight: bold !important;
+  }
+  .yotpo-bottom-line .yotpo-bottom-line-left-panel.yotpo-bottom-line-score[data-v-40c00a09] {
+    font-weight: bold;
+  }
+</style>
 <script src="https://cdn-widgetsrepository.yotpo.com/v1/loader/UQM2B4IW5kRH6em3tk8mbfGKc7242zHRB54vhx50" async></script>
 
-<div class="section {% if section.settings.full_width %}section--full-width {% endif %}  {% if section.settings.full_screen %}{% else %} {{ section.settings.class }}{% endif %}" id="{{ section.id }}" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: auto;">
-  <div class="reviews-warp relative flex">
-    <div id="{{ section.settings.link_id }}" class="reviews-box {% if section.settings.full_screen != blank %} {% else %}container {% endif %}">
-      <div class="yotpo-widget-instance" data-yotpo-instance-id="600719"/>
-    </div>
+<div class="yotpo-reviews">
+  <div class="reviews-box">
+    <div class="yotpo-widget-instance" data-yotpo-instance-id="600719" />
   </div>
 </div>
 
-
 {% schema %}
-  {
-    "name": "Reviews all - fei",
-    "class": "reviews-all",
-    "settings": [],
-    "presets": [
-      {
-        "name": "Reviews all - fei"
-      }
-    ]
-  }
+{
+  "name": "Yotpo Reviews",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Yotpo Reviews"
+    }
+  ]
+}
 {% endschema %}

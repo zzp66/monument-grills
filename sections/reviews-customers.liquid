@@ -1,0 +1,141 @@
+<style>
+  .reviews-customers {
+    background-color: #f1f1f1;
+    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/learn/benefits/Breakout-background.png);
+    background-repeat: no-repeat;
+    background-position: top 180px center;
+    padding: 60px 0 95px;
+  }
+  .reviews-customers .review-slider-heading {
+    margin: 0 auto;
+    max-width: 560px;
+    text-align: center;
+  }
+  .reviews-slider-box {
+    max-width: 980px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .slider-top-wrapper {
+    max-height: 500px;
+    margin: 40px 0 20px;
+  }
+  .slider-top-item {
+    display: grid;
+    grid-template-columns: minmax(0, 600px) minmax(0, 380px);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .slider-review-box {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 380px;
+    height: 100%;
+    padding: 30px 40px;
+    background-color: #fff;
+  }
+  .review-info {
+    margin-top: 5px;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+  .review-author {
+    margin-top: 15px;
+    position: relative;
+    color: #fbb040;
+    font-size: 15px;
+  }
+  .review-author::after {
+    content: '';
+    position: absolute;
+    background-image: url(https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/quotes.svg);
+    left: 40px;
+    top: -10px;
+    display: block;
+    background-repeat: no-repeat;
+    width: 145px;
+    height: 100px;
+    opacity: 0.05;
+  }
+  .slider-bottom-box {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 45px;
+  }
+  .slider-bottom-item {
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+</style>
+<div class="reviews-customers">
+  <h2 class="review-slider-heading">
+    Hear from real<br>
+    Litter-Robot customers
+  </h2>
+  <div class="reviews-slider-box">
+    <div class="slider-top-wrapper">
+      <div class="slider-top-item">
+        <div class="slider-img-box">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
+            alt=""
+          >
+        </div>
+        <div class="slider-review-box">
+          <div class="review-star">星星图片</div>
+          <div class="review-info">“The Whisker app notifications make me feel better when I'm gone.”</div>
+          <div class="review-author">- Jana & Caroline</div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-bottom-wrapper">
+      <div class="slider-bottom-box">
+        <div class="slider-bottom-item">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+            alt=""
+          >
+        </div>
+        <div class="slider-bottom-item">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+            alt=""
+          >
+        </div>
+        <div class="slider-bottom-item">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+            alt=""
+          >
+        </div>
+        <div class="slider-bottom-item">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+            alt=""
+          >
+        </div>
+        <div class="slider-bottom-item">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+            alt=""
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Reviews Customers",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reviews Customers"
+    }
+  ]
+}
+{% endschema %}
