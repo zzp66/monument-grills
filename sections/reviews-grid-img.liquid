@@ -1,8 +1,13 @@
 <style>
   .reviews-grid-img {
     background-color: #fff;
+    padding: 100px 0;
+  }
+  .reviews-grid-img img {
+    display: block;
   }
   .reviews-grid-img-wrapper {
+    padding-inline: 20px;
     max-width: 1180px;
     margin: 0 auto;
     display: grid;
@@ -15,42 +20,195 @@
   .review-grid-item {
     position: relative;
     padding: 30px;
+    border-radius: 15px;
+    overflow: hidden;
   }
   .review-grid-item.c-net {
     grid-area: c-net;
     padding-bottom: 0;
+    background-color: #f1f1f1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
   img.c-net-img1 {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    max-width: 180px;
+    margin: 0 100px 0 25px;
+    z-index: 0;
   }
   img.c-net-img2 {
+    max-width: 195px;
+    margin-bottom: 5px;
   }
   img.c-net-img3 {
     display: block;
     margin-bottom: 5px;
   }
+  .c-net-info {
+    position: relative;
+    top: 40px;
+    z-index: 1;
+    max-width: 325px;
+    margin-bottom: 45px;
+    padding-bottom: 45px;
+  }
+  .c-net-text {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 38px;
+    margin: 0;
+    color: #757575;
+  }
   .review-grid-item.google {
     grid-area: google;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .review-grid-item.google img {
+    max-width: 95px;
+    margin-bottom: 5px;
+  }
+  .review-grid-item.google p {
+    margin: 0;
+    font-size: 21px;
+    font-weight: bold;
+    color: #757575;
+    line-height: 24px;
   }
   .review-grid-item.facebook {
     grid-area: facebook;
+    background-color: #fbb040;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .review-grid-item.facebook img {
+    max-width: 120px;
+    margin-bottom: 5px;
   }
   .review-grid-item.facebook p {
+    margin: 0;
+    font-size: 21px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 24px;
   }
   .review-grid-item.quote {
     grid-area: quote;
+    background-color: #f1f1f1;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   img.quote-img1 {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 50px;
+    margin: 0 100px 0 25px;
+    max-width: 140px;
+  }
+  .quote-info {
+    order: 2;
+    z-index: 1;
+  }
+  .quote-info img {
+    max-width: 75px;
+    margin-bottom: 5px;
+  }
+  .quote-info p {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #757575;
+  }
+  img.quote-img3 {
+    order: 1;
+    max-width: 225px;
+    margin-right: 30px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    img.quote-img3 {
+      max-width: 140px;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .reviews-grid-img-wrapper {
+      grid-template-areas:
+        'c-net c-net'
+        'google facebook'
+        'quote quote';
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .review-grid-item.c-net {
+      align-items: center;
+    }
+    img.c-net-img1 {
+      margin: 0;
+    }
+    img.c-net-img3 {
+      max-width: 250px;
+    }
   }
 </style>
 <div class="reviews-grid-img">
   <div class="reviews-grid-img-wrapper">
-    <div class="review-grid-item c-net"></div>
-    <div class="review-grid-item google"></div>
-    <div class="review-grid-item quote"></div>
+    <div class="review-grid-item c-net">
+      <img
+        class="c-net-img1"
+        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/light-quote.png"
+        alt=""
+      >
+      <div class="c-net-info">
+        <img
+          class="c-net-img2"
+          src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/revamp-24/wirecutter.svg"
+          alt=""
+        >
+        <p class="c-net-text">“Top Pick for Best Automatic Cat Litter Box”</p>
+      </div>
+      <img
+        class="c-net-img3"
+        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/wired_cat_12022024.png"
+        alt=""
+      >
+    </div>
+    <div class="review-grid-item google">
+      <img src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/forbes.svg" alt="">
+      <p>“A Smart Litter Box That’s Worth The Investment.”</p>
+    </div>
+    <div class="review-grid-item facebook">
+      <img
+        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/good_housekeeping_logo_brown.svg"
+        alt=""
+      >
+      <p>“The Litter-Robot 4 Makes Daily Scooping Obsolete.”</p>
+    </div>
+    <div class="review-grid-item quote">
+      <img
+        class="quote-img1"
+        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/medium-quote.png"
+        alt=""
+      >
+      <div class="quote-info">
+        <img class="quote-img2" src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/HGTV.svg" alt="">
+        <p>“Can’t see a world where I will ever go back to a regular litter box.”</p>
+      </div>
+      <img
+        class="quote-img3"
+        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/hgtv-image_12022024.png"
+        alt=""
+      >
+    </div>
   </div>
 </div>
 {% schema %}

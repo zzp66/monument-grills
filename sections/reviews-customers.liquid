@@ -6,15 +6,21 @@
     background-position: top 180px center;
     padding: 60px 0 95px;
   }
+  .reviews-customers-wrapper {
+    margin: 0 20px;
+  }
   .reviews-customers .review-slider-heading {
     margin: 0 auto;
     max-width: 560px;
     text-align: center;
   }
-  .reviews-slider-box {
+  .reviews-slider-box-pc {
     max-width: 980px;
     width: 100%;
     margin: 0 auto;
+  }
+  .review-slider-box-mb {
+    display: none;
   }
   .slider-top-wrapper {
     max-height: 500px;
@@ -70,64 +76,119 @@
     overflow: hidden;
     cursor: pointer;
   }
+
+  @media screen and (max-width: 768px) {
+    .review-slider-box-mb {
+      display: block;
+    }
+    .reviews-slider-box-pc {
+      display: none;
+    }
+  }
 </style>
+
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+
 <div class="reviews-customers">
-  <h2 class="review-slider-heading">
-    Hear from real<br>
-    Litter-Robot customers
-  </h2>
-  <div class="reviews-slider-box">
-    <div class="slider-top-wrapper">
-      <div class="slider-top-item">
-        <div class="slider-img-box">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
-            alt=""
-          >
+  <div class="reviews-customers-wrapper">
+    <h2 class="review-slider-heading">
+      Hear from real<br>
+      Litter-Robot customers
+    </h2>
+    <div class="reviews-slider-box-pc">
+      <div class="slider-top-wrapper">
+        <div class="slider-top-item">
+          <div class="slider-img-box">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
+              alt=""
+            >
+          </div>
+          <div class="slider-review-box">
+            <div class="review-star">星星图片</div>
+            <div class="review-info">“The Whisker app notifications make me feel better when I'm gone.”</div>
+            <div class="review-author">- Jana & Caroline</div>
+          </div>
         </div>
-        <div class="slider-review-box">
-          <div class="review-star">星星图片</div>
-          <div class="review-info">“The Whisker app notifications make me feel better when I'm gone.”</div>
-          <div class="review-author">- Jana & Caroline</div>
+      </div>
+      <div class="slider-bottom-wrapper">
+        <div class="slider-bottom-box">
+          <div class="slider-bottom-item">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+              alt=""
+            >
+          </div>
+          <div class="slider-bottom-item">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+              alt=""
+            >
+          </div>
+          <div class="slider-bottom-item">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+              alt=""
+            >
+          </div>
+          <div class="slider-bottom-item">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+              alt=""
+            >
+          </div>
+          <div class="slider-bottom-item">
+            <img
+              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
+              alt=""
+            >
+          </div>
         </div>
       </div>
     </div>
-    <div class="slider-bottom-wrapper">
-      <div class="slider-bottom-box">
-        <div class="slider-bottom-item">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-            alt=""
-          >
-        </div>
-        <div class="slider-bottom-item">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-            alt=""
-          >
-        </div>
-        <div class="slider-bottom-item">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-            alt=""
-          >
-        </div>
-        <div class="slider-bottom-item">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-            alt=""
-          >
-        </div>
-        <div class="slider-bottom-item">
-          <img
-            src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-            alt=""
-          >
+    <div class="review-slider-box-mb">
+      <div class="swiper swiper-mb">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="slide-item-img">
+              <img
+                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
+                alt=""
+              >
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="slide-item-img">
+              <img
+                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
+                alt=""
+              >
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="slide-item-img">
+              <img
+                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
+                alt=""
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
+
+<script>
+  var mySwiper = new Swiper('.swiper', {
+    slidesPerView: 1.1,
+    spaceBetween: 20,
+  });
+</script>
+
 {% schema %}
 {
   "name": "Reviews Customers",

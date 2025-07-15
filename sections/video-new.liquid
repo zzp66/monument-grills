@@ -27,7 +27,7 @@
     transition: opacity 0.3s ease;
   }
   .video-title {
-    font-size: 64px;
+    font-size: {{ section.settings.title_font_size_pc }}px;
     font-weight: bold;
     color: #fff;
   }
@@ -94,7 +94,7 @@
       height: 350px;
     }
     .video-title {
-      font-size: 32px;
+      font-size: {{ section.settings.title_font_size_mb }}px;
     }
     .video-subtitle {
       font-size: 16px;
@@ -162,6 +162,26 @@
       "type": "url",
       "id": "btn_url",
       "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_pc",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "标题字体大小-PC端",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mb",
+      "min": 20,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "标题字体大小-移动端",
+      "default": 32
     }
   ],
 
