@@ -1,0 +1,202 @@
+<style>
+  .multi-column-collection p {
+    margin: 0;
+  }
+  .mcc-column-box-pc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .mcc-column-box-mb {
+    display: none;
+  }
+  .item-info {
+    margin-top: 20px;
+  }
+  p.item-title {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  p.item-subtitle {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    margin-top: 10px;
+  }
+  .item-btn {
+    display: flex;
+    margin-top: 20px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  a.item-btn-shop {
+    padding: 8px 16px;
+    color: #000;
+    border: 3px solid #e55420;
+    border-radius: 6px;
+    font-size: 0.88em;
+    line-height: 1.2em;
+    font-weight: bold;
+    transition: opacity 0.6s ease, color 0.6s ease, background-position 0.4s ease-out;
+  }
+  a.item-btn-shop:hover {
+    background-color: #e55420;
+    color: #fff;
+  }
+  a.item-btn-learn {
+    margin-left: 20px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.2;
+    color: #e55420;
+  }
+  a.item-btn-learn::after {
+    content: '>';
+    font-size: 15px;
+    margin-left: 6px;
+    color: #e55420;
+  }
+  @media screen and (max-width: 768px) {
+    .mcc-column-box-mb {
+      display: block;
+    }
+    .mcc-column-box-pc {
+      display: none;
+    }
+    .header-title {
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="multi-column-collection section">
+  <div class="mcc-content container">
+    <div class="mcc-header">
+      <h2 class="header-title">{{ section.settings.mcc_header }}</h2>
+    </div>
+    <div class="mcc-wrapper">
+      <div class="mcc-column-box-pc">
+        {% for item in section.blocks %}
+          <div class="mcc-column-item">
+            <div class="item-img">
+              <img src="{{ item.settings.column_img | image_url: width: master }}" alt="">
+            </div>
+            <div class="item-info">
+              <p class="item-title">{{ item.settings.column_title }}</p>
+              <p class="item-subtitle">{{ item.settings.column_subtitle }}</p>
+              <div class="item-btn">
+                <a href="{{ item.settings.column_shop }}" class="item-btn-shop">{{ item.settings.column_shop_text }}</a>
+                <a href="{{ item.settings.column_learn }}" class="item-btn-learn">
+                  {{- item.settings.column_learn_text -}}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="mcc-column-box-mb">
+        <div class="swiper mcc-column-swiper">
+          <div class="swiper-wrapper">
+            {% for item in section.blocks %}
+              <div class="mcc-column-item swiper-slide">
+                <div class="item-img">
+                  <img src="{{ item.settings.column_img | image_url: width: master }}" alt="">
+                </div>
+                <div class="item-info">
+                  <p class="item-title">{{ item.settings.column_title }}</p>
+                  <p class="item-subtitle">{{ item.settings.column_subtitle }}</p>
+                  <div class="item-btn">
+                    <a href="{{ item.settings.column_shop }}" class="item-btn-shop">
+                      {{- item.settings.column_shop_text -}}
+                    </a>
+                    <a href="{{ item.settings.column_learn }}" class="item-btn-learn">
+                      {{- item.settings.column_learn_text -}}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 确保Swiper已加载
+    if (typeof Swiper !== 'undefined') {
+      const slideimgSwiper = new Swiper('.mcc-column-swiper', {
+        slidesPerView: 1.2,
+        spaceBetween: 20,
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Multi Column Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "mcc_header",
+      "label": "Header",
+      "default": "Explore Our Series of Grills"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "column_img",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "column_title",
+          "label": "Column Title"
+        },
+        {
+          "type": "text",
+          "id": "column_subtitle",
+          "label": "Column SubTitle"
+        },
+        {
+          "type": "url",
+          "id": "column_shop",
+          "label": "Shop Now Link"
+        },
+        {
+          "type": "text",
+          "id": "column_shop_text",
+          "label": "Shop Now Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "column_learn",
+          "label": "Learn More Link"
+        },
+        {
+          "type": "text",
+          "id": "column_learn_text",
+          "label": "Learn More Text",
+          "default": "Learn More"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Multi Column Collection"
+    }
+  ]
+}
+{% endschema %}
