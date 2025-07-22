@@ -5751,26 +5751,26 @@ span#points-value {
   }
 }
 .new_price-save {
-    /* display: none; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 0;
     right: 0;
-    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/icon-0521.png?v=1747820168);
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/single.png?v=1753151017);
     width: 50px;
-    height: 60px;
+    height: 50px;
     background-size: cover;
     color: #fff;
     line-height: 1;
     text-align: center;
     font-size: 14px;
-    padding-top: 13px;
 }
 .card__info-container.flex.flex-col.flex-auto.relative {
     position: static;
 }
 span.new_price-save strong {
     display: block;
-    margin-top: 2px;
     font-size: 18px;
 }
 div#shopify-section-template--16234261741631__image_banner_zWtjxm{

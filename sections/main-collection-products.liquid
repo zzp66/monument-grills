@@ -646,7 +646,7 @@
         if (saveAmount > 0) {
           html = '<div class="price"><strong class="price__current">' + formatMoney(price) + '</strong>' +
                  '<s class="price-compare price-compare43">' + formatMoney(compareAtPrice) + '</s>' +
-                 '<span class="new_price-save">Save <strong>$' + Math.round(saveAmount / 100) + '</strong></span></div>';
+                 '<span class="new_price-save"><strong>-$' + Math.round(saveAmount / 100) + '</strong></span></div>';
         } else {
           html = '<div class="price"><strong class="price__current">' + formatMoney(price) + '</strong>' +
                  '<s class="price-compare price-compare43">' + formatMoney(compareAtPrice) + '</s></div>';
