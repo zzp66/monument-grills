@@ -48,6 +48,24 @@
   }
 {%- endstyle -%}
 
+<style>
+  .main-nav__item img.hot-icon{
+    display: none;
+  }
+  .hot-sales.main-nav__item{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    line-height: 1;
+  }
+  .hot-sales.main-nav__item img.hot-icon{
+    display: block;
+    max-height: 21px;
+    width: auto;
+    margin-right: 6px;
+  }
+</style>
+
 {% if section.settings.enable_fiexd_announcement_bar != blank %}
   {{ 'announcement.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'announcement.js' | asset_url }}" defer="defer"></script>
@@ -321,8 +339,10 @@
 
                       <details{% if mega_nav %} class="js-mega-nav" {{ mega_nav.shopify_attributes }}{% endif %}>
                         <summary class="main-nav__item--toggle relative js-nav-hover js-toggle">
-                          <a class="main-nav__item main-nav__item--primary main-nav__item-content{% if link.current %} is-active-cwf{% endif %}{% if featured_links contains link_title_downcase %} main-nav__link--featured{% endif %}" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
-                            {{ link.title | escape }}{% render 'icon-chevron-down' %}
+                          <a class="{{ link.handle }} main-nav__item main-nav__item--primary main-nav__item-content{% if link.current %} is-active-cwf{% endif %}{% if featured_links contains link_title_downcase %} main-nav__link--featured{% endif %}" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
+                            <img class="hot-icon" src="https://cdn.shopify.com/s/files/1/1639/3511/files/iwEcAqNwbmcDAQTRAR8F0QF6BrBn5WM3nyrcAQhXRUfH8F4AB9Jil9CdCAAJomltCgAL0SPv.png?v=1753120712" alt="">
+                            <span>{{ link.title | escape }}</span>
+                            {% render 'icon-chevron-down' %}
                           </a>
                         </summary>
                         {%- liquid
