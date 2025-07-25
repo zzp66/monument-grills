@@ -181,7 +181,7 @@
             {{ article.published_at | time_tag: format: 'date' }}
           {%- endif -%}
     {%- if show_button -%}
-      <a href="{{ article.url }}" class="card__button btn {{ button_style }} btn--icon btn--lg has-ltr-icon mt-8">
+      <a href="{{ article.url }}" class="card__button btn {{ button_style }} btn--icon btn--lg has-ltr-icon mt-8" target="_blank">
         <span class="visually-hidden">{{ article.title | escape }}</span>
         {%- render 'icon-arrow-right' -%}
       </a>

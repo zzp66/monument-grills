@@ -643,7 +643,7 @@
                   {%- if block.settings.button_1_label != blank or block.settings.button_2_label != blank -%}
                     <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
                       {%- if block.settings.button_1_label != blank %}
-                        <a class="{{ block.settings.button_1_style }}" {% if block.settings.is_add_target != blank %} target="_blank" {% endif %} {% if block.settings.is_nofollow_1 != false %}rel="nofollow"{% endif %} {% if block.settings.button_1_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.button_1_link }}"{% endif %} style="border-color:{{ block.settings.btn_border_color }};background:{{ block.settings.btn_background_color }};color:{{ block.settings.btn_font_color }};">
+                        <a class="{{ block.settings.button_1_style }}" target="_blank" {% if block.settings.is_nofollow_1 != false %}rel="nofollow"{% endif %} {% if block.settings.button_1_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.button_1_link }}"{% endif %} style="border-color:{{ block.settings.btn_border_color }};background:{{ block.settings.btn_background_color }};color:{{ block.settings.btn_font_color }};">
                           {{- block.settings.button_1_label | escape -}}
                         </a>
                       {%- endif -%}

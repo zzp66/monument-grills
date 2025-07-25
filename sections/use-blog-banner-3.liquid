@@ -166,7 +166,7 @@
              <p class="mt-0 mb-4">{{ section.settings.article_description }}</p>
              <div class="text-overlay__block text-overlay__buttons inline-flex flex-wrap mt-4{% if section.settings.overlay_text_align == 'text-start' %} justify-start{% elsif section.settings.overlay_text_align == 'text-end' %} justify-end{% else %} justify-center{% endif %}{% if section.settings.mob_center_text %} md-down:center{% endif %}" {{ block.shopify_attributes }}>
                 {%- if section.settings.btn_label != blank %}
-                  <a class="{{ section.settings.btn_style }} mt-6" {% if section.settings.btn_url == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.btn_url }}"{% endif %}>
+                  <a class="{{ section.settings.btn_style }} mt-6" {% if section.settings.btn_url == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.btn_url }}"{% endif %} target="_blank">
                     {{- section.settings.btn_label | escape -}}
                   </a>
                 {%- endif -%}
