@@ -86,7 +86,7 @@
 {% endstyle %}
 
 <div
-  class="section best-sales-{{ section.id }} {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container cc-best-sales{% endif %}"
+  class="section best-sale-{{ section.id }} {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container cc-best-sales{% endif %}"
   id="{{ section.id }}"
   style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;margin: 0 auto;"
 >
@@ -386,8 +386,8 @@
 {% endcomment %}
 {% schema %}
 {
-  "name": "Best sales - fei",
-  "class": "best-sales",
+  "name": "Best sales Revise",
+  "class": "best-sales best-sales-revise",
   "settings": [
     {
       "type": "header",
@@ -864,7 +864,7 @@
   ],
   "presets": [
     {
-      "name": "Best sales - fei"
+      "name": "Best sales Revise"
     }
   ]
 }
