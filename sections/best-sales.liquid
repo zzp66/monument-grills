@@ -85,6 +85,30 @@
   {%- endif -%}
 {% endstyle %}
 
+<style>
+  .best-sales .best-sales-template--16234261741631__best_sales_YcFpiN .event-information .event-title ul li:before{
+  content:"▸";
+  display:block;
+  position: absolute;
+  left:0;
+  top: 50%;
+  color:#fff;
+  transform: translateY(-50%);
+  width: 30px;
+}
+  .best-sales-template--16234261741631__best_sales_YcFpiN .event-information.info-bg:after {
+    content: '';
+    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/CNET-1.png?v=1747125351);
+    width: 100px;
+    height: 41px;
+    background-size: cover;
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+</style>
+
 <div
   class="section best-sales-{{ section.id }} {% if section.settings.full_width %}section--full-width {% endif %} {% if section.settings.full_screen != blank %} {% else %}container {% endif %} {% if section.settings.mobile_stacked and section.settings.height_mode != 'screen' %} mobile-stacked{% if section.settings.full_width %} mobile-stacked--spaced{% endif %}{% endif %} {% if section.settings.full_screen %}{% else %} container cc-best-sales{% endif %}"
   id="{{ section.id }}"

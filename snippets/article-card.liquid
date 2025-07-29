@@ -131,7 +131,7 @@
         <div class="card__tags{% if blog_url %} card__tags--links{% endif %} relative text-sm{% if featured %} mb-3{% else %} mb-2{% endif %} text-current text-theme-light">
           {%- for tag in article.tags -%}
             {%- if blog.url -%}
-              <a href="{{ tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first }}" class="text-current text-theme-light">
+              <a href="{{ tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first }}" class="text-current text-theme-light" target="_blank">
                 {{ tag }}{% unless forloop.last %}, {% endunless %}
               </a>
             {%- else -%}
@@ -143,7 +143,7 @@
 
       <h2 class="card__title {% if featured %}h4{% else %}h6{% endif %}">
         {%- if article != blank -%}
-          <a href="{{ article.url }}" class="card-link text-current">{{ article.title | escape }}</a>
+          <a href="{{ article.url }}" class="card-link text-current" target="_blank">{{ article.title | escape }}</a>
         {%- else -%}
           {{ 'onboarding.article.title' | t }}
         {%- endif -%}
