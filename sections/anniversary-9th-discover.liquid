@@ -53,42 +53,20 @@
   <div class="container">
     <p class="discover-title">Discover More</p>
     <div class="discover-content">
-      <div class="discover-item">
-        <a href="/" class="discover-item-btn">
-          <div class="discover-img">
-            <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-          </div>
-          <div class="discover-bg"></div>
-          <div class="discover-info">
-            <p class="info-1">Monument BBQ Forum</p>
-            <p class="info-2">Connect with fellow grill lovers and explore BBQ recipes, tips, and product support.</p>
-          </div>
-        </a>
-      </div>
-      <div class="discover-item">
-        <a href="/" class="discover-item-btn">
-          <div class="discover-img">
-            <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-          </div>
-          <div class="discover-bg"></div>
-          <div class="discover-info">
-            <p class="info-1">Monument BBQ Forum</p>
-            <p class="info-2">Connect with fellow grill lovers and explore BBQ recipes, tips, and product support.</p>
-          </div>
-        </a>
-      </div>
-      <div class="discover-item">
-        <a href="/" class="discover-item-btn">
-          <div class="discover-img">
-            <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-          </div>
-          <div class="discover-bg"></div>
-          <div class="discover-info">
-            <p class="info-1">Monument BBQ Forum</p>
-            <p class="info-2">Connect with fellow grill lovers and explore BBQ recipes, tips, and product support.</p>
-          </div>
-        </a>
-      </div>
+      {% for info in section.blocks %}
+        <div class="discover-item">
+          <a href="{{ info.settings.info_link }}" class="discover-item-btn">
+            <div class="discover-img">
+              <img src="{{ info.settings.info_image | image_url: width: master }}" alt="">
+            </div>
+            <div class="discover-bg"></div>
+            <div class="discover-info">
+              <p class="info-1">{{ info.settings.info_title }}</p>
+              <p class="info-2">{{ info.settings.info_info }}</p>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -96,6 +74,34 @@
 {
   "name": "9th Anniversary Discover",
   "settings": [],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Info",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "info_image",
+          "label": "活动相关图"
+        },
+        {
+          "type": "url",
+          "id": "info_link",
+          "label": "活动链接"
+        },
+        {
+          "type": "text",
+          "id": "info_title",
+          "label": "活动标题"
+        },
+        {
+          "type": "text",
+          "id": "info_info",
+          "label": "活动信息"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "9th Anniversary Discover"

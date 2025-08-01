@@ -80,68 +80,28 @@
 </style>
 <div class="anniversary-9th-blogs section">
   <div class="container">
-    <p class="blogs-title">Lucky Spin</p>
-    <p class="blogs-info">Spin The Wheel For A Chance To Win Big.</p>
-    <a href="/" class="blogs-btn">All Blogs</a>
+    <p class="blogs-title">Expert Grilling Tips</p>
+    <p class="blogs-info">We Build The Grills And Know How To Use Them Best.</p>
+    <a href="{{ section.settings.blogs_link }}" class="blogs-btn">All Blogs ></a>
     <div class="blogs-content">
       <div class="swiper blogs-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="blogs-item">
-              <a href="/" class="blogs-item-btn">
-                <div class="blogs-img">
-                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-                </div>
-                <div class="blogs-bg"></div>
-                <div class="blogs-item-info">
-                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
-                  <p class="blogs-item-info-btn">Learn More</p>
-                </div>
-              </a>
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <div class="blogs-item">
+                <a href="{{ block.settings.blog_link }}" class="blogs-item-btn">
+                  <div class="blogs-img">
+                    <img src="{{ block.settings.blog_image | image_url: width: master }}" alt="">
+                  </div>
+                  <div class="blogs-bg"></div>
+                  <div class="blogs-item-info">
+                    <p class="blogs-item-text">{{ block.settings.blog_title }}</p>
+                    <p class="blogs-item-info-btn">Learn More</p>
+                  </div>
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="blogs-item">
-              <a href="/" class="blogs-item-btn">
-                <div class="blogs-img">
-                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-                </div>
-                <div class="blogs-bg"></div>
-                <div class="blogs-item-info">
-                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
-                  <p class="blogs-item-info-btn">Learn More</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="blogs-item">
-              <a href="/" class="blogs-item-btn">
-                <div class="blogs-img">
-                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-                </div>
-                <div class="blogs-bg"></div>
-                <div class="blogs-item-info">
-                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
-                  <p class="blogs-item-info-btn">Learn More</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="blogs-item">
-              <a href="/" class="blogs-item-btn">
-                <div class="blogs-img">
-                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
-                </div>
-                <div class="blogs-bg"></div>
-                <div class="blogs-item-info">
-                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
-                  <p class="blogs-item-info-btn">Learn More</p>
-                </div>
-              </a>
-            </div>
-          </div>
+          {% endfor %}
         </div>
 
         <!-- 如果需要导航按钮 -->
@@ -172,7 +132,37 @@
 {% schema %}
 {
   "name": "9th Anniversary Blogs",
-  "settings": [],
+  "settings": [
+    {
+      "type": "url",
+      "id": "blogs_link",
+      "label": "All Blogs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "blog",
+      "name": "blog",
+      "settings": [
+        {
+          "type": "url",
+          "id": "blog_link",
+          "label": "博客链接"
+        },
+        {
+          "type": "image_picker",
+          "id": "blog_image",
+          "label": "博客相关图"
+        },
+        {
+          "type": "text",
+          "id": "blog_title",
+          "label": "博客标题",
+          "default": "Quick links"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "9th Anniversary Blogs"
