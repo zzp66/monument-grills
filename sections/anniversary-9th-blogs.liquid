@@ -1,0 +1,182 @@
+<style>
+  .anniversary-9th-ninja {
+    padding: 60px 0;
+  }
+  p.blogs-title {
+    color: #000;
+    font-size: 42px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+  }
+  p.blogs-info {
+    text-align: center;
+    color: #000;
+    margin: 10px 0;
+  }
+  a.blogs-btn {
+    display: flex;
+    justify-content: flex-end;
+    color: #928f8f;
+  }
+  .blogs-content {
+    margin-top: 20px;
+  }
+  .blogs-item {
+    position: relative;
+  }
+  .blogs-bg {
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top, #000000, #00000000);
+    z-index: 1;
+  }
+  .blogs-item-btn {
+    position: relative;
+    display: block;
+  }
+  .blogs-item-info {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    z-index: 2;
+  }
+  p.blogs-item-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+  p.blogs-item-info-btn {
+    font-size: 16px;
+    color: #fff;
+    margin: 0;
+  }
+  .swiper-btn {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .swiper-btn .swiper-button-prev,
+  .swiper-btn .swiper-button-next {
+    background-image: none;
+    position: static;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: 1px solid #e55420;
+  }
+  .swiper-btn .swiper-button-prev::after,
+  .swiper-btn .swiper-button-next::after {
+    color: #e55420;
+  }
+</style>
+<div class="anniversary-9th-blogs section">
+  <div class="container">
+    <p class="blogs-title">Lucky Spin</p>
+    <p class="blogs-info">Spin The Wheel For A Chance To Win Big.</p>
+    <a href="/" class="blogs-btn">All Blogs</a>
+    <div class="blogs-content">
+      <div class="swiper blogs-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="blogs-item">
+              <a href="/" class="blogs-item-btn">
+                <div class="blogs-img">
+                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
+                </div>
+                <div class="blogs-bg"></div>
+                <div class="blogs-item-info">
+                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
+                  <p class="blogs-item-info-btn">Learn More</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="blogs-item">
+              <a href="/" class="blogs-item-btn">
+                <div class="blogs-img">
+                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
+                </div>
+                <div class="blogs-bg"></div>
+                <div class="blogs-item-info">
+                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
+                  <p class="blogs-item-info-btn">Learn More</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="blogs-item">
+              <a href="/" class="blogs-item-btn">
+                <div class="blogs-img">
+                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
+                </div>
+                <div class="blogs-bg"></div>
+                <div class="blogs-item-info">
+                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
+                  <p class="blogs-item-info-btn">Learn More</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="blogs-item">
+              <a href="/" class="blogs-item-btn">
+                <div class="blogs-img">
+                  <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-3.jpg?v=1754052551" alt="">
+                </div>
+                <div class="blogs-bg"></div>
+                <div class="blogs-item-info">
+                  <p class="blogs-item-text">Todd's Electric Blue Menagerie!</p>
+                  <p class="blogs-item-info-btn">Learn More</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 如果需要导航按钮 -->
+        <div class="swiper-btn">
+          <div class="swiper-button-prev prev-btn"></div>
+          <div class="swiper-button-next next-btn"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.blogs-swiper', {
+      slidesPerView: 3.5,
+      spaceBetween: 20,
+      centeredSlides: true,
+      centeredSlidesBounds: true,
+      navigation: {
+        nextEl: '.next-btn',
+        prevEl: '.prev-btn',
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "9th Anniversary Blogs",
+  "settings": [],
+  "presets": [
+    {
+      "name": "9th Anniversary Blogs"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,87 @@
+<style>
+  .anniversary-9th-lifeshared {
+    padding: 60px 0;
+  }
+  /* 视频背景容器 */
+  .video-container {
+    position: relative;
+  }
+
+  /* 视频元素样式 */
+  .video-bg {
+    z-index: 1;
+    position: relative;
+  }
+  /* 20% 黑色遮罩层 */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* 20% 透明度黑色 */
+    z-index: 2;
+  }
+
+  /* 内容区域 */
+  .lifeshared-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 3;
+    width: 80%;
+    max-width: 800px;
+  }
+  .lifeshared-content .lifeshared-title {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+
+  .lifeshared-content .lifeshared-info {
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 30px;
+  }
+  .lifeshared-btn {
+    display: inline-block;
+    color: #fff;
+    background-color: #e55420;
+    border-radius: 3px;
+    padding: 10px 15px;
+  }
+</style>
+<div class="anniversary-9th-lifeshared">
+  <div class="video-container">
+    <!-- 视频背景 -->
+    <video autoplay muted loop class="video-bg">
+      <source src="https://cdn.shopify.com/videos/c/o/v/d4c16d31992c439d9c14bf93c08e4db7.mp4" type="video/mp4">
+      <!-- 备用提示 -->
+      您的浏览器不支持HTML5视频
+    </video>
+
+    <!-- 20% 遮罩层 -->
+    <div class="overlay"></div>
+
+    <!-- 文案内容 -->
+    <div class="lifeshared-content">
+      <p class="lifeshared-title">Grill Life Shared</p>
+      <p class="lifeshared-info">Upload Your Favorite Grill Photo And Join The Wall Of Memories.</p>
+      <a href="#" class="lifeshared-btn">Share My Moment</a>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "9th Anniversary Life",
+  "settings": [],
+  "presets": [
+    {
+      "name": "9th Anniversary Life"
+    }
+  ]
+}
+{% endschema %}
