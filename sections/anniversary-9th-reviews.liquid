@@ -88,76 +88,35 @@
     <div class="review-content">
       <div class="review-media">
         <div class="review-media-img">
-          <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/blog-5.jpg?v=1754052551" alt="">
+          <img src="{{ section.settings.reviews_image | image_url: width: master }}" alt="">
         </div>
       </div>
       <div class="review-wrapper">
-        <div class="review-item">
-          <div class="review-item-img">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/1032afab70553b479a9fec927e519087d9c07e12.jpg?v=1754056893"
-              alt=""
-            >
-          </div>
-          <div class="review-item-content">
-            <p class="review-product-title"><span>Eminence 605</span> | Advanced Stainless Natural/Propane Gas Grill</p>
-            <div class="review-ring">
+        {% for item in section.blocks %}
+          <div class="review-item">
+            <div class="review-item-img">
               <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/66c00fd044f359a4148a3499d71027b4746d1eba.png?v=1754056511"
+                src="{{ item.settings.review_image | image_url: width: master }}"
                 alt=""
               >
             </div>
-            <p class="review-item-title">Fantastic grill!</p>
-            <p class="review-item-info">
-              I used this grill for the first time tonight to cook some steaks and wow were they delicious. The grill
-              was easy to assemble and cooks evenly across the grill.
-            </p>
-          </div>
-        </div>
-        <div class="review-item">
-          <div class="review-item-img">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/1032afab70553b479a9fec927e519087d9c07e12.jpg?v=1754056893"
-              alt=""
-            >
-          </div>
-          <div class="review-item-content">
-            <p class="review-product-title"><span>Eminence 605</span> | Advanced Stainless Natural/Propane Gas Grill</p>
-            <div class="review-ring">
-              <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/66c00fd044f359a4148a3499d71027b4746d1eba.png?v=1754056511"
-                alt=""
-              >
+            <div class="review-item-content">
+              <p class="review-product-title">
+                <span>{{ item.settings.review_product_title }}</span>{{ item.settings.review_product_info }}
+              </p>
+              {% comment %}
+                <div class="review-ring">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/1639/3511/files/66c00fd044f359a4148a3499d71027b4746d1eba.png?v=1754056511"
+                    alt=""
+                  >
+                </div>
+              {% endcomment %}
+              <p class="review-item-title">{{ item.settings.review_title }}</p>
+              <p class="review-item-info">{{ item.settings.review_info }}</p>
             </div>
-            <p class="review-item-title">Fantastic grill!</p>
-            <p class="review-item-info">
-              I used this grill for the first time tonight to cook some steaks and wow were they delicious. The grill
-              was easy to assemble and cooks evenly across the grill.
-            </p>
           </div>
-        </div>
-        <div class="review-item">
-          <div class="review-item-img">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/1032afab70553b479a9fec927e519087d9c07e12.jpg?v=1754056893"
-              alt=""
-            >
-          </div>
-          <div class="review-item-content">
-            <p class="review-product-title"><span>Eminence 605</span> | Advanced Stainless Natural/Propane Gas Grill</p>
-            <div class="review-ring">
-              <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/66c00fd044f359a4148a3499d71027b4746d1eba.png?v=1754056511"
-                alt=""
-              >
-            </div>
-            <p class="review-item-title">Fantastic grill!</p>
-            <p class="review-item-info">
-              I used this grill for the first time tonight to cook some steaks and wow were they delicious. The grill
-              was easy to assemble and cooks evenly across the grill.
-            </p>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -165,7 +124,51 @@
 {% schema %}
 {
   "name": "9th Anniversary Review",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "reviews_image",
+      "label": "评论相关导图"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "review_image",
+          "label": "评论主图"
+        },
+        {
+          "type": "text",
+          "id": "review_product_title",
+          "label": "产品主标题"
+        },
+        {
+          "type": "text",
+          "id": "review_product_info",
+          "label": "产品副标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "review_ring",
+          "label": "评论等级星图"
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "评论标题"
+        },
+        {
+          "type": "textarea",
+          "id": "review_info",
+          "label": "评论内容"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "9th Anniversary Review"
