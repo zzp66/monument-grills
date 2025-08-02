@@ -1,0 +1,73 @@
+<style>
+  .secondary-nav-nav {
+    background-color: #f9f9f9;
+    height: auto;
+    overflow: visible;
+  }
+  .secondary-nav-box {
+    position: relative;
+    min-height: 65px;
+    overflow: visible;
+  }
+  .secondary-nav-sticky-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: sticky;
+    top: 163px;
+    z-index: 99;
+    background-color: #f9f9f9;
+    width: 100%;
+  }
+  .secondary-nav-nav ul {
+    margin: 0;
+  }
+  .secondary-nav-nav li {
+    list-style: none;
+  }
+  ul.secondary-nav-wrapper {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 200px;
+  }
+  li.nav-item {
+    color: #9f9f9f;
+    font-size: 20px;
+    line-height: 22px;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+  }
+  li.nav-item.active {
+    color: #000;
+    font-weight: 600;
+    border-bottom: 3px solid #e55420;
+  }
+</style>
+<div class="secondary-nav-box">
+  <div class="secondary-nav-sticky-container">
+    <ul class="container secondary-nav-wrapper">
+      <li class="nav-item">Life Shared1</li>
+      <li class="nav-item active">Life Shared2</li>
+      <li class="nav-item">Life Shared3</li>
+      <li class="nav-item">Life Shared4</li>
+      <li class="nav-item">Life Shared5</li>
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Secondary Nav",
+  "class": "secondary-nav-nav",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Secondary Nav"
+    }
+  ]
+}
+{% endschema %}
