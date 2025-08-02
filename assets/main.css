@@ -6133,17 +6133,17 @@ div#template--16234261839935__background_video_gghHdz{
     transform: none;
     top: 20%;
 }
-.tem__2024-brand-promotion .logo-list{
+.tem__2024-brand-promotion .logo-list, .tem__9th-anniversary .logo-list{
       display: flex!important;
 }
-.tem__2024-brand-promotion .card__info {
+.tem__2024-brand-promotion .card__info, .tem__9th-anniversary .logo-list {
         padding: 20px 30px;
     }
 @media(max-width:768px){
-  .tem__2024-brand-promotion .logo-list{
+  .tem__2024-brand-promotion .logo-list, .tem__9th-anniversary .logo-list{
     flex-wrap: wrap;
 }
-  .tem__2024-brand-promotion .logo-list li {
+  .tem__2024-brand-promotion .logo-list li, .tem__9th-anniversary .logo-list li {
     width: 30%;
 }
   #template--16234261839935__multi_column_RA6tea ul.flex {
