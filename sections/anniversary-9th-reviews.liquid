@@ -1,15 +1,15 @@
 <style>
-  .anniversary-9th-review {
+  .anniversary-9th-reviews {
     padding: 60px 0;
   }
-  p.review-title {
+  p.reviews-title {
     color: #000;
     font-size: 42px;
     font-weight: bold;
     margin: 0;
     text-align: center;
   }
-  p.review-info {
+  p.reviews-info {
     text-align: center;
     color: #000;
     margin: 0;
@@ -42,7 +42,7 @@
   .review-item {
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
   }
   .review-item-img {
     padding-top: 10px;
@@ -80,11 +80,39 @@
     color: #928f8f;
     margin: 0;
   }
+  .review-wrapper-mb {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .review-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .review-wrapper-mb {
+      display: block;
+    }
+    .review-wrapper {
+      display: none;
+    }
+    p.reviews-title {
+      font-size: 26px;
+    }
+    p.reviews-info {
+      margin-top: 5px;
+      margin-bottom: 20px;
+    }
+
+    .review-content {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  }
 </style>
-<div class="anniversary-9th-review section">
+<div class="anniversary-9th-reviews section">
   <div class="container">
-    <p class="review-title">MONUMENT GRILLS FANS</p>
-    <p class="review-info">Over 90% Of Users Give Monument Grills a 5-Starrating</p>
+    <p class="reviews-title">MONUMENT GRILLS FANS</p>
+    <p class="reviews-info">Over 90% Of Users Give Monument Grills a 5-Starrating</p>
     <div class="review-content">
       <div class="review-media">
         <div class="review-media-img">
@@ -118,9 +146,66 @@
           </div>
         {% endfor %}
       </div>
+      <div class="review-wrapper-mb">
+        <div class="swiper reviews-swiper">
+          <div class="swiper-wrapper">
+            {% for item in section.blocks %}
+              <div class="swiper-slide">
+                <div class="review-item">
+                  <div class="review-item-img">
+                    <img
+                      src="{{ item.settings.review_image | image_url: width: master }}"
+                      alt=""
+                    >
+                  </div>
+                  <div class="review-item-content">
+                    <p class="review-product-title">
+                      <span>{{ item.settings.review_product_title }}</span>{{ item.settings.review_product_info }}
+                    </p>
+                    {% comment %}
+                      <div class="review-ring">
+                        <img
+                          src="https://cdn.shopify.com/s/files/1/1639/3511/files/66c00fd044f359a4148a3499d71027b4746d1eba.png?v=1754056511"
+                          alt=""
+                        >
+                      </div>
+                    {% endcomment %}
+                    <p class="review-item-title">{{ item.settings.review_title }}</p>
+                    <p class="review-item-info">{{ item.settings.review_info }}</p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.reviews-swiper', {
+      slidesPerView: 3,
+      spaceBetween: 6,
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 6,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 6,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 6,
+        },
+      },
+    });
+  });
+</script>
+
 {% schema %}
 {
   "name": "9th Anniversary Review",

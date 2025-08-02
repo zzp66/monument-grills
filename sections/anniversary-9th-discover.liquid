@@ -9,12 +9,12 @@
     margin: 0;
     text-align: center;
   }
-  .discover-content {
+  /* .discover-content {
     margin-top: 40px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-  }
+  } */
   .discover-item {
     position: relative;
   }
@@ -33,9 +33,10 @@
   }
   .discover-info {
     position: absolute;
-    bottom: 10px;
-    left: 15px;
+    bottom: 0;
+    left: 0;
     z-index: 2;
+    padding: 10px 15px;
   }
   p.info-1 {
     font-size: 22px;
@@ -53,23 +54,53 @@
   <div class="container">
     <p class="discover-title">Discover More</p>
     <div class="discover-content">
-      {% for info in section.blocks %}
-        <div class="discover-item">
-          <a href="{{ info.settings.info_link }}" class="discover-item-btn">
-            <div class="discover-img">
-              <img src="{{ info.settings.info_image | image_url: width: master }}" alt="">
+      <div class="swiper discover-swiper">
+        <div class="swiper-wrapper">
+          {% for info in section.blocks %}
+            <div class="swiper-slide">
+              <div class="discover-item">
+                <a href="{{ info.settings.info_link }}" class="discover-item-btn">
+                  <div class="discover-img">
+                    <img src="{{ info.settings.info_image | image_url: width: master }}" alt="">
+                  </div>
+                  <div class="discover-bg"></div>
+                  <div class="discover-info">
+                    <p class="info-1">{{ info.settings.info_title }}</p>
+                    <p class="info-2">{{ info.settings.info_info }}</p>
+                  </div>
+                </a>
+              </div>
             </div>
-            <div class="discover-bg"></div>
-            <div class="discover-info">
-              <p class="info-1">{{ info.settings.info_title }}</p>
-              <p class="info-2">{{ info.settings.info_info }}</p>
-            </div>
-          </a>
+          {% endfor %}
         </div>
-      {% endfor %}
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.discover-swiper', {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 15,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script>
+
 {% schema %}
 {
   "name": "9th Anniversary Discover",

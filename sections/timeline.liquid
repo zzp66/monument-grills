@@ -1,245 +1,254 @@
 <style>
-.timeline-swiper-section {
+  .timeline-swiper-section {
     padding-bottom: 80px;
-}
-.timeline-swiper-container {
-  max-width: 1600px;
-  margin: 0 auto;
-  position: relative;
-}
+  }
+  .timeline-swiper-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    position: relative;
+  }
   .timeline-center-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 2px;
-  background: #d5d5d5;
-  z-index: 1;
-  pointer-events: none;
-}
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #d5d5d5;
+    z-index: 1;
+    pointer-events: none;
+  }
 
   .timeline-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  z-index: 2;
-  min-height: 320px;
-}
-h2.timeline-swiper-title {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    z-index: 2;
+    min-height: 320px;
+  }
+  h2.timeline-swiper-title {
     text-align: center;
     margin-bottom: 80px;
     line-height: 1;
-}
-.timeline-item--top {
-  /* justify-content: flex-end; */
-  margin-bottom: 60px;
-}
-.timeline-item--bottom {
-  justify-content: flex-start;
-  margin-top: 346px;
-}
- .timeline-item--bottom .timeline-content{
-        display: flex;
-    flex-flow: column-reverse;
-       margin-top: -15px;
   }
-.timeline-dot {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 16px;
-  background: #0C0B0B;
-  border-radius: 50%;
-  z-index: 3;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 2px #000;
-}
+  .timeline-item--top {
+    /* justify-content: flex-end; */
+    margin-bottom: 60px;
+  }
+  .timeline-item--bottom {
+    justify-content: flex-start;
+    margin-top: 346px;
+  }
+  .timeline-item--bottom .timeline-content {
+    display: flex;
+    flex-flow: column-reverse;
+    margin-top: -15px;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: #0c0b0b;
+    border-radius: 50%;
+    z-index: 3;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #000;
+  }
   .timeline-content {
-  position: relative;
-  z-index: 4;
-  min-width: 220px;
-  max-width: 320px;
-}
-.timeline-img img {
+    position: relative;
+    z-index: 4;
+    min-width: 220px;
+    max-width: 320px;
+  }
+  .timeline-img img {
     width: 100%;
     border-radius: 10px;
     height: 180px;
     object-fit: cover;
-}
+  }
   .timeline-title {
     font-size: 24px;
     margin: 25px 0;
-        line-height: 1.2;
+    line-height: 1.2;
     white-space: nowrap;
-}
+  }
   .timeline-date {
     font-size: 30px;
     line-height: 1;
-        position: relative;
-}
-    .timeline-date:before {
+    position: relative;
+  }
+  .timeline-date:before {
     content: '';
     position: absolute;
     bottom: -28px;
-      top:auto;
+    top: auto;
     left: 0;
     width: 16px;
     height: 16px;
     border-radius: 16px;
     background: #000;
-}
+  }
   .timeline-item--bottom .timeline-date:before {
     content: '';
     top: -32px;
-    bottom:auto
-}
+    bottom: auto;
+  }
   .tim__button div {
-    background: #E55420;
+    background: #e55420;
     position: relative;
     margin: 0;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-        box-shadow: none;
-      border: 1px solid #E55420;
-}
-  .tim__button div:hover{
-        border-color: #cb0f0f;
-       color: #E55420;
+    box-shadow: none;
+    border: 1px solid #e55420;
+  }
+  .tim__button div:hover {
+    border-color: #cb0f0f;
+    color: #e55420;
     background: #fff;
   }
-  .tim__button div:hover:after{
-        border-color: #cb0f0f;
-       color: #cb0f0f;
+  .tim__button div:hover:after {
+    border-color: #cb0f0f;
+    color: #cb0f0f;
   }
   .tim__button {
     margin-top: 30px;
     display: flex;
     justify-content: flex-end;
     gap: 22px;
-}
+  }
+  .timeline-swiper .swiper-button-next,
+  .timeline-swiper .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+  }
 
-.swiper-button-next:after, .swiper-button-prev:after {
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
     font-size: 16px;
     color: #fff;
-}
-@media (max-width: 991px) {
- .timeline-title {
-    font-size: 15px;
-    margin: 15px 0;
-}
-  .timeline-date {
-    font-size: 18px;
   }
-  .timeline-date:before{
-        width: 10px;
-    height: 10px;
-        bottom: -18px;
+  @media (max-width: 991px) {
+    .timeline-title {
+      font-size: 15px;
+      margin: 15px 0;
+    }
+    .timeline-date {
+      font-size: 18px;
+    }
+    .timeline-date:before {
+      width: 10px;
+      height: 10px;
+      bottom: -18px;
+    }
+    .timeline-img img {
+      width: auto;
+      height: 90px;
+      object-fit: cover;
+    }
+    .timeline-item--bottom .timeline-date:before {
+      top: -20px;
+    }
+    .timeline-item--bottom .timeline-content {
+      margin-top: -28px;
+    }
+    .timeline-item--bottom {
+      margin-top: 212px;
+    }
+    .timeline-item {
+      min-height: 160px;
+    }
+    .timeline-swiper-container {
+      padding: 0 20px;
+    }
+    h2.timeline-swiper-title {
+      margin-bottom: 40px;
+    }
+    .timeline-center-line {
+      display: none;
+    }
+    .timeline-date:after {
+      content: '';
+      width: 100%;
+      height: 1px;
+      background: #d5d5d5;
+      display: block;
+      position: absolute;
+      top: 30px;
+    }
+    .timeline-item.timeline-item--bottom .timeline-date:after {
+      content: '';
+      top: -16px;
+    }
+    .timeline-date:before {
+      z-index: 1;
+    }
   }
-  .timeline-img img {
-    width: auto;
-    height: 90px;
-    object-fit: cover;
-}
-  .timeline-item--bottom .timeline-date:before {
-    top: -20px;
-}
-  .timeline-item--bottom .timeline-content {
-    margin-top: -28px;
-}
-  .timeline-item--bottom {
-    margin-top: 212px;
-}
-  .timeline-item {
-    min-height: 160px;
-}
-  .timeline-swiper-container {
-    padding: 0 20px;
-}
-  h2.timeline-swiper-title {
-    margin-bottom: 40px;
-}
-  .timeline-center-line {
-    display: none;
-  }
-  .timeline-date:after {
-    content: '';
-    width: 100%;
-    height: 1px;
-    background: #d5d5d5;
-    display: block;
-    position: absolute;
-    top: 30px;
-}
-  .timeline-item.timeline-item--bottom .timeline-date:after {
-    content: '';
-    top: -16px;
-}
-  .timeline-date:before{
-        z-index: 1;
-  }
-}
 </style>
 
 <div class="timeline-swiper-section">
   <div class="timeline-swiper-container">
-      <h2 class="timeline-swiper-title">{{ section.settings.head }}</h2>
-     <div class="timeline-center-line"></div>
+    <h2 class="timeline-swiper-title">{{ section.settings.head }}</h2>
+    <div class="timeline-center-line"></div>
     <div class="swiper timeline-swiper">
       <div class="swiper-wrapper">
         {% for block in section.blocks %}
           <div class="swiper-slide">
             <div class="timeline-item {% if block.settings.position == 't__top' %}timeline-item--top{% else %}timeline-item--bottom{% endif %}">
               <div class="timeline-content">
-                  <div class="timeline-img">
-                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
-                  </div>
-                  <div class="timeline-title">{{ block.settings.title }}</div>
-                <div class="timeline-date"><b>{{ block.settings.date }}</b></div>
+                <div class="timeline-img">
+                  <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+                </div>
+                <div class="timeline-title">{{ block.settings.title }}</div>
+                <div class="timeline-date">
+                  <b>{{ block.settings.date }}</b>
+                </div>
               </div>
-              <!-- <div class="timeline-center-line">
-                <div class="timeline-dot"></div>
-            </div> -->
+              <!--
+                <div class="timeline-center-line">
+                    <div class="timeline-dot"></div>
+                </div>
+              -->
             </div>
           </div>
         {% endfor %}
       </div>
-     <div class="tim__button">
+      <div class="tim__button">
         <div class="swiper-button-prev tim_p"></div>
         <div class="swiper-button-next tim_n"></div>
-     </div>
+      </div>
     </div>
-   
   </div>
 </div>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  new Swiper('.timeline-swiper', {
-    slidesPerView: 5,
-    spaceBetween: 0,
-    navigation: {
-      nextEl: '.tim_n',
-      prevEl: '.tim_p',
-    },
-    breakpoints: {
-      0: { slidesPerView: 2, spaceBetween: 0 },
-      600: { slidesPerView: 2, spaceBetween: 0 },
-      900: { slidesPerView: 5, spaceBetween: 0 }
-    }
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.timeline-swiper', {
+      slidesPerView: 5,
+      spaceBetween: 0,
+      navigation: {
+        nextEl: '.tim_n',
+        prevEl: '.tim_p',
+      },
+      breakpoints: {
+        0: { slidesPerView: 2, spaceBetween: 0 },
+        600: { slidesPerView: 2, spaceBetween: 0 },
+        900: { slidesPerView: 5, spaceBetween: 0 },
+      },
+    });
   });
-});
 </script>
 
 {% schema %}
 {
   "name": "Timeline Swiper",
-   "settings": [
+  "settings": [
     {
       "type": "text",
       "id": "head",
@@ -263,36 +272,34 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "title",
           "label": "Title"
         },
-        
+
         {
           "type": "image_picker",
           "id": "image",
           "label": "Image"
         },
         {
-        "type": "select",
-        "id": "position",
-        "label": "Position",
-        "options": [
-          {
-            "value": "t__top",
-            "label": "top"
-          },
-          {
-            "value": "t__bottom",
-            "label": "bottom"
-          }
-        
-        ],
-        "default": "t__top"
-      },
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "t__top",
+              "label": "top"
+            },
+            {
+              "value": "t__bottom",
+              "label": "bottom"
+            }
+          ],
+          "default": "t__top"
+        }
       ]
     }
   ],
   "presets": [
     {
       "name": "Timeline Swiper"
-    
     }
   ]
 }
