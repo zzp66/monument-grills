@@ -1,6 +1,7 @@
 <style>
   .anniversary-9th-discover {
     padding: 60px 0;
+    margin: 0;
   }
   p.discover-title {
     color: #000;
@@ -9,12 +10,9 @@
     margin: 0;
     text-align: center;
   }
-  /* .discover-content {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  } */
+  .discover-content {
+    margin-top: 30px;
+  }
   .discover-item {
     position: relative;
   }
@@ -48,6 +46,26 @@
     font-size: 16px;
     color: #fff;
     margin: 5px 0 0 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    .anniversary-9th-discover {
+      padding: 30px 0;
+    }
+    p.discover-title {
+      font-size: 26px;
+    }
+    .discover-content {
+      margin-top: 15px;
+    }
+    p.info-1 {
+      font-size: 18px;
+      line-height: 20px;
+    }
+    p.info-2 {
+      font-size: 14px;
+      line-height: 16px;
+    }
   }
 </style>
 <div class="anniversary-9th-discover section">

@@ -23,6 +23,12 @@
   .blogs-content {
     margin-top: 20px;
   }
+  .blogs-swiper-wrapper {
+    align-items: stretch;
+  }
+  .blogs-swiper-wrapper .swiper-slide {
+    height: 100%;
+  }
   .blogs-item {
     position: relative;
   }
@@ -87,7 +93,7 @@
 
   @media screen and (max-width: 768px) {
     .anniversary-9th-blogs {
-      padding: 30px 0;
+      padding: 30px 0 50px;
     }
     p.blogs-title {
       font-size: 26px;
@@ -96,7 +102,8 @@
       justify-content: center;
     }
     .blogs-img img {
-      min-height: 300px;
+      min-height: auto;
+      height: 300px;
     }
   }
 </style>
@@ -107,7 +114,7 @@
     <a href="{{ section.settings.blogs_link }}" class="blogs-btn">All Blogs ></a>
     <div class="blogs-content">
       <div class="swiper blogs-swiper">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper blogs-swiper-wrapper">
           {% for block in section.blocks %}
             {% assign article = block.settings.blog_url %}
             <div class="swiper-slide">
@@ -152,7 +159,7 @@
           spaceBetween: 10,
         },
         768: {
-          slidesPerView: 1.5,
+          slidesPerView: 1.2,
           spaceBetween: 15,
         },
         1280: {

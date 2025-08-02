@@ -44,6 +44,7 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+    height: 100%;
   }
   .review-item-img {
     padding-top: 10px;
@@ -85,9 +86,15 @@
     display: none;
   }
 
+  .review-wrapper-mb .swiper-wrapper {
+    align-items: stretch;
+  }
+  .review-wrapper-mb .swiper-slide {
+    height: 575px;
+  }
   @media screen and (max-width: 768px) {
-    .anniversary-9th-reviews{
-      padding: 0;
+    .anniversary-9th-reviews {
+      padding: 30px 0;
     }
     .review-content {
       display: flex;
@@ -95,6 +102,9 @@
     }
     .review-wrapper-mb {
       display: block;
+    }
+    .review-wrapper-mb .swiper-wrapper {
+      padding: 10px 0;
     }
     .review-wrapper {
       display: none;
@@ -111,7 +121,7 @@
       grid-template-columns: 1fr;
       gap: 15px;
     }
-    .review-media{
+    .review-media {
       display: none;
     }
   }
@@ -193,22 +203,8 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     new Swiper('.reviews-swiper', {
-      slidesPerView: 3,
-      spaceBetween: 6,
-      breakpoints: {
-        320: {
-          slidesPerView: 1.2,
-          spaceBetween: 6,
-        },
-        768: {
-          slidesPerView: 1.2,
-          spaceBetween: 6,
-        },
-        1280: {
-          slidesPerView: 3,
-          spaceBetween: 6,
-        },
-      },
+      slidesPerView: 1.2,
+      spaceBetween: 20,
     });
   });
 </script>
