@@ -2,15 +2,42 @@
   .banner-content {
     position: relative;
   }
+  .banner-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .banner-video video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .banner-video-mb {
+    display: none;
+  }
+  .banner-video-pc {
+    display: flex;
+  }
   .banner-info-img img {
     max-width: 600px;
   }
   .banner-infos {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .banner-info-box {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .banner-text {
     color: #fff;
@@ -18,13 +45,23 @@
     font-size: 24px;
     margin: 10px 0 0 0;
   }
-  .banner-text span {
+  .banner-text p {
+    margin: 0;
+  }
+  .banner-text strong {
     color: #e55420;
+    font-weight: normal;
   }
 
   @media screen and (max-width: 768px) {
+    .banner-video-mb {
+      display: flex;
+    }
+    .banner-video-pc {
+      display: none;
+    }
     .banner-info-img img {
-      max-width: 100%;
+      max-width: 200px;
     }
     .banner-text {
       font-size: 16px;
@@ -34,27 +71,125 @@
 </style>
 <div class="anniversary-9th-banner">
   <div class="banner-content">
-    <div class="banner-img">
-      <img
-        src="https://cdn.shopify.com/s/files/1/1639/3511/files/920169b0b3d6cbfea6c75e96f03fb91e8ee1b2d9.jpg?v=1754035445"
-        alt=""
-      >
-    </div>
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'image' %}
+          <div class="banner-img">
+            <picture>
+              {% if block.settings.banner_img_mb != blank %}
+                <source
+                  media="(max-width: 768px)"
+                  srcset="{{ block.settings.banner_img_mb | image_url: width: master }}"
+                >
+              {% else %}
+                <source
+                  media="(max-width: 768px)"
+                  srcset="{{ block.settings.banner_img_pc | image_url: width: master }}"
+                >
+              {% endif %}
+              <source
+                media="(min-width: 769px)"
+                srcset="{{ block.settings.banner_img_pc | image_url: width: master }}"
+              >
+              <img src="{{ block.settings.banner_img_pc | image_url: width: master }}">
+            </picture>
+          </div>
+        {% when 'video' %}
+          <div class="banner-video">
+            {% if block.settings.banner_video_mb != blank %}
+              <div class="banner-video-mb">
+                {{
+                  block.settings.banner_video_mb
+                  | video_tag: playsinline: true, autoplay: true, muted: true, loop: true
+                }}
+              </div>
+            {% else %}
+              <div class="banner-video-mb">
+                {{
+                  block.settings.banner_video_pc
+                  | video_tag: playsinline: true, autoplay: true, muted: true, loop: true
+                }}
+              </div>
+            {% endif %}
+            <div class="banner-video-pc">
+              {{
+                block.settings.banner_video_pc
+                | video_tag: playsinline: true, autoplay: true, muted: true, loop: true
+              }}
+            </div>
+          </div>
+        {% else %}
+
+      {% endcase %}
+    {% endfor %}
     <div class="banner-infos">
-      <div class="banner-info-img">
-        <img
-          src="https://cdn.shopify.com/s/files/1/1639/3511/files/0dd041a26a40eaf15b82867ba62006e05d63c0fb.png?v=1754035437"
-          alt=""
-        >
+      <div class="banner-info-box">
+        <div class="banner-info-img">
+          <img
+            src="{{ section.settings.banner_info_img | image_url: width: master }}"
+            alt=""
+          >
+        </div>
+        <div class="banner-text">
+          {{ section.settings.banner_info_text }}
+        </div>
       </div>
-      <p class="banner-text">Celebrating <span>9 Years</span> of Expert Grilling</p>
     </div>
   </div>
 </div>
 {% schema %}
 {
   "name": "9th Anniversary Banner",
-  "settings": [],
+  "max_blocks": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_info_img",
+      "label": "Info Image"
+    },
+    {
+      "type": "richtext",
+      "id": "banner_info_text",
+      "label": "Info Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_img_pc",
+          "label": "Banner Img PC"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_img_mb",
+          "label": "Banner Img Mobile",
+          "info": "如果不选该图片，则移动端默认调用PC端的图片"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "banner_video_pc",
+          "label": "Banner Video PC",
+          "info": "如果不选视频，则默认调用图片"
+        },
+        {
+          "type": "video",
+          "id": "banner_video_mb",
+          "label": "Banner Video Mobile",
+          "info": "如果不选该视频，则移动端默认调用PC端的视频"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "9th Anniversary Banner"
