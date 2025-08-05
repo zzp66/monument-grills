@@ -28,7 +28,7 @@
     }
   }
 </style>
-<div class="anniversary-9th-ninja section">
+<div class="anniversary-9th-ninja section" id="{{ section.settings.ninja_id }}">
   <div class="container">
     <p class="ninja-title">🎁Try Your Luck</p>
     <p class="ninja-info">Spin The Wheel For A Chance To Win Big.</p>
@@ -41,7 +41,13 @@
 {% schema %}
 {
   "name": "9th Anniversary Ninja",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "ninja_id",
+      "label": "用于二级导航栏的ID"
+    }
+  ],
   "presets": [
     {
       "name": "9th Anniversary Ninja"

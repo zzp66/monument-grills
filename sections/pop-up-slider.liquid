@@ -112,7 +112,7 @@
   {% endstyle %}
 {% else %}
 {%- endif -%}
-<div class="section {{ section.class }}">
+<div class="section {{ section.class }}" id="{{ section.settings.popup_id }}">
   <div class="container">
     <div
       class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"
@@ -373,6 +373,11 @@
   "name": "Pop up slider - fei",
   "class": "pop-up-slider",
   "settings": [
+    {
+      "type": "text",
+      "id": "popup_id",
+      "label": "用于二级导航栏的ID"
+    },
     {
       "type": "checkbox",
       "id": "full_screen",

@@ -78,7 +78,7 @@
 
 {% assign click_id = section.settings.click_id %}
 {% assign popup_content = section.settings.cur_liquid %}
-<div class="anniversary-9th-lifeshared">
+<div class="anniversary-9th-lifeshared" id="{{ section.settings.lifeshared_id }}">
   <div class="video-container">
     <!-- 视频背景 -->
     <video autoplay muted loop class="video-bg">
@@ -107,6 +107,11 @@
 {
   "name": "9th Anniversary Life",
   "settings": [
+    {
+      "type": "text",
+      "id": "lifeshared_id",
+      "label": "用于二级导航栏的ID"
+    },
     {
       "type": "text",
       "id": "click_id",

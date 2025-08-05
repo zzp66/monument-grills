@@ -68,7 +68,7 @@
     }
   }
 </style>
-<div class="anniversary-9th-discover section">
+<div class="anniversary-9th-discover section" id="{{ section.settings.discover_id }}">
   <div class="container">
     <p class="discover-title">Discover More</p>
     <div class="discover-content">
@@ -122,7 +122,13 @@
 {% schema %}
 {
   "name": "9th Anniversary Discover",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "discover_id",
+      "label": "用于二级导航栏的ID"
+    }
+  ],
   "blocks": [
     {
       "type": "info",

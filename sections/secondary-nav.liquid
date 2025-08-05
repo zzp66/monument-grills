@@ -1,38 +1,21 @@
 <style>
   .secondary-nav-nav {
+    position: sticky;
+    top: 160px;
+    z-index: 29;
     background-color: #f9f9f9;
     height: auto;
     overflow: visible;
-  }
-  .secondary-nav-box {
-    position: relative;
-    min-height: 65px;
-    overflow: visible;
-  }
-  .secondary-nav-sticky-container {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    position: sticky;
-    top: 163px;
-    z-index: 99;
-    background-color: #f9f9f9;
-    width: 100%;
-  }
-  .secondary-nav-nav ul {
-    margin: 0;
   }
   .secondary-nav-nav li {
     list-style: none;
   }
   ul.secondary-nav-wrapper {
     width: 100%;
-    height: auto;
-    overflow: visible;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 200px;
+    padding: 20px 0;
   }
   li.nav-item {
     color: #9f9f9f;
@@ -47,23 +30,134 @@
     border-bottom: 3px solid #e55420;
   }
 </style>
-<div class="secondary-nav-box">
-  <div class="secondary-nav-sticky-container">
-    <ul class="container secondary-nav-wrapper">
-      <li class="nav-item">Life Shared1</li>
-      <li class="nav-item active">Life Shared2</li>
-      <li class="nav-item">Life Shared3</li>
-      <li class="nav-item">Life Shared4</li>
-      <li class="nav-item">Life Shared5</li>
-    </ul>
-  </div>
+<div class="secondary-nav-box container">
+  <ul class="secondary-nav-wrapper">
+    {% for item in section.blocks %}
+      <li class="nav-item" data-target-node="{{ item.settings.nav_id }}">{{ item.settings.nav_text }}</li>
+    {% endfor %}
+  </ul>
 </div>
+
+<script>
+  !(function () {
+    const navTop = 160;
+    const targetSectionNodes = [
+      { title_translate: 'Lucky Spin', node: '#tab-1' },
+      { title_translate: 'Griller Stories', node: '#tab-2' },
+      { title_translate: 'Community Wall', node: '#tab-3' },
+      { title_translate: 'Expert Insights', node: '#tab-4' },
+      { title_translate: 'Spotlight Events', node: '#tab-5' },
+    ];
+    const $section = $(document.currentScript).closest('.secondary-nav-nav');
+    const $list = $section.find('.secondary-nav-wrapper');
+    const tabHeight = $section.height();
+    const offTop = 20;
+    $section.on('click', '.nav-item', function () {
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
+      const node = $(this).attr('data-target-node');
+      if (node) {
+        handlefloorTabItemClick(node);
+      }
+    });
+    // 点击滑动对应节点
+    function handlefloorTabItemClick(node) {
+      const element = document.querySelector(node);
+      if (!element) {
+        return;
+      }
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      const elTop = element?.getBoundingClientRect().top || 0;
+      const scrollIntoView = scrollTop + elTop - navTop - tabHeight;
+      window.scrollTo({
+        top: scrollIntoView,
+        behavior: 'smooth',
+      });
+    }
+
+    // 获取节点
+    function getElementByNode(node) {
+      if (!node) {
+        return;
+      }
+      // 默认第一个元素
+      let element = document.querySelector(node);
+      // 适配存在多个相同选择器的情况
+      const firstElement = adaptMultipleSameSelector(node);
+      if (firstElement) {
+        element = firstElement;
+      }
+      return element;
+    }
+
+    // 处理存在多个相同选择器的问题
+    function adaptMultipleSameSelector(node) {
+      // 如果存在多个相同选择器元素，则取首个可见元素
+      const nodeList = document.querySelectorAll(node);
+      const len = nodeList.length;
+      if (len > 1) {
+        for (let i = 0; i < len; i++) {
+          // 计算样式
+          const curNode = nodeList[i];
+          // 首个可见元素
+          if (getComputedStyle(curNode).display === 'block') {
+            return curNode;
+          }
+        }
+      }
+    }
+    let activeIndex = undefined;
+    const navContainerWidth = $list.width();
+    const handleScroll = () => {
+      const anchors = targetSectionNodes.map((anchor, index) => ({
+        anchor,
+        index,
+        element: getElementByNode(anchor.node), // 根据node获取相应元素
+      }));
+      // 获取在可视范围内的sections
+      const activeAnchor = anchors.filter(({ element }) => {
+        const rect = element?.getBoundingClientRect();
+        if (!element) return false;
+        return rect && Math.floor(rect.top) <= navTop + tabHeight + offTop && rect.bottom >= navTop + tabHeight;
+      });
+      const lastActiveAnchor = activeAnchor.length >= 2 ? activeAnchor[activeAnchor.length - 1] : activeAnchor[0];
+      if (lastActiveAnchor && activeIndex != lastActiveAnchor.index) {
+        // $('.nav-item').removeClass('active')
+        activeIndex = lastActiveAnchor.index;
+        const activeTab = $list.find('.nav-item').eq(lastActiveAnchor.index);
+        const activeTabOffset = activeTab.offset().left + $list.scrollLeft();
+        const scrollLeft = activeTabOffset - navContainerWidth / 2 + activeTab.width() / 2;
+        $list.animate({ scrollLeft: scrollLeft }, 200);
+        $list.find('.nav-item').removeClass('active').eq(lastActiveAnchor.index).addClass('active');
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+  })();
+</script>
 
 {% schema %}
 {
   "name": "Secondary Nav",
   "class": "secondary-nav-nav",
   "settings": [],
+  "blocks": [
+    {
+      "type": "NavItem",
+      "name": "NavItem",
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_text",
+          "label": "导航栏文案"
+        },
+        {
+          "type": "text",
+          "id": "nav_id",
+          "label": "导航栏ID"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Secondary Nav"

@@ -133,7 +133,7 @@
     }
   }
 </style>
-<div class="anniversary-9th-reviews section">
+<div class="anniversary-9th-reviews section" id="{{ section.settings.reviews_id }}">
   <div class="container">
     <p class="reviews-title">{{ section.settings.reviews_title }}</p>
     <p class="reviews-info">{{ section.settings.reviews_subtitle }}</p>
@@ -223,6 +223,11 @@
 {
   "name": "9th Anniversary Review",
   "settings": [
+    {
+      "type": "text",
+      "id": "reviews_id",
+      "label": "用于二级导航栏的ID"
+    },
     {
       "type": "image_picker",
       "id": "reviews_image",

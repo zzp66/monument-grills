@@ -107,7 +107,7 @@
     }
   }
 </style>
-<div class="anniversary-9th-blogs section">
+<div class="anniversary-9th-blogs section" id="{{ section.settings.blogs_id }}">
   <div class="container">
     <p class="blogs-title">Expert Grilling Tips</p>
     <p class="blogs-info">Learn the Tricks, Master the Flame – Curated by the Gas Grill Experts</p>
@@ -175,6 +175,11 @@
 {
   "name": "9th Anniversary Blogs",
   "settings": [
+    {
+      "type": "text",
+      "id": "blogs_id",
+      "label": "用于二级导航栏的ID"
+    },
     {
       "type": "url",
       "id": "blogs_link",

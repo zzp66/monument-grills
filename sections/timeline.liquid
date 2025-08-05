@@ -192,7 +192,7 @@
   }
 </style>
 
-<div class="timeline-swiper-section">
+<div class="timeline-swiper-section" id="{{ section.settings.timeline_id }}">
   <div class="timeline-swiper-container">
     <h2 class="timeline-swiper-title">{{ section.settings.head }}</h2>
     <div class="timeline-center-line"></div>
@@ -249,6 +249,11 @@
 {
   "name": "Timeline Swiper",
   "settings": [
+    {
+      "type": "text",
+      "id": "timeline_id",
+      "label": "用于二级导航栏的ID"
+    },
     {
       "type": "text",
       "id": "head",
