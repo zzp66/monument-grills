@@ -184,14 +184,16 @@
   }
 </style>
 
-<section class="logos_sec">
+<section class="logos_sec logo-scroll">
   <div class="container">
     <div class="head_sec">
       <h2>{{ section.settings.heading }}</h2>
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="tab1">{{ section.settings.tab1_heading }}</button>
-        <button class="tab-btn" data-tab="tab2">{{ section.settings.tab2_heading }}</button>
-      </div>
+      {% if section.settings.tab1_heading != blank %}
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab1">{{ section.settings.tab1_heading }}</button>
+          <button class="tab-btn" data-tab="tab2">{{ section.settings.tab2_heading }}</button>
+        </div>
+      {% endif %}
     </div>
 
     <div class="logos-wrapper" id="tab1">
@@ -305,7 +307,7 @@
 
 {% schema %}
 {
-  "name": "Logo tab",
+  "name": "Logo Scroll",
   "class": "cc-Logoss",
   "settings": [
     {
@@ -353,6 +355,11 @@
           "label": "image"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo Scroll"
     }
   ]
 }

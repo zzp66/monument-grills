@@ -1,50 +1,49 @@
 <style>
-.logos-wrapper {
+  .logos-wrapper {
     display: flex;
     gap: 20px;
     width: max-content;
-}
-.logos_container {
+  }
+  .logos_container {
     overflow-x: hidden;
-}
-.logos__item {
-   
+  }
+  .logos__item {
     flex-shrink: 0;
     width: 200px;
-}
-.logos__item img{
-   border: 1px solid #e5e5e5;
-      object-fit: cover;
-}
-.logos_box {
+  }
+  .logos__item img {
+    border: 1px solid #e5e5e5;
+    object-fit: cover;
+  }
+  .logos_box {
     position: relative;
-}
-.logos_sec {
+  }
+  .logos_sec {
     margin-top: 60px;
-}
-/* 向右滚动动画 */
-@keyframes scrollRight {
+  }
+  /* 向右滚动动画 */
+  @keyframes scrollRight {
     0% {
-        transform: translateX(0);
+      transform: translateX(0);
     }
     100% {
-        transform: translateX(calc(-200px * 6 - 120px));
+      transform: translateX(calc(-200px * 6 - 120px));
     }
-}
+  }
 
-/* 向左滚动动画 */
-@keyframes scrollLeft {
+  /* 向左滚动动画 */
+  @keyframes scrollLeft {
     0% {
-        transform: translateX(calc(-200px * 6 - 120px));
+      transform: translateX(calc(-200px * 6 - 120px));
     }
     100% {
-        transform: translateX(0);
+      transform: translateX(0);
     }
-}
+  }
 
-/* 渐变遮罩 */
-.logos_box::before,
-.logos_box::after {
+  /* 渐变遮罩 */
+  .logos_box::before,
+  .logos_box::after {
     content: '';
     position: absolute;
     top: 0;
@@ -52,88 +51,90 @@
     height: 100%;
     z-index: 2;
     pointer-events: none;
-}
+  }
 
-.logos_box::before {
+  .logos_box::before {
     left: 0;
     background: linear-gradient(to right, white, transparent);
-}
+  }
 
-.logos_box::after {
+  .logos_box::after {
     right: 0;
     background: linear-gradient(to left, white, transparent);
-}
+  }
 
-@media(max-width: 991px) {
+  @media (max-width: 991px) {
     .logos__item {
-        width: 150px;
+      width: 150px;
     }
-    
+
     @keyframes scrollRight {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(calc(-150px * 6 - 120px));
-        }
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-150px * 6 - 120px));
+      }
     }
-    
+
     @keyframes scrollLeft {
-        0% {
-            transform: translateX(calc(-150px * 6 - 120px));
-        }
-        100% {
-            transform: translateX(0);
-        }
+      0% {
+        transform: translateX(calc(-150px * 6 - 120px));
+      }
+      100% {
+        transform: translateX(0);
+      }
     }
-}
+  }
 </style>
 
 <section class="logos_sec">
-    <div class="container_full">
-        <div class="head_sec">
-            <h2>{{ section.settings.heading }}</h2>
-        </div>
-        
-        <div class="logos_container">
-            <div class="logos_box">
-                <div class="logos-wrapper {% if section.settings.scroll_direction == 'right' %}scroll-right{% else %}scroll-left{% endif %}" 
-                     style="animation: {% if section.settings.scroll_direction == 'right' %}scrollRight{% else %}scrollLeft{% endif %} {{ section.settings.scroll_speed }}s linear infinite;">
-                    {% for block in section.blocks %}
-                        <div class="logos__item">
-                            <img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.image.alt }}" />
-                        </div>
-                    {% endfor %}
-                    <!-- 复制一组实现无缝效果 -->
-                    {% for block in section.blocks %}
-                        <div class="logos__item">
-                            <img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.image.alt }}" />
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+  <div class="container_full">
+    <div class="head_sec">
+      <h2>{{ section.settings.heading }}</h2>
     </div>
+
+    <div class="logos_container">
+      <div class="logos_box">
+        <div
+          class="logos-wrapper {% if section.settings.scroll_direction == 'right' %}scroll-right{% else %}scroll-left{% endif %}"
+          style="animation: {% if section.settings.scroll_direction == 'right' %}scrollRight{% else %}scrollLeft{% endif %} {{ section.settings.scroll_speed }}s linear infinite;"
+        >
+          {% for block in section.blocks %}
+            <div class="logos__item">
+              <img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.image.alt }}">
+            </div>
+          {% endfor %}
+          <!-- 复制一组实现无缝效果 -->
+          {% for block in section.blocks %}
+            <div class="logos__item">
+              <img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.image.alt }}">
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const wrapper = document.querySelector('.logos-wrapper');
-    
+
     // 鼠标悬停时暂停动画
-    wrapper.addEventListener('mouseenter', function() {
-        this.style.animationPlayState = 'paused';
+    wrapper.addEventListener('mouseenter', function () {
+      this.style.animationPlayState = 'paused';
     });
-    
-    wrapper.addEventListener('mouseleave', function() {
-        this.style.animationPlayState = 'running';
+
+    wrapper.addEventListener('mouseleave', function () {
+      this.style.animationPlayState = 'running';
     });
-});
+  });
 </script>
 
 {% schema %}
 {
-  "name": "Logo tab",
+  "name": "Logo tab Old",
   "class": "cc-Logoss",
   "settings": [
     {
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
   ],
   "presets": [
     {
-      "name": "Logo tab"
+      "name": "Logo tab Old"
     }
   ]
 }

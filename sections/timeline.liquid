@@ -26,10 +26,17 @@
     z-index: 2;
     min-height: 320px;
   }
-  h2.timeline-swiper-title {
+  .timeline-head {
+    margin-bottom: 60px;
     text-align: center;
-    margin-bottom: 80px;
-    line-height: 1;
+  }
+  h2.timeline-swiper-title {
+    margin: 0;
+  }
+  p.timeline-swiper-headinfo {
+    margin: 10px 0 0;
+    font-size: 24px;
+    line-height: 28px;
   }
   .timeline-item--top {
     /* justify-content: flex-end; */
@@ -168,10 +175,17 @@
       padding: 0 20px;
     }
     h2.timeline-swiper-title {
-      margin-bottom: 40px;
+    }
+
+    p.timeline-swiper-headinfo {
+      font-size: 14px;
+      line-height: 16px;
     }
     .timeline-center-line {
       display: none;
+    }
+    .timeline-head {
+      margin-bottom: 30px;
     }
     .timeline-date:after {
       content: '';
@@ -194,7 +208,12 @@
 
 <div class="timeline-swiper-section" id="{{ section.settings.timeline_id }}">
   <div class="timeline-swiper-container">
-    <h2 class="timeline-swiper-title">{{ section.settings.head }}</h2>
+    <div class="timeline-head">
+      <h2 class="timeline-swiper-title">{{ section.settings.head }}</h2>
+      {% if section.settings.head_info != blank %}
+        <p class="timeline-swiper-headinfo">{{ section.settings.head_info }}</p>
+      {% endif %}
+    </div>
     <div class="timeline-center-line"></div>
     <div class="swiper timeline-swiper">
       <div class="swiper-wrapper">
@@ -259,6 +278,11 @@
       "id": "head",
       "label": "Title",
       "default": "Milestone for Monument Grills"
+    },
+    {
+      "type": "text",
+      "id": "head_info",
+      "label": "Head Info"
     }
   ],
   "blocks": [

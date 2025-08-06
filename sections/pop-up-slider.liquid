@@ -38,6 +38,8 @@
 -%}
 {% style %}
   p.popup-title-info {
+    font-size: 24px;
+    line-height: 28px;
     text-align: center;
     color: #000;
     margin: 10px 0;
@@ -74,6 +76,10 @@
     .pop-up-slider .arrow-slider .slider {
       scrollbar-width: none;
       padding-bottom: 0;
+    }
+    p.popup-title-info {
+      font-size: 14px;
+      line-height: 16px;
     }
   }
 {% endstyle %}
@@ -222,7 +228,7 @@
                 {% endif %}
               >
                 {%- if block.settings.heading != blank -%}
-                  <{{ block.settings.cart_title_size }} class="card__title {% if block.settings.font_weight != blank %}font-weight{% endif %}">
+                  <{{ block.settings.cart_title_size }} class="card__title">
                     {{- block.settings.heading | escape -}}
                   </{{ block.settings.cart_title_size }}>
                 {%- endif -%}

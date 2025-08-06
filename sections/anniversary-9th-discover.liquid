@@ -70,7 +70,7 @@
 </style>
 <div class="anniversary-9th-discover section" id="{{ section.settings.discover_id }}">
   <div class="container">
-    <p class="discover-title">Discover More</p>
+    <h2 class="section__heading mb-0 flex-auto text-center discover-title">{{ section.settings.discover_title }}</h2>
     <div class="discover-content">
       <div class="swiper discover-swiper">
         <div class="swiper-wrapper">
@@ -127,6 +127,12 @@
       "type": "text",
       "id": "discover_id",
       "label": "用于二级导航栏的ID"
+    },
+    {
+      "type": "text",
+      "id": "discover_title",
+      "label": "Title",
+      "default": "Discover More"
     }
   ],
   "blocks": [
