@@ -313,8 +313,7 @@
               {% endstyle %}
               {% if block.settings.image != blank or block.settings.video_shopify != blank %}
                   <li class="multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
-                <a href="{{ block.settings.button_link }}" style="    position: absolute;"></a>  
-                <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
+                    <div class="card-full{% if block.settings.round %} image-round {% endif %}{% if block.settings.video_shopify != blank %} video-section{% endif %}{% unless color_scheme == 'none' %} color-scheme color-scheme--{{ color_scheme }}{% endunless %} relative flex flex-col h-full">
                       {%- if block.settings.enable_media -%}
                         {%- liquid
                           if section.settings.column_size == 'small'
@@ -327,7 +326,7 @@
                           endcapture
                         -%}
       
-                        <div  class="card__media media relative w-full{% if section.settings.image_ratio == "natural" %} {{ section.settings.media_align }}{% endif %}" style="{% unless section.settings.image_ratio == "natural" %}padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;{% endunless %}{% if section.settings.image_ratio == "natural" and block.settings.video_shopify %}padding-top: 56.25%;{% endif %}{% if block.settings.media_scale < 100 %} transform: scale({{ block.settings.media_scale | divided_by: 100.0 }});{% endif %}">
+                        <div class="card__media media relative w-full{% if section.settings.image_ratio == "natural" %} {{ section.settings.media_align }}{% endif %}" style="{% unless section.settings.image_ratio == "natural" %}padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;{% endunless %}{% if section.settings.image_ratio == "natural" and block.settings.video_shopify %}padding-top: 56.25%;{% endif %}{% if block.settings.media_scale < 100 %} transform: scale({{ block.settings.media_scale | divided_by: 100.0 }});{% endif %}">
                           {%- if block.settings.image != blank or block.settings.video_shopify != blank -%}
                             {%- if block.settings.video_shopify != blank -%}
                               <deferred-media class="media absolute top-0 left-0 w-full h-full">
@@ -432,12 +431,7 @@
             {% else %}
               {% if block.settings.image != blank or block.settings.video_shopify != blank %}
                  <li class="multi-column {% if section.settings.text_on_picture != blank %}text-on-picture{% endif %} grow w-full max-w-none{% if carousel %} slider__item{% endif %} " {{ block.shopify_attributes }}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
-                 <a href="{{ block.settings.button_link }}" style="position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;"></a>    {% if section.settings.text_on_picture != blank %}
+                  {% if section.settings.text_on_picture != blank %}
                      {% style %}
                         .text-on-picture .card .card__media{
                            position: relative;
@@ -1909,7 +1903,7 @@
           "info":"弹框中的内容，有html节点时使用"
         },
         {
-          "type": "html",
+          "type": "richtext",
           "id": "custom_text",
           "label": "Popup Text",
           "info":"弹框中的内容，仅文本时使用"

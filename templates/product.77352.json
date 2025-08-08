@@ -1,1 +1,1946 @@
-{"sections":{"main":{"type":"main-product","blocks":{"vendor-sku":{"type":"vendor-sku","settings":{"show_vendor":true,"show_sku":false,"show_barcode":false}},"title":{"type":"title","settings":{"show_subTitle":true,"show_fontweight":false,"subTitle":"{{ product.metafields.custom.product_sub_title.value }}","subtitle_color":"#777777"}},"rating_fXPEpD":{"type":"rating","settings":{}},"product-labels":{"type":"product-labels","settings":{}},"price":{"type":"price","settings":{"show_tax_and_shipping":false,"show_shopify_installments":true}},"divider-0":{"type":"divider","settings":{"show_line":true,"spacing":"mt-8 mb-8"}},"variant-picker":{"type":"variant-picker","settings":{"selector_style":"buttons","enable_dynamic_availability":true,"show_backorder_text":true,"enable_size_chart":false,"size_chart_variant":"Size","size_chart_page":""}},"buy-buttons":{"type":"buy-buttons","settings":{"show_qty_selector":true,"enable_dynamic_checkout":false,"show_pickup_availability":false,"show_gift_card_recipient":false}},"qikify_bogo_freegift_bogo_offer_ezFxzY":{"type":"shopify:\/\/apps\/qikify-bogo-freegift\/blocks\/bogo_offer\/2e94b962-8172-4839-8ad9-7837eb8b017a","settings":{"product":"{{product}}"}},"complementary_AAHqpH":{"type":"complementary","settings":{"heading":"Fit well with accessories","products_to_show":10,"layout":"carousel","add_btn_bg":"#111111","add_btn_text_color":"#ffffff"}},"angi_monument_grills_prod_pdp_widget_B4dC9e":{"type":"shopify:\/\/apps\/angi-monument-grills\/blocks\/pdp_widget\/831a0352-30a6-43be-8d38-28a75dbba499","settings":{"color_scheme":"light","product_form_selector":"form[action='\/cart\/add']","width":"fill","custom_width":100,"horizontal_alignment":"flex-start","vertical_spacing":2.4}},"short_description_cNrTz6":{"type":"short_description","settings":{"show_short_description":true}},"richtext_nYC4cF":{"type":"richtext","settings":{"text":"<h6>We’re here to help<\/h6>"}},"angi_monument_grills_prod_pdp_widget_zCXAJE":{"type":"shopify:\/\/apps\/angi-monument-grills\/blocks\/pdp_widget\/831a0352-30a6-43be-8d38-28a75dbba499","disabled":true,"settings":{"color_scheme":"auto","product_form_selector":"form[action='\/cart\/add']","width":"fill","custom_width":100,"horizontal_alignment":"flex-start","vertical_spacing":2.4}},"custom_liquid_Mrf3HP":{"type":"custom-liquid","settings":{"custom_liquid":"<div class=\"information-wrapper product__info-box panel\">\n  <div class=\"tips\">\n    {% assign isnuc = false %}\n    {% if product.collections != blank %}\n        <ul class=\"wuliu\">\n          {% if product.metafields.custom.booking_service_link.value != blank %}\n            <li class=\"item fixtman\">\n              <label>\n                <img src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/1639\/3511\/files\/Install.png?v=1709883599\" alt=\"\">\n                <strong>Professional Grill Assembly for {{ product.metafields.custom.installation_service_price.value | money }}<\/strong>\n              <\/label>\n              <p class=\"des\">\n                <modal-opener class=\"no-js-hidden\" data-modal=\"modal-pop_up_UBingX\" style=\"display:none;\">\n                  <button type=\"button\" class=\"link\" aria-haspopup=\"dialog\" id=\"install_url_btn\">Learn More<\/button>\n                <\/modal-opener>\n                <a href=\"{{ product.metafields.custom.booking_service_link.value }}\" target=\"_blank\" class=\"book-now-btn\">Book Now<\/a>\n              <\/p>\n              <p class=\"small\" style=\"display: none;\">\n                <small style=\"color:#333;\">Leave assembly to the professionals with Fixtman.<\/small><br>\n                <small style=\"color:#777;\">1. Fully vetted and background-checked professionals.<\/small><br>\n                <small style=\"color:#777;\">2. Friendly and helpful customer service.<\/small><br>\n                <small style=\"color:#777;\">3. Backed by the Handy Happiness Guarantee.<\/small><br>\n                <small style=\"color:#777;\">4. Fixed cost that's upfront and priced to fit your budget.<\/small>\n              <\/p>\n            <\/li>\n            <li class=\"item item-btn show-more\">\n              <a id=\"show_more\" class=\"link show-btn\">Show More<\/a>\n            <\/li>\n          {% endif %}\n          <li class=\"item\">\n            <label>\n              <img src=\"https:\/\/cdn.shopifycdn.net\/s\/files\/1\/0549\/2336\/2481\/files\/icons82.png?v=1701153347\" alt=\"\">\n              <strong>Free Shipping on US orders $54.99+ (Restrictions apply)<br>Delivery time: 3-7 days<\/strong>\n            <\/label>\n            <p class=\"des\" style=\"margin-top:10px;\">\n              <a href=\"\/apps\/aftership\" target=\"_blank\">Track Your Order<\/a>\n            <\/p>\n            <br>\n          <\/li>\n          <li class=\"item\" style=\"display:none;\">\n            <label>\n              <img src=\"https:\/\/cdn.shopifycdn.net\/s\/files\/1\/0549\/2336\/2481\/files\/icons81.png?v=1701153347\" alt=\"\">\n              <strong>30-Day Money Back Guarantee<\/strong>\n            <\/label>\n            <p class=\"des\">\n              <a href=\"\/policies\/refund-policy\" target=\"_blank\">Safe payment options<\/a>\n            <\/p>\n          <\/li>\n          <li class=\"item\">\n            <label>\n              <img src=\"https:\/\/cdn.shopifycdn.net\/s\/files\/1\/0549\/2336\/2481\/files\/icons80.png?v=1701153347\" alt=\"\">\n              <strong>Warranty<\/strong>\n            <\/label>\n            <p class=\"des\"><a href=\"\/pages\/parts-and-warranty-request\" target=\"_blank\">8-Year Limited Warranty <\/a><\/p><br>\n          <\/li>\n          <li class=\"item item-btn show-less hide\">\n            <a id=\"show_less\" class=\"link show-btn\">Show Less<\/a>\n          <\/li>\n        <\/ul>\n    {% endif %}\n  <\/div>\n<\/div>\n<script>\n  $(function(){\n    $('#show_more').click(function(){\n      $('.tips').addClass('hight-auto');\n      $(this).parent().addClass('hide').siblings('.show-less').removeClass('hide');\n    });\n    $('#show_less').click(function(){\n      $('.tips').removeClass('hight-auto');\n      $(this).parent().addClass('hide').siblings('.show-more').removeClass('hide');\n    });\n  });\n<\/script>\n\n\n<style>\n.tips{\n    max-height: 110px;\n    overflow: hidden;\n}\n.tips.hight-auto{\n  max-height: max-content;\n}\n.tips .item-btn .show-btn{\n  display: flex;\n  justify-content: center;\n  border-bottom: 0;\n  cursor: pointer;\n  background: #ddd;\n}\n.book-now-btn{\npadding-left: 0px;\n}\n#install_modal{\n  z-index:9999;\n}\n.information-wrapper{\n    display: block;    \n}\n.tips{\n   font-size:14px;\n}\nul,li{\n  list-style: none;\n}\n\n.wuliu{\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n}\n.wuliu .item{\n  width: 100%;\n  padding: 0;\n  margin-bottom: 1em;\n  color: #000;\n  font-size: 16px;\n  border-bottom: 1px solid #eee;\n}\n.wuliu .item:last-child{\n  border-bottom: 0;\n}\n.wuliu .item label{\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n.wuliu .item label img{\n  width: 30px;\n  height: 30px;\n  margin-right: 15px;\n  margin-bottom: 0;\n    position: relative;\n    top: 20px;\n}\n.wuliu .item label h3{\n  font-size: 18px;\n  margin-top: 0;\n  margin-bottom: 0;\n  font-weight: 500;\n}\n.wuliu .item p{\n  margin-bottom: 0;\n  margin-top: 0;\n  padding-left: 46px;\n}\n.wuliu .item a{\n  color: #000;\n  text-decoration: underline;\n}\n.wuliu .item a:hover{\n  color: #D4651F;\n}\n.information-wrapper {\n    padding-left: 25px;\n}\n@media (max-width:768px){\n  .tips{\n    max-height: 120px;\n  }\n}\n<\/style>"}}},"block_order":["vendor-sku","title","rating_fXPEpD","product-labels","price","divider-0","variant-picker","buy-buttons","qikify_bogo_freegift_bogo_offer_ezFxzY","complementary_AAHqpH","angi_monument_grills_prod_pdp_widget_B4dC9e","short_description_cNrTz6","richtext_nYC4cF","angi_monument_grills_prod_pdp_widget_zCXAJE","custom_liquid_Mrf3HP"],"custom_css":[".slp_1d97ce {padding: calc(8 * var(--space-unit));}",".slp_1d97ce img {width: 30px; height: 30px; margin-right: 15px; margin-bottom: 0;}",".slp_1d97ce a {text-decoration: underline;}"],"settings":{"stick_on_scroll":true,"product_pre_sale":false,"show_quick_jump_link":false,"sticky_atc_panel":true,"sticky_atc_position":"end","sticky_atc_mobile":true,"media_layout":"slider","media_size":"default","media_ratio":"1","media_crop":"none","hover_zoom":"large","enable_video_looping":false,"stacked_scroll":"change","underline_active":true,"media_thumbs":"desktop","thumb_ratio":"1","thumb_crop":"none","media_arrows":"always","show_slide_count":true,"border_color":"#eeeeee","bg_color":"#f4f4f4","enable_media_grouping":true,"media_grouping_option":"Color","logo1":"shopify:\/\/shop_images\/logo-1.jpg","logo2":"shopify:\/\/shop_images\/logo-2.jpg","logo3":"shopify:\/\/shop_images\/logo-3.jpg","logo4":"shopify:\/\/shop_images\/logo-4.jpg","logo5":"shopify:\/\/shop_images\/logo-5.jpg","logo6":"shopify:\/\/shop_images\/logo-6.jpg","logo7":"shopify:\/\/shop_images\/logo-7.jpg"}},"rich_text_GPJtyQ":{"type":"rich-text","blocks":{"heading_ycBNtR":{"type":"heading","settings":{"heading":"{{ product.metafields.custom.monument_slogan.value }}","heading_size":"h2","title_weight":false,"title_uppercase":false,"one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_h1":false}},"text_rNtNjb":{"type":"text","settings":{"text":"<p>{{ product.metafields.custom.slogan_des | metafield_tag }}<\/p>","enlarge_text":false}}},"block_order":["heading_ycBNtR","text_rNtNjb"],"custom_css":["@media (min-width: 1024px) {.max-w-text-overlay {max-width: 90%; }}"],"settings":{"is_use_hulk_form":false,"link_id":"Overview","map_layout":"carousel","column_size":"small","show_post_content":false,"show_pop":false,"show_gird":false,"padding_top":40,"padding_bottom":40,"bg_color":"","text_position":"justify-center","text_align":"text-center","mob_center_text":true,"color_scheme":"none","full_width":true,"prevent_animation":true}},"image_banner_fzj3Wf":{"type":"image-banner","settings":{"link_id":"","full_screen":false,"padding_top":0,"padding_bottom":0,"image_desktop":"{{ product.metafields.custom.product_features_banner.value }}","image_mobile":"{{ product.metafields.custom.product_mobile_banner_.value }}","url":"","img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_01' }}","height_mode":"auto","fixed_height_desktop":600,"fixed_height_mobile":350,"overlay_position":"justify-center items-center","overlay_text_align":"text-center","mob_center_text":false,"mobile_stacked":false,"header_title_color":"","color_scheme":"white","full_width":true,"transparent_content_color":"#ffffff","tint_color":"#000000","tint_opacity":0,"prevent_animation":false,"fulllink":""}},"icons_with_text_cc9MeK":{"type":"icons-with-text","blocks":{"item_GDJcdn":{"type":"item","settings":{"icon":"truck","custom_icon":"shopify:\/\/shop_images\/icons8-demographics-100.png","item_layout_position":"left","heading":"{{ product.metafields.custom.product_features_name1.value }}","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>People<\/p>","link":""}},"item_YHAkAq":{"type":"item","settings":{"icon":"price_tag","custom_icon":"shopify:\/\/shop_images\/icons8-fire-100.png","item_layout_position":"left","heading":"{{ product.metafields.custom.product_features_name2.value }}","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>BTU<\/p>","link":""}},"item_gXybfd":{"type":"item","settings":{"icon":"return","custom_icon":"shopify:\/\/shop_images\/icons8-toaster-100.png","item_layout_position":"left","heading":"{{ product.metafields.custom.product_features_name3.value }}","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":true,"text":"<p>Area<\/p>","link":""}},"item_EwLR4j":{"type":"item","settings":{"icon":"chat_bubble","custom_icon":"shopify:\/\/shop_images\/icons8-fried-chicken-100.png","item_layout_position":"left","heading":"{{ product.metafields.custom.product_features_name4.value }}","title_color":"","button_label":"","button_style":"btn btn--primary","color_scheme":"white","button_link":"","danwei":false,"text":"<p>Hamburger<\/p>","link":""}}},"block_order":["item_GDJcdn","item_YHAkAq","item_gXybfd","item_EwLR4j"],"settings":{"link_id":"","is_show_arrow":false,"item_layout_position":"left","item_bg":"","item_text_color":"","padding_top":30,"padding_bottom":10,"button_label":"Optiona button","is_click":false,"show_popup":false,"cur_liquid":"","click_id":"","is_nofollow":false,"button_link":"","button_style":"btn btn--primary","show_gird":false,"show_row":false,"mobile_show_gird":false,"heading":"","heading_title_color":"","heading_size":"h3","title_des":"","title_type_scale":"medium","heading_align":"text-start","font_weight":false,"font_uppercase":false,"data_list":false,"hr_line":true,"data_color":"","number1_name":"","number1_des":"","number2_name":"","number2_des":"","show_online_display":true,"icon_size":48,"text_type_scale":"medium","icon_position":"above","mobile_stack":true,"show_all_on_mobile":true,"section_height":"medium","bg":"#ffffff","text_color":"","color_scheme":"none","full_width":true,"dividers":"border-top","prevent_animation":true}},"details":{"type":"product-details","blocks":{"highlight_text_gVa4ec":{"type":"highlight-text","settings":{"title":"Highlight title","text":"<p>Text to highlight a key feature of your product<\/p>"}},"highlight_text_xWNpzT":{"type":"highlight-text","settings":{"title":"Highlight title","text":"<p>Text to highlight a key feature of your product<\/p>"}}},"block_order":["highlight_text_gVa4ec","highlight_text_xWNpzT"],"disabled":true,"settings":{}},"video_zFzw4c":{"type":"video","settings":{"full_screen":false,"padding_top":10,"padding_bottom":10,"video_shopify":"shopify:\/\/files\/videos\/77352-视频17s左右-1225.mp4","height_desktop":440,"height_mobile":400,"video_external":"","video_description":"","poster_image":"shopify:\/\/shop_images\/default-video-cover.jpg","video_size":"md","video_autoplay":true,"text_align":"text-center","color_scheme":"default"}},"rich_text_Xf3eFm":{"type":"rich-text","blocks":{"heading_katqmH":{"type":"heading","settings":{"heading":"Stainless Steel Inside and Out","heading_size":"h2","title_weight":false,"title_uppercase":false,"one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_h1":false}},"text_6AHgdR":{"type":"text","settings":{"text":"<p>Crafted from durable stainless steel, the grill is built to resist corrosion, high heat and moisture for a long life. The stainless steel grates are easy to clean, resistant to warping, and provide even heat distribution for better-tasting food. Plus, stainless steel is free of harmful substances, ensuring a safer, healthier grilling experience.<\/p>","enlarge_text":false}}},"block_order":["heading_katqmH","text_6AHgdR"],"settings":{"is_use_hulk_form":false,"link_id":"","map_layout":"carousel","column_size":"small","show_post_content":false,"show_pop":false,"show_gird":false,"padding_top":10,"padding_bottom":10,"bg_color":"","text_position":"justify-center","text_align":"text-center","mob_center_text":true,"color_scheme":"none","full_width":true,"prevent_animation":false}},"video_VbKHn3":{"type":"video","settings":{"full_screen":false,"padding_top":10,"padding_bottom":10,"video_shopify":"shopify:\/\/files\/videos\/77352-Grill Video-01.mp4","height_desktop":440,"height_mobile":400,"video_external":"","video_description":"","poster_image":"shopify:\/\/shop_images\/default-video-cover.jpg","video_size":"md","video_autoplay":true,"text_align":"text-center","color_scheme":"default"}},"rich_text_ehENVx":{"type":"rich-text","blocks":{"heading_dzN9kB":{"type":"heading","settings":{"heading":"Innovative Blue and White Knob Lights","heading_size":"h2","title_weight":false,"title_uppercase":false,"one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_h1":false}},"text_RxDBie":{"type":"text","settings":{"text":"<p>Easily monitor your grill's temperature and blue light for high. It's energy-efficient lighting system reduces power consumption while extending the life of the LEDs.<\/p>","enlarge_text":false}}},"block_order":["heading_dzN9kB","text_RxDBie"],"settings":{"is_use_hulk_form":false,"link_id":"","map_layout":"carousel","column_size":"small","show_post_content":false,"show_pop":false,"show_gird":false,"padding_top":10,"padding_bottom":10,"bg_color":"","text_position":"justify-center","text_align":"text-center","mob_center_text":true,"color_scheme":"none","full_width":true,"prevent_animation":false}},"use_image_banner_gBfYLq":{"type":"use-image-banner","settings":{"link_id":"","full_screen":false,"padding_top":10,"padding_bottom":10,"show_tab":false,"tabbar_title_one":"","tabbar_title_two":"","tabbar_title_three":"","tabbar_title_color":"","tabbar_title_hover_color":"","tabbar_title_active_color":"","image_desktop":"shopify:\/\/shop_images\/pc_a0585583-23cf-484a-9df1-57c2f3c9424a.jpg","image_mobile":"shopify:\/\/shop_images\/mb_7c7c8456-f805-40c3-b5cd-9a9dd99d2ce5.jpg","url":"","height_mode":"auto","fixed_height_desktop":600,"fixed_height_mobile":350,"overlay_position":"justify-center items-center","info_max_width":70,"position_right":40,"overlay_text_align":"text-center","mob_center_text":false,"mobile_stacked":false,"text_bg":false,"mobile_position":false,"mobile_overlay_position":"mobile-top-center","color_scheme":"white","full_width":true,"transparent_content_color":"#ffffff","tint_color":"#000000","tint_opacity":0,"prevent_animation":false,"use_background_box":false,"background_box_bg":"","background_box_text_color":"","top_offset_position":10,"background_box_position":"top_center","show_gradient_font_offset_position":false,"gradient_font_offset_position":10}},"multi_column_aALANz":{"type":"multi-column","blocks":{"column_bKgcHT":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"image":"shopify:\/\/shop_images\/c515b51916daa194852934c6c41d4fd2.jpg","show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_11' }}","media_scale":100,"heading_font_weight":false,"heading":"Stainless Steel Rotisserie Kit （included）","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>Enjoy perfectly cooked, flavourful meat with the included rotisserie kit, which ensures even rotation for juicy, delicious results every time.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}},"column_brzq3L":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_12' }}","video_shopify":"shopify:\/\/files\/videos\/D605P01 (3).mp4","media_scale":100,"heading_font_weight":false,"heading":"Easy propane bottle installation","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>The built-in sliding propane tank tray makes it easy to change your 20-pound propane tank for added convenience.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}},"column_pVGTaj":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"image":"shopify:\/\/shop_images\/d1d40c45f4cdfb43f5738ea06fe922ce.jpg","show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_13' }}","media_scale":100,"heading_font_weight":false,"heading":"Electronic Ignition System","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>Forget the hassle of matches and lighter fluid - our electronic ignition provides fast, reliable start-ups for an effortless grilling experience.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}}},"block_order":["column_bKgcHT","column_brzq3L","column_pVGTaj"],"settings":{"link_id":"","slider_show_arrows":"always","font_c":"","column_bg_color":"","column_text_color":"#111111","column_font_glow":false,"title_one_color":"","title_one_color_size":"","title_two_color":"","title_two_color_size":"","title_three_color":"","title_three_color_size":"","title_four_color":"","title_four_color_size":"","title_color_angle":"45","enable_text_the_top":false,"enable_text_on_image":false,"enlarge_text":true,"header_weight":false,"header_uppercase":false,"full_screen":false,"text_on_picture":false,"text_on_picture_postion":"bottom","three_column":false,"padding_top":10,"padding_bottom":10,"layout":"carousel","column_size":"medium","column_align":"center","media_align":"text-center","image_ratio":"1","title":"Enjoy Hassle-Free Operation","heading_size":"h2","description":"","pc_title_font_size":64,"mobile_title_font_size":42,"heading_align":"text-center","text_align":"text-center","color_scheme":"2","btn_label":"","btn_link":"","btn_style":"btn btn--secondary"}},"rich_text_fzETKh":{"type":"rich-text","blocks":{"heading_EbfQXV":{"type":"heading","settings":{"heading":"Versatile Side Burner","heading_size":"h2","title_weight":false,"title_uppercase":false,"one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_h1":false}},"text_Gw6NG8":{"type":"text","settings":{"text":"<p>Expand your cooking options with the side burner, perfect for preparing sauces, side dishes or anything else to complement your main course. This feature adds even more versatility to your outdoor cooking.<\/p>","enlarge_text":false}}},"block_order":["heading_EbfQXV","text_Gw6NG8"],"settings":{"is_use_hulk_form":false,"link_id":"","map_layout":"carousel","column_size":"small","show_post_content":false,"show_pop":false,"show_gird":false,"padding_top":10,"padding_bottom":10,"bg_color":"","text_position":"justify-center","text_align":"text-center","mob_center_text":true,"color_scheme":"none","full_width":true,"prevent_animation":false}},"video_antPQz":{"type":"video","settings":{"full_screen":false,"padding_top":10,"padding_bottom":10,"video_shopify":"shopify:\/\/files\/videos\/77352-Grill Video-02.mp4","height_desktop":440,"height_mobile":400,"video_external":"","video_description":"","poster_image":"shopify:\/\/shop_images\/default-video-cover.jpg","video_size":"md","video_autoplay":true,"text_align":"text-center","color_scheme":"default"}},"multi_column_jkea4R":{"type":"multi-column","blocks":{"column_rEtewM":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"image":"shopify:\/\/shop_images\/ca277b8ce15035ebd36c42eca50992bc.jpg","show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_06' }}","media_scale":100,"heading_font_weight":false,"heading":"High-Precision Thermometer","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>Get accurate, fast temperature readings with our high-precision thermometer, ensuring perfect cooking conditions for superior results every time.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}},"column_zHA73Y":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"image":"shopify:\/\/shop_images\/b7ec796d5409faa326049390302a494d.jpg","show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_07' }}","media_scale":100,"heading_font_weight":false,"heading":"Convenient Tool Hook","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>Keep your grilling tools organized and within easy reach with the built-in tool hook for added convenience and less clutter.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}},"column_QHwJgK":{"type":"column","settings":{"enable_media":true,"enable_url":false,"round":false,"image":"shopify:\/\/shop_images\/d6f5898e6b45b24db516b2b5dbbd9b56_2597bc85-4ddb-4fba-b161-d2d162ca9776.jpg","show_icon":false,"top_left":0,"img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_08' }}","media_scale":100,"heading_font_weight":false,"heading":"Slide-Out Grease Tray","column_text_align":"text-center","heading_size":"h3","is_use_cur_heading_size":false,"cur_heading_size":28,"is_use_multiple_text_links":false,"is_use_multiple_text_weight":false,"multiple_text":"","text_size":"h3","multiple_text_color":"","text":"<p>Clean-up is a breeze with the slide-out grease tray, designed to efficiently collect excess grease for a safer and mess-free grilling experience.<\/p>","normal_text_size":"h6","text_color":"","text_pos":"text-left","author":"","column_date":"","is_popup_btn":false,"is_nofollow":false,"add_target":false,"button_label":"","button_link":"","button_style":"btn btn--primary","is_show_popup":false,"is_nofollow_popup":false,"is_show_countdown_timer":false,"is_use_footer_button":false,"footer_button_label":"Please Read the Terms, Time Left:","footer_button_style":"btn btn--primary","pop_title":"","pop_title_size":"h4","is_font_weight":false,"popup_button_label":"Optiona button","popup_button_style":"btn--primary","custom_liquid":"","custom_text":"","custom_text_url":"","iframe_form":""}}},"block_order":["column_rEtewM","column_zHA73Y","column_QHwJgK"],"settings":{"link_id":"","slider_show_arrows":"always","font_c":"","column_bg_color":"","column_text_color":"#111111","column_font_glow":false,"title_one_color":"","title_one_color_size":"","title_two_color":"","title_two_color_size":"","title_three_color":"","title_three_color_size":"","title_four_color":"","title_four_color_size":"","title_color_angle":"45","enable_text_the_top":false,"enable_text_on_image":false,"enlarge_text":true,"header_weight":false,"header_uppercase":false,"full_screen":false,"text_on_picture":false,"text_on_picture_postion":"bottom","three_column":false,"padding_top":10,"padding_bottom":10,"layout":"carousel","column_size":"medium","column_align":"center","media_align":"text-center","image_ratio":"1","title":"Smarter Tech, Simpler life","heading_size":"h2","description":"","pc_title_font_size":64,"mobile_title_font_size":42,"heading_align":"text-center","text_align":"text-center","color_scheme":"2","btn_label":"","btn_link":"","btn_style":"btn btn--secondary"}},"rich_text_Y6aXdq":{"type":"rich-text","blocks":{"heading_6tkTE4":{"type":"heading","settings":{"heading":"77352 Grill Receives CR's Top Rating","heading_size":"h2","title_weight":false,"title_uppercase":false,"one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_h1":false}},"text_Lh3LUA":{"type":"text","settings":{"text":"<p>CR Media awarded the 77352 grill an impressive score of 85, highlighting its exceptional performance in even cooking, versatile temperature control, robust durability and outstanding preheat efficiency. These features ensure a reliable and enjoyable grilling experience, delivering perfectly cooked meals every time.<\/p>","enlarge_text":false}},"button_3MzEaP":{"type":"button","disabled":true,"settings":{"no_link_btn":"","button_id":"","button_style":"btn btn--primary","button_1_label":"view more","is_nofollow_1":false,"button_1_link":"https:\/\/www.consumerreports.org\/home-garden\/grills\/monument-grills-77352\/m397696\/","button_1_style":"btn--primary","button_2_label":"","is_nofollow_2":false,"button_2_link":"","button_2_style":"btn btn--primary"}}},"block_order":["heading_6tkTE4","text_Lh3LUA","button_3MzEaP"],"settings":{"is_use_hulk_form":false,"link_id":"","map_layout":"carousel","column_size":"small","show_post_content":false,"show_pop":false,"show_gird":false,"padding_top":10,"padding_bottom":10,"bg_color":"","text_position":"justify-center","text_align":"text-center","mob_center_text":true,"color_scheme":"none","full_width":true,"prevent_animation":false}},"media_grid_iphpNJ":{"type":"media-grid","blocks":{"media_hKrWMV":{"type":"media","settings":{"image":"shopify:\/\/shop_images\/1_bb76a7fc-e174-44e7-a88c-8fce8a2567c8.jpg","link_url":"","columns":1,"rows":2,"subheading":"","title":"","heading_size":"h4","title_weight":false,"title_uppercase":false,"is_use_cur_heading_size":false,"cur_heading_size":28,"title_position":"justify-start items-end","header_description":"","button_label":"","is_newsletter_email":false,"is_copyed_btn":false,"newsletter_tag":"","copyed_btn_id":"","button_link":"","overlay_position":"justify-start items-end","text_alignment":"text-start","button_style":"btn btn--primary","button_color":"","button_text_color":"","tint_color":"#000000","tint_opacity":0}},"media_VyfaLq":{"type":"media","settings":{"image":"shopify:\/\/shop_images\/77352-cr.jpg","link_url":"","columns":1,"rows":2,"subheading":"","title":"","heading_size":"h4","title_weight":false,"title_uppercase":false,"is_use_cur_heading_size":false,"cur_heading_size":28,"title_position":"justify-start items-end","header_description":"","button_label":"","is_newsletter_email":false,"is_copyed_btn":false,"newsletter_tag":"","copyed_btn_id":"","button_link":"","overlay_position":"justify-start items-end","text_alignment":"text-start","button_style":"btn btn--primary","button_color":"","button_text_color":"","tint_color":"#000000","tint_opacity":0}}},"block_order":["media_hKrWMV","media_VyfaLq"],"custom_css":[".gallery-block__image img {object-fit: contain;}"],"settings":{"full_screen":false,"is_three_cols":false,"is_show_three_cols":false,"is_four_cols":false,"is_five_cols":false,"is_henhen_cols":false,"is_text_below_the_picture":false,"is_image_has_rounded_corners":false,"padding_top":10,"padding_bottom":10,"image_border_radius":"","title":"","heading_size":"h2","text_color":"","header_weight":false,"header_uppercase":false,"heading_align":"text-start","column_font_glow":false,"title_one_color":"","title_one_color_size":"","title_two_color":"","title_two_color_size":"","title_three_color":"","title_three_color_size":"","title_four_color":"","title_four_color_size":"","title_color_angle":"45","button_label":"","button_link":"","button_style":"btn btn--primary","gallery_cols_max":2,"block_number":"","block_min_height":"","mobile_block_min_height":"","rounded_design":false,"mobile_carousel":false,"media_des_1":"","media_des_2":"","gallery_cols_min":"1","fixed_height_desktop":180,"fixed_height_mobile":300,"section_color_scheme":"none","color_scheme":"white","transparent_content_color":"#ffffff"}},"parts_dot_HjncrA":{"type":"parts-dot","blocks":{"dot_yJ9jfE":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.one_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_3BLrVN":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.two_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_hp4tFz":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.three_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_RQHXR8":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.four_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_XLGG4k":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.five_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_7QcqV7":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.six_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}},"dot_KPjjh3":{"type":"dot","settings":{"product_part_name":"{{ product.metafields.custom.seven_dot_name.value }}","product_part_name_color":"","name_link":"","dot_bg_color":"#5c5c5c","dot_text_color":""}}},"block_order":["dot_yJ9jfE","dot_3BLrVN","dot_hp4tFz","dot_RQHXR8","dot_XLGG4k","dot_7QcqV7","dot_KPjjh3"],"settings":{"link_id":"","full_screen":false,"full_screen_bg":"","part_title":"Parts Description","heading_size":"h2","section_bg":"#f4f4f4","heading_align":"text-left","product_part_image":"{{ product.metafields.custom.device_dot_image.value }}","img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_16' }}","layout_postion":"left","show_text":true,"color_scheme":"1"}},"media_with_text_33nNqM":{"type":"media-with-text","blocks":{"heading_VbcBNd":{"type":"heading","settings":{"heading":"Product Dimensions","one_color":"#2a2b2a","two_color":"#2a2b2a","color_angle":"45","heading_size":"h2","title_weight":false,"title_uppercase":false,"heading_h1":false}},"text_CRBNLf":{"type":"text","settings":{"text":"<p><strong>Lid Closed (inches)<\/strong><\/p><p>You can enjoy season after season of peak grilling performance and good times with family and friends.<\/p>","enlarge_text":false,"enlarge_new_text":false,"text_size":"h3","text_color":""}},"pdf_manuals_eWirGm":{"type":"pdf-manuals","settings":{"is_show_manuals":true,"file_icon":"shopify:\/\/shop_images\/icons8-export-pdf-100_1.png","file_name":"{{ product.metafields.custom.manual_name.value }}","file_url":"{{ product.metafields.custom.manual_url.value }}","file_version":"v2.0"}}},"block_order":["heading_VbcBNd","text_CRBNLf","pdf_manuals_eWirGm"],"settings":{"link_id":"","full_screen":false,"max_content_width":"","rounded_design":false,"media_rounded_size":"40","grid_layout":false,"angle_size":"","padding_top":30,"padding_bottom":30,"layout":"left","image_fit":"contain","media_width":50,"media_scale":100,"title_weight":false,"title_uppercase":false,"heading":"","heading_size":"h2","header_text":"","enlarge_text":true,"text_size":"p","header_text_position":"justify-center","text_align":"text-start","show_text_color":false,"set_text_color":"","full_screen_bg":"#f4f4f4","color_scheme":"none","only_content_color_scheme":false,"image":"{{ product.metafields.custom.product_size.value }}","img_url":"","img_alt":"{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_17' }}","video_external":"","video_description":"","video_autoplay":false}},"product_comparison_grid_P3476i":{"type":"product-comparison-grid","blocks":{"text_kFVrHw":{"type":"text","settings":{"title":"Equipment Number","value":"{{ product.metafields.custom.device_serial_number.value }}"}},"text_dLYnpK":{"type":"text","settings":{"title":"Total BTU's","value":"{{ product.metafields.custom.specifications_primary_burner_btu_s.value }}"}},"text_cWQyqE":{"type":"text","settings":{"title":"Total Cooking Area (Sq in)","value":"{{ product.metafields.custom.specifications_total_cooking_area.value }}"}},"text_AtYtdi":{"type":"text","settings":{"title":"Primary Cooking Area","value":"{{ product.metafields.custom.specifications_primary_cooking_area.value }}"}},"text_fREe9z":{"type":"text","settings":{"title":"Secondary Cooking Area (Sq in)","value":"{{ product.metafields.custom.specifications_secondary_cooking_area.value }}"}},"text_8y7bzT":{"type":"text","settings":{"title":"Number of Hamburgers","value":"{{ product.metafields.custom.number_of_hamburgers.value }}"}},"text_AfXyRW":{"type":"text","settings":{"title":"Assembled Width*Depth*Height","value":"{{ product.metafields.custom.specifications_assembled_depth.value }}"}},"text_8WFYki":{"type":"text","settings":{"title":"Main Grill Grate Material","value":"{{ product.metafields.custom.specifications_main_grill_grate_material.value }}"}},"text_E9m3xy":{"type":"text","settings":{"title":"Fuel Type","value":"{{ product.metafields.custom.specifications_fuel_type.value }}"}},"text_EQjPLf":{"type":"text","settings":{"title":"Grill Finish","value":"{{ product.metafields.custom.specifications_grill_finish.value }}"}},"text_FY87Y3":{"type":"text","settings":{"title":"Ignition Type","value":"{{ product.metafields.custom.specifications_ignition_type.value }}"}},"text_WP8WGa":{"type":"text","settings":{"title":"Number of Main Burners","value":"{{ product.metafields.custom.specifications_number_of_main_burners.value }}"}},"text_qJGmja":{"type":"text","settings":{"title":"Number of Side Burners","value":"{{ product.metafields.custom.specifications_number_of_side_burners.value }}"}},"text_jVPqVd":{"type":"text","settings":{"title":"Product Weight","value":"{{ product.metafields.custom.specifications_product_weight.value }}"}},"text_ig4LyD":{"type":"text","settings":{"title":"Large battery pack","value":"{{ product.metafields.custom.large_battery_pack.value }}"}},"text_8QtQdG":{"type":"text","settings":{"title":"Cavity infrared burner","value":"{{ product.metafields.custom.cavity_infrared_burner.value }}"}},"text_fyyBFy":{"type":"text","settings":{"title":"Standard rain cover","value":"{{ product.metafields.custom.standard_rain_cover.value }}"}},"text_MKBrpt":{"type":"text","settings":{"title":"Gas bottle slide","value":"{{ product.metafields.custom.gas_bottle_slide.value }}"}}},"block_order":["text_kFVrHw","text_dLYnpK","text_cWQyqE","text_AtYtdi","text_fREe9z","text_8y7bzT","text_AfXyRW","text_8WFYki","text_E9m3xy","text_EQjPLf","text_FY87Y3","text_WP8WGa","text_qJGmja","text_jVPqVd","text_ig4LyD","text_8QtQdG","text_fyyBFy","text_MKBrpt"],"settings":{"link_id":"Specs","only_text":true,"table_comparison_bg":"","heading":"Specifications","heading_size":"h3","use_class_name":"","header_weight":false,"header_uppercase":false,"text":"","heading_align":"text-center","view_more_label":"View more","view_more_link":"","product_list":[],"empty_field_text":"-","image_ratio":"shortest","image_crop":"center","num_rows":0,"color_scheme":"none","highlight_row":true}},"recommendations":{"type":"product-recommendations","disabled":true,"settings":{"heading":"You may also like","heading_align":"text-start","layout":"carousel","card_size_mobile":"small","card_size":"small","products_to_show":8}},"video_Uzjt9f":{"type":"video","blocks":{"heading_rBPVgE":{"type":"heading","settings":{"heading":"How to Easily Install Monument Grills","heading_size":"h2","heading_h1":false}},"text_zyYeHx":{"type":"text","settings":{"text":"<p>Monument Denali 77352 Grill is a high-performance, versatile, and stylish grill that makes your outdoor barbecue more delicious and enjoyable.<\/p>","enlarge_text":false}},"button_JybN7N":{"type":"button","settings":{"button_label":"Download Manuals","button_link":"https:\/\/cdn.shopify.com\/s\/files\/1\/1639\/3511\/files\/f7d7c897f798fc44c391847188c3ac79.jpg?v=1712720527","add_arrt":true,"button_style":"btn btn--primary"}}},"block_order":["heading_rBPVgE","text_zyYeHx","button_JybN7N"],"settings":{"full_screen":false,"padding_top":10,"padding_bottom":10,"height_desktop":440,"height_mobile":400,"video_external":"https:\/\/www.youtube.com\/watch?v=wCFA7dtFuIk&t=33s","video_description":"","poster_image":"shopify:\/\/shop_images\/77352_Assembly_cover.png","video_size":"md","video_autoplay":true,"text_align":"text-center","color_scheme":"default"}},"icons_with_text_QLrYtw":{"type":"icons-with-text","blocks":{"item_HmhEij":{"type":"item","settings":{"icon":"truck","custom_icon":"shopify:\/\/shop_images\/icons8-signing-a-document-100.png","item_layout_position":"left","heading":"Register Your Grill","title_color":"","button_label":"Register Now","button_style":"btn btn--secondary","color_scheme":"white","button_link":"https:\/\/monumentgrills.com\/pages\/register-grill-1","danwei":false,"text":"<p>Get our after-sales service easily and quickly.<\/p>","link":""}},"item_PB3KqW":{"type":"item","settings":{"icon":"price_tag","custom_icon":"shopify:\/\/shop_images\/icons8-manual-page-rotation-100.png","item_layout_position":"left","heading":"Replacement Parts","title_color":"","button_label":"Find Parts","button_style":"btn btn--secondary","color_scheme":"white","button_link":"https:\/\/monumentgrills.com\/collections\/replacement-parts","danwei":false,"text":"<p>In need of a new part for your Monument Grill? Search Here.<\/p>","link":""}},"item_9xaXWa":{"type":"item","settings":{"icon":"return","custom_icon":"shopify:\/\/shop_images\/icons8-export-pdf-100.png","item_layout_position":"left","heading":"Manuals & Videos","title_color":"","button_label":"Download Documents","button_style":"btn btn--secondary","color_scheme":"white","button_link":"https:\/\/monumentgrills.com\/pages\/assembly-manuals-and-videos","danwei":false,"text":"<p>Print, preview or download literature for your grill.<\/p>","link":""}},"item_r6EhJB":{"type":"item","settings":{"icon":"chat_bubble","custom_icon":"shopify:\/\/shop_images\/icons8-warranty-100_f0d6a89c-63d1-407b-b38e-bc39304878ab.png","item_layout_position":"left","heading":"Warranty","title_color":"","button_label":"View Warranties","button_style":"btn btn--secondary","color_scheme":"white","button_link":"\/pages\/warranty","danwei":false,"text":"<p>View the warranty details for your grill. <\/p>","link":""}}},"block_order":["item_HmhEij","item_PB3KqW","item_9xaXWa","item_r6EhJB"],"settings":{"link_id":"Support","is_show_arrow":false,"item_layout_position":"left","item_bg":"","item_text_color":"","padding_top":50,"padding_bottom":50,"button_label":"Optiona button","is_click":false,"show_popup":false,"cur_liquid":"","click_id":"","is_nofollow":false,"button_link":"","button_style":"btn btn--primary","show_gird":false,"show_row":false,"mobile_show_gird":false,"heading":"","heading_title_color":"","heading_size":"h3","title_des":"","title_type_scale":"medium","heading_align":"text-start","font_weight":false,"font_uppercase":false,"data_list":false,"hr_line":true,"data_color":"","number1_name":"","number1_des":"","number2_name":"","number2_des":"","show_online_display":false,"icon_size":48,"text_type_scale":"medium","icon_position":"above","mobile_stack":false,"show_all_on_mobile":true,"section_height":"medium","bg":"#f9f9f9","text_color":"","color_scheme":"1","full_width":true,"dividers":"none","prevent_animation":false}},"faq_tcPUPr":{"type":"faq","blocks":{"category_YbEL79":{"type":"category","settings":{"text":"Product","text_id":"ProductFAQ"}},"question_8rmJnJ":{"type":"question","settings":{"icon":"question_mark","heading":"How to connect all wires for the Denali Series?","text":"<p>Today we'll show you how to connect all the wires for the Denali Series. <br\/><br\/>Experience the best of life with the quality, capability, and versatility of the Monument Denali Series.<\/p><p><a href=\"https:\/\/www.youtube.com\/watch?v=xiaHpXpa6aA\" target=\"_blank\" title=\"https:\/\/www.youtube.com\/watch?v=xiaHpXpa6aA\">Click here<\/a>.<\/p>","read_number":0}},"question_VVrGd6":{"type":"question","settings":{"icon":"question_mark","heading":"Where is my serial number?","text":"<p>The Serial number is located in two places. The first place is the back bottom right of the firebox Or on the shipping box next to the model label.<\/p>","read_number":0}},"question_HdTpHB":{"type":"question","settings":{"icon":"question_mark","heading":"Can I get my grill assembled?","text":"<p>MG Products require assembly. We provide videos on how to assembly on our website along with digital manuals. You can check with your local retailer that carry Monument Grills for 3rd party assembly services.<\/p>","read_number":0}},"question_PbBJKM":{"type":"question","settings":{"icon":"question_mark","heading":"Do accessories and grill arrive together if I buy a bundle order?","text":"<p>The grill and accessories will be sent in separate packages and might not arrive at the same time.<\/p>","read_number":0}},"question_JDEbNU":{"type":"question","settings":{"icon":"question_mark","heading":"I received the wrong item! What do I do?","text":"<p>Mistakes happen and we apologize! Contact us via Email (<a href=\"mailto:CustomerService@Monumentgrills.com\" target=\"_blank\" title=\"mailto:CustomerService@Monumentgrills.com\">CustomerService@Monumentgrills.com<\/a>) or Chat and we will create a return for the incorrect item. Once that item has been successfully dropped off or picked up by the carrier your replacement No charge order will be created and a new Order number with tracking information will be emailed to you.<\/p>","read_number":0}},"question_mYRfhC":{"type":"question","settings":{"icon":"question_mark","heading":"How to install my Denali grill?","text":"<p>We include a user manual in the package of each product with detailed assembly instructions. You can also watch our assembly video. <\/p><p>The link: <a href=\"https:\/\/monumentgrills.com\/pages\/assembly-manuals-and-videos\" title=\"https:\/\/monumentgrills.com\/pages\/assembly-manuals-and-videos\">https:\/\/monumentgrills.com\/pages\/assembly-manuals-and-videos<\/a><\/p>","read_number":0}},"question_bj67kc":{"type":"question","settings":{"icon":"question_mark","heading":"Why is Denali's warming rack constructed differently than regular ones? ","text":"<p>Denali's warming rack is a multifunctional design capable of holding chicken thighs, chicken legs, roast peppers, and much more, offering greater versatility compared to ordinary cooking grids.<\/p>","read_number":0}},"question_XKqxxp":{"type":"question","settings":{"icon":"question_mark","heading":"Where can I see the temperature?","text":"<p>You can check the temperature via Bluetooth app or Smart Temperature Display.<\/p>","read_number":0}},"question_rwX6FD":{"type":"question","settings":{"icon":"question_mark","heading":"Is the Bluetooth stable to use? ","text":"<p>Yes, the Bluetooth connection with the grill is reliable for up to 65 feet outside.<\/p>","read_number":0}}},"block_order":["category_YbEL79","question_8rmJnJ","question_VVrGd6","question_HdTpHB","question_PbBJKM","question_JDEbNU","question_mYRfhC","question_bj67kc","question_XKqxxp","question_rwX6FD"],"settings":{"heading":"FAQs on Denali 605 Pro","heading_align":"text-center","color_scheme":"none","full_width":true}},"1709290372794ca6d9":{"type":"apps","blocks":{"yotpo_product_reviews_ugc_reviews_hWrkzb":{"type":"shopify:\/\/apps\/yotpo-product-reviews\/blocks\/reviews\/eb7dfd7d-db44-4334-bc49-c893b51b36cf","settings":{"product":"{{product}}"}}},"block_order":["yotpo_product_reviews_ugc_reviews_hWrkzb"],"settings":{"link_id":"","full_width":false}}},"order":["main","rich_text_GPJtyQ","image_banner_fzj3Wf","icons_with_text_cc9MeK","details","video_zFzw4c","rich_text_Xf3eFm","video_VbKHn3","rich_text_ehENVx","use_image_banner_gBfYLq","multi_column_aALANz","rich_text_fzETKh","video_antPQz","multi_column_jkea4R","rich_text_Y6aXdq","media_grid_iphpNJ","parts_dot_HjncrA","media_with_text_33nNqM","product_comparison_grid_P3476i","recommendations","video_Uzjt9f","icons_with_text_QLrYtw","faq_tcPUPr","1709290372794ca6d9"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor-sku": {
+          "type": "vendor-sku",
+          "settings": {
+            "show_vendor": true,
+            "show_sku": false,
+            "show_barcode": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "show_subTitle": true,
+            "show_fontweight": false,
+            "subTitle": "{{ product.metafields.custom.product_sub_title.value }}",
+            "subtitle_color": "#777777"
+          }
+        },
+        "rating_fXPEpD": {
+          "type": "rating",
+          "settings": {}
+        },
+        "product-labels": {
+          "type": "product-labels",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": false,
+            "show_shopify_installments": true
+          }
+        },
+        "divider-0": {
+          "type": "divider",
+          "settings": {
+            "show_line": true,
+            "spacing": "mt-8 mb-8"
+          }
+        },
+        "variant-picker": {
+          "type": "variant-picker",
+          "settings": {
+            "selector_style": "buttons",
+            "enable_dynamic_availability": true,
+            "show_backorder_text": true,
+            "enable_size_chart": false,
+            "size_chart_variant": "Size",
+            "size_chart_page": ""
+          }
+        },
+        "buy-buttons": {
+          "type": "buy-buttons",
+          "settings": {
+            "show_qty_selector": true,
+            "enable_dynamic_checkout": false,
+            "show_pickup_availability": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "qikify_bogo_freegift_bogo_offer_ezFxzY": {
+          "type": "shopify://apps/qikify-bogo-freegift/blocks/bogo_offer/2e94b962-8172-4839-8ad9-7837eb8b017a",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "complementary_AAHqpH": {
+          "type": "complementary",
+          "settings": {
+            "heading": "Fit well with accessories",
+            "products_to_show": 10,
+            "layout": "carousel",
+            "add_btn_bg": "#111111",
+            "add_btn_text_color": "#ffffff"
+          }
+        },
+        "angi_monument_grills_prod_pdp_widget_B4dC9e": {
+          "type": "shopify://apps/angi-monument-grills/blocks/pdp_widget/831a0352-30a6-43be-8d38-28a75dbba499",
+          "settings": {
+            "color_scheme": "light",
+            "product_form_selector": "form[action='/cart/add']",
+            "width": "fill",
+            "custom_width": 100,
+            "horizontal_alignment": "flex-start",
+            "vertical_spacing": 2.4
+          }
+        },
+        "short_description_cNrTz6": {
+          "type": "short_description",
+          "settings": {
+            "show_short_description": true
+          }
+        },
+        "richtext_nYC4cF": {
+          "type": "richtext",
+          "settings": {
+            "text": "<h6></h6>"
+          }
+        },
+        "angi_monument_grills_prod_pdp_widget_zCXAJE": {
+          "type": "shopify://apps/angi-monument-grills/blocks/pdp_widget/831a0352-30a6-43be-8d38-28a75dbba499",
+          "disabled": true,
+          "settings": {
+            "color_scheme": "auto",
+            "product_form_selector": "form[action='/cart/add']",
+            "width": "fill",
+            "custom_width": 100,
+            "horizontal_alignment": "flex-start",
+            "vertical_spacing": 2.4
+          }
+        },
+        "custom_liquid_Mrf3HP": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"information-wrapper product__info-box panel\">\n  <div class=\"tips\">\n    {% assign isnuc = false %}\n    {% if product.collections != blank %}\n        <ul class=\"wuliu\">\n          {% if product.metafields.custom.booking_service_link.value != blank %}\n            <li class=\"item fixtman\">\n              <label>\n                <img src=\"https://cdn.shopify.com/s/files/1/1639/3511/files/Install.png?v=1709883599\" alt=\"\">\n                <strong>Professional Grill Assembly for {{ product.metafields.custom.installation_service_price.value | money }}</strong>\n              </label>\n              <p class=\"des\">\n                <modal-opener class=\"no-js-hidden\" data-modal=\"modal-pop_up_UBingX\" style=\"display:none;\">\n                  <button type=\"button\" class=\"link\" aria-haspopup=\"dialog\" id=\"install_url_btn\">Learn More</button>\n                </modal-opener>\n                <a href=\"{{ product.metafields.custom.booking_service_link.value }}\" target=\"_blank\" class=\"book-now-btn\">Book Now</a>\n              </p>\n              <p class=\"small\" style=\"display: none;\">\n                <small style=\"color:#333;\">Leave assembly to the professionals with Fixtman.</small><br>\n                <small style=\"color:#777;\">1. Fully vetted and background-checked professionals.</small><br>\n                <small style=\"color:#777;\">2. Friendly and helpful customer service.</small><br>\n                <small style=\"color:#777;\">3. Backed by the Handy Happiness Guarantee.</small><br>\n                <small style=\"color:#777;\">4. Fixed cost that's upfront and priced to fit your budget.</small>\n              </p>\n            </li>\n            <li class=\"item item-btn show-more\">\n              <a id=\"show_more\" class=\"link show-btn\">Show More</a>\n            </li>\n          {% endif %}\n          <li class=\"item\">\n            <label>\n              <img src=\"https://cdn.shopifycdn.net/s/files/1/0549/2336/2481/files/icons82.png?v=1701153347\" alt=\"\">\n              <strong>Free Shipping on US orders $54.99+ (Restrictions apply)<br>Delivery time: 3-7 days</strong>\n            </label>\n            <p class=\"des\" style=\"margin-top:10px;\">\n              <a href=\"/apps/aftership\" target=\"_blank\">Track Your Order</a>\n            </p>\n            <br>\n          </li>\n          <li class=\"item\" style=\"display:none;\">\n            <label>\n              <img src=\"https://cdn.shopifycdn.net/s/files/1/0549/2336/2481/files/icons81.png?v=1701153347\" alt=\"\">\n              <strong>30-Day Money Back Guarantee</strong>\n            </label>\n            <p class=\"des\">\n              <a href=\"/policies/refund-policy\" target=\"_blank\">Safe payment options</a>\n            </p>\n          </li>\n          <li class=\"item\">\n            <label>\n              <img src=\"https://cdn.shopifycdn.net/s/files/1/0549/2336/2481/files/icons80.png?v=1701153347\" alt=\"\">\n              <strong>Warranty</strong>\n            </label>\n            <p class=\"des\"><a href=\"/pages/parts-and-warranty-request\" target=\"_blank\">8-Year Limited Warranty </a></p><br>\n          </li>\n          <li class=\"item item-btn show-less hide\">\n            <a id=\"show_less\" class=\"link show-btn\">Show Less</a>\n          </li>\n        </ul>\n    {% endif %}\n  </div>\n</div>\n<script>\n  $(function(){\n    $('#show_more').click(function(){\n      $('.tips').addClass('hight-auto');\n      $(this).parent().addClass('hide').siblings('.show-less').removeClass('hide');\n    });\n    $('#show_less').click(function(){\n      $('.tips').removeClass('hight-auto');\n      $(this).parent().addClass('hide').siblings('.show-more').removeClass('hide');\n    });\n  });\n</script>\n\n\n<style>\n.tips{\n    max-height: 110px;\n    overflow: hidden;\n}\n.tips.hight-auto{\n  max-height: max-content;\n}\n.tips .item-btn .show-btn{\n  display: flex;\n  justify-content: center;\n  border-bottom: 0;\n  cursor: pointer;\n  background: #ddd;\n}\n.book-now-btn{\npadding-left: 0px;\n}\n#install_modal{\n  z-index:9999;\n}\n.information-wrapper{\n    display: block;    \n}\n.tips{\n   font-size:14px;\n}\nul,li{\n  list-style: none;\n}\n\n.wuliu{\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n}\n.wuliu .item{\n  width: 100%;\n  padding: 0;\n  margin-bottom: 1em;\n  color: #000;\n  font-size: 16px;\n  border-bottom: 1px solid #eee;\n}\n.wuliu .item:last-child{\n  border-bottom: 0;\n}\n.wuliu .item label{\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n}\n.wuliu .item label img{\n  width: 30px;\n  height: 30px;\n  margin-right: 15px;\n  margin-bottom: 0;\n    position: relative;\n    top: 20px;\n}\n.wuliu .item label h3{\n  font-size: 18px;\n  margin-top: 0;\n  margin-bottom: 0;\n  font-weight: 500;\n}\n.wuliu .item p{\n  margin-bottom: 0;\n  margin-top: 0;\n  padding-left: 46px;\n}\n.wuliu .item a{\n  color: #000;\n  text-decoration: underline;\n}\n.wuliu .item a:hover{\n  color: #D4651F;\n}\n.information-wrapper {\n    padding-left: 25px;\n}\n@media (max-width:768px){\n  .tips{\n    max-height: 120px;\n  }\n}\n</style>"
+          }
+        }
+      },
+      "block_order": [
+        "vendor-sku",
+        "title",
+        "rating_fXPEpD",
+        "product-labels",
+        "price",
+        "divider-0",
+        "variant-picker",
+        "buy-buttons",
+        "qikify_bogo_freegift_bogo_offer_ezFxzY",
+        "complementary_AAHqpH",
+        "angi_monument_grills_prod_pdp_widget_B4dC9e",
+        "short_description_cNrTz6",
+        "richtext_nYC4cF",
+        "angi_monument_grills_prod_pdp_widget_zCXAJE",
+        "custom_liquid_Mrf3HP"
+      ],
+      "custom_css": [
+        ".slp_1d97ce {padding: calc(8 * var(--space-unit));}",
+        ".slp_1d97ce img {width: 30px; height: 30px; margin-right: 15px; margin-bottom: 0;}",
+        ".slp_1d97ce a {text-decoration: underline;}"
+      ],
+      "settings": {
+        "stick_on_scroll": true,
+        "product_pre_sale": false,
+        "show_quick_jump_link": false,
+        "sticky_atc_panel": true,
+        "sticky_atc_position": "end",
+        "sticky_atc_mobile": true,
+        "media_layout": "slider",
+        "media_size": "default",
+        "media_ratio": "1",
+        "media_crop": "none",
+        "hover_zoom": "large",
+        "enable_video_looping": false,
+        "stacked_scroll": "change",
+        "underline_active": true,
+        "media_thumbs": "desktop",
+        "thumb_ratio": "1",
+        "thumb_crop": "none",
+        "media_arrows": "always",
+        "show_slide_count": true,
+        "border_color": "#eeeeee",
+        "bg_color": "#f4f4f4",
+        "enable_media_grouping": true,
+        "media_grouping_option": "Color",
+        "logo1": "shopify://shop_images/logo-1.jpg",
+        "logo2": "shopify://shop_images/logo-2.jpg",
+        "logo3": "shopify://shop_images/logo-3.jpg",
+        "logo4": "shopify://shop_images/logo-4.jpg",
+        "logo5": "shopify://shop_images/logo-5.jpg",
+        "logo6": "shopify://shop_images/logo-6.jpg",
+        "logo7": "shopify://shop_images/logo-7.jpg"
+      }
+    },
+    "rich_text_GPJtyQ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ycBNtR": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ product.metafields.custom.monument_slogan.value }}",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_h1": false
+          }
+        },
+        "text_rNtNjb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ product.metafields.custom.slogan_des | metafield_tag }}</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_ycBNtR",
+        "text_rNtNjb"
+      ],
+      "custom_css": [
+        "@media (min-width: 1024px) {.max-w-text-overlay {max-width: 90%; }}"
+      ],
+      "settings": {
+        "is_use_hulk_form": false,
+        "link_id": "Overview",
+        "map_layout": "carousel",
+        "column_size": "small",
+        "show_post_content": false,
+        "show_pop": false,
+        "show_gird": false,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "bg_color": "",
+        "text_position": "justify-center",
+        "text_align": "text-center",
+        "mob_center_text": true,
+        "color_scheme": "none",
+        "full_width": true,
+        "prevent_animation": true
+      }
+    },
+    "image_banner_fzj3Wf": {
+      "type": "image-banner",
+      "settings": {
+        "link_id": "",
+        "full_screen": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "image_desktop": "{{ product.metafields.custom.product_features_banner.value }}",
+        "image_mobile": "{{ product.metafields.custom.product_mobile_banner_.value }}",
+        "url": "",
+        "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_01' }}",
+        "height_mode": "auto",
+        "fixed_height_desktop": 600,
+        "fixed_height_mobile": 350,
+        "overlay_position": "justify-center items-center",
+        "overlay_text_align": "text-center",
+        "mob_center_text": false,
+        "mobile_stacked": false,
+        "header_title_color": "",
+        "color_scheme": "white",
+        "full_width": true,
+        "transparent_content_color": "#ffffff",
+        "tint_color": "#000000",
+        "tint_opacity": 0,
+        "prevent_animation": false,
+        "fulllink": ""
+      }
+    },
+    "icons_with_text_cc9MeK": {
+      "type": "icons-with-text",
+      "blocks": {
+        "item_GDJcdn": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "custom_icon": "shopify://shop_images/icons8-demographics-100.png",
+            "item_layout_position": "left",
+            "heading": "{{ product.metafields.custom.product_features_name1.value }}",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>People</p>",
+            "link": ""
+          }
+        },
+        "item_YHAkAq": {
+          "type": "item",
+          "settings": {
+            "icon": "price_tag",
+            "custom_icon": "shopify://shop_images/icons8-fire-100.png",
+            "item_layout_position": "left",
+            "heading": "{{ product.metafields.custom.product_features_name2.value }}",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>BTU</p>",
+            "link": ""
+          }
+        },
+        "item_gXybfd": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "custom_icon": "shopify://shop_images/icons8-toaster-100.png",
+            "item_layout_position": "left",
+            "heading": "{{ product.metafields.custom.product_features_name3.value }}",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": true,
+            "text": "<p>Area</p>",
+            "link": ""
+          }
+        },
+        "item_EwLR4j": {
+          "type": "item",
+          "settings": {
+            "icon": "chat_bubble",
+            "custom_icon": "shopify://shop_images/icons8-fried-chicken-100.png",
+            "item_layout_position": "left",
+            "heading": "{{ product.metafields.custom.product_features_name4.value }}",
+            "title_color": "",
+            "button_label": "",
+            "button_style": "btn btn--primary",
+            "color_scheme": "white",
+            "button_link": "",
+            "danwei": false,
+            "text": "<p>Hamburger</p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_GDJcdn",
+        "item_YHAkAq",
+        "item_gXybfd",
+        "item_EwLR4j"
+      ],
+      "settings": {
+        "link_id": "",
+        "is_show_arrow": false,
+        "item_layout_position": "left",
+        "item_bg": "",
+        "item_text_color": "",
+        "padding_top": 30,
+        "padding_bottom": 10,
+        "button_label": "Optiona button",
+        "is_click": false,
+        "show_popup": false,
+        "cur_liquid": "",
+        "click_id": "",
+        "is_nofollow": false,
+        "button_link": "",
+        "button_style": "btn btn--primary",
+        "show_gird": false,
+        "show_row": false,
+        "mobile_show_gird": false,
+        "heading": "",
+        "heading_title_color": "",
+        "heading_size": "h3",
+        "title_des": "",
+        "title_type_scale": "medium",
+        "heading_align": "text-start",
+        "font_weight": false,
+        "font_uppercase": false,
+        "data_list": false,
+        "hr_line": true,
+        "data_color": "",
+        "number1_name": "",
+        "number1_des": "",
+        "number2_name": "",
+        "number2_des": "",
+        "show_online_display": true,
+        "icon_size": 48,
+        "text_type_scale": "medium",
+        "icon_position": "above",
+        "mobile_stack": true,
+        "show_all_on_mobile": true,
+        "section_height": "medium",
+        "bg": "#ffffff",
+        "text_color": "",
+        "color_scheme": "none",
+        "full_width": true,
+        "dividers": "border-top",
+        "prevent_animation": true
+      }
+    },
+    "details": {
+      "type": "product-details",
+      "blocks": {
+        "highlight_text_gVa4ec": {
+          "type": "highlight-text",
+          "settings": {
+            "title": "Highlight title",
+            "text": "<p>Text to highlight a key feature of your product</p>"
+          }
+        },
+        "highlight_text_xWNpzT": {
+          "type": "highlight-text",
+          "settings": {
+            "title": "Highlight title",
+            "text": "<p>Text to highlight a key feature of your product</p>"
+          }
+        }
+      },
+      "block_order": [
+        "highlight_text_gVa4ec",
+        "highlight_text_xWNpzT"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "video_zFzw4c": {
+      "type": "video",
+      "settings": {
+        "full_screen": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "video_shopify": "shopify://files/videos/77352-视频17s左右-1225.mp4",
+        "height_desktop": 440,
+        "height_mobile": 400,
+        "video_external": "",
+        "video_description": "",
+        "poster_image": "shopify://shop_images/default-video-cover.jpg",
+        "video_size": "md",
+        "video_autoplay": true,
+        "text_align": "text-center",
+        "color_scheme": "default"
+      }
+    },
+    "rich_text_Xf3eFm": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_katqmH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Stainless Steel Inside and Out",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_h1": false
+          }
+        },
+        "text_6AHgdR": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Crafted from durable stainless steel, the grill is built to resist corrosion, high heat and moisture for a long life. The stainless steel grates are easy to clean, resistant to warping, and provide even heat distribution for better-tasting food. Plus, stainless steel is free of harmful substances, ensuring a safer, healthier grilling experience.</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_katqmH",
+        "text_6AHgdR"
+      ],
+      "settings": {
+        "is_use_hulk_form": false,
+        "link_id": "",
+        "map_layout": "carousel",
+        "column_size": "small",
+        "show_post_content": false,
+        "show_pop": false,
+        "show_gird": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "bg_color": "",
+        "text_position": "justify-center",
+        "text_align": "text-center",
+        "mob_center_text": true,
+        "color_scheme": "none",
+        "full_width": true,
+        "prevent_animation": false
+      }
+    },
+    "video_VbKHn3": {
+      "type": "video",
+      "settings": {
+        "full_screen": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "video_shopify": "shopify://files/videos/77352-Grill Video-01.mp4",
+        "height_desktop": 440,
+        "height_mobile": 400,
+        "video_external": "",
+        "video_description": "",
+        "poster_image": "shopify://shop_images/default-video-cover.jpg",
+        "video_size": "md",
+        "video_autoplay": true,
+        "text_align": "text-center",
+        "color_scheme": "default"
+      }
+    },
+    "rich_text_ehENVx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_dzN9kB": {
+          "type": "heading",
+          "settings": {
+            "heading": "Innovative Blue and White Knob Lights",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_h1": false
+          }
+        },
+        "text_RxDBie": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Easily monitor your grill's temperature and blue light for high. It's energy-efficient lighting system reduces power consumption while extending the life of the LEDs.</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_dzN9kB",
+        "text_RxDBie"
+      ],
+      "settings": {
+        "is_use_hulk_form": false,
+        "link_id": "",
+        "map_layout": "carousel",
+        "column_size": "small",
+        "show_post_content": false,
+        "show_pop": false,
+        "show_gird": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "bg_color": "",
+        "text_position": "justify-center",
+        "text_align": "text-center",
+        "mob_center_text": true,
+        "color_scheme": "none",
+        "full_width": true,
+        "prevent_animation": false
+      }
+    },
+    "use_image_banner_gBfYLq": {
+      "type": "use-image-banner",
+      "settings": {
+        "link_id": "",
+        "full_screen": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "show_tab": false,
+        "tabbar_title_one": "",
+        "tabbar_title_two": "",
+        "tabbar_title_three": "",
+        "tabbar_title_color": "",
+        "tabbar_title_hover_color": "",
+        "tabbar_title_active_color": "",
+        "image_desktop": "shopify://shop_images/pc_a0585583-23cf-484a-9df1-57c2f3c9424a.jpg",
+        "image_mobile": "shopify://shop_images/mb_7c7c8456-f805-40c3-b5cd-9a9dd99d2ce5.jpg",
+        "url": "",
+        "height_mode": "auto",
+        "fixed_height_desktop": 600,
+        "fixed_height_mobile": 350,
+        "overlay_position": "justify-center items-center",
+        "info_max_width": 70,
+        "position_right": 40,
+        "overlay_text_align": "text-center",
+        "mob_center_text": false,
+        "mobile_stacked": false,
+        "text_bg": false,
+        "mobile_position": false,
+        "mobile_overlay_position": "mobile-top-center",
+        "color_scheme": "white",
+        "full_width": true,
+        "transparent_content_color": "#ffffff",
+        "tint_color": "#000000",
+        "tint_opacity": 0,
+        "prevent_animation": false,
+        "use_background_box": false,
+        "background_box_bg": "",
+        "background_box_text_color": "",
+        "top_offset_position": 10,
+        "background_box_position": "top_center",
+        "show_gradient_font_offset_position": false,
+        "gradient_font_offset_position": 10
+      }
+    },
+    "multi_column_aALANz": {
+      "type": "multi-column",
+      "blocks": {
+        "column_bKgcHT": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "image": "shopify://shop_images/c515b51916daa194852934c6c41d4fd2.jpg",
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_11' }}",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "Stainless Steel Rotisserie Kit （included）",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>Enjoy perfectly cooked, flavourful meat with the included rotisserie kit, which ensures even rotation for juicy, delicious results every time.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        },
+        "column_brzq3L": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_12' }}",
+            "video_shopify": "shopify://files/videos/D605P01 (3).mp4",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "Easy propane bottle installation",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>The built-in sliding propane tank tray makes it easy to change your 20-pound propane tank for added convenience.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        },
+        "column_pVGTaj": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "image": "shopify://shop_images/d1d40c45f4cdfb43f5738ea06fe922ce.jpg",
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_13' }}",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "Electronic Ignition System",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>Forget the hassle of matches and lighter fluid - our electronic ignition provides fast, reliable start-ups for an effortless grilling experience.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_bKgcHT",
+        "column_brzq3L",
+        "column_pVGTaj"
+      ],
+      "settings": {
+        "link_id": "",
+        "slider_show_arrows": "always",
+        "font_c": "",
+        "column_bg_color": "",
+        "column_text_color": "#111111",
+        "column_font_glow": false,
+        "title_one_color": "",
+        "title_one_color_size": "",
+        "title_two_color": "",
+        "title_two_color_size": "",
+        "title_three_color": "",
+        "title_three_color_size": "",
+        "title_four_color": "",
+        "title_four_color_size": "",
+        "title_color_angle": "45",
+        "enable_text_the_top": false,
+        "enable_text_on_image": false,
+        "enlarge_text": true,
+        "header_weight": false,
+        "header_uppercase": false,
+        "full_screen": false,
+        "text_on_picture": false,
+        "text_on_picture_postion": "bottom",
+        "three_column": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "layout": "carousel",
+        "column_size": "medium",
+        "column_align": "center",
+        "media_align": "text-center",
+        "image_ratio": "1",
+        "title": "Enjoy Hassle-Free Operation",
+        "heading_size": "h2",
+        "description": "",
+        "pc_title_font_size": 64,
+        "mobile_title_font_size": 42,
+        "heading_align": "text-center",
+        "text_align": "text-center",
+        "color_scheme": "2",
+        "btn_label": "",
+        "btn_link": "",
+        "btn_style": "btn btn--secondary"
+      }
+    },
+    "rich_text_fzETKh": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_EbfQXV": {
+          "type": "heading",
+          "settings": {
+            "heading": "Versatile Side Burner",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_h1": false
+          }
+        },
+        "text_Gw6NG8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Expand your cooking options with the side burner, perfect for preparing sauces, side dishes or anything else to complement your main course. This feature adds even more versatility to your outdoor cooking.</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_EbfQXV",
+        "text_Gw6NG8"
+      ],
+      "settings": {
+        "is_use_hulk_form": false,
+        "link_id": "",
+        "map_layout": "carousel",
+        "column_size": "small",
+        "show_post_content": false,
+        "show_pop": false,
+        "show_gird": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "bg_color": "",
+        "text_position": "justify-center",
+        "text_align": "text-center",
+        "mob_center_text": true,
+        "color_scheme": "none",
+        "full_width": true,
+        "prevent_animation": false
+      }
+    },
+    "video_antPQz": {
+      "type": "video",
+      "settings": {
+        "full_screen": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "video_shopify": "shopify://files/videos/77352-Grill Video-02.mp4",
+        "height_desktop": 440,
+        "height_mobile": 400,
+        "video_external": "",
+        "video_description": "",
+        "poster_image": "shopify://shop_images/default-video-cover.jpg",
+        "video_size": "md",
+        "video_autoplay": true,
+        "text_align": "text-center",
+        "color_scheme": "default"
+      }
+    },
+    "multi_column_jkea4R": {
+      "type": "multi-column",
+      "blocks": {
+        "column_rEtewM": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "image": "shopify://shop_images/ca277b8ce15035ebd36c42eca50992bc.jpg",
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_06' }}",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "High-Precision Thermometer",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>Get accurate, fast temperature readings with our high-precision thermometer, ensuring perfect cooking conditions for superior results every time.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        },
+        "column_zHA73Y": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "image": "shopify://shop_images/b7ec796d5409faa326049390302a494d.jpg",
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_07' }}",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "Convenient Tool Hook",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>Keep your grilling tools organized and within easy reach with the built-in tool hook for added convenience and less clutter.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        },
+        "column_QHwJgK": {
+          "type": "column",
+          "settings": {
+            "enable_media": true,
+            "enable_url": false,
+            "round": false,
+            "image": "shopify://shop_images/d6f5898e6b45b24db516b2b5dbbd9b56_2597bc85-4ddb-4fba-b161-d2d162ca9776.jpg",
+            "show_icon": false,
+            "top_left": 0,
+            "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_08' }}",
+            "media_scale": 100,
+            "heading_font_weight": false,
+            "heading": "Slide-Out Grease Tray",
+            "column_text_align": "text-center",
+            "heading_size": "h3",
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "is_use_multiple_text_links": false,
+            "is_use_multiple_text_weight": false,
+            "multiple_text": "",
+            "text_size": "h3",
+            "multiple_text_color": "",
+            "text": "<p>Clean-up is a breeze with the slide-out grease tray, designed to efficiently collect excess grease for a safer and mess-free grilling experience.</p>",
+            "normal_text_size": "h6",
+            "text_color": "",
+            "text_pos": "text-left",
+            "author": "",
+            "column_date": "",
+            "is_popup_btn": false,
+            "is_nofollow": false,
+            "add_target": false,
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn btn--primary",
+            "is_show_popup": false,
+            "is_nofollow_popup": false,
+            "is_show_countdown_timer": false,
+            "is_use_footer_button": false,
+            "footer_button_label": "Please Read the Terms, Time Left:",
+            "footer_button_style": "btn btn--primary",
+            "pop_title": "",
+            "pop_title_size": "h4",
+            "is_font_weight": false,
+            "popup_button_label": "Optiona button",
+            "popup_button_style": "btn--primary",
+            "custom_liquid": "",
+            "custom_text": "",
+            "custom_text_url": "",
+            "iframe_form": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_rEtewM",
+        "column_zHA73Y",
+        "column_QHwJgK"
+      ],
+      "settings": {
+        "link_id": "",
+        "slider_show_arrows": "always",
+        "font_c": "",
+        "column_bg_color": "",
+        "column_text_color": "#111111",
+        "column_font_glow": false,
+        "title_one_color": "",
+        "title_one_color_size": "",
+        "title_two_color": "",
+        "title_two_color_size": "",
+        "title_three_color": "",
+        "title_three_color_size": "",
+        "title_four_color": "",
+        "title_four_color_size": "",
+        "title_color_angle": "45",
+        "enable_text_the_top": false,
+        "enable_text_on_image": false,
+        "enlarge_text": true,
+        "header_weight": false,
+        "header_uppercase": false,
+        "full_screen": false,
+        "text_on_picture": false,
+        "text_on_picture_postion": "bottom",
+        "three_column": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "layout": "carousel",
+        "column_size": "medium",
+        "column_align": "center",
+        "media_align": "text-center",
+        "image_ratio": "1",
+        "title": "Smarter Tech, Simpler life",
+        "heading_size": "h2",
+        "description": "",
+        "pc_title_font_size": 64,
+        "mobile_title_font_size": 42,
+        "heading_align": "text-center",
+        "text_align": "text-center",
+        "color_scheme": "2",
+        "btn_label": "",
+        "btn_link": "",
+        "btn_style": "btn btn--secondary"
+      }
+    },
+    "rich_text_Y6aXdq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_6tkTE4": {
+          "type": "heading",
+          "settings": {
+            "heading": "77352 Grill Receives CR's Top Rating",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_h1": false
+          }
+        },
+        "text_Lh3LUA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>CR Media awarded the 77352 grill an impressive score of 85, highlighting its exceptional performance in even cooking, versatile temperature control, robust durability and outstanding preheat efficiency. These features ensure a reliable and enjoyable grilling experience, delivering perfectly cooked meals every time.</p>",
+            "enlarge_text": false
+          }
+        },
+        "button_3MzEaP": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "no_link_btn": "",
+            "button_id": "",
+            "button_style": "btn btn--primary",
+            "button_1_label": "view more",
+            "is_nofollow_1": false,
+            "button_1_link": "https://www.consumerreports.org/home-garden/grills/monument-grills-77352/m397696/",
+            "button_1_style": "btn--primary",
+            "button_2_label": "",
+            "is_nofollow_2": false,
+            "button_2_link": "",
+            "button_2_style": "btn btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6tkTE4",
+        "text_Lh3LUA",
+        "button_3MzEaP"
+      ],
+      "settings": {
+        "is_use_hulk_form": false,
+        "link_id": "",
+        "map_layout": "carousel",
+        "column_size": "small",
+        "show_post_content": false,
+        "show_pop": false,
+        "show_gird": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "bg_color": "",
+        "text_position": "justify-center",
+        "text_align": "text-center",
+        "mob_center_text": true,
+        "color_scheme": "none",
+        "full_width": true,
+        "prevent_animation": false
+      }
+    },
+    "media_grid_iphpNJ": {
+      "type": "media-grid",
+      "blocks": {
+        "media_hKrWMV": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/1_bb76a7fc-e174-44e7-a88c-8fce8a2567c8.jpg",
+            "link_url": "",
+            "columns": 1,
+            "rows": 2,
+            "subheading": "",
+            "title": "",
+            "heading_size": "h4",
+            "title_weight": false,
+            "title_uppercase": false,
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "title_position": "justify-start items-end",
+            "header_description": "",
+            "button_label": "",
+            "is_newsletter_email": false,
+            "is_copyed_btn": false,
+            "newsletter_tag": "",
+            "copyed_btn_id": "",
+            "button_link": "",
+            "overlay_position": "justify-start items-end",
+            "text_alignment": "text-start",
+            "button_style": "btn btn--primary",
+            "button_color": "",
+            "button_text_color": "",
+            "tint_color": "#000000",
+            "tint_opacity": 0
+          }
+        },
+        "media_VyfaLq": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/77352-cr.jpg",
+            "link_url": "",
+            "columns": 1,
+            "rows": 2,
+            "subheading": "",
+            "title": "",
+            "heading_size": "h4",
+            "title_weight": false,
+            "title_uppercase": false,
+            "is_use_cur_heading_size": false,
+            "cur_heading_size": 28,
+            "title_position": "justify-start items-end",
+            "header_description": "",
+            "button_label": "",
+            "is_newsletter_email": false,
+            "is_copyed_btn": false,
+            "newsletter_tag": "",
+            "copyed_btn_id": "",
+            "button_link": "",
+            "overlay_position": "justify-start items-end",
+            "text_alignment": "text-start",
+            "button_style": "btn btn--primary",
+            "button_color": "",
+            "button_text_color": "",
+            "tint_color": "#000000",
+            "tint_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "media_hKrWMV",
+        "media_VyfaLq"
+      ],
+      "custom_css": [
+        ".gallery-block__image img {object-fit: contain;}"
+      ],
+      "settings": {
+        "full_screen": false,
+        "is_three_cols": false,
+        "is_show_three_cols": false,
+        "is_four_cols": false,
+        "is_five_cols": false,
+        "is_henhen_cols": false,
+        "is_text_below_the_picture": false,
+        "is_image_has_rounded_corners": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "image_border_radius": "",
+        "title": "",
+        "heading_size": "h2",
+        "text_color": "",
+        "header_weight": false,
+        "header_uppercase": false,
+        "heading_align": "text-start",
+        "column_font_glow": false,
+        "title_one_color": "",
+        "title_one_color_size": "",
+        "title_two_color": "",
+        "title_two_color_size": "",
+        "title_three_color": "",
+        "title_three_color_size": "",
+        "title_four_color": "",
+        "title_four_color_size": "",
+        "title_color_angle": "45",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn btn--primary",
+        "gallery_cols_max": 2,
+        "block_number": "",
+        "block_min_height": "",
+        "mobile_block_min_height": "",
+        "rounded_design": false,
+        "mobile_carousel": false,
+        "media_des_1": "",
+        "media_des_2": "",
+        "gallery_cols_min": "1",
+        "fixed_height_desktop": 180,
+        "fixed_height_mobile": 300,
+        "section_color_scheme": "none",
+        "color_scheme": "white",
+        "transparent_content_color": "#ffffff"
+      }
+    },
+    "parts_dot_HjncrA": {
+      "type": "parts-dot",
+      "blocks": {
+        "dot_yJ9jfE": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.one_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_3BLrVN": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.two_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_hp4tFz": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.three_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_RQHXR8": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.four_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_XLGG4k": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.five_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_7QcqV7": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.six_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        },
+        "dot_KPjjh3": {
+          "type": "dot",
+          "settings": {
+            "product_part_name": "{{ product.metafields.custom.seven_dot_name.value }}",
+            "product_part_name_color": "",
+            "name_link": "",
+            "dot_bg_color": "#5c5c5c",
+            "dot_text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "dot_yJ9jfE",
+        "dot_3BLrVN",
+        "dot_hp4tFz",
+        "dot_RQHXR8",
+        "dot_XLGG4k",
+        "dot_7QcqV7",
+        "dot_KPjjh3"
+      ],
+      "settings": {
+        "link_id": "",
+        "full_screen": false,
+        "full_screen_bg": "",
+        "part_title": "Parts Description",
+        "heading_size": "h2",
+        "section_bg": "#f4f4f4",
+        "heading_align": "text-left",
+        "product_part_image": "{{ product.metafields.custom.device_dot_image.value }}",
+        "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_16' }}",
+        "layout_postion": "left",
+        "show_text": true,
+        "color_scheme": "1"
+      }
+    },
+    "media_with_text_33nNqM": {
+      "type": "media-with-text",
+      "blocks": {
+        "heading_VbcBNd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Product Dimensions",
+            "one_color": "#2a2b2a",
+            "two_color": "#2a2b2a",
+            "color_angle": "45",
+            "heading_size": "h2",
+            "title_weight": false,
+            "title_uppercase": false,
+            "heading_h1": false
+          }
+        },
+        "text_CRBNLf": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Lid Closed (inches)</strong></p><p>You can enjoy season after season of peak grilling performance and good times with family and friends.</p>",
+            "enlarge_text": false,
+            "enlarge_new_text": false,
+            "text_size": "h3",
+            "text_color": ""
+          }
+        },
+        "pdf_manuals_eWirGm": {
+          "type": "pdf-manuals",
+          "settings": {
+            "is_show_manuals": true,
+            "file_icon": "shopify://shop_images/icons8-export-pdf-100_1.png",
+            "file_name": "{{ product.metafields.custom.manual_name.value }}",
+            "file_url": "{{ product.metafields.custom.manual_url.value }}",
+            "file_version": "v2.0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_VbcBNd",
+        "text_CRBNLf",
+        "pdf_manuals_eWirGm"
+      ],
+      "settings": {
+        "link_id": "",
+        "full_screen": false,
+        "max_content_width": "",
+        "rounded_design": false,
+        "media_rounded_size": "40",
+        "grid_layout": false,
+        "angle_size": "",
+        "padding_top": 30,
+        "padding_bottom": 30,
+        "layout": "left",
+        "image_fit": "contain",
+        "media_width": 50,
+        "media_scale": 100,
+        "title_weight": false,
+        "title_uppercase": false,
+        "heading": "",
+        "heading_size": "h2",
+        "header_text": "",
+        "enlarge_text": true,
+        "text_size": "p",
+        "header_text_position": "justify-center",
+        "text_align": "text-start",
+        "show_text_color": false,
+        "set_text_color": "",
+        "full_screen_bg": "#f4f4f4",
+        "color_scheme": "none",
+        "only_content_color_scheme": false,
+        "image": "{{ product.metafields.custom.product_size.value }}",
+        "img_url": "",
+        "img_alt": "{{ product.metafields.custom.seo_text | metafield_text: field: 'seo_17' }}",
+        "video_external": "",
+        "video_description": "",
+        "video_autoplay": false
+      }
+    },
+    "product_comparison_grid_P3476i": {
+      "type": "product-comparison-grid",
+      "blocks": {
+        "text_kFVrHw": {
+          "type": "text",
+          "settings": {
+            "title": "Equipment Number",
+            "value": "{{ product.metafields.custom.device_serial_number.value }}"
+          }
+        },
+        "text_dLYnpK": {
+          "type": "text",
+          "settings": {
+            "title": "Total BTU's",
+            "value": "{{ product.metafields.custom.specifications_primary_burner_btu_s.value }}"
+          }
+        },
+        "text_cWQyqE": {
+          "type": "text",
+          "settings": {
+            "title": "Total Cooking Area (Sq in)",
+            "value": "{{ product.metafields.custom.specifications_total_cooking_area.value }}"
+          }
+        },
+        "text_AtYtdi": {
+          "type": "text",
+          "settings": {
+            "title": "Primary Cooking Area",
+            "value": "{{ product.metafields.custom.specifications_primary_cooking_area.value }}"
+          }
+        },
+        "text_fREe9z": {
+          "type": "text",
+          "settings": {
+            "title": "Secondary Cooking Area (Sq in)",
+            "value": "{{ product.metafields.custom.specifications_secondary_cooking_area.value }}"
+          }
+        },
+        "text_8y7bzT": {
+          "type": "text",
+          "settings": {
+            "title": "Number of Hamburgers",
+            "value": "{{ product.metafields.custom.number_of_hamburgers.value }}"
+          }
+        },
+        "text_AfXyRW": {
+          "type": "text",
+          "settings": {
+            "title": "Assembled Width*Depth*Height",
+            "value": "{{ product.metafields.custom.specifications_assembled_depth.value }}"
+          }
+        },
+        "text_8WFYki": {
+          "type": "text",
+          "settings": {
+            "title": "Main Grill Grate Material",
+            "value": "{{ product.metafields.custom.specifications_main_grill_grate_material.value }}"
+          }
+        },
+        "text_E9m3xy": {
+          "type": "text",
+          "settings": {
+            "title": "Fuel Type",
+            "value": "{{ product.metafields.custom.specifications_fuel_type.value }}"
+          }
+        },
+        "text_EQjPLf": {
+          "type": "text",
+          "settings": {
+            "title": "Grill Finish",
+            "value": "{{ product.metafields.custom.specifications_grill_finish.value }}"
+          }
+        },
+        "text_FY87Y3": {
+          "type": "text",
+          "settings": {
+            "title": "Ignition Type",
+            "value": "{{ product.metafields.custom.specifications_ignition_type.value }}"
+          }
+        },
+        "text_WP8WGa": {
+          "type": "text",
+          "settings": {
+            "title": "Number of Main Burners",
+            "value": "{{ product.metafields.custom.specifications_number_of_main_burners.value }}"
+          }
+        },
+        "text_qJGmja": {
+          "type": "text",
+          "settings": {
+            "title": "Number of Side Burners",
+            "value": "{{ product.metafields.custom.specifications_number_of_side_burners.value }}"
+          }
+        },
+        "text_jVPqVd": {
+          "type": "text",
+          "settings": {
+            "title": "Product Weight",
+            "value": "{{ product.metafields.custom.specifications_product_weight.value }}"
+          }
+        },
+        "text_ig4LyD": {
+          "type": "text",
+          "settings": {
+            "title": "Large battery pack",
+            "value": "{{ product.metafields.custom.large_battery_pack.value }}"
+          }
+        },
+        "text_8QtQdG": {
+          "type": "text",
+          "settings": {
+            "title": "Cavity infrared burner",
+            "value": "{{ product.metafields.custom.cavity_infrared_burner.value }}"
+          }
+        },
+        "text_fyyBFy": {
+          "type": "text",
+          "settings": {
+            "title": "Standard rain cover",
+            "value": "{{ product.metafields.custom.standard_rain_cover.value }}"
+          }
+        },
+        "text_MKBrpt": {
+          "type": "text",
+          "settings": {
+            "title": "Gas bottle slide",
+            "value": "{{ product.metafields.custom.gas_bottle_slide.value }}"
+          }
+        }
+      },
+      "block_order": [
+        "text_kFVrHw",
+        "text_dLYnpK",
+        "text_cWQyqE",
+        "text_AtYtdi",
+        "text_fREe9z",
+        "text_8y7bzT",
+        "text_AfXyRW",
+        "text_8WFYki",
+        "text_E9m3xy",
+        "text_EQjPLf",
+        "text_FY87Y3",
+        "text_WP8WGa",
+        "text_qJGmja",
+        "text_jVPqVd",
+        "text_ig4LyD",
+        "text_8QtQdG",
+        "text_fyyBFy",
+        "text_MKBrpt"
+      ],
+      "settings": {
+        "link_id": "Specs",
+        "only_text": true,
+        "table_comparison_bg": "",
+        "heading": "Specifications",
+        "heading_size": "h3",
+        "use_class_name": "",
+        "header_weight": false,
+        "header_uppercase": false,
+        "text": "",
+        "heading_align": "text-center",
+        "view_more_label": "View more",
+        "view_more_link": "",
+        "product_list": [],
+        "empty_field_text": "-",
+        "image_ratio": "shortest",
+        "image_crop": "center",
+        "num_rows": 0,
+        "color_scheme": "none",
+        "highlight_row": true
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_align": "text-start",
+        "layout": "carousel",
+        "card_size_mobile": "small",
+        "card_size": "small",
+        "products_to_show": 8
+      }
+    },
+    "video_Uzjt9f": {
+      "type": "video",
+      "blocks": {
+        "heading_rBPVgE": {
+          "type": "heading",
+          "settings": {
+            "heading": "How to Easily Install Monument Grills",
+            "heading_size": "h2",
+            "heading_h1": false
+          }
+        },
+        "text_zyYeHx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Monument Denali 77352 Grill is a high-performance, versatile, and stylish grill that makes your outdoor barbecue more delicious and enjoyable.</p>",
+            "enlarge_text": false
+          }
+        },
+        "button_JybN7N": {
+          "type": "button",
+          "settings": {
+            "button_label": "Download Manuals",
+            "button_link": "https://cdn.shopify.com/s/files/1/1639/3511/files/f7d7c897f798fc44c391847188c3ac79.jpg?v=1712720527",
+            "add_arrt": true,
+            "button_style": "btn btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rBPVgE",
+        "text_zyYeHx",
+        "button_JybN7N"
+      ],
+      "settings": {
+        "full_screen": false,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "height_desktop": 440,
+        "height_mobile": 400,
+        "video_external": "https://www.youtube.com/watch?v=wCFA7dtFuIk&t=33s",
+        "video_description": "",
+        "poster_image": "shopify://shop_images/77352_Assembly_cover.png",
+        "video_size": "md",
+        "video_autoplay": true,
+        "text_align": "text-center",
+        "color_scheme": "default"
+      }
+    },
+    "icons_with_text_QLrYtw": {
+      "type": "icons-with-text",
+      "blocks": {
+        "item_HmhEij": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "custom_icon": "shopify://shop_images/icons8-signing-a-document-100.png",
+            "item_layout_position": "left",
+            "heading": "Register Your Grill",
+            "title_color": "",
+            "button_label": "Register Now",
+            "button_style": "btn btn--secondary",
+            "color_scheme": "white",
+            "button_link": "https://monumentgrills.com/pages/register-grill-1",
+            "danwei": false,
+            "text": "<p>Get our after-sales service easily and quickly.</p>",
+            "link": ""
+          }
+        },
+        "item_PB3KqW": {
+          "type": "item",
+          "settings": {
+            "icon": "price_tag",
+            "custom_icon": "shopify://shop_images/icons8-manual-page-rotation-100.png",
+            "item_layout_position": "left",
+            "heading": "Replacement Parts",
+            "title_color": "",
+            "button_label": "Find Parts",
+            "button_style": "btn btn--secondary",
+            "color_scheme": "white",
+            "button_link": "https://monumentgrills.com/collections/replacement-parts",
+            "danwei": false,
+            "text": "<p>In need of a new part for your Monument Grill? Search Here.</p>",
+            "link": ""
+          }
+        },
+        "item_9xaXWa": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "custom_icon": "shopify://shop_images/icons8-export-pdf-100.png",
+            "item_layout_position": "left",
+            "heading": "Manuals & Videos",
+            "title_color": "",
+            "button_label": "Download Documents",
+            "button_style": "btn btn--secondary",
+            "color_scheme": "white",
+            "button_link": "https://monumentgrills.com/pages/assembly-manuals-and-videos",
+            "danwei": false,
+            "text": "<p>Print, preview or download literature for your grill.</p>",
+            "link": ""
+          }
+        },
+        "item_r6EhJB": {
+          "type": "item",
+          "settings": {
+            "icon": "chat_bubble",
+            "custom_icon": "shopify://shop_images/icons8-warranty-100_f0d6a89c-63d1-407b-b38e-bc39304878ab.png",
+            "item_layout_position": "left",
+            "heading": "Warranty",
+            "title_color": "",
+            "button_label": "View Warranties",
+            "button_style": "btn btn--secondary",
+            "color_scheme": "white",
+            "button_link": "/pages/warranty",
+            "danwei": false,
+            "text": "<p>View the warranty details for your grill. </p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_HmhEij",
+        "item_PB3KqW",
+        "item_9xaXWa",
+        "item_r6EhJB"
+      ],
+      "settings": {
+        "link_id": "Support",
+        "is_show_arrow": false,
+        "item_layout_position": "left",
+        "item_bg": "",
+        "item_text_color": "",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "button_label": "Optiona button",
+        "is_click": false,
+        "show_popup": false,
+        "cur_liquid": "",
+        "click_id": "",
+        "is_nofollow": false,
+        "button_link": "",
+        "button_style": "btn btn--primary",
+        "show_gird": false,
+        "show_row": false,
+        "mobile_show_gird": false,
+        "heading": "",
+        "heading_title_color": "",
+        "heading_size": "h3",
+        "title_des": "",
+        "title_type_scale": "medium",
+        "heading_align": "text-start",
+        "font_weight": false,
+        "font_uppercase": false,
+        "data_list": false,
+        "hr_line": true,
+        "data_color": "",
+        "number1_name": "",
+        "number1_des": "",
+        "number2_name": "",
+        "number2_des": "",
+        "show_online_display": false,
+        "icon_size": 48,
+        "text_type_scale": "medium",
+        "icon_position": "above",
+        "mobile_stack": false,
+        "show_all_on_mobile": true,
+        "section_height": "medium",
+        "bg": "#f9f9f9",
+        "text_color": "",
+        "color_scheme": "1",
+        "full_width": true,
+        "dividers": "none",
+        "prevent_animation": false
+      }
+    },
+    "faq_tcPUPr": {
+      "type": "faq",
+      "blocks": {
+        "category_YbEL79": {
+          "type": "category",
+          "settings": {
+            "text": "Product",
+            "text_id": "ProductFAQ"
+          }
+        },
+        "question_8rmJnJ": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "How to connect all wires for the Denali Series?",
+            "text": "<p>Today we'll show you how to connect all the wires for the Denali Series. <br/><br/>Experience the best of life with the quality, capability, and versatility of the Monument Denali Series.</p><p><a href=\"https://www.youtube.com/watch?v=xiaHpXpa6aA\" target=\"_blank\" title=\"https://www.youtube.com/watch?v=xiaHpXpa6aA\">Click here</a>.</p>",
+            "read_number": 0
+          }
+        },
+        "question_VVrGd6": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Where is my serial number?",
+            "text": "<p>The Serial number is located in two places. The first place is the back bottom right of the firebox Or on the shipping box next to the model label.</p>",
+            "read_number": 0
+          }
+        },
+        "question_HdTpHB": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Can I get my grill assembled?",
+            "text": "<p>MG Products require assembly. We provide videos on how to assembly on our website along with digital manuals. You can check with your local retailer that carry Monument Grills for 3rd party assembly services.</p>",
+            "read_number": 0
+          }
+        },
+        "question_PbBJKM": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Do accessories and grill arrive together if I buy a bundle order?",
+            "text": "<p>The grill and accessories will be sent in separate packages and might not arrive at the same time.</p>",
+            "read_number": 0
+          }
+        },
+        "question_JDEbNU": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "I received the wrong item! What do I do?",
+            "text": "<p>Mistakes happen and we apologize! Contact us via Email (<a href=\"mailto:CustomerService@Monumentgrills.com\" target=\"_blank\" title=\"mailto:CustomerService@Monumentgrills.com\">CustomerService@Monumentgrills.com</a>) or Chat and we will create a return for the incorrect item. Once that item has been successfully dropped off or picked up by the carrier your replacement No charge order will be created and a new Order number with tracking information will be emailed to you.</p>",
+            "read_number": 0
+          }
+        },
+        "question_mYRfhC": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "How to install my Denali grill?",
+            "text": "<p>We include a user manual in the package of each product with detailed assembly instructions. You can also watch our assembly video. </p><p>The link: <a href=\"https://monumentgrills.com/pages/assembly-manuals-and-videos\" title=\"https://monumentgrills.com/pages/assembly-manuals-and-videos\">https://monumentgrills.com/pages/assembly-manuals-and-videos</a></p>",
+            "read_number": 0
+          }
+        },
+        "question_bj67kc": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Why is Denali's warming rack constructed differently than regular ones? ",
+            "text": "<p>Denali's warming rack is a multifunctional design capable of holding chicken thighs, chicken legs, roast peppers, and much more, offering greater versatility compared to ordinary cooking grids.</p>",
+            "read_number": 0
+          }
+        },
+        "question_XKqxxp": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Where can I see the temperature?",
+            "text": "<p>You can check the temperature via Bluetooth app or Smart Temperature Display.</p>",
+            "read_number": 0
+          }
+        },
+        "question_rwX6FD": {
+          "type": "question",
+          "settings": {
+            "icon": "question_mark",
+            "heading": "Is the Bluetooth stable to use? ",
+            "text": "<p>Yes, the Bluetooth connection with the grill is reliable for up to 65 feet outside.</p>",
+            "read_number": 0
+          }
+        }
+      },
+      "block_order": [
+        "category_YbEL79",
+        "question_8rmJnJ",
+        "question_VVrGd6",
+        "question_HdTpHB",
+        "question_PbBJKM",
+        "question_JDEbNU",
+        "question_mYRfhC",
+        "question_bj67kc",
+        "question_XKqxxp",
+        "question_rwX6FD"
+      ],
+      "settings": {
+        "heading": "FAQs on Denali 605 Pro",
+        "heading_align": "text-center",
+        "color_scheme": "none",
+        "full_width": true
+      }
+    },
+    "1709290372794ca6d9": {
+      "type": "apps",
+      "blocks": {
+        "yotpo_product_reviews_ugc_reviews_hWrkzb": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{product}}"
+          }
+        }
+      },
+      "block_order": [
+        "yotpo_product_reviews_ugc_reviews_hWrkzb"
+      ],
+      "settings": {
+        "link_id": "",
+        "full_width": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_GPJtyQ",
+    "image_banner_fzj3Wf",
+    "icons_with_text_cc9MeK",
+    "details",
+    "video_zFzw4c",
+    "rich_text_Xf3eFm",
+    "video_VbKHn3",
+    "rich_text_ehENVx",
+    "use_image_banner_gBfYLq",
+    "multi_column_aALANz",
+    "rich_text_fzETKh",
+    "video_antPQz",
+    "multi_column_jkea4R",
+    "rich_text_Y6aXdq",
+    "media_grid_iphpNJ",
+    "parts_dot_HjncrA",
+    "media_with_text_33nNqM",
+    "product_comparison_grid_P3476i",
+    "recommendations",
+    "video_Uzjt9f",
+    "icons_with_text_QLrYtw",
+    "faq_tcPUPr",
+    "1709290372794ca6d9"
+  ]
+}
