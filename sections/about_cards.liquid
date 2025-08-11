@@ -1,121 +1,122 @@
 <style>
-  .aboutcard_container{
-     max-width: 1600px;
-  margin: 0 auto;
+  .aboutcard_container {
+    max-width: 1600px;
+    margin: 0 auto;
   }
   .grid-5-cards {
-  display: grid;
-  grid-template-columns: 1.2fr 2fr;
-  gap: 20px;
- 
-  align-items: stretch;
-}
-.grid-5-cards__left {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 20px;
+
+    align-items: stretch;
+  }
+  .grid-5-cards__left {
     height: 680px;
-}
-.grid-5-cards__right {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 20px;
-  height: 100%;
-}
-.hover-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 180px;
-  height: 100%;
-  background: #eee;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.hover-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
+  }
+  .grid-5-cards__right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    height: 100%;
+  }
+  .hover-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    height: 100%;
+    background: #eee;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hover-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
   section.aboutcars_section {
     margin: 105px 0;
-}
-.hover-card-title {
-  position: relative;
-  z-index: 2;
-  color: #fff;
-  font-size: 1.3em;
-  font-weight: bold;
-  margin: 20px;
-  margin-bottom: 24px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  pointer-events: none;
-}
-.hover-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 3;
+  }
+  .hover-card-title {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
+  .hover-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 3;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-}
-.hover-card-content {
-  text-align: left;
-  padding: 24px;
-}
-.hover-card h3 {
+  }
+  .hover-card-content {
+    text-align: left;
+    padding: 24px;
+  }
+  .hover-card h3 {
     margin: 0 0 10px 0;
     font-size: 30px;
     font-weight: bold;
     color: #fff;
-}
-.hover-card p {
-  margin: 0 0 18px 0;
-  font-size: 1em;
-}
-.hover-card-btn {
-  display: inline-block;
-  background: #E55420;
-  color: #fff;
-  padding: 8px 22px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-.hover-card-btn:hover {
-  background: #900;
-}
-.hover-card:hover img {
-  transform: scale(1.05);
-}
-.hover-card:hover .hover-card-overlay {
-  opacity: 1;
-}
-.hover-card:hover .hover-card-title {
-  opacity: 0;
-}
-  @media(max-width:768px){
+  }
+  .hover-card p {
+    margin: 0 0 18px 0;
+    font-size: 1em;
+  }
+  .hover-card-btn {
+    display: inline-block;
+    background: #e55420;
+    color: #fff;
+    padding: 8px 22px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+  .hover-card-btn:hover {
+    background: #fff;
+    color: #e55420;
+  }
+  .hover-card:hover img {
+    transform: scale(1.05);
+  }
+  .hover-card:hover .hover-card-overlay {
+    opacity: 1;
+  }
+  .hover-card:hover .hover-card-title {
+    opacity: 0;
+  }
+  @media (max-width: 768px) {
     .grid-5-cards {
-    display: flex;
-    flex-flow: column;
-    padding: 0 20px;
-}
+      display: flex;
+      flex-flow: column;
+      padding: 0 20px;
+    }
     .grid-5-cards__left {
-    height: 300px;
-}
+      height: 300px;
+    }
     .hover-card-content {
-    text-align: left;
-    padding: 10px;
-}
+      text-align: left;
+      padding: 10px;
+    }
     .hover-card p {
       font-size: 14px;
     }
@@ -124,57 +125,56 @@
       font-size: 15px;
     }
     .hover-card-title {
-  
-    font-size: 18px;
-  
-    margin: 10px;
-    margin-bottom: 20px;
-}
+      font-size: 18px;
+
+      margin: 10px;
+      margin-bottom: 20px;
+    }
     section.aboutcars_section {
-    margin: 50px 0;
-}
+      margin: 50px 0;
+    }
   }
 </style>
 <section class="aboutcars_section">
   <div class="aboutcard_container">
-  <div class="grid-5-cards">
-  <div class="grid-5-cards__left">
-    {% assign block = section.blocks[0] %}
-    {% if block %}
-    <div class="hover-card hover-card--large">
-      <img src="{{ block.settings.image | img_url: '800x800' }}" alt="{{ block.settings.title }}">
-      <div class="hover-card-overlay">
-        <div class="hover-card-content">
-          <h3>{{ block.settings.title }}</h3>
-          <p>{{ block.settings.desc }}</p>
-          {% if block.settings.link != blank %}
-            <a href="{{ block.settings.link }}" class="hover-card-btn" target="_blank">Learn More</a>
-          {% endif %}
-        </div>
+    <div class="grid-5-cards">
+      <div class="grid-5-cards__left">
+        {% assign block = section.blocks[0] %}
+        {% if block %}
+          <div class="hover-card hover-card--large">
+            <img src="{{ block.settings.image | img_url: '800x800' }}" alt="{{ block.settings.title }}">
+            <div class="hover-card-overlay">
+              <div class="hover-card-content">
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.desc }}</p>
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="hover-card-btn" target="_blank">Learn More</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class="hover-card-title">{{ block.settings.title }}</div>
+          </div>
+        {% endif %}
       </div>
-      <div class="hover-card-title">{{ block.settings.title }}</div>
-    </div>
-    {% endif %}
-  </div>
-  <div class="grid-5-cards__right">
-    {% for block in section.blocks offset:1 limit:4 %}
-    <div class="hover-card hover-card--small">
-      <img src="{{ block.settings.image | img_url: '600x400' }}" alt="{{ block.settings.title }}">
-      <div class="hover-card-overlay">
-        <div class="hover-card-content">
-          <h3>{{ block.settings.title }}</h3>
-          <p>{{ block.settings.desc }}</p>
-          {% if block.settings.link != blank %}
-            <a href="{{ block.settings.link }}" class="hover-card-btn" target="_blank">Learn More</a>
-          {% endif %}
-        </div>
+      <div class="grid-5-cards__right">
+        {% for block in section.blocks offset: 1 limit: 4 %}
+          <div class="hover-card hover-card--small">
+            <img src="{{ block.settings.image | img_url: '600x400' }}" alt="{{ block.settings.title }}">
+            <div class="hover-card-overlay">
+              <div class="hover-card-content">
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.desc }}</p>
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="hover-card-btn" target="_blank">Learn More</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class="hover-card-title">{{ block.settings.title }}</div>
+          </div>
+        {% endfor %}
       </div>
-      <div class="hover-card-title">{{ block.settings.title }}</div>
     </div>
-    {% endfor %}
   </div>
-</div>
-    </div>
 </section>
 {% schema %}
 {
@@ -211,13 +211,7 @@
   "presets": [
     {
       "name": "5 Cards Grid",
-      "blocks": [
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" },
-        { "type": "card" }
-      ]
+      "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }]
     }
   ]
 }
