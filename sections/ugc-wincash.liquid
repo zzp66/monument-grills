@@ -1,0 +1,136 @@
+<style>
+  .wincash-content {
+    margin-top: 40px;
+  }
+  .wincash-item {
+    position: relative;
+  }
+  .wincash-img {
+  }
+  .wincash-info {
+    width: 100%;
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to top, #000000, #00000000);
+  }
+  p.wincash-info-text {
+    margin: 0;
+    font-size: 20px;
+    line-height: 22px;
+    color: #fff;
+  }
+  .wincash-btn {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .wincash-content {
+      margin-top: 20px;
+    }
+    p.wincash-info-text {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+</style>
+<div class="ugc-wincash section">
+  <div class="container">
+    <h2 class="section__heading mb-0 flex-auto text-center wincash-title">Join the Fun!</h2>
+    <div class="wincash-content swiper">
+      <div class="wincash-items swiper-wrapper">
+        {% for item in section.blocks %}
+          <div class="wincash-item swiper-slide">
+            <div class="wincash-img">
+              <img
+                src="{{ item.settings.cash_img | image_url: width: master }}"
+                alt=""
+              >
+            </div>
+            <div class="wincash-info">
+              <p class="wincash-info-text">{{ item.settings.cash_text }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="wincash-btn">
+        <a href="{{ section.settings.wincash_link }}" class="btn btn--primary">{{ section.settings.wincash_btn }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.wincash-content', {
+      slidesPerView: 3,
+      spaceBetween: 10,
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+          allowTouchMove: false,
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "UGC Win Cash",
+  "settings": [
+    {
+      "type": "text",
+      "id": "wincash_header",
+      "label": "Header",
+      "default": "Win Cash by Hosting a BBQ!"
+    },
+    {
+      "type": "text",
+      "id": "wincash_btn",
+      "label": "Button Text",
+      "default": "Win Cash"
+    },
+    {
+      "type": "url",
+      "id": "wincash_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cash",
+      "name": "Cash",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "cash_img",
+          "label": "Cash Img"
+        },
+        {
+          "type": "textarea",
+          "id": "cash_text",
+          "label": "Cash Info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Win Cash"
+    }
+  ]
+}
+{% endschema %}

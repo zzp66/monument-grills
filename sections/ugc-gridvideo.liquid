@@ -1,0 +1,232 @@
+<style>
+  .ugc-gridvideo {
+    padding: 60px 0;
+    margin: 0;
+    background-color: #d2e3ed;
+  }
+  .ugc-gridvideo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .grid-video-box {
+    column-count: 4;
+    column-gap: 15px;
+  }
+  .video-card {
+    break-inside: avoid;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .video-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  .video-card .video-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .video-card .play-btn {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 12px;
+  }
+  .bottom-bar {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    background: linear-gradient(to top, #000000, #00000000);
+    color: white;
+    font-size: 14px;
+  }
+  .video-card img.ig-icon {
+    max-width: 40px;
+    height: auto;
+  }
+  .bottom-bar-text {
+    margin-left: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  .bottom-bar-text span.text-strong {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .video-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    padding: 40px;
+    background: none;
+    max-width: 900px;
+    width: 90%;
+    position: relative;
+  }
+  .videomodal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    .grid-video-box {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<div class="ugc-gridvideo">
+  <div class="container">
+    <h2 class="section__heading mb-0 flex-auto text-center gridvideo-title">
+      Get Monument Moments <br>
+      The Everybody Everywhere Grill.
+    </h2>
+    <div class="grid-video-content">
+      <div class="grid-video-box">
+        {% for block in section.blocks %}
+          <div class="video-card" data-video="{{ block.settings.video_url }}">
+            <img src="{{ block.settings.thumbnail | image_url: master }}" alt="Video Thumbnail" class="thumbnail">
+            <div class="video-overlay">
+              <div class="play-btn">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              <div class="bottom-bar">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/1639/3511/files/shipin.png?v=1754701409"
+                  alt="Instagram"
+                  class="ig-icon"
+                >
+                <div class="bottom-bar-text">
+                  <span class="text-strong">Monument Grills</span>
+                  <span>Instagram</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="videoModal" class="video-modal">
+    <div class="modal-content">
+      <span class="videomodal-close">&times;</span>
+      <div id="videoContainer"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('videoModal');
+    const videoContainer = document.getElementById('videoContainer');
+    const closeBtn = document.querySelector('.video-modal .videomodal-close');
+
+    document.querySelectorAll('.video-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        const videoUrl = card.getAttribute('data-video');
+        let embed;
+        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+          embed = `<iframe width="100%" height="100%" src="${videoUrl.replace(
+            'watch?v=',
+            'embed/'
+          )}" frameborder="0" allowfullscreen></iframe>`;
+        } else if (videoUrl.endsWith('.mp4')) {
+          embed = `<video controls autoplay width="100%" height="100%"><source src="${videoUrl}" type="video/mp4"></video>`;
+        } else {
+          embed = `<iframe src="${videoUrl}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`;
+        }
+        videoContainer.innerHTML = embed;
+        modal.style.display = 'flex';
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      videoContainer.innerHTML = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        videoContainer.innerHTML = '';
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "UGC Grid Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Get Monument Moments"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "The everybody everywhere grill."
+    },
+    {
+      "type": "url",
+      "id": "learn_more_link",
+      "label": "Learn More Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_item",
+      "name": "Video Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "thumbnail",
+          "label": "Thumbnail Image"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (MP4/YouTube/Instagram)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "UGC Grid Video"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,266 @@
+<style>
+  .ugc-jointhefun {
+    padding: 60px 0;
+    margin: 0;
+  }
+  p.jointhefun-info {
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
+    font-size: 24px;
+    line-height: 28px;
+  }
+  .jointhefun-num {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0;
+  }
+  .jointhefun-num img {
+    max-width: 150px;
+    height: auto;
+  }
+  .jointhefun-share-pc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 10px;
+  }
+  .jointhefun-item-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+  .jointhefun-share-infos {
+    padding: 15px;
+  }
+  .jointhefun-item-title img {
+    max-width: 45px;
+    height: auto;
+  }
+  p.title-text {
+    margin: 0;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+    color: #e55420;
+  }
+  p.jointhefun-item-info {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 15px;
+  }
+  .jointhefun-btn {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+  .jointhefun-share-mb {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .jointhefun-share-pc {
+      display: none;
+    }
+    .jointhefun-share-mb {
+      display: block;
+    }
+    p.jointhefun-info {
+      font-size: 16px;
+      line-height: 18px;
+    }
+    .jointhefun-num {
+      margin: 30px 0;
+    }
+    .jointhefun-num img {
+      max-width: 60px;
+    }
+    .jointhefun-item-title img {
+      max-width: 20px;
+    }
+    p.title-text {
+      font-size: 16px;
+      line-height: 18px;
+    }
+    p.jointhefun-item-info {
+      font-size: 14px;
+      line-height: 16px;
+      margin-top: 10px;
+    }
+    .jointhefun-btn {
+      margin-top: 15px;
+    }
+  }
+</style>
+<div class="ugc-jointhefun section">
+  <div class="container">
+    <h2 class="section__heading mb-0 flex-auto text-center jointhefun-title">
+      {{ section.settings.jointhefun_header }}
+    </h2>
+    {% if section.settings.jointhefun_info != blank %}
+      <p class="jointhefun-info">{{ section.settings.jointhefun_info }}</p>
+    {% endif %}
+    <div class="jointhefun-content">
+      <div class="jointhefun-num">
+        <img src="{{ section.settings.jointhefun_img1 | image_url: width: master }}" alt="">
+        <img src="{{ section.settings.jointhefun_img2 | image_url: width: master }}" alt="">
+        <img src="{{ section.settings.jointhefun_img3 | image_url: width: master }}" alt="">
+      </div>
+      <div class="jointhefun-share-pc">
+        {% for item in section.blocks %}
+          <div class="jointhefun-share-item">
+            <div class="jointhefun-share-img">
+              <img
+                src="{{ item.settings.share_img | image_url: width: master }}"
+                alt=""
+              >
+            </div>
+            <div class="jointhefun-share-infos">
+              <div class="jointhefun-item-title">
+                <img
+                  src="{{ item.settings.share_icon1 | image_url: width: master }}"
+                  alt=""
+                  class="title-icon"
+                >
+                {% if item.settings.share_icon2 %}
+                  <img
+                    src="{{ item.settings.share_icon2 | image_url: width: master }}"
+                    alt=""
+                    class="title-icon"
+                  >
+                {% endif %}
+                <p class="title-text">{{ item.settings.share_title }}</p>
+              </div>
+              <p class="jointhefun-item-info">
+                {{ item.settings.share_info }}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="jointhefun-share-mb swiper">
+        <div class="swiper-wrapper">
+          {% for item in section.blocks %}
+            <div class="swiper-slide">
+              <div class="jointhefun-share-item">
+                <div class="jointhefun-share-img">
+                  <img
+                    src="{{ item.settings.share_img | image_url: width: master }}"
+                    alt=""
+                  >
+                </div>
+                <div class="jointhefun-share-infos">
+                  <div class="jointhefun-item-title">
+                    <img
+                      src="{{ item.settings.share_icon1 | image_url: width: master }}"
+                      alt=""
+                      class="title-icon"
+                    >
+                    {% if item.settings.share_icon2 %}
+                      <img
+                        src="{{ item.settings.share_icon2 | image_url: width: master }}"
+                        alt=""
+                        class="title-icon"
+                      >
+                    {% endif %}
+                    <p class="title-text">{{ item.settings.share_title }}</p>
+                  </div>
+                  <p class="jointhefun-item-info">
+                    {{ item.settings.share_info }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="jointhefun-btn">
+        <button class="btn btn--primary">Join Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.jointhefun-share-mb', {
+      slidesPerView: 1.2,
+      spaceBetween: 10,
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "UGC Join the Fun",
+  "settings": [
+    {
+      "type": "text",
+      "id": "jointhefun_header",
+      "label": "Header",
+      "default": "Join the Fun!"
+    },
+    {
+      "type": "textarea",
+      "id": "jointhefun_info",
+      "label": "Info"
+    },
+    {
+      "type": "image_picker",
+      "id": "jointhefun_img1",
+      "label": "步骤1-Img"
+    },
+    {
+      "type": "image_picker",
+      "id": "jointhefun_img2",
+      "label": "步骤2-Img"
+    },
+    {
+      "type": "image_picker",
+      "id": "jointhefun_img3",
+      "label": "步骤3-Img"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "share",
+      "name": "Share",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "share_img",
+          "label": "Share Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "share_icon1",
+          "label": "Share Icon - 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "share_icon2",
+          "label": "Share Icon - 2"
+        },
+        {
+          "type": "text",
+          "id": "share_title",
+          "label": "Share Title",
+          "default": "Share Photo (100 points)"
+        },
+        {
+          "type": "textarea",
+          "id": "share_info",
+          "label": "Share Info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Join the Fun"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,168 @@
+<style>
+  .ugc-storyshared {
+    padding: 60px 0;
+    margin: 0;
+  }
+  .storyshared-swiper {
+    margin-top: 40px;
+  }
+  .storyshared-item-info {
+    width: 100%;
+    padding: 15px;
+    background-color: #fff7eb;
+  }
+  p.storyshared-item-title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 600;
+  }
+  p.storyshared-item-btn {
+    color: #e55420;
+    margin: 10px 0 0;
+  }
+
+  .storyshared-swiper-console {
+    padding: 0 40px;
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .storyshared-swiper-console .swiper-pagination {
+    position: inherit;
+  }
+
+  .storyshared-swiper-console .swiper-pagination-bullet-active {
+    background: #e55420;
+  }
+
+  .storyshared-swiper-console .swiper-button-prev,
+  .storyshared-swiper-console .swiper-button-next {
+    background-image: none;
+    position: static;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #e55420;
+    border: 1px solid #e55420;
+  }
+  .storyshared-swiper-console .swiper-button-prev::after,
+  .storyshared-swiper-console .swiper-button-next::after {
+    color: #fff;
+  }
+</style>
+
+<div class="ugc-storyshared section">
+  <div class="container">
+    <h2 class="section__heading mb-0 flex-auto text-center storyshared-title">
+      {{ section.settings.storyshared_header }}
+    </h2>
+    <div class="swiper storyshared-swiper">
+      <div class="swiper-wrapper">
+        {% for item in section.blocks %}
+          <div class="swiper-slide">
+            <div class="storyshared-item">
+              <a href="{{ item.settings.story_link }}" class="storyshared-url">
+                <div class="storyshared-item-img">
+                  <img
+                    src="{{ item.settings.story_img }}"
+                    alt=""
+                  >
+                </div>
+                <div class="storyshared-item-info">
+                  <p class="storyshared-item-title">{{ item.settings.story_title }}</p>
+                  <p class="storyshared-item-btn">Learn More ></p>
+                </div>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="storyshared-swiper-console">
+        <div class="swiper-button-prev ssc-btn-prev"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next ssc-btn-next"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.storyshared-swiper', {
+      slidesPerView: 3,
+      spaceBetween: 10,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<div class="' + className + '"><span></span><i></i></div>';
+        },
+      },
+      navigation: {
+        nextEl: '.ssc-btn-next',
+        prevEl: '.ssc-btn-prev',
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "UGC Story Shared",
+  "settings": [
+    {
+      "type": "text",
+      "id": "storyshared_header",
+      "label": "Header",
+      "default": "Stories Shared by Users"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Story",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "story_img",
+          "label": "Story Img"
+        },
+        {
+          "type": "textarea",
+          "id": "story_title",
+          "label": "Story Title"
+        },
+        {
+          "type": "url",
+          "id": "story_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Story Shared"
+    }
+  ]
+}
+{% endschema %}
