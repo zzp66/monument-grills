@@ -7,7 +7,6 @@
     assign breakpoint_sm = 600
     assign breakpoint_md = 769
     assign breakpoint_lg = 1024
-    
 
     if section.index == 1 or section.settings.prevent_animation
       assign lazy_load_images = false
@@ -124,13 +123,13 @@
       bottom: 0;
       z-index:2;
       backdrop-filter: blur(2px);
-      background-color: rgb(251 150 30 / 78%);
     }
     .block-carousel .slider .normal-column-carousel-box ul li a.put-text-on-image .article-info .article-title{
       color:#fff;
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: .2rem;
+    }
+    .block-carousel .slider .normal-column-carousel-box ul li a .img-box:hover .block-carousel .slider .normal-column-carousel-box ul li a.put-text-on-image .article-info .article-title{
+      color:#e55420;
+
     }
     @media (max-width:768px){
       .block-carousel .slider{
@@ -154,109 +153,151 @@
     <carousel-slider class="carousel block-carousel block" inactive>
       <div class="{% if section.settings.full_screen %}multi-column-carousel{% else %} container{% endif %} relative">
         <div class="slider" id="slider-{{ section.id }}">
-    {%- endif -%}
-  
-          <div class="{% if section.settings.full_screen %}multi-column-carousel-box{% else %}normal-column-carousel-box {% endif %}">
-              <ul class="{% if carousel %}slider__grid grid {{ grid_classes }}{% else %} flex flex-wrap{% endif %} gap-x-theme{% if color_scheme == 'none' and carousel == false %} gap-y-12 md:gap-y-6{% else %} gap-y-6{% endif %}" role="list">
-                  {% for block in section.blocks %}
-                  {% case block.type %}
-                    {% when 'news' %}
-                      {% liquid
-                        assign articles = block.settings.articles_id
-                        assign article_cover_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
-  
-                        assign article_cover = articles.image
-                        assign article_title = articles.title
-                        assign article_url = articles.url
-                        assign article_excerpt = articles.excerpt
+  {%- endif -%}
 
-                        assign custom_article_picker = block.settings.custom_article_picker
-                        assign custom_article_title = block.settings.custom_article_title
-                        assign custom_article_url = block.settings.custom_article_url
-                        
-                      %}
-                      {% if custom_article_picker != blank %}
-                        <li class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s">
-                          <a class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}" href="{{ custom_article_url }}" target="_blank">
-                            <div class="img-box">
-                              {%- render 'image',
-                                  image: custom_article_picker,
-                                  widths: '240, 480, 960, 1400',
-                                  src_width: 240,
-                                  src_placeholder: true,
-                                  sizes: article_cover_sizes,
-                                  lazy_load: lazy_load_images,
-                                  class: 'img-fit article-cover'
-                                -%}
-                            </div> 
-                            <div class="article-info custom-article-info">
-                                <{{ block.settings.article_title_size }} class="article-title">{{ custom_article_title }}</{{ block.settings.article_title_size }}>
-                              </div>
-                          </a>
-                        </li>
-                      {% elsif articles %}
-                          <li class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s">
-                            <a class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}" href="{{ article_url }}" target="_blank">
-                              {% if article_cover != blank %}
-                                <div class="img-box">
-                                  {%- render 'image',
-                                    image: article_cover,
-                                    widths: '240, 480, 960, 1400',
-                                    src_width: 240,
-                                    src_placeholder: true,
-                                    sizes: article_cover_sizes,
-                                    lazy_load: lazy_load_images,
-                                    class: 'img-fit article-cover'
-                                  -%}
-                                </div> 
-                              {% endif %}
-                              {% if article_title != blank %}
-                                <div class="article-info">
-                                  <{{ block.settings.article_title_size }} class="article-title">{{ article_title }}</{{ block.settings.article_title_size }}>
-                                </div>
-                              {% endif %}
-                            </a>
-                          </li>
-                      {% else %}
-                        <li class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} " data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s">
-                          <a class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}" href="{{ custom_article_url }}" target="_blank">
-                            <div class="img-box">
-                              {%- render 'image',
-                                  image: custom_article_picker,
-                                  widths: '240, 480, 960, 1400',
-                                  src_width: 240,
-                                  src_placeholder: true,
-                                  sizes: article_cover_sizes,
-                                  lazy_load: lazy_load_images,
-                                  class: 'img-fit article-cover'
-                                -%}
-                            </div> 
-                            <div class="article-info custom-article-info">
-                                <{{ block.settings.article_title_size }} class="article-title">{{ custom_article_title }}</{{ block.settings.article_title_size }}>
-                              </div>
-                          </a>
-                        </li>
-                      {% endif %}
-                    {% endcase %}
-                  {% endfor %}
-              </ul>
-          </div>
-          
-    {%- if carousel -%}
-          </div>
-          {%- if section.settings.slider_show_arrows == 'never' -%}
-            <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
-              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
-                <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-                {% render 'icon-chevron-right' %}
-              </button>
-              <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
-                <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-                {% render 'icon-chevron-left' %}
-              </button>
-            </div>
-          {%- endif -%}
-        </div>
-      </carousel-slider>
+  <div class="{% if section.settings.full_screen %}multi-column-carousel-box{% else %}normal-column-carousel-box {% endif %}">
+    <ul
+      class="{% if carousel %}slider__grid grid {{ grid_classes }}{% else %} flex flex-wrap{% endif %} gap-x-theme{% if color_scheme == 'none' and carousel == false %} gap-y-12 md:gap-y-6{% else %} gap-y-6{% endif %}"
+      role="list"
+    >
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'news' %}
+            {% liquid
+              assign articles = block.settings.articles_id
+              assign article_cover_sizes = '(max-aspect-ratio: 1/2) 50vh, 100vw'
+
+              assign article_cover = articles.image
+              assign article_title = articles.title
+              assign article_url = articles.url
+              assign article_excerpt = articles.excerpt
+
+              assign custom_article_picker = block.settings.custom_article_picker
+              assign custom_article_title = block.settings.custom_article_title
+              assign custom_article_url = block.settings.custom_article_url
+            %}
+            {% if custom_article_picker != blank %}
+              <li
+                class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} "
+                data-cc-animate
+                data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+              >
+                <a
+                  class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}"
+                  href="{{ custom_article_url }}"
+                  target="_blank"
+                >
+                  <div class="img-box">
+                    {%- render 'image',
+                      image: custom_article_picker,
+                      widths: '240, 480, 960, 1400',
+                      src_width: 240,
+                      src_placeholder: true,
+                      sizes: article_cover_sizes,
+                      lazy_load: lazy_load_images,
+                      class: 'img-fit article-cover'
+                    -%}
+                  </div>
+                  <div class="article-info custom-article-info">
+                    <{{ block.settings.article_title_size }} class="article-title">
+                      {{- custom_article_title -}}
+                    </{{ block.settings.article_title_size }}>
+                  </div>
+                </a>
+              </li>
+            {% elsif articles %}
+              <li
+                class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} "
+                data-cc-animate
+                data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+              >
+                <a
+                  class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}"
+                  href="{{ article_url }}"
+                  target="_blank"
+                >
+                  {% if article_cover != blank %}
+                    <div class="img-box">
+                      {%- render 'image',
+                        image: article_cover,
+                        widths: '240, 480, 960, 1400',
+                        src_width: 240,
+                        src_placeholder: true,
+                        sizes: article_cover_sizes,
+                        lazy_load: lazy_load_images,
+                        class: 'img-fit article-cover'
+                      -%}
+                    </div>
+                  {% endif %}
+                  {% if article_title != blank %}
+                    <div class="article-info">
+                      <{{ block.settings.article_title_size }} class="article-title">
+                        {{- article_title -}}
+                      </{{ block.settings.article_title_size }}>
+                    </div>
+                  {% endif %}
+                </a>
+              </li>
+            {% else %}
+              <li
+                class="articles multi-column grow w-full max-w-none{% if carousel %} slider__item{% endif %} "
+                data-cc-animate
+                data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+              >
+                <a
+                  class="article-url {% if section.settings.set_text_on_image != blank %} put-text-on-image{% endif %}"
+                  href="{{ custom_article_url }}"
+                  target="_blank"
+                >
+                  <div class="img-box">
+                    {%- render 'image',
+                      image: custom_article_picker,
+                      widths: '240, 480, 960, 1400',
+                      src_width: 240,
+                      src_placeholder: true,
+                      sizes: article_cover_sizes,
+                      lazy_load: lazy_load_images,
+                      class: 'img-fit article-cover'
+                    -%}
+                  </div>
+                  <div class="article-info custom-article-info">
+                    <{{ block.settings.article_title_size }} class="article-title">
+                      {{- custom_article_title -}}
+                    </{{ block.settings.article_title_size }}>
+                  </div>
+                </a>
+              </li>
+            {% endif %}
+        {% endcase %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  {%- if carousel -%}
+    </div>
+    {%- if section.settings.slider_show_arrows == 'never' -%}
+      <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
+        <button
+          type="button"
+          class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon"
+          name="next"
+          aria-controls="slider-{{ section.id }}"
+        >
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          {% render 'icon-chevron-right' %}
+        </button>
+        <button
+          type="button"
+          class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon"
+          name="prev"
+          aria-controls="slider-{{ section.id }}"
+        >
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          {% render 'icon-chevron-left' %}
+        </button>
+      </div>
     {%- endif -%}
+    </div>
+    </carousel-slider>
+  {%- endif -%}
 {% endif %}

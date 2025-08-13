@@ -22,12 +22,12 @@
   }
 
   .hero-background.mobile {
-    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/reviews_hero_mobile3.jpg);
+    background-image: url({{ section.settings.reviews_banner_img_mb | image_url: width: master }});
     background-color: transparent;
     background-position: center center;
   }
   .hero-background.desktop {
-    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/reviews_hero_desktop3.jpg);
+    background-image: url({{ section.settings.reviews_banner_img_pc | image_url: width: master }});
     background-color: transparent;
     background-position: center center;
   }
@@ -82,10 +82,9 @@
     <div class="hero-background desktop"></div>
     <div class="hero-container">
       <h1 id="page-title-heading" class="page-title">
-        Over 60,000 <br>
-        5-star reviews
+        {{ section.settings.reviews_banner_title }}
       </h1>
-      <p class="page-title-info">Read why Litter-Robot is the highest-rated self-cleaning litter box in the world.</p>
+      <p class="page-title-info">{{ section.settings.reviews_banner_info }}</p>
       <div class="page-title-btn-box">
         <a class="page-title-btn" href="#reviews">Read reviews</a>
       </div>
@@ -96,7 +95,28 @@
 {% schema %}
 {
   "name": "Reviews Banner",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "reviews_banner_img_pc",
+      "label": "Banner - PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "reviews_banner_img_mb",
+      "label": "Banner - Mobile"
+    },
+    {
+      "type": "text",
+      "id": "reviews_banner_title",
+      "label": "Header"
+    },
+    {
+      "type": "textarea",
+      "id": "reviews_banner_info",
+      "label": "Info"
+    }
+  ],
   "presets": [
     {
       "name": "Reviews Banner"

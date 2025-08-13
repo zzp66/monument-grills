@@ -1,7 +1,7 @@
 <style>
   .reviews-customers {
     background-color: #f1f1f1;
-    background-image: url(https://images.litter-robot.com/media/wysiwyg/Litter-Robot/cms/learn/benefits/Breakout-background.png);
+    background-image: url({{ section.settings.reviews_customers_bg_img | image_url: width: master }});
     background-repeat: no-repeat;
     background-position: top 180px center;
     padding: 60px 0 95px;
@@ -11,19 +11,14 @@
   }
   .reviews-customers .review-slider-heading {
     margin: 0 auto;
-    max-width: 560px;
     text-align: center;
   }
-  .reviews-slider-box-pc {
+  .reviews-slider-box {
     max-width: 980px;
     width: 100%;
     margin: 0 auto;
   }
-  .review-slider-box-mb {
-    display: none;
-  }
-  .slider-top-wrapper {
-    max-height: 500px;
+  .reviews-swiper {
     margin: 40px 0 20px;
   }
   .slider-top-item {
@@ -42,8 +37,12 @@
     padding: 30px 40px;
     background-color: #fff;
   }
+  .review-star img {
+    max-height: 25px;
+    width: auto;
+  }
   .review-info {
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 24px;
     line-height: 28px;
     font-weight: 600;
@@ -66,133 +65,162 @@
     height: 100px;
     opacity: 0.05;
   }
-  .slider-bottom-box {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 45px;
-  }
   .slider-bottom-item {
+    position: relative;
+    padding: 6px;
     border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .slider-bottom-item img {
+    border-radius: 16px;
+  }
+
+  .swiper-slide.swiper-slide-thumb-active .slider-bottom-item {
+    border: 2px solid #e55420;
   }
 
   @media screen and (max-width: 768px) {
-    .review-slider-box-mb {
-      display: block;
+    .reviews-customers {
+      padding: 30px 0 40px;
     }
-    .reviews-slider-box-pc {
-      display: none;
+    .slider-top-item {
+      grid-template-columns: 1fr;
+    }
+    .slider-review-box {
+      padding: 15px;
+    }
+    .review-star img {
+      max-width: 20px;
+    }
+    .review-info {
+      font-size: 16px;
+      line-height: 20px;
     }
   }
 </style>
 
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
-
-<div class="reviews-customers">
+<div class="reviews-customers section">
   <div class="reviews-customers-wrapper">
     <h2 class="review-slider-heading">
-      Hear from real<br>
-      Litter-Robot customers
+      {{ section.settings.reviews_customers_title }}
     </h2>
-    <div class="reviews-slider-box-pc">
-      <div class="slider-top-wrapper">
-        <div class="slider-top-item">
-          <div class="slider-img-box">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
-              alt=""
-            >
-          </div>
-          <div class="slider-review-box">
-            <div class="review-star">星星图片</div>
-            <div class="review-info">“The Whisker app notifications make me feel better when I'm gone.”</div>
-            <div class="review-author">- Jana & Caroline</div>
-          </div>
-        </div>
-      </div>
-      <div class="slider-bottom-wrapper">
-        <div class="slider-bottom-box">
-          <div class="slider-bottom-item">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-              alt=""
-            >
-          </div>
-          <div class="slider-bottom-item">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-              alt=""
-            >
-          </div>
-          <div class="slider-bottom-item">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-              alt=""
-            >
-          </div>
-          <div class="slider-bottom-item">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-              alt=""
-            >
-          </div>
-          <div class="slider-bottom-item">
-            <img
-              src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg?v=1752253468"
-              alt=""
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="review-slider-box-mb">
-      <div class="swiper swiper-mb">
+    <div class="reviews-slider-box">
+      <div class="swiper reviews-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="slide-item-img">
-              <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
-                alt=""
-              >
+          {% for item in section.blocks %}
+            <div class="swiper-slide">
+              <div class="slider-top-item">
+                <div class="slider-img-box">
+                  <img
+                    src="{{ item.settings.customer_img | image_url: width: master }}"
+                    alt=""
+                  >
+                </div>
+                <div class="slider-review-box">
+                  <div class="review-star">
+                    <img src="{{ item.settings.customer_star | image_url: width: master }}" alt="">
+                  </div>
+                  <div class="review-info">{{ item.settings.customer_info }}</div>
+                  <div class="review-author">{{ item.settings.customer_author }}</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="slide-item-img">
-              <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
-                alt=""
-              >
+          {% endfor %}
+        </div>
+      </div>
+      <div class="swiper reviews-thumbs-swiper">
+        <div class="swiper-wrapper">
+          {% for item in section.blocks %}
+            <div class="swiper-slide">
+              <div class="slider-bottom-item">
+                <img
+                  src="{{ item.settings.customer_img | image_url: width: master }}"
+                  alt=""
+                >
+              </div>
             </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="slide-item-img">
-              <img
-                src="https://cdn.shopify.com/s/files/1/1639/3511/files/35633_f607f677-c84e-4f1c-8cb7-61f096461973.jpg"
-                alt=""
-              >
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
-
 <script>
-  var mySwiper = new Swiper('.swiper-mb', {
-    slidesPerView: 1.1,
-    spaceBetween: 20,
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.reviews-thumbs-swiper', {
+      slidesPerView: 5,
+      spaceBetween: 45,
+      breakpoints: {
+        320: {
+          slidesPerView: 3.2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 3.2,
+          spaceBetween: 20,
+        },
+        1280: {
+          slidesPerView: 5.2,
+          spaceBetween: 45,
+        },
+      },
+    });
+    new Swiper('.reviews-swiper', {
+      allowTouchMove: false,
+      thumbs: {
+        swiper: '.reviews-thumbs-swiper',
+      },
+    });
   });
 </script>
 
 {% schema %}
 {
   "name": "Reviews Customers",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "reviews_customers_bg_img",
+      "label": "背景图",
+      "info": "用于该部分的背景图，尺寸1100*578起"
+    },
+    {
+      "type": "text",
+      "id": "reviews_customers_title",
+      "label": "Header"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "customer",
+      "name": "Customer",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "customer_img",
+          "label": "Customer Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "customer_star",
+          "label": "Customer Star"
+        },
+        {
+          "type": "textarea",
+          "id": "customer_info",
+          "label": "Customer Info"
+        },
+        {
+          "type": "text",
+          "id": "customer_author",
+          "label": "Customer Author"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Reviews Customers"
