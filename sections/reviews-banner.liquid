@@ -110,8 +110,12 @@
     event.preventDefault(); // 阻止默认的跳转行为
     const target = document.querySelector(targetId);
     if (target) {
+      // 获取目标元素的顶部位置，减去导航栏的高度（200px）
+      const offset = 200;
+      const targetPosition = target.offsetTop - offset;
+
       window.scrollTo({
-        top: target.offsetTop,
+        top: targetPosition,
         behavior: 'smooth',
       });
     }
