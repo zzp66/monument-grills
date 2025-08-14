@@ -90,6 +90,7 @@
     }
     .slider-review-box {
       padding: 15px;
+      max-width: 100%;
     }
     .review-star img {
       max-width: 20px;
@@ -101,7 +102,7 @@
   }
 </style>
 
-<div class="reviews-customers section">
+<div class="reviews-customers">
   <div class="reviews-customers-wrapper">
     <h2 class="review-slider-heading">
       {{ section.settings.reviews_customers_title }}
@@ -150,28 +151,29 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.reviews-thumbs-swiper', {
-      slidesPerView: 5,
-      spaceBetween: 45,
-      breakpoints: {
-        320: {
-          slidesPerView: 3.2,
-          spaceBetween: 20,
-        },
-        768: {
-          slidesPerView: 3.2,
-          spaceBetween: 20,
-        },
-        1280: {
-          slidesPerView: 5.2,
-          spaceBetween: 45,
-        },
-      },
-    });
+    new Swiper('.reviews-thumbs-swiper', {});
     new Swiper('.reviews-swiper', {
       allowTouchMove: false,
       thumbs: {
-        swiper: '.reviews-thumbs-swiper',
+        swiper: {
+          el: '.reviews-thumbs-swiper',
+          slidesPerView: 5,
+          spaceBetween: 45,
+          breakpoints: {
+            320: {
+              slidesPerView: 3.2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 5.2,
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 5.2,
+              spaceBetween: 45,
+            },
+          },
+        },
       },
     });
   });

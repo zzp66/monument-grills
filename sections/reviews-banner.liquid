@@ -1,3 +1,11 @@
+{% liquid
+  assign reviews_banner_img_pc = section.settings.reviews_banner_img_pc
+  if section.settings.reviews_banner_img_mb != blank
+    assign reviews_banner_img_mb = section.settings.reviews_banner_img_mb
+  else
+    assign reviews_banner_img_mb = section.settings.reviews_banner_img_pc
+  endif
+%}
 <style>
   .hero-banner {
     position: relative;
@@ -22,12 +30,12 @@
   }
 
   .hero-background.mobile {
-    background-image: url({{ section.settings.reviews_banner_img_mb | image_url: width: master }});
+    background-image: url({{ reviews_banner_img_mb | image_url: width: master }});
     background-color: transparent;
     background-position: center center;
   }
   .hero-background.desktop {
-    background-image: url({{ section.settings.reviews_banner_img_pc | image_url: width: master }});
+    background-image: url({{ reviews_banner_img_pc | image_url: width: master }});
     background-color: transparent;
     background-position: center center;
   }
@@ -86,11 +94,29 @@
       </h1>
       <p class="page-title-info">{{ section.settings.reviews_banner_info }}</p>
       <div class="page-title-btn-box">
-        <a class="page-title-btn" href="#reviews">Read reviews</a>
+        <a
+          class="page-title-btn"
+          href="#{{ section.settings.reviews_btn }}"
+          onclick="smoothScroll(event, '#{{ section.settings.reviews_btn }}')"
+          >Read reviews</a
+        >
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function smoothScroll(event, targetId) {
+    event.preventDefault(); // 阻止默认的跳转行为
+    const target = document.querySelector(targetId);
+    if (target) {
+      window.scrollTo({
+        top: target.offsetTop,
+        behavior: 'smooth',
+      });
+    }
+  }
+</script>
 
 {% schema %}
 {
@@ -115,6 +141,12 @@
       "type": "textarea",
       "id": "reviews_banner_info",
       "label": "Info"
+    },
+    {
+      "type": "text",
+      "id": "reviews_btn",
+      "label": "需要跳转到的位置的版块id",
+      "default": "yotpo-app"
     }
   ],
   "presets": [
