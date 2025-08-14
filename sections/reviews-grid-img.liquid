@@ -160,52 +160,54 @@
     }
   }
 </style>
+
+{% assign sec = section.settings %}
 <div class="reviews-grid-img">
   <div class="reviews-grid-img-wrapper">
     <div class="review-grid-item c-net">
       <img
         class="c-net-img1"
-        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/light-quote.png"
+        src="{{ sec.grid_img_1 | image_url: width: master }}"
         alt=""
       >
       <div class="c-net-info">
         <img
           class="c-net-img2"
-          src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/revamp-24/wirecutter.svg"
+          src="{{ sec.grid_img_2 | image_url: width: master }}"
           alt=""
         >
-        <p class="c-net-text">“Top Pick for Best Automatic Cat Litter Box”</p>
+        <p class="c-net-text">{{ sec.grid_text_1 }}</p>
       </div>
       <img
         class="c-net-img3"
-        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/wired_cat_12022024.png"
+        src="{{ sec.grid_img_3 | image_url: width: master }}"
         alt=""
       >
     </div>
     <div class="review-grid-item google">
-      <img src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/forbes.svg" alt="">
-      <p>“A Smart Litter Box That’s Worth The Investment.”</p>
+      <img src="{{ sec.grid_img_4 | image_url: width: master }}" alt="">
+      <p>{{ sec.grid_text_2 }}</p>
     </div>
     <div class="review-grid-item facebook">
       <img
-        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/good_housekeeping_logo_brown.svg"
+        src="{{ sec.grid_img_5 | image_url: width: master }}"
         alt=""
       >
-      <p>“The Litter-Robot 4 Makes Daily Scooping Obsolete.”</p>
+      <p>{{ sec.grid_text_3 }}</p>
     </div>
     <div class="review-grid-item quote">
       <img
         class="quote-img1"
-        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/medium-quote.png"
+        src="{{ sec.grid_img_6 | image_url: width: master }}"
         alt=""
       >
       <div class="quote-info">
-        <img class="quote-img2" src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/HGTV.svg" alt="">
-        <p>“Can’t see a world where I will ever go back to a regular litter box.”</p>
+        <img class="quote-img2" src="{{ sec.grid_img_7 | image_url: width: master }}" alt="">
+        <p>{{ sec.grid_text_4 }}</p>
       </div>
       <img
         class="quote-img3"
-        src="https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/home/hgtv-image_12022024.png"
+        src="{{ sec.grid_img_8 | image_url: width: master }}"
         alt=""
       >
     </div>
@@ -214,7 +216,68 @@
 {% schema %}
 {
   "name": "Reviews Grid Img",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "grid_img_1",
+      "label": "图片1"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_2",
+      "label": "图片2"
+    },
+    {
+      "type": "text",
+      "id": "grid_text_1",
+      "label": "文案1"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_3",
+      "label": "图片3"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_4",
+      "label": "图片4"
+    },
+    {
+      "type": "text",
+      "id": "grid_text_2",
+      "label": "文案2"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_5",
+      "label": "图片5"
+    },
+    {
+      "type": "text",
+      "id": "grid_text_3",
+      "label": "文案3"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_6",
+      "label": "图片6"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_7",
+      "label": "图片7"
+    },
+    {
+      "type": "text",
+      "id": "grid_text_4",
+      "label": "文案4"
+    },
+    {
+      "type": "image_picker",
+      "id": "grid_img_8",
+      "label": "图片8"
+    }
+  ],
   "presets": [
     {
       "name": "Reviews Grid Img"
