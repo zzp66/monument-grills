@@ -482,10 +482,16 @@
             {%- endif -%}
           <div class="points__box" style="display:">
           <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/points-icon.png?v=1747812546" />
-          <div>
-              <div class="pointb__title">Order now and earn<span id="points-value">{{ product.selected_or_first_available_variant.price | divided_by: 100.0 | round }}</span>Points in rewards</div>
-              <!-- <div class="pointb__desc">Redeem your Points for exclusive discounts or free gifts</div> -->
-          </div>
+<div>
+  <div class="pointb__title">
+    Order now and earn
+    <span id="points-value">
+      {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | round | times: 2 }}
+    </span>
+    Points in rewards
+  </div>
+  <!-- <div class="pointb__desc">Redeem your Points for exclusive discounts or free gifts</div> -->
+</div>
           <div>
             <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/poin_desc.png?v=1747813465" class="points_ques point-trigger" />
           <div class="propoints_pop">
