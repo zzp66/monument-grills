@@ -1,0 +1,142 @@
+<style>
+  .chose-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  .chose-info-content {
+    padding-left: 40px;
+    max-width: 55%;
+  }
+  .chose-header {
+    text-align: center;
+    padding: 50px 15px;
+  }
+  p.chose-header-title {
+    margin: 0 auto;
+    color: #e55420;
+    font-size: 36px;
+    line-height: 42px;
+    font-weight: 700;
+    font-family: 'OBBLIGATO-Fortissimo';
+    max-width: 550px;
+  }
+  p.chose-header-info {
+    margin: 10px 0 0;
+    color: #474747;
+    font-weight: 500;
+  }
+  p.chose-info-desc {
+    margin: 0;
+    font-size: 20px;
+    line-height: 26px;
+    color: #928f8f;
+    font-weight: 500;
+  }
+  p.chose-info-title {
+    margin: 10px 0 0;
+    font-size: 36px;
+    line-height: 42px;
+    font-weight: 700;
+    font-family: 'OBBLIGATO-Fortissimo';
+  }
+  .chose-banner-img {
+    padding-right: 10px;
+  }
+  .chose-banner-img img {
+    border-radius: 16px;
+  }
+  @media screen and (max-width: 767px) {
+    .chose-box {
+      grid-template-columns: 1fr;
+    }
+    .chose-banner {
+      order: 1;
+    }
+    .chose-info {
+      order: 2;
+    }
+    .chose-banner-img {
+      padding: 0;
+    }
+    .chose-header {
+      padding: 10px 15px;
+    }
+    .chose-info-content {
+      margin-top: 20px;
+      padding-left: 15px;
+      max-width: 100%;
+    }
+    p.chose-info-desc {
+      text-align: center;
+    }
+    p.chose-info-title {
+      font-size: 26px;
+      line-height: 30px;
+      text-align: center;
+    }
+  }
+</style>
+<div class="anniversary-9th-chose section">
+  <div class="container">
+    <div class="chose-header">
+      <p class="chose-header-title">{{ section.settings.chose_title }}</p>
+      <p class="chose-header-info">{{ section.settings.chose_info }}</p>
+    </div>
+    <div class="chose-box">
+      <div class="chose-info">
+        <div class="chose-info-content">
+          <p class="chose-info-desc">{{ section.settings.chose_info_subtitle }}</p>
+          <p class="chose-info-title">{{ section.settings.chose_info_title }}</p>
+        </div>
+      </div>
+      <div class="chose-banner">
+        <div class="chose-banner-img">
+          <img src="{{ section.settings.chose_img | image_url: width: master }}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "9th Anniversary Chose",
+  "settings": [
+    {
+      "type": "text",
+      "id": "chose_title",
+      "label": "Header",
+      "default": "9th Anniversary Sale - Celebrating 9 Years by Your Side!"
+    },
+    {
+      "type": "text",
+      "id": "chose_info",
+      "label": "Subtitle",
+      "default": "9 Years Of Passion And Flavor With Exclusive Savings To Fire Up Your Grill"
+    },
+    {
+      "type": "image_picker",
+      "id": "chose_img",
+      "label": "Img"
+    },
+    {
+      "type": "text",
+      "id": "chose_info_title",
+      "label": "Info - Header",
+      "default": "The Pro’s Top Choice for 2025"
+    },
+    {
+      "type": "text",
+      "id": "chose_info_subtitle",
+      "label": "Info - Subtitle",
+      "default": "Power. Durability. Performance"
+    }
+  ],
+  "presets": [
+    {
+      "name": "9th Anniversary Chose"
+    }
+  ]
+}
+{% endschema %}

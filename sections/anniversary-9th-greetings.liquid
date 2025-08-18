@@ -1,0 +1,259 @@
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+<style>
+  .greetings-content {
+    margin-top: 30px;
+  }
+  .greetings-swiper {
+    position: relative;
+  }
+  .greetings-swiper-pagination.swiper-pagination {
+    position: relative;
+    top: unset;
+    left: unset;
+    bottom: unset;
+    right: unset;
+    margin-top: 10px;
+  }
+  .greetings-swiper .swiper-slide {
+    opacity: 0.4;
+  }
+  .greetings-swiper .swiper-slide.swiper-slide-active {
+    opacity: 1;
+  }
+  .greeting-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .greeting-video {
+    display: flex;
+    min-height: 300px;
+  }
+  .greeting-item video {
+    width: 100%;
+    object-fit: cover;
+  }
+  .greeting-info {
+    padding: 30px 30px 40px;
+    background-color: #f5f5f5;
+  }
+  .greeting-info-author {
+    display: flex;
+    align-items: center;
+  }
+  .greeting-info-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  p.author-name {
+    margin: 0 0 0 15px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+  }
+  p.greeting-info-text {
+    margin: 30px 0 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #928f8f;
+  }
+
+  /* 分页器样式 */
+  /* 自定义分页器样式 */
+  /* .swiper-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  } */
+
+  .swiper-pagination-bullet {
+    position: relative;
+    width: 20px;
+    height: 4px;
+    background: #e55420;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  /* .progress-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #ff6600;
+  } */
+
+  @media screen and (max-width: 767px) {
+    .greeting-video {
+      min-height: 240px;
+    }
+    .greeting-info {
+      padding: 20px 15px 25px;
+    }
+    .greeting-info-author img {
+      width: 30px;
+      height: 30px;
+    }
+    p.greeting-info-text {
+      margin: 20px 0 0;
+    }
+  }
+</style>
+<div class="anniversary-9th-greetings section">
+  <div class="container greetings-contant">
+    <h2 class="section__heading mb-0 flex-auto text-center discover-title">{{ section.settings.greetings_title }}</h2>
+    <div class="greetings-content">
+      <div class="swiper greetings-swiper">
+        <div class="swiper-wrapper">
+          {% for item in section.blocks %}
+            <div class="swiper-slide">
+              <div class="greeting-item">
+                <div class="greeting-video">
+                  {{
+                    item.settings.greeting_video
+                    | video_tag: playsinline: true, autoplay: true, muted: true, loop: true
+                  }}
+                </div>
+                <div class="greeting-info">
+                  <div class="greeting-info-author">
+                    <img src="{{ item.settings.greeting_author_img | image_url: width: master }}" alt="">
+                    <p class="author-name">{{ item.settings.greeting_author }}</p>
+                  </div>
+                  <p class="greeting-info-text">{{ item.settings.greeting_author_info }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!-- Swiper 分页器 -->
+        <div class="swiper-pagination greetings-swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.greetings-swiper', {
+      initialSlide: 2,
+      centeredSlides: true,
+      // loop: true,
+      // autoplay: {
+      //   delay: 5000,
+      //   disableOnInteraction: false,
+      // },
+      slidesPerView: 3,
+      spaceBetween: 15,
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+      },
+
+      pagination: {
+        el: '.greetings-swiper-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          // 给每个 bullet 加一个进度条容器
+          return `<span class="${className}">
+                <span class="progress-inner"></span>
+              </span>`;
+        },
+      },
+      on: {
+        slideChangeTransitionStart() {
+          // 每次切换，重置所有 bullet 的进度
+          document.querySelectorAll('.progress-inner').forEach((el) => {
+            el.style.transition = 'none';
+            el.style.width = '0%';
+          });
+
+          // 当前激活 bullet 执行动画
+          const activeBullet = document.querySelectorAll('.swiper-pagination-bullet')[this.realIndex];
+          if (activeBullet) {
+            const inner = activeBullet.querySelector('.progress-inner');
+            inner.style.transition = `width ${autoplayDelay}ms linear`;
+            requestAnimationFrame(() => {
+              // 保证 transition 生效
+              inner.style.width = '100%';
+            });
+          }
+        },
+        init() {
+          // 初始化时执行一次
+          const activeBullet = document.querySelectorAll('.swiper-pagination-bullet')[this.realIndex];
+          if (activeBullet) {
+            const inner = activeBullet.querySelector('.progress-inner');
+            inner.style.transition = `width ${autoplayDelay}ms linear`;
+            requestAnimationFrame(() => {
+              inner.style.width = '100%';
+            });
+          }
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "9th Anniversary Greetings",
+  "settings": [
+    {
+      "type": "text",
+      "id": "greetings_title",
+      "label": "Header",
+      "default": "Greetings from the bbq master"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "greeting",
+      "name": "Greeting",
+      "settings": [
+        {
+          "type": "video",
+          "id": "greeting_video",
+          "label": "视频"
+        },
+        {
+          "type": "image_picker",
+          "id": "greeting_author_img",
+          "label": "红人头像"
+        },
+        {
+          "type": "text",
+          "id": "greeting_author",
+          "label": "红人网名"
+        },
+        {
+          "type": "textarea",
+          "id": "greeting_author_info",
+          "label": "红人评论"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "9th Anniversary Greetings"
+    }
+  ]
+}
+{% endschema %}
