@@ -1,0 +1,312 @@
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'featured-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'product.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- else -%}
+  {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
+  {{ 'product.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- if settings.enable_quick_add -%}
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-select.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- liquid
+  assign collection = section.settings.collection
+
+  assign carousel_desktop_small_promo = ' sm:auto-cols-3 md:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4 small-cards-desktop'
+  assign carousel_desktop_medium_promo = ' sm:auto-cols-2 lg:auto-cols-3'
+  assign carousel_desktop_large_promo = ' sm:auto-cols-2'
+  assign carousel_desktop_small = ' md:auto-cols-3 lg:auto-cols-4 xl:auto-cols-5 small-cards-desktop'
+  assign carousel_desktop_medium = ' sm:auto-cols-3 xl:auto-cols-4'
+  assign carousel_desktop_large = ' sm:auto-cols-2 lg:auto-cols-3'
+
+  assign grid_desktop_small_promo = ' sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 small-cards-desktop'
+  assign grid_desktop_medium_promo = ' md:grid-cols-2 lg:grid-cols-3'
+  assign grid_desktop_large_promo = ' sm:grid-cols-2'
+  assign grid_desktop_small = ' md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 small-cards-desktop'
+  assign grid_desktop_medium = ' sm:grid-cols-3 xl:grid-cols-4'
+  assign grid_desktop_large = ' sm:grid-cols-2 lg:grid-cols-3'
+
+  if section.settings.card_size_mobile == 'small'
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-2 small-cards-mobile'
+    assign grid_mobile_cols = 'grid-cols-2 small-cards-mobile'
+  else
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-1'
+    assign grid_mobile_cols = 'grid-cols-1'
+  endif
+
+  if section.settings.layout == 'carousel'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'carousel_on_mobile'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'grid'
+    assign carousel = false
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  endif
+
+  if settings.prod_card_image_ratio == 'shortest'
+    assign image_ratio = 0
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio > image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  elsif settings.prod_card_image_ratio == 'tallest'
+    assign image_ratio = 99
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio < image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  else
+    assign image_ratio = settings.prod_card_image_ratio
+  endif
+
+  assign color_scheme = section.settings.color_scheme
+  assign bg_color = false
+
+  if color_scheme == 'default'
+    assign bg_color = settings.bg_color
+  elsif color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+  endif
+
+  if bg_color == settings.bg_color or bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+-%}
+{% style %}
+  #{{ section.id }} .font-weight{
+    font-weight: bold;
+  }
+  #{{ section.id }} .font-uppercase{
+    text-transform:uppercase;
+  }
+{% endstyle %}
+<style>
+  p.hotsale-head-info {
+    margin: 10px 0 0;
+  }
+  .hotsale-slide .yotpo-widget-instance {
+    display: none;
+  }
+  .hotsale-slide .card__swatches {
+    display: none;
+  }
+  .hotsale-slide strong.price__current {
+    color: #e55420;
+  }
+  .hotsale-slide .card:not(.card--related) .price {
+    padding-top: 0;
+  }
+  .hotsale-slide .card-link::after {
+    display: none;
+  }
+  .hotsale-slide .card__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hotsale-slide a.card-link {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hotsale-swiper-btn {
+    margin: 15px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .hotsale-swiper-btn .swiper-button-prev,
+  .hotsale-swiper-btn .swiper-button-next {
+    background-image: none;
+    position: static;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #e55420;
+    border: 1px solid #e55420;
+  }
+  .hotsale-swiper-btn .swiper-button-prev::after,
+  .hotsale-swiper-btn .swiper-button-next::after {
+    color: #fff;
+  }
+
+  .hotsale-swiper-btn .hotsale-swiper-pagination {
+    position: relative;
+    width: auto;
+    bottom: auto;
+    left: auto;
+  }
+  .product-card-adt-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .hotsale-content {
+      margin-top: 20px;
+    }
+  }
+</style>
+<div class="anniversary-9th-hotsale section">
+  <div class="container">
+    <div class="hotsale-head">
+      <h2 class="section__heading mb-0 flex-auto text-center discover-title">{{ section.settings.hotsale_title }}</h2>
+      <p class="hotsale-head-info text-center">{{ section.settings.hotsale_info }}</p>
+    </div>
+    <div class="hotsale-content">
+      <div class="swiper hotsale-swiper">
+        <!-- 如果需要导航按钮 -->
+        <div class="hotsale-swiper-btn">
+          <div class="swiper-button-prev hotsale-prev-btn"></div>
+          <div class="swiper-pagination hotsale-swiper-pagination"></div>
+          <div class="swiper-button-next hotsale-next-btn"></div>
+        </div>
+        <div class="swiper-wrapper">
+          {% for product in section.settings.hotsale_collection.products %}
+            <div class="swiper-slide hotsale-slide">
+              {% render 'product-card-adt',
+                product: product,
+                collection: section.settings.hotsale_collection,
+                image_ratio: image_ratio,
+                show_rating: false
+              %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.hotsale-swiper', {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      pagination: {
+        el: '.hotsale-swiper-pagination',
+        type: 'fraction',
+      },
+      navigation: {
+        nextEl: '.hotsale-next-btn',
+        prevEl: '.hotsale-prev-btn',
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 15,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "9th Anniversary HotSale",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hotsale_title",
+      "label": "Header",
+      "default": "HOT SALE"
+    },
+    {
+      "type": "textarea",
+      "id": "hotsale_info",
+      "label": "Info",
+      "default": "Get ready For The Back-to-School Rush & Invest In Your Best Season. Pay With Ease."
+    },
+    {
+      "type": "collection",
+      "id": "hotsale_collection",
+      "label": "选择集合页"
+    }
+  ],
+  "presets": [
+    {
+      "name": "9th Anniversary HotSale"
+    }
+  ]
+}
+{% endschema %}

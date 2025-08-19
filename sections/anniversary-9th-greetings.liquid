@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
 <style>
   .greetings-content {
     margin-top: 30px;
@@ -16,9 +15,12 @@
   }
   .greetings-swiper .swiper-slide {
     opacity: 0.4;
+    transform: scale(0.9);
+    transition: transform 0.3s, opacity 0.3s;
   }
   .greetings-swiper .swiper-slide.swiper-slide-active {
     opacity: 1;
+    transform: scale(1.05);
   }
   .greeting-item {
     display: flex;
@@ -28,11 +30,38 @@
   }
   .greeting-video {
     display: flex;
-    min-height: 300px;
+    position: relative;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    overflow: hidden;
+  }
+  .mute-toggle-bg {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1d1c1c80;
+  }
+  .mute-toggle {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 2;
+    padding: 8px;
+    cursor: pointer;
   }
   .greeting-item video {
     width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    overflow: hidden;
   }
   .greeting-info {
     padding: 30px 30px 40px;
@@ -60,38 +89,37 @@
     color: #928f8f;
   }
 
-  /* 分页器样式 */
-  /* 自定义分页器样式 */
-  /* .swiper-pagination {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-  } */
-
-  .swiper-pagination-bullet {
+  .greetings-swiper-pagination .swiper-pagination-bullet {
     position: relative;
-    width: 20px;
-    height: 4px;
-    background: #e55420;
+    width: 40px;
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
     overflow: hidden;
-    border-radius: 2px;
   }
-
-  /* .progress-inner {
+  .swiper-pagination-bullet .progress-inner {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    width: 0%;
-    background: #ff6600;
-  } */
+    background: #e55420;
+    width: 0;
+  }
+  .swiper-pagination-bullet-active .progress-inner {
+    animation: bullet-progress linear forwards;
+  }
+
+  @keyframes bullet-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
 
   @media screen and (max-width: 767px) {
     .greeting-video {
-      min-height: 240px;
     }
     .greeting-info {
       padding: 20px 15px 25px;
@@ -117,8 +145,12 @@
                 <div class="greeting-video">
                   {{
                     item.settings.greeting_video
-                    | video_tag: playsinline: true, autoplay: true, muted: true, loop: true
+                    | video_tag: class: 'slide-video', playsinline: true, autoplay: true, muted: true, loop: true
                   }}
+                  <div class="mute-toggle-bg"></div>
+                  <div class="mute-toggle">
+                    <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/mute.png?v=1755517123" alt="">
+                  </div>
                 </div>
                 <div class="greeting-info">
                   <div class="greeting-info-author">
@@ -137,18 +169,18 @@
     </div>
   </div>
 </div>
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    new Swiper('.greetings-swiper', {
-      initialSlide: 2,
+    var delay = 5000;
+    var swiper = new Swiper('.greetings-swiper', {
       centeredSlides: true,
-      // loop: true,
-      // autoplay: {
-      //   delay: 5000,
-      //   disableOnInteraction: false,
-      // },
+      initialSlide: 1,
+      loop: true,
+      autoplay: {
+        delay: delay,
+        disableOnInteraction: false,
+      },
       slidesPerView: 3,
       spaceBetween: 15,
       breakpoints: {
@@ -165,48 +197,123 @@
           spaceBetween: 15,
         },
       },
-
       pagination: {
         el: '.greetings-swiper-pagination',
         clickable: true,
         renderBullet: function (index, className) {
           // 给每个 bullet 加一个进度条容器
-          return `<span class="${className}">
-                <span class="progress-inner"></span>
-              </span>`;
+          return '<span class="' + className + '"><span class="progress-inner"></span></span>';
         },
       },
       on: {
-        slideChangeTransitionStart() {
-          // 每次切换，重置所有 bullet 的进度
-          document.querySelectorAll('.progress-inner').forEach((el) => {
-            el.style.transition = 'none';
-            el.style.width = '0%';
-          });
-
-          // 当前激活 bullet 执行动画
-          const activeBullet = document.querySelectorAll('.swiper-pagination-bullet')[this.realIndex];
-          if (activeBullet) {
-            const inner = activeBullet.querySelector('.progress-inner');
-            inner.style.transition = `width ${autoplayDelay}ms linear`;
-            requestAnimationFrame(() => {
-              // 保证 transition 生效
-              inner.style.width = '100%';
-            });
-          }
+        init: function (s) {
+          syncVideos(s);
+          startBulletProgress(s);
         },
-        init() {
-          // 初始化时执行一次
-          const activeBullet = document.querySelectorAll('.swiper-pagination-bullet')[this.realIndex];
-          if (activeBullet) {
-            const inner = activeBullet.querySelector('.progress-inner');
-            inner.style.transition = `width ${autoplayDelay}ms linear`;
-            requestAnimationFrame(() => {
-              inner.style.width = '100%';
-            });
-          }
+        slideChangeTransitionStart: function (s) {
+          syncVideos(s);
+          startBulletProgress(s);
+        },
+        slideChangeTransitionEnd: function (s) {
+          syncVideos(s);
+        },
+        // 兜底：拖拽/尺寸变化时也同步一次
+        resize: function (s) {
+          syncVideos(s);
+        },
+        touchEnd: function (s) {
+          syncVideos(s);
         },
       },
+    });
+
+    function startBulletProgress(swiper) {
+      // 清除所有 progress 动画
+      var allBullets = swiper.pagination.bullets;
+      for (var i = 0; i < allBullets.length; i++) {
+        var inner = allBullets[i].querySelector('.progress-inner');
+        if (inner) {
+          inner.style.animation = 'none';
+          inner.offsetHeight; // 触发重绘，重置动画
+          inner.style.animation = '';
+        }
+      }
+
+      // 给当前 active bullet 加动画
+      var active = swiper.pagination.bullets[swiper.realIndex];
+      if (active) {
+        var inner = active.querySelector('.progress-inner');
+        if (inner) {
+          inner.style.animation = `bullet-progress ${delay}ms linear forwards`;
+        }
+      }
+    }
+
+    // 只让当前 active 的视频播放，其他全部暂停（不重置进度）
+    function syncVideos(s) {
+      var root = s.el || document; // v4 的根元素
+      var all = root.querySelectorAll('.slide-video');
+
+      // 先全部暂停（避免“切走仍在播”）
+      Array.prototype.forEach.call(all, function (v) {
+        if (!v) return;
+        v.pause();
+        // 如果你希望切走后从头再看，取消下面注释
+        // v.currentTime = 0;
+      });
+
+      // 只播放当前激活的 slide 里的视频
+      var actives = root.querySelectorAll('.swiper-slide-active .slide-video');
+      Array.prototype.forEach.call(actives, function (v) {
+        if (!v) return;
+        // 保持你原本的 muted/loop/playsinline 设置
+        var p = v.play();
+        if (p && p.catch)
+          p.catch(function () {
+            /* 静音自动播被策略拦截时忽略 */
+          });
+      });
+    }
+
+    // —— 静音按钮（事件委托，兼容动态渲染）——
+    document.addEventListener(
+      'click',
+      function (e) {
+        var btn = e.target.closest('.mute-toggle');
+        if (!btn) return;
+
+        // 避免触发滑动/过渡导致的异常
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 按钮与容器都标记为不参与滑动（Swiper 4 支持）
+        btn.classList.add('swiper-no-swiping');
+        var wrap = btn.closest('.greeting-video');
+        if (wrap) wrap.classList.add('swiper-no-swiping');
+
+        var video = wrap && wrap.querySelector('.slide-video');
+        if (!video) return;
+
+        video.muted = !video.muted;
+
+        // 用户点击属于“用户手势”，可以顺带恢复播放
+        if (video.paused) {
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+      },
+      false
+    );
+
+    // 可选：切到其它 tab 时全部暂停，返回时再同步
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        document.querySelectorAll('.slide-video').forEach(function (v) {
+          v.pause();
+        });
+      } else {
+        syncVideos(swiper);
+      }
     });
   });
 </script>
