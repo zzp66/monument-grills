@@ -39,6 +39,23 @@
     {% endstyle %}
   {% endif %}
 
+  <style>
+      @font-face {
+        font-family: 'OBBLIGATO-Fortissimo';
+        src: url('{{ "OBBLIGATO-Fortissimo.woff2" | asset_url }}') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Indivisible';
+        src: url('{{ "Indivisible-Regular.otf" | asset_url }}') format('otf');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
+
   {%- style %}
     {{- settings.body_font | font_face: font_display: 'swap' -}}
     {{- body_font_bold | font_face: font_display: 'swap' -}}
@@ -117,62 +134,62 @@
       --info-bg-color: {{ settings.info_bg_color.rgb }};
       --info-text-color: {{ settings.info_text_color.rgb }};
 
-      --heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+      --heading-font-family: 'Indivisible', {{ settings.heading_font.fallback_families }};
       --heading-font-style: {{ settings.heading_font.style }};
       --heading-font-weight: {{ settings.heading_font.weight }};
       --heading-scale-start: {{ settings.heading_scale_start }};
 
       /* font fei 2024 */
 
-      --compare-font-family: {{ settings.compare_font.family }}, {{ settings.compare_font.fallback_families }};
+      --compare-font-family: 'Indivisible', {{ settings.compare_font.fallback_families }};
       --compare-font-style: {{ settings.compare_font.style }};
       --compare-font-weight: {{ settings.compare_font.weight }};
       --compare-font-size: {{ settings.compare_font_size }};
       --mobile-compare-font-size: {{ settings.mobile_compare_font_size }};
 
-      --price-font-family: {{ settings.price_font.family }}, {{ settings.price_font.fallback_families }};
+      --price-font-family: 'Indivisible', {{ settings.price_font.fallback_families }};
       --price-font-style: {{ settings.price_font.style }};
       --price-font-weight: {{ settings.price_font.weight }};
       --price-font-size: {{ settings.selling_font_size }};
       --mobile-price-font-size: {{ settings.mobile_selling_font_size }};
 
-      --h1-font-family: {{ settings.h1_font.family }}, {{ settings.h1_font.fallback_families }};
+      --h1-font-family: 'OBBLIGATO-Fortissimo', {{ settings.h1_font.fallback_families }};
       --h1-font-style: {{ settings.h1_font.style }};
-      --h1-font-weight: {{ settings.h1_font.weight }};
+      --h1-font-weight: normal;
       --h1-font-size: {{ settings.h1_font_size }};
       --mobile-h1-font-size: {{ settings.mobile_h1_font_size }};
 
-      --h2-font-family: {{ settings.h2_font.family }}, {{ settings.h2_font.fallback_families }};
+      --h2-font-family: 'OBBLIGATO-Fortissimo', {{ settings.h2_font.fallback_families }};
       --h2-font-style: {{ settings.h2_font.style }};
-      --h2-font-weight: {{ settings.h2_font.weight }};
+      --h2-font-weight: normal;
       --h2-font-size: {{ settings.h2_font_size }};
       --mobile-h2-font-size: {{ settings.mobile_h2_font_size }};
 
-      --h3-font-family: {{ settings.h3_font.family }}, {{ settings.h3_font.fallback_families }};
+      --h3-font-family: 'Indivisible', {{ settings.h3_font.fallback_families }};
       --h3-font-style: {{ settings.h3_font.style }};
-      --h3-font-weight: {{ settings.h3_font.weight }};
+      --h3-font-weight: normal;
       --h3-font-size: {{ settings.h3_font_size }};
       --mobile-h3-font-size: {{ settings.mobile_h3_font_size }};
 
-      --h5-font-family: {{ settings.h5_font.family }}, {{ settings.h5_font.fallback_families }};
+      --h5-font-family: 'Indivisible', {{ settings.h5_font.fallback_families }};
       --h5-font-style: {{ settings.h5_font.style }};
-      --h5-font-weight: {{ settings.h5_font.weight }};
+      --h5-font-weight: normal;
       --h5-font-size: {{ settings.h5_font_size }};
       --mobile-h5-font-size: {{ settings.mobile_h5_font_size }};
 
-      --h6-font-family: {{ settings.h6_font.family }}, {{ settings.h6_font.fallback_families }};
+      --h6-font-family: 'Indivisible', {{ settings.h6_font.fallback_families }};
       --h6-font-style: {{ settings.h6_font.style }};
-      --h6-font-weight: {{ settings.h6_font.weight }};
+      --h6-font-weight: normal;
       --h6-font-size: {{ settings.h6_font_size }};
       --mobile-h6-font-size: {{ settings.mobile_h6_font_size }};
 
-      --price-font-family: {{ settings.selling_price_font.family }}, {{ settings.selling_price_font.fallback_families }};
+      --price-font-family: 'Indivisible', {{ settings.selling_price_font.fallback_families }};
       --price-font-style: {{ settings.selling_price_font.style }};
       --price-font-weight: {{ settings.selling_price_font.weight }};
       --price-font-size: {{ settings.selling_font_size }};
       --mobile-price-font-size: {{ settings.mobile_selling_font_size }};
 
-      --compare-price-font-family: {{ settings.compare_font.family }}, {{ settings.compare_font.fallback_families }};
+      --compare-price-font-family: 'Indivisible', {{ settings.compare_font.fallback_families }};
       --compare-price-font-style: {{ settings.compare_font.style }};
       --compare-price-font-weight: {{ settings.compare_font.weight }};
       --compare-price-font-size: {{ settings.compare_font_size }};
@@ -180,7 +197,7 @@
 
       /* font fei 2024 */
 
-      --navigation-font-family: {{ settings.navigation_font.family }}, {{ settings.navigation_font.fallback_families }};
+      --navigation-font-family: 'Indivisible', {{ settings.navigation_font.fallback_families }};
       --navigation-font-style: {{ settings.navigation_font.style }};
       --navigation-font-weight: {{ settings.navigation_font.weight }};
       {%- if settings.heading_uppercase %}
@@ -193,7 +210,7 @@
       {%- else -%}
       --subheading-text-transform: none;
       {%- endif %}
-      --body-font-family: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+      --body-font-family: 'Indivisible', {{ settings.body_font.fallback_families }};
       --body-font-style: {{ settings.body_font.style }};
       --body-font-weight: {{ settings.body_font.weight }};
       --body-font-size: {{ settings.body_font_size }};
