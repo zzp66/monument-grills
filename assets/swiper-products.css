@@ -1,0 +1,141 @@
+.product-item {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.product-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-box {
+    padding: 20px 30px 30px 10px;
+    background-color: #ededed;
+}
+
+.swiper-featured-product .media-gallery__viewer {
+    border: none;
+}
+
+.swiper-featured-product .media-ctrl {
+    display: none;
+}
+
+.swiper-featured-product .product-info__block {
+    margin: 10px 0;
+}
+
+.swiper-featured-product .media-with-text {
+    align-items: center;
+}
+
+.product-info__block.product-price form {
+    display: none;
+}
+
+.product-info__block.product-options legend {
+    display: none;
+}
+
+h2.product-title {
+    font-family: 'OBBLIGATO-Fortissimo';
+    font-weight: normal;
+}
+
+.swiper-featured-product .product-desc {
+    color: #9f9f9f;
+    font-size: 16px;
+}
+
+.swiper-featured-product .product-desc ul {
+    padding-left: 20px;
+    list-style: initial;
+}
+
+.swiper-featured-product .media-with-text__text {
+    margin-left: 15px;
+    padding-inline-start: 0;
+}
+
+.swiper-featured-product .price__default {
+    display: flex;
+    align-items: flex-start;
+}
+
+.swiper-featured-product .price__current {
+    font-size: 28px;
+    color: #e55420;
+    font-family: 'OBBLIGATO-Fortissimo';
+}
+
+.swiper-featured-product .price__was {
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Indivisible';
+    color: #9f9f9f;
+}
+
+.swiper-featured-product .opt-label--image {
+    width: 40px;
+    height: 40px;
+}
+
+.swiper-featured-product a.learnmore-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.product-info__block.product-info__buybtn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-item.product-item-reverse {
+    grid-template-columns: 30% 70%;
+}
+
+.product-item-reverse .product-box {
+    order: 2;
+}
+
+.product-item-reverse .product-banner {
+    order: 1;
+}
+
+.product-item-reverse .swiper-featured-product .media-with-text {
+    flex-direction: row-reverse;
+}
+
+.product-item-reverse .product-box {
+    padding: 20px 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .product-item {
+        grid-template-columns: 1fr;
+    }
+
+    .product-item.product-item-reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .product-banner {
+        display: none;
+    }
+
+    .swiper-featured-product a.learnmore-btn {
+        padding: 9px 16px;
+    }
+}

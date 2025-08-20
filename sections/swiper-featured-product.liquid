@@ -1,76 +1,205 @@
-<style>
-  .product-item {
-    display: grid;
-    grid-template-columns: 70%, 30%;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .product-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .product-box {
-    padding: 40px 60px 40px 40px;
-    background-color: #f5f5f5;
-  }
-</style>
-{{ 'media-with-text.css' | asset_url | stylesheet_tag }}
-{{ 'product.css' | asset_url | stylesheet_tag }}
-{{ 'media-gallery.css' | asset_url | stylesheet_tag }}
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'media-with-text.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'product.css' | asset_url }}" media="print" onload="this.media='all'">
+
+  {%- if section.settings.product.media.size > 0 -%}
+    {{ 'media-gallery.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- else -%}
+  {{ 'media-with-text.css' | asset_url | stylesheet_tag }}
+  {{ 'product.css' | asset_url | stylesheet_tag }}
+
+  {%- if section.settings.product.media.size > 0 -%}
+    {{ 'media-gallery.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if product.metafields.reviews.rating.value != blank -%}
+  <script>
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        if (document.getElementById('shopify-product-reviews')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = "{{ 'reviews.css' | asset_url }}";
+          document.body.appendChild(link);
+        }
+      },
+      { once: true }
+    );
+  </script>
+{%- endif -%}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-<div class="swiper-featured-product1 section">
+
+{%- style -%}
+  #{{ section.id }} .media-gallery__main .media-xr-button { display: none; }
+  #{{ section.id }} .active .media-xr-button:not([data-shopify-xr-hidden]) { display: block; }
+{%- endstyle -%}
+{%- if first_3d_model -%}
+  <link
+    rel="stylesheet"
+    href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css"
+    media="print"
+    onload="this.media='all'"
+  >
+  <link rel="stylesheet" href="{{ 'model-viewer.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'product-model.js' | asset_url }}" defer></script>
+{%- endif -%}
+{{ 'swiper-products.css' | asset_url | stylesheet_tag }}
+
+<div class="swiper-featured-product section">
   <div class="container">
-    <div class="swiper sfp-swiper">
-      <div class="swiper-wrapper">
-        {% for block in section.settings %}
-          {% liquid
-            assign product = block.settings.item_product
-            assign product_form_id = 'product-form-' | append: section.id
-            assign current_variant = product.selected_or_first_available_variant
-            assign first_3d_model = product.media | where: 'media_type', 'model' | first
-            assign media_ratio = 'natural'
-          %}
-          <div class="swiper-slide">
-            <div class="product-item">
-              <div class="product-box">
-                <div
-                  class="product media-with-text js-product"
-                  data-section="{{ section.id }}"
-                  style="--media-width: 50%"
-                >
-                  <div class="product-media mb-4 md:mb-0 product-media--slider media-with-text__media">
-                    {%- if product != blank -%}
-                      {% render 'media-gallery',
-                        product: product,
-                        current_variant: current_variant,
-                        media_ratio: media_ratio,
-                        media_crop: 'none',
-                        first_3d_model: first_3d_model,
-                        zoom: 'off',
-                        featured_product: true
-                      %}
-                    {%- endif -%}
+    {% for item in section.blocks %}
+      {% liquid
+        assign product = item.settings.item_product
+        assign product_form_id = 'product-form-' | append: section.id
+        assign current_variant = product.selected_or_first_available_variant
+        assign media_ratio = natural
+        if media_ratio == 'natural'
+          assign media_ratio = 99
+          for media in product.media
+            if media.preview_image.aspect_ratio < media_ratio
+              assign media_ratio = media.preview_image.aspect_ratio
+            endif
+          endfor
+        endif
+      %}
+      <div class="product-item {% if item.settings.show_reverse == true %}product-item-reverse{% endif %}">
+        <div class="product-box">
+          <div
+            class="product media-with-text js-product"
+            data-section="{{ section.id }}"
+            style="--media-width: 50%"
+          >
+            <div class="product-media mb-4 md:mb-0 product-media--slider media-with-text__media">
+              {%- if product != blank -%}
+                {%- if product.featured_media -%}
+                  {% render 'media-gallery',
+                    product: product,
+                    current_variant: current_variant,
+                    media_ratio: media_ratio,
+                    media_crop: none,
+                    first_3d_model: first_3d_model,
+                    zoom: off,
+                    featured_product: true
+                  %}
+                {%- else -%}
+                  <div class="media relative">
+                    {{ 'image' | placeholder_svg_tag: 'media__placeholder' }}
                   </div>
+                {%- endif -%}
+              {%- else -%}
+                <div class="media relative">
+                  {%- capture placeholder_svg_name -%}product-{{ 'now' | date: '%N' | modulo: 6 | plus: 1 }}{%- endcapture -%}
+                  {{ placeholder_svg_name | placeholder_svg_tag: 'media__placeholder' }}
                 </div>
+              {%- endif -%}
+            </div>
+
+            <div class="product-info media-with-text__text w-full">
+              <div
+                class="product-info__block product-info__block--sm product-info__title"
+              >
+                <h2 class="product-title h4">
+                  {%- if product.title != blank -%}
+                    <a href="{{ product.url }}" class="text-current">{{ product.title | escape }}</a>
+                  {%- else -%}
+                    {{ 'onboarding.product.title' | t }}
+                  {%- endif -%}
+                </h2>
               </div>
-              <div class="product-banner">
-                <img
-                  src="https://cdn.shopify.com/s/files/1/1639/3511/files/p5_c84955d4-63fd-4996-8102-a74d9e4554a6.jpg?v=1754702797"
-                  alt=""
-                >
+              {%- if product.title != blank -%}
+                <div class="product-info__block product-info__block--sm product-desc">
+                  {{ block.settings.item_product_desc }}
+                </div>
+              {%- endif -%}
+              <div
+                class="product-info__block product-info__block--sm product-price"
+              >
+                <div class="product-info__price">
+                  {% render 'price', product: product, use_variant: true %}
+                </div>
+                {%- if product != blank -%}
+                  {%- assign instalments_form_id = 'instalments-form-' | append: section.id -%}
+                  {%- form 'product', product, class: 'js-instalments-form text-sm mt-2', id: instalments_form_id -%}
+                    <input type="hidden" name="id" value="{{ current_variant.id }}">
+                    {{ form | payment_terms }}
+                  {%- endform -%}
+                {%- endif -%}
+              </div>
+              {%- unless product.has_only_default_variant -%}
+                <div class="product-info__block product-options" {{ block.shopify_attributes }}>
+                  {% render 'variant-picker', product: product, product_form_id: product_form_id %}
+                </div>
+              {%- endunless -%}
+              <div class="product-info__block product-info__buybtn" {{ block.shopify_attributes }}>
+                <product-form>
+                  {%- if product != blank -%}
+                    {% form 'product',
+                      product,
+                      class: 'js-product-form js-product-form-main',
+                      id: product_form_id,
+                      novalidate: 'novalidate'
+                    -%}
+                      <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
+                      <div class="product-info__add-to-cart flex">
+                        <input type="hidden" name="quantity" value="1">
+
+                        <div class="product-info__add-button">
+                          {%- capture add_to_cart_text -%}
+                            {%- if product.template_suffix contains 'preorder' -%}
+                              {{- 'products.product.preorder' | t -}}
+                            {%- else -%}
+                              {{- 'products.product.add_to_cart' | t -}}
+                            {%- endif -%}
+                          {%- endcapture -%}
+
+                          <button
+                            type="submit"
+                            data-add-to-cart-text="{{ add_to_cart_text | escape }}"
+                            class="btn btn--primary w-full"
+                            name="add"
+                            {% if product.selected_or_first_available_variant.available == false %}
+                              disabled
+                            {% endif %}
+                          >
+                            {%- if current_variant.available -%}
+                              {{- add_to_cart_text -}}
+                            {%- else -%}
+                              {{- 'products.product.sold_out' | t -}}
+                            {%- endif -%}
+                          </button>
+                        </div>
+                      </div>
+                    {%- endform -%}
+                  {%- else -%}
+                    <div class="product-info__add-to-cart flex">
+                      {% render 'quantity-input', layout_style: 'combined' %}
+                      <div class="product-info__add-button">
+                        <button class="btn btn--primary w-full" disabled>
+                          {{- 'products.product.add_to_cart' | t -}}
+                        </button>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </product-form>
+
+                <div class="product-info__learnmore-btn">
+                  <a href="{{ section.settings.learnbtn_link }}" class="learnmore-btn">Learn More</a>
+                </div>
               </div>
             </div>
           </div>
-        {% endfor %}
+        </div>
       </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Swiper Featured Product1",
+  "name": "Swiper Featured Product",
   "settings": [],
   "blocks": [
     {
@@ -78,16 +207,27 @@
       "name": "Slide Product",
       "settings": [
         {
+          "type": "checkbox",
+          "id": "show_reverse",
+          "label": "反转图片跟产品信息部分",
+          "default": false
+        },
+        {
           "type": "product",
           "id": "item_product",
           "label": "Product"
+        },
+        {
+          "type": "richtext",
+          "id": "item_product_desc",
+          "label": "Product简述"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Swiper Featured Product1"
+      "name": "Swiper Featured Product"
     }
   ]
 }
