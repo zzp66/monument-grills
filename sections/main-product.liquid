@@ -592,6 +592,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     hidden
                   ></div>
 
+                  <div id='wk_group_buy_product' pid='{{ product.id }}' cid='{{ customer.id|default: 0 }}' cemail='{{ customer.email|default: 0 }}'></div>
+
                   <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
                   <div class="product-info__add-to-cart flex{% if enable_dynamic_checkout %} qty-input--secondary-btn{% endif %}">
                     {%- if block.settings.show_qty_selector -%}
