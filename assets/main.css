@@ -6365,3 +6365,16 @@ a.card__media, .card--article{
     display: none
   }
 }
+
+
+/* group buy css start here */
+.product.js-product .product-media--slider{
+  z-index: 0 !important;
+}
+#wk-gb-overlay-create-group{
+      padding-top: 20rem !important;
+}
+#wk-gb-create-group-name{
+  width: 90% !important;
+}
+/* group buy css end here */
