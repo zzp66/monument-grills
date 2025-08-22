@@ -26,6 +26,12 @@
     grid-template-columns: minmax(0, 600px) minmax(0, 380px);
     border-radius: 16px;
     overflow: hidden;
+    height: 500px;
+  }
+  .slider-top-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .slider-review-box {
     box-sizing: border-box;
@@ -43,8 +49,8 @@
   }
   .review-info {
     margin-top: 10px;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 22px;
     font-weight: 600;
   }
   .review-author {
@@ -53,7 +59,7 @@
     color: #fbb040;
     font-size: 15px;
   }
-  .review-author::after {
+  /* .review-author::after {
     content: '';
     position: absolute;
     background-image: url(https://www.litter-robot.com/media/wysiwyg/Litter-Robot/cms/reviews/quotes.svg);
@@ -64,7 +70,7 @@
     width: 145px;
     height: 100px;
     opacity: 0.05;
-  }
+  } */
   .slider-bottom-item {
     position: relative;
     padding: 6px;
@@ -72,9 +78,13 @@
     overflow: hidden;
     cursor: pointer;
     border: 2px solid transparent;
+    height: 100px;
   }
   .slider-bottom-item img {
     border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .swiper-slide.swiper-slide-thumb-active .slider-bottom-item {
@@ -93,13 +103,13 @@
       max-width: 100%;
     }
     .review-star img {
-      max-width: 20px;
+      max-height: 16px;
     }
     .review-info {
       font-size: 16px;
       line-height: 20px;
     }
-    .review-author::after{
+    .review-author::after {
       background-image: none;
     }
   }
