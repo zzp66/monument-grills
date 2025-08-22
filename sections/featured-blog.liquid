@@ -4,7 +4,7 @@
   assign breakpoint_lg = 1024
   assign breakpoint_xxl = 1536
   assign breakpoint_sm_down = breakpoint_sm | minus: 0.02
-   
+
   if section.settings.layout == 'carousel'
     assign carousel = true
     assign grid_classes = 'grid-flow-col auto-cols-1 sm:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4'
@@ -30,29 +30,25 @@
   else
     assign image_ratio = section.settings.image_ratio
   endif
-
-  
-
-  
 -%}
 
 {% style %}
-   .arrow-slider .carousel .slider {
-      padding-bottom: 0;
-    }
-   .arrow-slider .carousel .slider-nav{
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row-reverse;
-   }
-   .arrow-slider .carousel .slider-nav:not(.slide-nav--inline){
-      top: 30%;
-      left: 0;
-      right: 0;
-      width: 98%;
-      margin: auto;
-   }
-  .arrow-slider .arrow-slider-box .slider-nav{
+  .arrow-slider .carousel .slider {
+    padding-bottom: 0;
+  }
+  .arrow-slider .carousel .slider-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
+  .arrow-slider .carousel .slider-nav:not(.slide-nav--inline) {
+    top: 30%;
+    left: 0;
+    right: 0;
+    width: 98%;
+    margin: auto;
+  }
+  .arrow-slider .arrow-slider-box .slider-nav {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -63,24 +59,24 @@
     margin: 0 auto;
     margin-left: -1400px;
   }
-  .arrow-slider .arrow-slider-box .slider{
+  .arrow-slider .arrow-slider-box .slider {
     scrollbar-width: none;
   }
-  .arrow-slider .arrow-slider-box .slider::-webkit-scrollbar{
-    display:none;
+  .arrow-slider .arrow-slider-box .slider::-webkit-scrollbar {
+    display: none;
   }
-  @media (max-width:1260px){
-    .arrow-slider .arrow-slider-box .slider-nav{
-        left: 50%;
-        width: 100%;
-        margin-left: -100%;
+  @media (max-width: 1260px) {
+    .arrow-slider .arrow-slider-box .slider-nav {
+      left: 50%;
+      width: 100%;
+      margin-left: -100%;
     }
   }
-  @media (max-width:850px){
-    .arrow-slider .arrow-slider-box .slider-nav{
-        width: 96%;
-        left: 0;
-        margin-left: -46%;
+  @media (max-width: 850px) {
+    .arrow-slider .arrow-slider-box .slider-nav {
+      width: 96%;
+      left: 0;
+      margin-left: -46%;
     }
   }
 {% endstyle %}
@@ -88,7 +84,12 @@
 <div class="section">
   {%- if section.settings.title != blank or section.settings.show_view_all -%}
     <div class="container">
-      <div class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"{% if settings.animations_enabled != "disabled" %} data-cc-animate{% endif %}>
+      <div
+        class="section__header items-center flex{% if section.settings.heading_align == 'text-center' %} flex-col text-center{% elsif section.settings.heading_align == 'text-end' %} flex-row-reverse flex-wrap{% else %} flex-row flex-wrap{% endif %} gap-x-theme"
+        {% if settings.animations_enabled != 'disabled' %}
+          data-cc-animate
+        {% endif %}
+      >
         {%- if section.settings.title != blank -%}
           <{{ section.settings.heading_size }} class="{{ section.settings.use_class_name }} section__heading mb-0 flex-auto {{ section.settings.heading_align }} {% if section.settings.header_weight != blank %}font-weight {% endif %}{% if section.settings.header_uppercase != blank %}font-uppercase{% endif %}">
             {{- section.settings.title | escape -}}
@@ -107,64 +108,92 @@
       {% render 'multi-column-blogs' %}
     </div>
   {% endif %}
-  
+
   {%- if carousel -%}
-    <carousel-slider class="carousel block {% if settings.slider_show_arrows == 'never' %}arrow-slider{% endif %}" inactive>
+    <carousel-slider
+      class="carousel block {% if settings.slider_show_arrows == 'never' %}arrow-slider{% endif %}"
+      inactive
+    >
       <div class="container relative {% if settings.slider_show_arrows == 'never' %}arrow-slider-box{% endif %}">
         <div class="slider" id="slider-{{ section.id }}">
-          {%- endif -%}
+  {%- endif -%}
 
-    <div class="container">
-      <ul class="{% if carousel %}slider__grid {% endif %}grid {{ grid_classes }} gap-x-theme gap-y-10" role="list">
-        {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
-          {%- for article in section.settings.blog.articles limit: section.settings.posts_to_show -%}
-            <li{% if carousel %} class="slider__item"{% endif %}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
-              {% render 'article-card',
-                article: article,
-                featured_section: true,
-                color_scheme: section.settings.color_scheme,
-                show_image: section.settings.show_featured_image,
-                image_ratio: image_ratio,
-                show_author: section.settings.show_author,
-                show_date: section.settings.show_date,
-                show_tags: section.settings.show_tags,
-                show_excerpt: section.settings.show_excerpt,
-                show_button: section.settings.show_button,
-                button_style: section.settings.button_style
-              %}
-            </li>
-          {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..section.settings.posts_to_show) -%}
-            <li{% if carousel %} class="slider__item"{% endif %}{% if settings.animations_enabled != "disabled" %} data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"{% endif %}>
-              {% render 'article-card',
+  <div class="container">
+    <ul class="{% if carousel %}slider__grid {% endif %}grid {{ grid_classes }} gap-x-theme gap-y-10" role="list">
+      {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
+        {%- for article in section.settings.blog.articles limit: section.settings.posts_to_show -%}
+          <li
+            {% if carousel %}
+              class="slider__item"
+            {% endif -%}
+            {% if settings.animations_enabled != 'disabled' %}
+              data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+            {% endif %}
+          >
+            {% render 'article-card',
+              article: article,
+              featured_section: true,
+              color_scheme: section.settings.color_scheme,
+              show_image: section.settings.show_featured_image,
+              image_ratio: image_ratio,
+              show_author: section.settings.show_author,
+              show_date: section.settings.show_date,
+              show_tags: section.settings.show_tags,
+              show_excerpt: section.settings.show_excerpt,
+              show_button: section.settings.show_button,
+              button_style: section.settings.button_style
+            %}
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.posts_to_show) -%}
+          <li
+            {% if carousel %}
+              class="slider__item"
+            {% endif -%}
+            {% if settings.animations_enabled != 'disabled' %}
+              data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+            {% endif %}
+          >
+            {% render 'article-card',
               image_ratio: image_ratio,
               featured_section: true,
               color_scheme: section.settings.color_scheme,
               show_image: section.settings.show_featured_image,
               image_ratio: image_ratio,
-              show_excerpt: section.settings.show_excerpt %}
-            </li>
-          {%- endfor -%}
-        {%- endif -%}
-      </ul>
-    </div>
+              show_excerpt: section.settings.show_excerpt
+            %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
 
   {%- if carousel -%}
-        </div>
-        {%- if settings.slider_show_arrows == 'never' -%}
-          <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
-            <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
-              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-              {% render 'icon-chevron-right' %}
-            </button>
-            <button type="button" class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
-              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-              {% render 'icon-chevron-left' %}
-            </button>
-          </div>
-        {%- endif -%}
+    </div>
+    {%- if settings.slider_show_arrows == 'never' -%}
+      <div class="slider-nav absolute top-middle end {% if settings.slider_show_arrows == 'hover' %}slider-nav--show-on-hover no-hover-hidden {% endif %}hidden md:block no-js-hidden">
+        <button
+          type="button"
+          class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon"
+          name="next"
+          aria-controls="slider-{{ section.id }}"
+        >
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          {% render 'icon-chevron-right' %}
+        </button>
+        <button
+          type="button"
+          class="slider-nav__btn tap-target btn {{ settings.slider_button_style }} has-ltr-icon"
+          name="prev"
+          aria-controls="slider-{{ section.id }}"
+        >
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          {% render 'icon-chevron-left' %}
+        </button>
       </div>
+    {%- endif -%}
+    </div>
     </carousel-slider>
   {%- endif -%}
 </div>
@@ -180,22 +209,22 @@
       "content": "Other blogs"
     },
     {
-      "type":"checkbox",
-      "id":"set_text_on_image",
-      "label":"Text on Picture",
-      "default":false
+      "type": "checkbox",
+      "id": "set_text_on_image",
+      "label": "Text on Picture",
+      "default": false
     },
     {
-      "type":"checkbox",
-      "id":"show_other_blogs",
-      "label":"Show other blogs",
-      "default":false
+      "type": "checkbox",
+      "id": "show_other_blogs",
+      "label": "Show other blogs",
+      "default": false
     },
     {
-      "type":"color",
+      "type": "color",
       "id": "column_info_bg",
       "label": "Normal column info background",
-      "default":"#f9f9f9"
+      "default": "#f9f9f9"
     },
     {
       "type": "select",
@@ -265,7 +294,7 @@
       ],
       "default": "text-center"
     },
-     {
+    {
       "type": "header",
       "content": "Section header"
     },
@@ -312,21 +341,21 @@
       "default": "h3"
     },
     {
-      "type":"text",
-      "id":"use_class_name",
-      "label":"Add class name",
-      "info":"h2, h3, h4, h5"
+      "type": "text",
+      "id": "use_class_name",
+      "label": "Add class name",
+      "info": "h2, h3, h4, h5"
     },
     {
-      "type":"checkbox",
-      "id":"header_weight",
-      "label":"Font Weight"
+      "type": "checkbox",
+      "id": "header_weight",
+      "label": "Font Weight"
     },
     {
-      "type":"checkbox",
-      "id":"header_uppercase",
-      "label":"Font Uppercase",
-      "default":false
+      "type": "checkbox",
+      "id": "header_uppercase",
+      "label": "Font Uppercase",
+      "default": false
     },
     {
       "type": "select",
@@ -501,16 +530,16 @@
   "blocks": [
     {
       "type": "news",
-      "name":"News",
+      "name": "News",
       "settings": [
         {
           "type": "header",
           "content": "Select blog"
         },
         {
-          "type":"article",
-          "id":"articles_id",
-          "label":"Select Article"
+          "type": "article",
+          "id": "articles_id",
+          "label": "Select Article"
         },
         {
           "type": "select",
@@ -563,6 +592,5 @@
       "name": "Blog posts --fei"
     }
   ]
-  
 }
 {% endschema %}

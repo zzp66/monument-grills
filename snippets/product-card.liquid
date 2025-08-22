@@ -10,10 +10,10 @@
   {% render 'product-card', product: product %}
 {%- endcomment -%}
 
-  {% comment %}
+{% comment %}
     assign product_url = product.url | within: collection
   else
-   {% endcomment %}
+{% endcomment %}
 {%- liquid
   if collection and settings.card_url_within_coll and product.collections contains collection
     assign product_url = product.url | within: collection
@@ -21,8 +21,8 @@
     assign product_url = product.url
   endif
 
-  if product_url contains "?"
-    assign product_url = product_url | split: "?" | first
+  if product_url contains '?'
+    assign product_url = product_url | split: '?' | first
   endif
 
   assign current_variant = product.selected_or_first_available_variant
@@ -40,7 +40,7 @@
     assign show_hover_image = false
   endif
 
-  if image_ratio == nil
+  if image_ratio == null
     if settings.prod_card_image_ratio == 'shortest' or settings.prod_card_image_ratio == 'tallest'
       assign image_ratio = 1
     else
@@ -83,7 +83,7 @@
   endif
 
   assign image_quality = 1
-  if product.featured_media.preview_image.aspect_ratio > 1 and settings.prod_card_image_ratio != "1.77" and settings.prod_card_image_fit == "cover"
+  if product.featured_media.preview_image.aspect_ratio > 1 and settings.prod_card_image_ratio != '1.77' and settings.prod_card_image_fit == 'cover'
     assign image_quality = 2
   endif
 
@@ -92,43 +92,51 @@
     assign product_not_for_sale = true
   endif
 
-  assign card_class = ""
+  assign card_class = ''
   if product.template_suffix contains 'preorder'
-    assign card_class = " card--product-preorder"
+    assign card_class = ' card--product-preorder'
   elsif product.template_suffix contains 'coming-soon'
-    assign card_class = " card--product-coming-soon"
+    assign card_class = ' card--product-coming-soon'
   elsif product.template_suffix contains 'countdown'
-    assign card_class = " card--product-countdown"
+    assign card_class = ' card--product-countdown'
   endif
 
   assign is_collection = request.page_type
 -%}
 
 {% style %}
-  .fordeer-config-label .fordeer-text-wrap span
-  {
+  .fordeer-config-label .fordeer-text-wrap span {
     top: 24px;
-    padding:0;
+    padding: 0;
   }
-  .card__swatches .fordeer-config-label{
-    display:none;
+  .card__swatches .fordeer-config-label {
+    display: none;
   }
-  
 {% endstyle %}
 
 {%- if product and product != empty -%}
   <product-card class="card card--product{{ card_class }} h-full{% if settings.card_contain %} card--product-contained{% endif %}{% unless settings.show_dividers %} card--no-lines{% endunless %}{% if show_compare %} card--product-compare{% endif %} relative flex">
-
     {%- if show_compare -%}
       <div class="card__compare no-js-hidden text-sm">
-        <input type="checkbox" class="checkbox checkbox--compare js-compare-checkbox" id="compare-{{ product.id }}"
-               data-product-id="{{ product.id }}" data-product-url="{{ product_url }}">
+        <input
+          type="checkbox"
+          class="checkbox checkbox--compare js-compare-checkbox"
+          id="compare-{{ product.id }}"
+          data-product-id="{{ product.id }}"
+          data-product-url="{{ product_url }}"
+        >
         <label for="compare-{{ product.id }}">{{ 'products.compare.switch_label' | t }}</label>
       </div>
     {%- endif -%}
 
     <div class="card__media{% if show_hover_image %} has-hover-image{% endif %}{% if settings.blend_product_images %} image-blend{% endif %} relative">
-      <a href="{{ product_url }}" aria-label="{{ product.title | escape }}" class="media block relative{% if settings.blend_product_images %} image-blend{% endif %} js-prod-link" style="padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;" tabindex="-1">
+      <a
+        href="{{ product_url }}"
+        aria-label="{{ product.title | escape }}"
+        class="media block relative{% if settings.blend_product_images %} image-blend{% endif %} js-prod-link"
+        style="padding-top: {{ 1 | divided_by: image_ratio | times: 100 }}%;"
+        tabindex="-1"
+      >
         {%- if product.featured_media -%}
           {%- capture attributes %}data-media-id="{{ product.featured_media.id }}"{% endcapture -%}
           {% render 'image',
@@ -181,18 +189,17 @@
       </a>
 
       {%- liquid
-        if settings.product_label_card_position != "none"
+        if settings.product_label_card_position != 'none'
           render 'product-label', product: product, position: settings.product_label_card_position, is_product_card: true, limit: 2
         endif
       -%}
     </div>
 
     {% if hide_cart != blank %}
-
     {% endif %}
     <div class="card__info-container flex flex-col flex-auto relative">
-        <div class="card__info w-full">
-          <div class="card__info-inner{% if settings.card_price_bottom %} flex flex-col h-full{% else %} inline-block{% endif %} w-full">
+      <div class="card__info w-full">
+        <div class="card__info-inner{% if settings.card_price_bottom %} flex flex-col h-full{% else %} inline-block{% endif %} w-full">
           {%- if settings.card_show_vendor -%}
             <p class="card__vendor{% if settings.show_dividers %} mb-1{% else %} mb-0{% endif %} text-sm text-theme-light">
               {{- product.vendor -}}
@@ -205,17 +212,17 @@
             </a>
           </p>
 
-          {% comment %}
-          {% if list_layout != blank %}
-            <p class="product-info__weight text-body-extra_small" style="color:#777;">{{ product.metafields.custom.product_sub_title.value }}</p>
-          {% endif %}
-          {% endcomment %}
-
-          {%- if product.metafields.descriptors.subtitle.value != blank -%}
+          {%- if product.metafields.custom.product_subtitle.value != blank -%}
             <p class="card__subtitle text-sm text-current mb-1{% unless settings.show_dividers %} mt-1{% endunless %}">
-              {{ product.metafields.descriptors.subtitle.value }}
+              {{ product.metafields.custom.product_subtitle.value }}
             </p>
           {%- endif -%}
+
+          {% comment %}
+            {% if list_layout != blank %}
+              <p class="product-info__weight text-body-extra_small" style="color:#777;">{{ product.metafields.custom.product_sub_title.value }}</p>
+            {% endif %}
+          {% endcomment %}
 
           {%- if settings.card_show_weight -%}
             <p class="card__weight text-sm mb-1{% unless settings.show_dividers %} mt-1{% endunless %}">
@@ -225,39 +232,43 @@
 
           <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
           {% comment %}
-          {%- if product.metafields.reviews.rating.value != blank and settings.card_show_rating -%}
-            <div>
-              {% render 'rating',
-                rating_value: product.metafields.reviews.rating.value,
-                rating_count: product.metafields.reviews.rating_count
-              %}
-            </div>
-          {% else %}
-          <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
-          {%- endif -%}
+            {%- if product.metafields.reviews.rating.value != blank and settings.card_show_rating -%}
+              <div>
+                {% render 'rating',
+                  rating_value: product.metafields.reviews.rating.value,
+                  rating_count: product.metafields.reviews.rating_count
+                %}
+              </div>
+            {% else %}
+            <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
+            {%- endif -%}
           {% endcomment %}
 
           {% comment %}
-          {%- if settings.card_price_bottom == false -%}
-            {%- render 'price', product: product, class: "price--top" -%}
-          {%- endif -%}
+            {%- if settings.card_price_bottom == false -%}
+              {%- render 'price', product: product, class: "price--top" -%}
+            {%- endif -%}
           {% endcomment %}
 
-         
-
           {%- if settings.card_colors_style != 'none' -%}
-            <!-- {%- if settings.card_price_bottom == false -%}
+            <!--
+              {%- if settings.card_price_bottom == false -%}
               {% render 'price', product: product, use_variant: true, data_media_id: product.selected_or_first_available_variant.id %}
                 {{ form | payment_terms }}
-              {%- endif -%} -->
-              {%- if settings.card_price_bottom == false -%}
-                <div class="">
-                <div class="card__price price__default" id="product-card-price-{{ product.id }}">
-                  {% render 'price', product: product, use_variant: true, data_media_id: product.selected_or_first_available_variant.id %}
-                </div>
-                </div>
-                {{ form | payment_terms }}
               {%- endif -%}
+            -->
+            {%- if settings.card_price_bottom == false -%}
+              <div class="">
+                <div class="card__price price__default" id="product-card-price-{{ product.id }}">
+                  {% render 'price',
+                    product: product,
+                    use_variant: true,
+                    data_media_id: product.selected_or_first_available_variant.id
+                  %}
+                </div>
+              </div>
+              {{ form | payment_terms }}
+            {%- endif -%}
             {%- for option in product.options_with_values -%}
               {%- if settings.swatch_option_name contains option.name -%}
                 {%- if settings.card_colors_style == 'swatches' or settings.card_colors_style == 'variant-images' -%}
@@ -268,8 +279,7 @@
                     endif
                   -%}
                   {% style %}
-                    .hide-swatch{
-                      
+                    .hide-swatch {
                     }
                   {% endstyle %}
                   <div class="{% if is_collection == 'collection' %}hide-swatch{% else %} {% endif %} card__swatches{% if settings.show_dividers %} mt-3 border-top{% else %} mt-2 pb-1{% endif %} pt-3 flex items-start relative">
@@ -285,16 +295,51 @@
                           assign selected_color = value
                         endif
                       -%}
-                      <!-- <input type="radio" class="opt-btn visually-hidden js-option" name="{{ option_id }}-option" id="{{ option_id }}-opt-{{ forloop.index0 }}" value="{{ value | escape }}" data-variant-id="{{ variant_value.id }}"{% if variant_value.featured_media %} data-media-id="{{ variant_value.featured_media.id }}"{% endif %}{% if option.selected_value == value %} checked{% endif %}> -->
-                           <input type="radio" class="opt-btn visually-hidden js-option" name="{{ option_id }}-option" id="{{ option_id }}-opt-{{ forloop.index0 }}" value="{{ value | escape }}" data-variant-id="{{ variant_value.id }}"{% if variant_value.featured_media %} data-media-id="{{ variant_value.featured_media.id }}"{% endif %}{% if option.selected_value == value %} checked{% endif %} 
-                             data-price="{{ variant_value.price | money }}"  data-compare-at-price="{{ variant_value.compare_at_price | money }}">
-                      
-                      <label class="opt-label opt-label--swatch relative swatch-shape--{{ settings.card_swatch_shape }}{% if settings.card_swatch_shape != "circle" %} swatch-shape--not-circle{% endif %}{% if settings.card_colors_style == 'variant-images' and variant_value.featured_media %} swatch--variant-image{% endif %}" title="{{ value | replace: '"', '`' }}" data-swatch="{% if settings.card_colors_style != 'variant-images' or variant_value.featured_media == blank %}{{ value | replace: '"', '' | downcase }}{% endif %}" for="{{ option_id }}-opt-{{ forloop.index0 }}">
+                      <!--
+                        <input type="radio" class="opt-btn visually-hidden js-option" name="{{ option_id }}-option" id="{{ option_id }}-opt-{{ forloop.index0 }}" value="{{ value | escape }}" data-variant-id="{{ variant_value.id }}"{% if variant_value.featured_media %} data-media-id="{{ variant_value.featured_media.id }}"{% endif %}{% if option.selected_value == value %} checked{% endif %}>
+                      -->
+                      <input
+                        type="radio"
+                        class="opt-btn visually-hidden js-option"
+                        name="{{ option_id }}-option"
+                        id="{{ option_id }}-opt-{{ forloop.index0 }}"
+                        value="{{ value | escape }}"
+                        data-variant-id="{{ variant_value.id }}"
+                        {% if variant_value.featured_media %}
+                          data-media-id="{{ variant_value.featured_media.id }}"
+                        {% endif -%}
+                        {% if option.selected_value == value %}
+                          checked
+                        {% endif %}
+                        data-price="{{ variant_value.price | money }}"
+                        data-compare-at-price="{{ variant_value.compare_at_price | money }}"
+                      >
+
+                      <label
+                        class="opt-label opt-label--swatch relative swatch-shape--{{ settings.card_swatch_shape }}{% if settings.card_swatch_shape != "circle" %} swatch-shape--not-circle{% endif %}{% if settings.card_colors_style == 'variant-images' and variant_value.featured_media %} swatch--variant-image{% endif %}"
+                        title="{{ value | replace: '"', '`' }}"
+                        data-swatch="{% if settings.card_colors_style != 'variant-images' or variant_value.featured_media == blank %}{{ value | replace: '"', '' | downcase }}{% endif %}"
+                        for="{{ option_id }}-opt-{{ forloop.index0 }}"
+                      >
                         {%- if settings.card_colors_style == 'variant-images' and variant_value.featured_media -%}
-                          {%- if settings.card_swatch_shape == "natural" -%}
-                            <img loading="lazy" class="bg-theme-bg" src="{{ variant_value.featured_media.preview_image | image_url: width: swatch_size }}" height="{{ swatch_size | divided_by: variant_value.featured_media.preview_image.aspect_ratio | round }}" width="{{ swatch_size }}" alt="{{ variant_value.featured_media.preview_image.alt | escape }}"/>
+                          {%- if settings.card_swatch_shape == 'natural' -%}
+                            <img
+                              loading="lazy"
+                              class="bg-theme-bg"
+                              src="{{ variant_value.featured_media.preview_image | image_url: width: swatch_size }}"
+                              height="{{ swatch_size | divided_by: variant_value.featured_media.preview_image.aspect_ratio | round }}"
+                              width="{{ swatch_size }}"
+                              alt="{{ variant_value.featured_media.preview_image.alt | escape }}"
+                            >
                           {%- else -%}
-                            <img loading="lazy" class="img-fit bg-theme-bg" src="{{ variant_value.featured_media.preview_image | image_url: width: swatch_size, height: swatch_size, crop: 'center' }}" height="{{ swatch_size }}" width="{{ swatch_size }}" alt="{{ variant_value.featured_media.preview_image.alt | escape }}"/>
+                            <img
+                              loading="lazy"
+                              class="img-fit bg-theme-bg"
+                              src="{{ variant_value.featured_media.preview_image | image_url: width: swatch_size, height: swatch_size, crop: 'center' }}"
+                              height="{{ swatch_size }}"
+                              width="{{ swatch_size }}"
+                              alt="{{ variant_value.featured_media.preview_image.alt | escape }}"
+                            >
                           {%- endif -%}
                         {%- endif -%}
                         <span class="visually-hidden">{{ value }}</span>
@@ -349,30 +394,33 @@
                 assign inventory_level = 'normal'
               endif
 
-              if inventory_level == "normal" or inventory_level == "in_stock"
-                if settings.inventory_show_notice == "low"
+              if inventory_level == 'normal' or inventory_level == 'in_stock'
+                if settings.inventory_show_notice == 'low'
                   assign inventory_level = 'hide'
                 endif
               endif
             -%}
 
             {%- unless inventory_level == 'hide' -%}
-              <div class="{% if settings.show_dividers %}mt-3 border-top pt-3{% else %}pt-5{% endif %} text-xs product-inventory__status" data-inventory-level="{{ inventory_level }}">
+              <div
+                class="{% if settings.show_dividers %}mt-3 border-top pt-3{% else %}pt-5{% endif %} text-xs product-inventory__status"
+                data-inventory-level="{{ inventory_level }}"
+              >
                 {%- if inventory_level == 'very_low' -%}
                   {{ 'products.inventory.very_low_stock' | t }}
-                  {%- if settings.inventory_show_count != "never" and total > 0 -%}
+                  {%- if settings.inventory_show_count != 'never' and total > 0 -%}
                     ({{ 'products.inventory.available_count' | t: count: total }})
                   {%- endif -%}
                 {%- elsif inventory_level == 'low' -%}
                   {{ 'products.inventory.low_stock' | t }}
-                  {%- if settings.inventory_show_count != "never" and total > 0 -%}
+                  {%- if settings.inventory_show_count != 'never' and total > 0 -%}
                     ({{ 'products.inventory.available_count' | t: count: total }})
                   {%- endif -%}
                 {%- elsif inventory_level == 'backordered' -%}
                   {{ 'products.inventory.backordered' | t }}
                 {%- else -%}
                   {{ 'products.inventory.in_stock' | t }}
-                  {%- if settings.inventory_show_count == "always" and total > 0 -%}
+                  {%- if settings.inventory_show_count == 'always' and total > 0 -%}
                     ({{ 'products.inventory.available_count' | t: count: total }})
                   {%- endif -%}
                 {%- endif -%}
@@ -382,7 +430,7 @@
 
           {%- if settings.card_price_bottom -%}
             <div class="flex grow items-end">
-              {%- render 'price', product: product, class: "price--bottom" -%}
+              {%- render 'price', product: product, class: 'price--bottom' -%}
             </div>
           {%- endif -%}
         </div>
@@ -391,73 +439,79 @@
       {% if list_layout != blank %}
         {{ 'icons-with-text.css' | asset_url | stylesheet_tag }}
         {% style %}
-          .collections-icons-with-text ul{
+          .collections-icons-with-text ul {
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
           }
-          .collections-icons-with-text ul li .icon-size{
-            width:40px;
-            height:auto;
+          .collections-icons-with-text ul li .icon-size {
+            width: 40px;
+            height: auto;
           }
-          .collections-icons-with-text ul li p{
-            font-size:12px;
+          .collections-icons-with-text ul li p {
+            font-size: 12px;
           }
-          .collections-icons-with-text ul li p.icons-with-text__title{
+          .collections-icons-with-text ul li p.icons-with-text__title {
             font-size: 13px;
             font-weight: bold;
             color: #000;
           }
         {% endstyle %}
-         <div class="icons-with-text collections-icons-with-text">
-            <div class="collections-container relative">
-              <div class="slider slider--contained relative slider--no-scrollbar">
-                <ul class="slider__grid grid grid-flow-col gap-theme">
-                  {% for field in product.metafields.custom.product_selling_point.value %}
-                    
-                     <li class="slider__item flex flex-col justify-center items-center" data-cc-animate data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s">
-                          {%- capture attributes %}data-media-id="{{ product.featured_media.id }}"{% endcapture -%}
-                          {% render 'image',
-                            image: field.product_selling_point_icon.value,
-                            widths: '50, 100, 150, 200',
-                            src_width: 50,
-                            src_placeholder: true,
-                            sizes: sizes,
-                            class: 'icon-size'
-                          %}
-                          <div class="icons-with-text__text rte mt-2 text-center icons-with-text__text--icons-above">
-                            <p class="m-0 icons-with-text__title text-body-medium ">
-                              <strong class="">{{ field.product_selling_point_name.value }}</strong> 
-                            </p>
-                            <div class="rte text-body-medium">
-                              <p>{{ field.product_selling_point_description.value }}</p>
-                            </div>
-                          </div>
-                        </li>
-                  {% endfor %}
-                </ul>
-              </div>
+        <div class="icons-with-text collections-icons-with-text">
+          <div class="collections-container relative">
+            <div class="slider slider--contained relative slider--no-scrollbar">
+              <ul class="slider__grid grid grid-flow-col gap-theme">
+                {% for field in product.metafields.custom.product_selling_point.value %}
+                  <li
+                    class="slider__item flex flex-col justify-center items-center"
+                    data-cc-animate
+                    data-cc-animate-delay="{{ forloop.index | times: 0.07 }}s"
+                  >
+                    {%- capture attributes %}data-media-id="{{ product.featured_media.id }}"{% endcapture -%}
+                    {% render 'image',
+                      image: field.product_selling_point_icon.value,
+                      widths: '50, 100, 150, 200',
+                      src_width: 50,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      class: 'icon-size'
+                    %}
+                    <div class="icons-with-text__text rte mt-2 text-center icons-with-text__text--icons-above">
+                      <p class="m-0 icons-with-text__title text-body-medium ">
+                        <strong class="">{{ field.product_selling_point_name.value }}</strong>
+                      </p>
+                      <div class="rte text-body-medium">
+                        <p>{{ field.product_selling_point_description.value }}</p>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
             </div>
           </div>
+        </div>
       {% endif %}
 
       {%- if settings.enable_quick_add and disable_quickbuy != true -%}
-        <div class="card__quick-add
-          {% if settings.card_atc_mobile == "text_button_bottom" %}mob:card__quick-add--below{% endif %}
-          {% if settings.card_atc_mobile == "icon" %}mob:card__quick-add--icon{% endif %}
-          {% if settings.card_atc_desktop == "text_button_bottom" %}desktop:card__quick-add--below{% endif %}
-          {% if settings.card_atc_desktop == "icon" %}desktop:card__quick-add--icon{% endif %}
-        ">
+        <div
+          class="
+            card__quick-add
+            {% if settings.card_atc_mobile == "text_button_bottom" %}mob:card__quick-add--below{% endif %}
+            {% if settings.card_atc_mobile == "icon" %}mob:card__quick-add--icon{% endif %}
+            {% if settings.card_atc_desktop == "text_button_bottom" %}desktop:card__quick-add--below{% endif %}
+            {% if settings.card_atc_desktop == "icon" %}desktop:card__quick-add--icon{% endif %}
+          "
+        >
           {%- assign product_form_id = 'quick-add-' | append: section_id | append: product.id -%}
 
           {%- if product_not_for_sale == false -%}
-          {% comment %}
-          {%- if product.has_only_default_variant and product_not_for_sale == false -%}
-          {% endcomment %}
+            {% comment %}
+              {%- if product.has_only_default_variant and product_not_for_sale == false -%}
+            {% endcomment %}
             <product-form>
               <div class="alert mb-8 bg-error-bg text-error-text js-form-error text-start" role="alert" hidden></div>
               {%- form 'product', product, class: 'js-product-form', id: product_form_id, novalidate: 'novalidate' -%}
                 <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
-                 
+
                 {%- capture button_text -%}
                   {%- if product.template_suffix contains 'preorder' -%}
                     {{- 'products.product.preorder' | t -}}
@@ -466,11 +520,15 @@
                   {%- endif -%}
                 {%- endcapture -%}
 
-                <button class="btn btn--primary w-full {%- if current_variant.available == false %} sold-out-btn{% endif %}"
-                        data-add-to-cart-text="{{- button_text | escape -}}"
-                        name="add"
-                        aria-haspopup="dialog"
-                        {%- if current_variant.available == false %}disabled{% endif %}>
+                <button
+                  class="btn btn--primary w-full {%- if current_variant.available == false %} sold-out-btn{% endif %}"
+                  data-add-to-cart-text="{{- button_text | escape -}}"
+                  name="add"
+                  aria-haspopup="dialog"
+                  {%- if current_variant.available == false %}
+                    disabled
+                  {% endif %}
+                >
                   <span class="quick-add-btn-icon">
                     <span class="visually-hidden">{{- button_text -}}</span>
                     {% render 'icon-add-to-cart' %}
@@ -479,12 +537,12 @@
                     {%- if current_variant.available == false %}Sold out{% else %}{{- button_text -}}{% endif %}
                   </span>
                 </button>
-                
+
                 <a href="{{ product_url }}" class="btn btn--secondary quick-add-view-btn">
                   {{- 'products.product.view_details' | t -}}
                 </a>
                 {% style %}
-                  .sold-out-btn{
+                  .sold-out-btn {
                     background: #aaa;
                     border-color: #aaa;
                     color: #111;
@@ -494,12 +552,16 @@
             </product-form>
           {%- else -%}
             <div class="no-js-hidden">
-              <button type="button"
-                      class="btn btn--primary w-full js-quick-add"
-                      aria-haspopup="dialog"
-                      data-product-url="{{ product_url }}"
-                      data-product-default-variant="{{ product.has_only_default_variant }}"
-                      {% if selected_color %}data-selected-color="{{ selected_color }}"{% endif %}>
+              <button
+                type="button"
+                class="btn btn--primary w-full js-quick-add"
+                aria-haspopup="dialog"
+                data-product-url="{{ product_url }}"
+                data-product-default-variant="{{ product.has_only_default_variant }}"
+                {% if selected_color %}
+                  data-selected-color="{{ selected_color }}"
+                {% endif %}
+              >
                 <span class="quick-add-btn-icon block pointer-events-none">
                   <span class="visually-hidden">{{- 'products.product.choose_options' | t -}}</span>
                   {% render 'icon-add-to-cart' %}
@@ -516,7 +578,6 @@
         </div>
       {%- endif -%}
     </div>
-    
   </product-card>
 {%- else -%}
   <div class="card">
@@ -528,14 +589,18 @@
     </div>
     <div class="card__info">
       <p class="card__title font-bold">{{ 'onboarding.product.title' | t }}</p>
-      <!-- <div class="card__price theme-money">
-        {%- render 'price-as-money', price: 1234 -%}
-      </div> -->
+      <!--
+        <div class="card__price theme-money">
+          {%- render 'price-as-money', price: 1234 -%}
+        </div>
+      -->
       <div class="card__price theme-money" id="product-card-price-{{ product.id }}">
-        {%- render 'price', product: product, use_variant: true, data_media_id: product.selected_or_first_available_variant.id -%}
+        {%- render 'price',
+          product: product,
+          use_variant: true,
+          data_media_id: product.selected_or_first_available_variant.id
+        -%}
       </div>
     </div>
   </div>
 {%- endif -%}
-
-

@@ -19,20 +19,22 @@
 
 {%- if product.metafields.reviews.rating.value != blank -%}
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (document.getElementById('shopify-product-reviews')) {
-        const link = document.createElement('link');
-        link.rel = "stylesheet";
-        link.href = "{{ 'reviews.css' | asset_url }}";
-        document.body.appendChild(link);
-      }
-    }, { once: true });
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        if (document.getElementById('shopify-product-reviews')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = "{{ 'reviews.css' | asset_url }}";
+          document.body.appendChild(link);
+        }
+      },
+      { once: true }
+    );
   </script>
 {%- endif -%}
 
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-
-
 
 {%- liquid
   # constants
@@ -85,7 +87,7 @@
       #shopify-installments{
         font-size: 14px;
       }
-      
+
       #product-media .media-gallery .fordeer-config-label .fordeer-text-wrap span{}
     }
   {%- else -%}
@@ -98,7 +100,7 @@
       :root { --product-info-width: 400px !important; }
     }
   {%- endif -%}
-  
+
   @media (max-width:850px){
     .cwf-slider ul.slider__grid{
       grid-auto-flow: inherit;
@@ -114,7 +116,7 @@
     .sticky-atc-panel .price s{
       font-size: 16px;
     }
-    
+
   }
   @media (max-width:768px){
     #product-media .media-gallery .fordeer-config-label .fordeer-text-wrap span{
@@ -142,7 +144,7 @@
       overflow: -moz-scrollbars-none;
       padding-right: 10px;
   }
-  .qbk-product-offer .qbk-offer-box .qbk-free-gift .qbk-offer-list--transition::-webkit-scrollbar { 
+  .qbk-product-offer .qbk-offer-box .qbk-free-gift .qbk-offer-list--transition::-webkit-scrollbar {
     width: 6px !important;
     background:#eee;
   }
@@ -163,7 +165,6 @@
   .qbk-product-offer .qbk-offer-box .qbk-free-gift .qbk-offer-list--transition .qbk-offer__price .qbk-offer__price--origin{
     margin-left:0;
   }
-      
 {%- endstyle -%}
 
 {%- if first_3d_model -%}
@@ -196,9 +197,7 @@
           {{ 'image' | placeholder_svg_tag: 'media__placeholder' }}
         </div>
       {%- endif -%}
-      <div class="new_marge">
-        
-      </div>
+      <div class="new_marge"></div>
     </div>
 
     <div
@@ -224,7 +223,6 @@
             <div class="product-info__block" {{ block.shopify_attributes }}>
               {% render block %}
             </div>
-            
 
           {%- when 'vendor-sku' -%}
             {%- if block.settings.show_vendor or block.settings.show_sku or block.settings.show_barcode -%}
@@ -274,102 +272,114 @@
               </div>
             {%- endif -%}
           {%- when 'fahuo-info' -%}
-              {% comment %}
-                assign out_of_stock = false
-                for variant in product.variants
-                  if variant.inventory_quantity == 0 and block.settings.fahuo_text != blank
-                    assign out_of_stock = true
-                  endif
-                 endfor
-              {% endcomment %}
-         
-             {% liquid
-               assign first_variant = product.first_available_variant
-               assign dao_huo_dae = block.settings.fahuo_text
+            {% comment %}
+              assign out_of_stock = false
+              for variant in product.variants
+                if variant.inventory_quantity == 0 and block.settings.fahuo_text != blank
+                  assign out_of_stock = true
+                endif
+               endfor
+            {% endcomment %}
 
-               if product.variants.size > 1
-                 if first_variant.inventory_quantity > 0
-                   assign out_of_stock = first_variant.inventory_quantity
-                 endif
-               endif
+            {% liquid
+              assign first_variant = product.first_available_variant
+              assign dao_huo_dae = block.settings.fahuo_text
 
-               if product.variants.size < 2 and first_variant.inventory_quantity > 0
-                  assign out_of_stock = product.available
-               endif
+              if product.variants.size > 1
+                if first_variant.inventory_quantity > 0
+                  assign out_of_stock = first_variant.inventory_quantity
+                endif
+              endif
 
-               if product.tags contains 'Replacement Parts'
-                 assign replacement_stock = true
-               else
-                 assign replacement_stock = false
-               endif
-             %}
-             {% comment %}
-             {{ product.variants.size | json }}/{{ first_variant.inventory_quantity | json }}
-             {% endcomment %}
-              <div class="backorder {% if section.settings.product_pre_sale != blank %} backorder-show {% endif %} {% if replacement_stock %}replacement-part{% endif %} {% if out_of_stock %} backorder-hide {% elsif dao_huo_dae != blank %} backorder-show{% endif %}">
-                  <p class="m-0">
-                    {{ 'products.product.backorder' | t }} the estimated shipping date for this product is
-                    {% if dao_huo_dae != blank %}
-                      {{ dao_huo_dae }}.
-                    {% endif %}
-                  </p>
-              </div>
-              
-              {% style %}
-                .backorder p{
-                  background: #dffbdf;
-                  padding: 1em;
-                  border-radius: 6px;
-                  color: #242c24;
-                  font-size: 16px;
-                  margin-bottom:1em;
-                }
-                .backorder.backorder-hide{
-                  display:none;
-                }
-                .backorder.backorder-show{
-                  display:block;
-                }
-              {% endstyle %}
-           
+              if product.variants.size < 2 and first_variant.inventory_quantity > 0
+                assign out_of_stock = product.available
+              endif
 
-          {% comment %}
-          {%- when 'title' -%}
-            <div class="product-info__block product-info__block--sm product-info__title" {{ block.shopify_attributes }}>
-              <h1 class="product-title h5">
-                {{ product.title | escape }}
-
-                {% if block.settings.show_weight %}
-                  <span
-                    class="product-info__weight text-body-extra_small"
-                    {% unless current_variant.weight > 0 %}
-                      hidden
-                    {% endunless %}
-                  >
-                    {% if current_variant.weight > 0 %}
-                      {{ current_variant.weight | weight_with_unit: current_variant.weight_unit }}
-                    {% endif %}
-                  </span>
+              if product.tags contains 'Replacement Parts'
+                assign replacement_stock = true
+              else
+                assign replacement_stock = false
+              endif
+            %}
+            {% comment %}
+              {{ product.variants.size | json }}/{{ first_variant.inventory_quantity | json }}
+            {% endcomment %}
+            <div class="backorder {% if section.settings.product_pre_sale != blank %} backorder-show {% endif %} {% if replacement_stock %}replacement-part{% endif %} {% if out_of_stock %} backorder-hide {% elsif dao_huo_dae != blank %} backorder-show{% endif %}">
+              <p class="m-0">
+                {{ 'products.product.backorder' | t }} the estimated shipping date for this product is
+                {% if dao_huo_dae != blank %}
+                  {{ dao_huo_dae }}.
                 {% endif %}
-              </h1>
+              </p>
             </div>
-          {% endcomment %}
+
+            {% style %}
+              .backorder p {
+                background: #dffbdf;
+                padding: 1em;
+                border-radius: 6px;
+                color: #242c24;
+                font-size: 16px;
+                margin-bottom: 1em;
+              }
+              .backorder.backorder-hide {
+                display: none;
+              }
+              .backorder.backorder-show {
+                display: block;
+              }
+            {% endstyle %}
+
+            {% comment %}
+              {%- when 'title' -%}
+                <div class="product-info__block product-info__block--sm product-info__title" {{ block.shopify_attributes }}>
+                  <h1 class="product-title h5">
+                    {{ product.title | escape }}
+
+                    {% if block.settings.show_weight %}
+                      <span
+                        class="product-info__weight text-body-extra_small"
+                        {% unless current_variant.weight > 0 %}
+                          hidden
+                        {% endunless %}
+                      >
+                        {% if current_variant.weight > 0 %}
+                          {{ current_variant.weight | weight_with_unit: current_variant.weight_unit }}
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                  </h1>
+                </div>
+            {% endcomment %}
           {%- when 'title' -%}
-            <div class="product-info__block product-info__block--sm product-info__title" {{ block.shopify_attributes }}>
+            <div
+              class="product-info__block product-info__block--sm product-info__title 123455"
+              {{ block.shopify_attributes }}
+            >
               <h1 class="product-title h3 mb-0 mt-5">
                 {{ product.title | escape }}
               </h1>
+              {%- if product.metafields.custom.product_subtitle.value != blank -%}
+                <p class="product-subtitle">
+                  {{ product.metafields.custom.product_subtitle.value }}
+                </p>
+              {%- endif -%}
               {% if block.settings.show_subTitle %}
                 <p
-                  class="product-info__weight text-body-extra_small" style="{% if block.settings.subtitle_color %}color:{{ block.settings.subtitle_color }};{% endif %}{% if block.settings.show_fontweight %}font-weight:bold;{% endif %}font-size:1.1em;">
+                  class="product-info__weight text-body-extra_small"
+                  style="{% if block.settings.subtitle_color %}color:{{ block.settings.subtitle_color }};{% endif %}{% if block.settings.show_fontweight %}font-weight:bold;{% endif %}font-size:1.1em;"
+                >
                   {{ block.settings.subTitle | escape }}
                 </p>
-           
               {% endif %}
               {% style %}
-                  .product-info__sticky .product-title{
-                    font-weight: normal;
-                  }
+                .product-info__sticky .product-title {
+                  font-family: 'OBBLIGATO-Fortissimo';
+                  font-weight: normal;
+                }
+                .product-info__sticky .product-subtitle {
+                  margin: 5px 0 15px;
+                }
               {% endstyle %}
             </div>
 
@@ -423,20 +433,19 @@
                 assign current_variant_price = current_variant.price | money
                 assign instalments_form_id = 'instalments-form-' | append: section.id
                 assign show_shop_pay = block.settings.show_shopify_installments
-                assign m = "$400"
+                assign m = '$400'
 
                 assign show_pay = false
                 if current_variant_price > m and show_shop_pay != blank
                   assign show_pay = true
                 endif
-                
               %}
 
               {% if show_pay %}
-                  {%- form 'product', product, class: 'js-instalments-form  text-sm mt-2', id: instalments_form_id -%}
-                    <input type="hidden" name="id" value="{{ current_variant.id }}">
-                    {{ form | payment_terms }}
-                  {%- endform -%}
+                {%- form 'product', product, class: 'js-instalments-form  text-sm mt-2', id: instalments_form_id -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}">
+                  {{ form | payment_terms }}
+                {%- endform -%}
               {% endif %}
             </div>
 
@@ -480,93 +489,99 @@
                 </div>
               {% endcomment %}
             {%- endif -%}
-          <div class="points__box" style="display:">
-          <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/points-icon.png?v=1747812546" />
-<div>
-  <div class="pointb__title">
-    Order now and earn
-    <span id="points-value">
-      {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | round | times: 2 }}
-    </span>
-    Points in rewards
-  </div>
-  <!-- <div class="pointb__desc">Redeem your Points for exclusive discounts or free gifts</div> -->
-</div>
-          <div>
-            <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/poin_desc.png?v=1747813465" class="points_ques point-trigger" />
-          <div class="propoints_pop">
-            <h3>How It Works:</h3>
-              <ul>
-                <li>Earn 1 Point for every $1 spent</li>
-                <li>50 Points = $1 in rewards value</li>
-                <li>Redeem Points for exclusive discounts or free gifts</li>
-                <li><a href="/pages/monument-grills-rewards-program" target="_blank">Learn more</a> about the Monument Grills Rewards Program</li>
-              </ul>
-          </div>
-          </div>
-            <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const pointTrigger = document.querySelector('.point-trigger');
-  const propointsPop = document.querySelector('.propoints_pop');
-  let timeoutId;
+            <div class="points__box" style="display:">
+              <img src="https://cdn.shopify.com/s/files/1/1639/3511/files/points-icon.png?v=1747812546">
+              <div>
+                <div class="pointb__title">
+                  Order now and earn
+                  <span id="points-value">
+                    {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | round | times: 2 }}
+                  </span>
+                  Points in rewards
+                </div>
+                <!-- <div class="pointb__desc">Redeem your Points for exclusive discounts or free gifts</div> -->
+              </div>
+              <div>
+                <img
+                  src="https://cdn.shopify.com/s/files/1/1639/3511/files/poin_desc.png?v=1747813465"
+                  class="points_ques point-trigger"
+                >
+                <div class="propoints_pop">
+                  <h3>How It Works:</h3>
+                  <ul>
+                    <li>Earn 1 Point for every $1 spent</li>
+                    <li>50 Points = $1 in rewards value</li>
+                    <li>Redeem Points for exclusive discounts or free gifts</li>
+                    <li>
+                      <a href="/pages/monument-grills-rewards-program" target="_blank">Learn more</a> about the Monument
+                      Grills Rewards Program
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const pointTrigger = document.querySelector('.point-trigger');
+                  const propointsPop = document.querySelector('.propoints_pop');
+                  let timeoutId;
 
-  pointTrigger.addEventListener('mouseenter', function() {
-    clearTimeout(timeoutId);
-    propointsPop.classList.add('active');
-  });
+                  pointTrigger.addEventListener('mouseenter', function () {
+                    clearTimeout(timeoutId);
+                    propointsPop.classList.add('active');
+                  });
 
-  pointTrigger.addEventListener('mouseleave', function(e) {
-    if (!e.relatedTarget || !propointsPop.contains(e.relatedTarget)) {
-      timeoutId = setTimeout(() => {
-        if (!propointsPop.matches(':hover')) {
-          propointsPop.classList.remove('active');
-        }
-      }, 100);
-    }
-  });
+                  pointTrigger.addEventListener('mouseleave', function (e) {
+                    if (!e.relatedTarget || !propointsPop.contains(e.relatedTarget)) {
+                      timeoutId = setTimeout(() => {
+                        if (!propointsPop.matches(':hover')) {
+                          propointsPop.classList.remove('active');
+                        }
+                      }, 100);
+                    }
+                  });
 
-  propointsPop.addEventListener('mouseenter', function() {
-    clearTimeout(timeoutId);
-  });
+                  propointsPop.addEventListener('mouseenter', function () {
+                    clearTimeout(timeoutId);
+                  });
 
-  propointsPop.addEventListener('mouseleave', function() {
-    timeoutId = setTimeout(() => {
-      propointsPop.classList.remove('active');
-    }, 100);
-  });
+                  propointsPop.addEventListener('mouseleave', function () {
+                    timeoutId = setTimeout(() => {
+                      propointsPop.classList.remove('active');
+                    }, 100);
+                  });
 
-  document.addEventListener('click', function(e) {
-    if (!pointTrigger.contains(e.target) && !propointsPop.contains(e.target)) {
-      propointsPop.classList.remove('active');
-    }
-  });
-});
-</script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      var variantDataScript = document.querySelector('variant-picker script[type="application/json"]');
-                      if (!variantDataScript) return;
-                      var productData = JSON.parse(variantDataScript.textContent);
-                      var variants = productData.product.variants;
-                    
-                      var variantRadios = document.querySelectorAll('input.js-option[type="radio"]');
-                      var pointsBox = document.getElementById('points-value');
-                    
-                      variantRadios.forEach(function(radio) {
-                        radio.addEventListener('change', function() {
-                          var selectedValue = this.value;
-                          var selectedVariant = variants.find(function(v) {
-                            return v.title === selectedValue;
-                          });
-                          if (selectedVariant && pointsBox) {
-                            var points = Math.round(selectedVariant.price / 100);
-                            pointsBox.textContent = points;
-                          }
-                        });
+                  document.addEventListener('click', function (e) {
+                    if (!pointTrigger.contains(e.target) && !propointsPop.contains(e.target)) {
+                      propointsPop.classList.remove('active');
+                    }
+                  });
+                });
+              </script>
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  var variantDataScript = document.querySelector('variant-picker script[type="application/json"]');
+                  if (!variantDataScript) return;
+                  var productData = JSON.parse(variantDataScript.textContent);
+                  var variants = productData.product.variants;
+
+                  var variantRadios = document.querySelectorAll('input.js-option[type="radio"]');
+                  var pointsBox = document.getElementById('points-value');
+
+                  variantRadios.forEach(function (radio) {
+                    radio.addEventListener('change', function () {
+                      var selectedValue = this.value;
+                      var selectedVariant = variants.find(function (v) {
+                        return v.title === selectedValue;
                       });
+                      if (selectedVariant && pointsBox) {
+                        var points = Math.round(selectedVariant.price / 100);
+                        pointsBox.textContent = points;
+                      }
                     });
-                    </script>
-          </div>
+                  });
+                });
+              </script>
+            </div>
           {%- when 'inventory-status' -%}
             {%- if current_variant.inventory_management != blank -%}
               {% render 'product-inventory', product: product, current_variant: current_variant, block: block %}
@@ -577,7 +592,6 @@ document.addEventListener('DOMContentLoaded', function() {
               <product-form>
                 {%- form 'product', product, class: 'js-product-form js-product-form-main', id: product_form_id -%}
                   {%- liquid
-
                     assign enable_dynamic_checkout = false
                     if block.settings.enable_dynamic_checkout and product.selling_plan_groups == empty and gift_card_recipient_feature_active == false
                       unless product.template_suffix contains 'preorder'
@@ -585,14 +599,19 @@ document.addEventListener('DOMContentLoaded', function() {
                       endunless
                     endif
                   -%}
-                 
+
                   <div
                     class="alert mb-8 bg-error-bg text-error-text js-form-error text-start"
                     role="alert"
                     hidden
                   ></div>
 
-                  <div id='wk_group_buy_product' pid='{{ product.id }}' cid='{{ customer.id|default: 0 }}' cemail='{{ customer.email|default: 0 }}'></div>
+                  <div
+                    id="wk_group_buy_product"
+                    pid="{{ product.id }}"
+                    cid="{{ customer.id|default: 0 }}"
+                    cemail="{{ customer.email|default: 0 }}"
+                  ></div>
 
                   <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
                   <div class="product-info__add-to-cart flex{% if enable_dynamic_checkout %} qty-input--secondary-btn{% endif %}">
@@ -641,16 +660,16 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="gift_card product-info__block" {{ block.shopify_attributes }}>
               {% liquid
-                  assign gift_card_recipient_feature_active = false
-                  if block.settings.show_gift_card_recipient and product.gift_card?
-                    assign gift_card_recipient_feature_active = true
-                  endif
+                assign gift_card_recipient_feature_active = false
+                if block.settings.show_gift_card_recipient and product.gift_card?
+                  assign gift_card_recipient_feature_active = true
+                endif
               %}
               {%- if gift_card_recipient_feature_active -%}
                 {% render 'gift-card-recipient', section: section %}
               {%- endif -%}
             </div>
-          
+
           {%- when 'complementary' -%}
             <div class="product-info__block" {{ block.shopify_attributes }}>
               {%- liquid
@@ -844,41 +863,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 {%- endif -%}
                 <ul class="files panel">
                   <li class="item">
-                     {%- capture sizes %}{% render 'sizes-attribute', grid: true, min: section.settings.gallery_cols_min, sm: block.settings.columns %}{% endcapture -%}
-                     {% render 'image',
-                        image: block.settings.file_icon,
-                        widths: '64, 128',
-                        src_width: 64,
-                        src_placeholder: true,
-                        sizes: sizes,
-                        quality: 1,
-                        section_index: section.index,
-                        class: 'img-fit'
-                      %}
-                     <a href="{{ block.settings.file_url }}" {% if block.settings.show_download_file != blank %} download{% endif %} target="_blank">{{ block.settings.file_name }}</a>
+                    {%- capture sizes %}{% render 'sizes-attribute', grid: true, min: section.settings.gallery_cols_min, sm: block.settings.columns %}{% endcapture -%}
+                    {% render 'image',
+                      image: block.settings.file_icon,
+                      widths: '64, 128',
+                      src_width: 64,
+                      src_placeholder: true,
+                      sizes: sizes,
+                      quality: 1,
+                      section_index: section.index,
+                      class: 'img-fit'
+                    %}
+                    <a
+                      href="{{ block.settings.file_url }}"
+                      {% if block.settings.show_download_file != blank %}
+                        download
+                      {% endif %}
+                      target="_blank"
+                    >
+                      {{- block.settings.file_name -}}
+                    </a>
                   </li>
                 </ul>
               </div>
-            {% style %}
-              .download-file .files .item{
-                display:flex;
-                width: 100%;
-                align-items: center;
-              }
-              .download-file .files .item img{
-                position: relative;
-                width: 24px;
-                margin-right: 10px;
-              }
-              .download-file .files .item a{
-                text-decoration: underline;
-              }
-              .download-file .files .item a:hover{
-                color:#c00000;
-              }
-            {% endstyle %}
+              {% style %}
+                .download-file .files .item {
+                  display: flex;
+                  width: 100%;
+                  align-items: center;
+                }
+                .download-file .files .item img {
+                  position: relative;
+                  width: 24px;
+                  margin-right: 10px;
+                }
+                .download-file .files .item a {
+                  text-decoration: underline;
+                }
+                .download-file .files .item a:hover {
+                  color: #c00000;
+                }
+              {% endstyle %}
             {% endif %}
-            
 
           {%- when 'picture_traffic' -%}
             {% if block.settings.show_picture_traffic != blank %}
@@ -996,45 +1022,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 </li>
               </ul>
               {% style %}
-                  .cwf-media{
-                    display:flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-
-                  }
-                .cwf-media label{
+                .cwf-media {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  height: 100%;
+                }
+                .cwf-media label {
                   width: 84px;
                   display: block;
                   height: 84px;
                   border: 1px solid #eee;
                   cursor: pointer;
                 }
-                  .img-list li p{
-                    margin-bottom:0;
-                    margin-top:6px;
-                  }
-                  .cwf-media .img-list{
-                    display:flex;
-                  }
-                  .img-list li{
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-right: 20px;
-                    cursor: pointer;
-                  }
-                 .img-list li:last-child{
-                    margin-right: 0;
-                  }
-                  .img-list li:hover label{
-                    border:2px solid #e9540d;
-                  }
-                  .img-list li:hover p{
-                    text-decoration: underline;
-                  }
+                .img-list li p {
+                  margin-bottom: 0;
+                  margin-top: 6px;
+                }
+                .cwf-media .img-list {
+                  display: flex;
+                }
+                .img-list li {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  margin-right: 20px;
+                  cursor: pointer;
+                }
+                .img-list li:last-child {
+                  margin-right: 0;
+                }
+                .img-list li:hover label {
+                  border: 2px solid #e9540d;
+                }
+                .img-list li:hover p {
+                  text-decoration: underline;
+                }
               {% endstyle %}
             </div>
 
@@ -1073,50 +1098,56 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
             </div>
           {% when 'timer' %}
-          {% if settings.show_date_time != blank %}
+            {% if settings.show_date_time != blank %}
               <script src="{{ 'countdown-timer.js' | asset_url }}" defer="defer"></script>
               {% style %}
-                .product-timer .countdown__item .countdown__number{
-                  font-size:18px;
+                .product-timer .countdown__item .countdown__number {
+                  font-size: 18px;
                 }
               {% endstyle %}
 
               <div class="product-info__block product-timer">
-                <div class="section__block--countdown text-overlay__block{% if block.settings.enlarge_end_text %} countdown-large-endtext{% endif %}" {{ block.shopify_attributes }}>
+                <div
+                  class="section__block--countdown text-overlay__block{% if block.settings.enlarge_end_text %} countdown-large-endtext{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
                   {% if block.settings.enlarge_time_info != blank %}
                     <p style="margin-bottom:0;">{{ block.settings.time_info }}</p>
                   {% endif %}
-                   {% if block.settings.start_date != blank %}
-                      {% render 'banner-timer',
-                        end_date: block.settings.end_date,
-                        end_time: block.settings.end_time,
-                        start_date: block.settings.start_date,
-                        start_time: block.settings.start_time,
-                        end_text: false,
-                        end_midnight: true,
-                        hide_on_end: block.settings.hide_on_end
-                      %}
-                   {% endif %}
+                  {% if block.settings.start_date != blank %}
+                    {% render 'banner-timer',
+                      end_date: block.settings.end_date,
+                      end_time: block.settings.end_time,
+                      start_date: block.settings.start_date,
+                      start_time: block.settings.start_time,
+                      end_text: false,
+                      end_midnight: true,
+                      hide_on_end: block.settings.hide_on_end
+                    %}
+                  {% endif %}
                 </div>
               </div>
-          {% endif %}
+            {% endif %}
 
           {%- when 'pop-up' -%}
             {% if section.settings.only_text != blank %}
-              <link rel="stylesheet" href="{{ 'mobile-product-comparison-grid.css' | asset_url }}" media="print" onload="this.media='all'">
+              <link
+                rel="stylesheet"
+                href="{{ 'mobile-product-comparison-grid.css' | asset_url }}"
+                media="print"
+                onload="this.media='all'"
+              >
             {% endif %}
             <div
               class="product-info__block"
               {{ block.shopify_attributes }}
               {% if block.settings.hide_popup_dom %}
-                
               {% endif %}
             >
               <modal-opener class="no-js-hidden" data-modal="modal-{{ block.id }}">
                 <button type="button" class="{{ block.settings.link_style }} aa" aria-haspopup="dialog">
                   {{- block.settings.link_text -}}
                 </button>
-                
               </modal-opener>
               <a href="{{ block.settings.page.url }}" class="link js-hidden">{{ block.settings.link_text }}</a>
             </div>
@@ -1171,58 +1202,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <a id="toggleLink" class="read-more-btn">Read More</a>
                 <script>
-                  document.addEventListener('DOMContentLoaded', function() {
+                  document.addEventListener('DOMContentLoaded', function () {
                     var aTag = document.getElementById('toggleLink');
                     var divTag = document.getElementById('toggleDiv');
 
                     var originalText = aTag.textContent;
                     var toggledText = 'Read Less';
 
-                    aTag.addEventListener('click', function() {
+                    aTag.addEventListener('click', function () {
                       if (divTag.classList.contains('show')) {
                         divTag.classList.remove('show');
                         aTag.textContent = originalText;
-                      }else{
+                      } else {
                         divTag.classList.add('show');
                         aTag.textContent = toggledText;
                       }
-                    })
-                  })
+                    });
+                  });
                 </script>
                 {% style %}
-                  #toggleDiv{
+                  #toggleDiv {
                     display: block;
                     height: auto;
                     overflow: visible;
                   }
-                  #toggleLink{
+                  #toggleLink {
                     cursor: pointer;
                     padding: 6px 10px;
                     font-size: 16px;
                     text-decoration: underline;
-                    display:none;
+                    display: none;
                   }
                   @media (max-width: 768.98px) {
-                    #toggleDiv{
+                    #toggleDiv {
                       display: block;
                       height: 190px;
                       overflow: hidden;
                       transition: height 2s;
                     }
-                    #toggleDiv.show{
-                      height:auto;
+                    #toggleDiv.show {
+                      height: auto;
                       transition: height 2s;
                     }
-                    #toggleDiv ul{
-                      padding-left:0;
+                    #toggleDiv ul {
+                      padding-left: 0;
                     }
-                    #toggleLink{
+                    #toggleLink {
                       display: inline-block;
                       width: 100%;
-                      padding-left:0;
+                      padding-left: 0;
                     }
-                    #toggleLink:hover{
-                      color:#D4651F;
+                    #toggleLink:hover {
+                      color: #d4651f;
                     }
                   }
                 {% endstyle %}
@@ -1230,8 +1261,8 @@ document.addEventListener('DOMContentLoaded', function() {
             {% endif %}
           {% when 'payment_methods' %}
             <style>
-              .product-details__block.panel{
-                margin:.6em 0;
+              .product-details__block.panel {
+                margin: 0.6em 0;
               }
             </style>
             {%- if block.settings.title != blank -%}
@@ -1256,49 +1287,58 @@ document.addEventListener('DOMContentLoaded', function() {
             {% if section.settings.show_quick_jump_link != blank %}
               {% liquid
                 assign page_url = request.origin | append: request.path
-               %}  
+              %}
               {% style %}
-                  .quick-links{
-                      display: flex;
-                      justify-content: space-around;
-                      padding:0;
-                   }
-                  .quick-links a{
-                    /* flex: 1; */
-                    text-align: center;
-                    padding: 10px 0;
-                    font-size: 14px;
-                    text-decoration: underline;
-                  }
-                .quick-links a:hover{
-                  color:#da3b0f;
+                .quick-links {
+                  display: flex;
+                  justify-content: space-around;
+                  padding: 0;
+                }
+                .quick-links a {
+                  /* flex: 1; */
+                  text-align: center;
+                  padding: 10px 0;
+                  font-size: 14px;
+                  text-decoration: underline;
+                }
+                .quick-links a:hover {
+                  color: #da3b0f;
                 }
               {% endstyle %}
-               <div class="product-info__block">
-                   {% if block.settings.quick_box_name != blank %}
-                      <h6 class="lex-auto mb-2 mt-2 max-w-full">{{ block.settings.quick_box_name }}</h6>
-                   {% endif %}
-                   {% if block.settings.link_name_one != blank %}
-                       <div class="quick-links information-wrapper product__info-box panel">
-                           {% if block.settings.link_name_one != blank %}
-                              <a class="main-nav__item child-nav__item" href="{{ page_url }}#{{ block.settings.link_id_one }}">{{ block.settings.link_name_one }}</a>
-                           {% endif %}
-                           {% if block.settings.link_name_two != blank %}
-                              <a class="main-nav__item child-nav__item" href="{{ page_url }}#{{ block.settings.link_id_two }}">{{ block.settings.link_name_two }}</a>
-                           {% endif %}
-                           {% if block.settings.link_name_three != blank %}
-                              <a class="main-nav__item child-nav__item" href="{{ page_url }}#{{ block.settings.link_id_three }}">{{ block.settings.link_name_three }}</a>
-                           {% endif %}
-                         {% if block.settings.link_name_fouur != blank %}
-                              <a class="main-nav__item child-nav__item" href="{{ block.settings.linkfour }}" target="_blank">{{ block.settings.link_name_fouur }}</a>
-                           {% endif %}
-                       </div>
-                   {% endif %}
-                   
-                   
-               </div>
+              <div class="product-info__block">
+                {% if block.settings.quick_box_name != blank %}
+                  <h6 class="lex-auto mb-2 mt-2 max-w-full">{{ block.settings.quick_box_name }}</h6>
+                {% endif %}
+                {% if block.settings.link_name_one != blank %}
+                  <div class="quick-links information-wrapper product__info-box panel">
+                    {% if block.settings.link_name_one != blank %}
+                      <a class="main-nav__item child-nav__item" href="{{ page_url }}#{{ block.settings.link_id_one }}">
+                        {{- block.settings.link_name_one -}}
+                      </a>
+                    {% endif %}
+                    {% if block.settings.link_name_two != blank %}
+                      <a class="main-nav__item child-nav__item" href="{{ page_url }}#{{ block.settings.link_id_two }}">
+                        {{- block.settings.link_name_two -}}
+                      </a>
+                    {% endif %}
+                    {% if block.settings.link_name_three != blank %}
+                      <a
+                        class="main-nav__item child-nav__item"
+                        href="{{ page_url }}#{{ block.settings.link_id_three }}"
+                      >
+                        {{- block.settings.link_name_three -}}
+                      </a>
+                    {% endif %}
+                    {% if block.settings.link_name_fouur != blank %}
+                      <a class="main-nav__item child-nav__item" href="{{ block.settings.linkfour }}" target="_blank">
+                        {{- block.settings.link_name_fouur -}}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
             {% endif %}
-          
+
           {%- when 'description' -%}
             {%- if block.settings.show_as_collapsible_content -%}
               <details-disclosure {{ block.shopify_attributes }}>
@@ -1430,22 +1470,22 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
       {% style %}
-        .card__info .price .price__default{
+        .card__info .price .price__default {
           display: flex;
           justify-content: flex-start;
           align-items: flex-end;
           font-size: 16px;
         }
-        .card__info .price .price__default strong{
+        .card__info .price .price__default strong {
           text-align: left;
           padding-left: 10px;
           white-space: inherit;
         }
         .card__info .price .price__default strong,
-        .price__default s{
-          font-size:16px;
+        .price__default s {
+          font-size: 16px;
         }
-        .sticky-atc-panel .close_btn{
+        .sticky-atc-panel .close_btn {
           padding: 0;
           display: flex;
           justify-content: center;
@@ -1456,36 +1496,36 @@ document.addEventListener('DOMContentLoaded', function() {
           cursor: pointer;
           z-index: 8;
         }
-        @media (max-width: 768.98px){
+        @media (max-width: 768.98px) {
           .sticky-atc-panel {
-              left: 0;
-              margin: 0;
-              width: 100%;
+            left: 0;
+            margin: 0;
+            width: 100%;
           }
-          .sticky-atc-panel .close_btn{
-              display:none;
+          .sticky-atc-panel .close_btn {
+            display: none;
           }
-          .card--sticky-atc .card__info{
-              flex: 1 1 40%;
-              padding: 10px !important;
+          .card--sticky-atc .card__info {
+            flex: 1 1 40%;
+            padding: 10px !important;
           }
-          .card--sticky-atc .card__buttons{
-              padding-right: 0;
+          .card--sticky-atc .card__buttons {
+            padding-right: 0;
           }
-          .card--sticky-atc .card__info .show-total-price{
-              flex-direction: column;
-              align-items: flex-start;
+          .card--sticky-atc .card__info .show-total-price {
+            flex-direction: column;
+            align-items: flex-start;
           }
-           .card--sticky-atc .card__info .show-total-price .cur-price{
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-           }
-          .card--sticky-atc .card__info .show-total-price .cur-price .price__from{
-            padding-right:10px;
+          .card--sticky-atc .card__info .show-total-price .cur-price {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
           }
-          .card--sticky-atc .card__info .show-total-price .price__current{
-            padding-left:0;
+          .card--sticky-atc .card__info .show-total-price .cur-price .price__from {
+            padding-right: 10px;
+          }
+          .card--sticky-atc .card__info .show-total-price .price__current {
+            padding-left: 0;
           }
         }
       {% endstyle %}
@@ -1511,9 +1551,9 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
     {% style %}
-      @media (max-width:850px){
-        .sticky-atc-panel .card .card__info .sticky-atc-panel__heading{
-          display:none;
+      @media (max-width: 850px) {
+        .sticky-atc-panel .card .card__info .sticky-atc-panel__heading {
+          display: none;
         }
       }
     {% endstyle %}
@@ -1526,36 +1566,35 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
 {%- endif -%}
 <script>
-  $(function(){
-    $('.close_btn').on('click',function(){
-      $(this).parent().css(
-        {
-          "transform": "translateX(110%) "}
-      );
-    })
-  })
+  $(function () {
+    $('.close_btn').on('click', function () {
+      $(this).parent().css({
+        transform: 'translateX(110%) ',
+      });
+    });
+  });
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // 获取 URL 里的 variant 参数
-  var urlParams = new URLSearchParams(window.location.search);
-  var variantId = urlParams.get('variant');
-  if (variantId) {
-    // 1. 处理 select 变体选择器
-    var variantSelect = document.querySelector('select[name="id"]');
-    if (variantSelect) {
-      variantSelect.value = variantId;
-      variantSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  document.addEventListener('DOMContentLoaded', function () {
+    // 获取 URL 里的 variant 参数
+    var urlParams = new URLSearchParams(window.location.search);
+    var variantId = urlParams.get('variant');
+    if (variantId) {
+      // 1. 处理 select 变体选择器
+      var variantSelect = document.querySelector('select[name="id"]');
+      if (variantSelect) {
+        variantSelect.value = variantId;
+        variantSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      // 2. 处理 swatch（input[type=radio]）变体选择器
+      var variantRadio = document.querySelector('input[type="radio"][value="' + variantId + '"]');
+      if (variantRadio && !variantRadio.checked) {
+        variantRadio.checked = true;
+        variantRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
-    // 2. 处理 swatch（input[type=radio]）变体选择器
-    var variantRadio = document.querySelector('input[type="radio"][value="' + variantId + '"]');
-    if (variantRadio && !variantRadio.checked) {
-      variantRadio.checked = true;
-      variantRadio.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-  }
-});
+  });
 </script>
 {% render 'structured-data-product', product: product, current_variant: current_variant %}
 
@@ -1578,7 +1617,7 @@ document.addEventListener('DOMContentLoaded', function() {
       "info": "此为强制显示预售信息",
       "default": false
     },
-     {
+    {
       "type": "checkbox",
       "id": "show_quick_jump_link",
       "label": "Show Quick Jump Link",
@@ -1921,110 +1960,110 @@ document.addEventListener('DOMContentLoaded', function() {
       "content": "Arrange product media by this option (all 'red' media together, then all 'blue' media together, for example). The first media in each group should be assigned to a variant. [Read more](https://cleancanvas.co.uk/support/enterprise/settings/grouped-variant-images)"
     },
     {
-          "type":"image_picker",
-          "id":"logo1",
-          "label":"logo 1"
-        },
+      "type": "image_picker",
+      "id": "logo1",
+      "label": "logo 1"
+    },
     {
-          "type":"image_picker",
-          "id":"logo2",
-          "label":"logo 2"
-        },
+      "type": "image_picker",
+      "id": "logo2",
+      "label": "logo 2"
+    },
     {
-          "type":"image_picker",
-          "id":"logo3",
-          "label":"logo 3"
-        },
+      "type": "image_picker",
+      "id": "logo3",
+      "label": "logo 3"
+    },
     {
-          "type":"image_picker",
-          "id":"logo4",
-          "label":"logo 4"
-        },
+      "type": "image_picker",
+      "id": "logo4",
+      "label": "logo 4"
+    },
     {
-          "type":"image_picker",
-          "id":"logo5",
-          "label":"logo 5"
-        },
+      "type": "image_picker",
+      "id": "logo5",
+      "label": "logo 5"
+    },
     {
-          "type":"image_picker",
-          "id":"logo6",
-          "label":"logo 6"
-        },
+      "type": "image_picker",
+      "id": "logo6",
+      "label": "logo 6"
+    },
     {
-          "type":"image_picker",
-          "id":"logo7",
-          "label":"logo 7"
-        },
+      "type": "image_picker",
+      "id": "logo7",
+      "label": "logo 7"
+    },
     {
-          "type":"image_picker",
-          "id":"logo8",
-          "label":"logo 8"
-        }
+      "type": "image_picker",
+      "id": "logo8",
+      "label": "logo 8"
+    }
   ],
   "blocks": [
     {
       "type": "@app"
     },
     {
-      "type":"quick-jump-link",
-      "name":"Quick Jump Link",
-      "limit":1,
-      "settings":[
+      "type": "quick-jump-link",
+      "name": "Quick Jump Link",
+      "limit": 1,
+      "settings": [
         {
           "type": "header",
           "content": "Quick name"
         },
         {
-          "type":"text",
-          "id":"quick_box_name",
-          "label":"Heading"
+          "type": "text",
+          "id": "quick_box_name",
+          "label": "Heading"
         },
         {
           "type": "header",
           "content": "Links"
         },
         {
-          "type":"text",
-          "id":"link_name_one",
-          "label":"Link Name one"
+          "type": "text",
+          "id": "link_name_one",
+          "label": "Link Name one"
         },
         {
-          "type":"text",
-          "id":"link_id_one",
-          "label":"Link ID one",
-          "info":"驼峰命名"
+          "type": "text",
+          "id": "link_id_one",
+          "label": "Link ID one",
+          "info": "驼峰命名"
         },
         {
-          "type":"text",
-          "id":"link_name_two",
-          "label":"Link Name two"
+          "type": "text",
+          "id": "link_name_two",
+          "label": "Link Name two"
         },
         {
-          "type":"text",
-          "id":"link_id_two",
-          "label":"Link ID two",
-          "info":"驼峰命名"
+          "type": "text",
+          "id": "link_id_two",
+          "label": "Link ID two",
+          "info": "驼峰命名"
         },
         {
-          "type":"text",
-          "id":"link_name_three",
-          "label":"Link Name three"
+          "type": "text",
+          "id": "link_name_three",
+          "label": "Link Name three"
         },
         {
-          "type":"text",
-          "id":"link_id_three",
-          "label":"Link ID three",
-          "info":"驼峰命名"
+          "type": "text",
+          "id": "link_id_three",
+          "label": "Link ID three",
+          "info": "驼峰命名"
         },
         {
-          "type":"text",
-          "id":"link_name_fouur",
-          "label":"Link Name four"
+          "type": "text",
+          "id": "link_name_fouur",
+          "label": "Link Name four"
         },
         {
-          "type":"text",
-          "id":"linkfour",
-          "label":"url",
+          "type": "text",
+          "id": "linkfour",
+          "label": "url"
         }
       ]
     },
@@ -2105,8 +2144,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     },
     {
-      "type":"download",
-      "name":"Download Manual",
+      "type": "download",
+      "name": "Download Manual",
       "settings": [
         {
           "type": "header",
@@ -2130,7 +2169,7 @@ document.addEventListener('DOMContentLoaded', function() {
           "label": "Add Manual Name"
         },
         {
-         "type": "url",
+          "type": "url",
           "id": "file_url",
           "label": "Add Manual Url"
         },
@@ -2142,10 +2181,10 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     },
     {
-      "type":"picture_traffic",
-      "name":"Picture traffic",
+      "type": "picture_traffic",
+      "name": "Picture traffic",
       "limit": 5,
-      "settings":[
+      "settings": [
         {
           "type": "checkbox",
           "id": "show_picture_traffic",
@@ -2163,95 +2202,95 @@ document.addEventListener('DOMContentLoaded', function() {
           "content": "Picture 1"
         },
         {
-          "type":"text",
-          "id":"picture_name_1",
-          "label":"Picture Name"
+          "type": "text",
+          "id": "picture_name_1",
+          "label": "Picture Name"
         },
         {
-          "type":"image_picker",
-          "id":"picture_url_1",
-          "label":"Select Picture"
+          "type": "image_picker",
+          "id": "picture_url_1",
+          "label": "Select Picture"
         },
         {
-          "type":"url",
-          "id":"link_url_1",
-          "label":"Select Url"
+          "type": "url",
+          "id": "link_url_1",
+          "label": "Select Url"
         },
         {
           "type": "header",
           "content": "Picture 2"
         },
         {
-          "type":"text",
-          "id":"picture_name_2",
-          "label":"Picture Name"
+          "type": "text",
+          "id": "picture_name_2",
+          "label": "Picture Name"
         },
         {
-          "type":"image_picker",
-          "id":"picture_url_2",
-          "label":"Select Picture"
+          "type": "image_picker",
+          "id": "picture_url_2",
+          "label": "Select Picture"
         },
         {
-          "type":"url",
-          "id":"link_url_2",
-          "label":"Select Url"
+          "type": "url",
+          "id": "link_url_2",
+          "label": "Select Url"
         },
         {
           "type": "header",
           "content": "Picture 3"
         },
         {
-          "type":"text",
-          "id":"picture_name_3",
-          "label":"Picture Name"
+          "type": "text",
+          "id": "picture_name_3",
+          "label": "Picture Name"
         },
         {
-          "type":"image_picker",
-          "id":"picture_url_3",
-          "label":"Select Picture"
+          "type": "image_picker",
+          "id": "picture_url_3",
+          "label": "Select Picture"
         },
         {
-          "type":"url",
-          "id":"link_url_3",
-          "label":"Select Url"
+          "type": "url",
+          "id": "link_url_3",
+          "label": "Select Url"
         },
         {
           "type": "header",
           "content": "Picture 4"
         },
         {
-          "type":"text",
-          "id":"picture_name_4",
-          "label":"Picture Name"
+          "type": "text",
+          "id": "picture_name_4",
+          "label": "Picture Name"
         },
         {
-          "type":"image_picker",
-          "id":"picture_url_4",
-          "label":"Select Picture"
+          "type": "image_picker",
+          "id": "picture_url_4",
+          "label": "Select Picture"
         },
         {
-          "type":"url",
-          "id":"link_url_4",
-          "label":"Select Url"
+          "type": "url",
+          "id": "link_url_4",
+          "label": "Select Url"
         },
         {
           "type": "header",
           "content": "Picture 5"
         },
         {
-          "type":"text",
-          "id":"picture_name_5",
-          "label":"Picture Name"
+          "type": "text",
+          "id": "picture_name_5",
+          "label": "Picture Name"
         },
         {
-          "type":"image_picker",
-          "id":"picture_url_5",
-          "label":"Select Picture"
+          "type": "image_picker",
+          "id": "picture_url_5",
+          "label": "Select Picture"
         },
         {
-          "type":"url",
-          "id":"link_url_5",
-          "label":"Select Url"
+          "type": "url",
+          "id": "link_url_5",
+          "label": "Select Url"
         }
       ]
     },
@@ -2445,8 +2484,8 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     },
     {
-      "type":"fahuo-info",
-      "name":"Fahuo Info",
+      "type": "fahuo-info",
+      "name": "Fahuo Info",
       "settings": [
         {
           "type": "text",
@@ -2689,8 +2728,8 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
           "type": "text",
-          "id":"pop_title",
-          "label":"PoP Title"
+          "id": "pop_title",
+          "label": "PoP Title"
         },
         {
           "type": "select",
@@ -2740,7 +2779,7 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "show_shopify_installments",
           "label": "Show shopify installments",
           "default": false,
-          "info":"变体价格低于【400】则不显示"
+          "info": "变体价格低于【400】则不显示"
         }
       ]
     },
@@ -2800,19 +2839,19 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "color",
           "id": "add_btn_bg",
           "label": "Add button bg",
-          "default":"#111"
+          "default": "#111"
         },
         {
           "type": "color",
           "id": "add_btn_text_color",
           "label": "Add button text color",
-          "default":"#fff"
+          "default": "#fff"
         }
       ]
     },
     {
-      "type":"multiple_variations",
-      "name":"Multiple variat -- wenfei",
+      "type": "multiple_variations",
+      "name": "Multiple variat -- wenfei",
       "limit": 1,
       "settings": [
         {
@@ -2831,13 +2870,13 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "text",
           "id": "heading",
           "label": "heading",
-          "default":"Ancillary Products1"
+          "default": "Ancillary Products1"
         },
         {
-          "type":"product",
-          "id":"product",
-          "label":"Select Product",
-          "info":"additional products or gifts or auxiliary products or promotional giveaway products, etc."
+          "type": "product",
+          "id": "product",
+          "label": "Select Product",
+          "info": "additional products or gifts or auxiliary products or promotional giveaway products, etc."
         },
         {
           "type": "range",
@@ -2906,7 +2945,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
           "type": "text",
-          "id":"subTitle",
+          "id": "subTitle",
           "label": "Set Sub Title"
         },
         {
@@ -3225,10 +3264,10 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     },
     {
-      "type":"short_description",
-      "name":"Short Description",
-      "limit":1,
-      "settings":[
+      "type": "short_description",
+      "name": "Short Description",
+      "limit": 1,
+      "settings": [
         {
           "type": "checkbox",
           "id": "show_short_description",
@@ -3485,32 +3524,32 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 {% endschema %}
 <style>
-  .product.js-product{
-      scroll-behavior: auto;
-      display: grid;
-      /* grid-template-columns: repeat(2, 1fr); */
-      grid-template-columns:50% 50%;
-      grid-gap: 20px 20px;
+  .product.js-product {
+    scroll-behavior: auto;
+    display: grid;
+    /* grid-template-columns: repeat(2, 1fr); */
+    grid-template-columns: 50% 50%;
+    grid-gap: 20px 20px;
   }
-  @media (max-width:768px){
-    .product.js-product{
+  @media (max-width: 768px) {
+    .product.js-product {
       /* grid-template-columns: repeat(1, 1fr); */
-      grid-template-columns:100%;
+      grid-template-columns: 100%;
     }
   }
-  .product.js-product .product-media--slider{
+  .product.js-product .product-media--slider {
     width: 100%;
-    padding:0;
-    border:0;
+    padding: 0;
+    border: 0;
   }
-  .product.js-product .product-media--slider .media-gallery{
+  .product.js-product .product-media--slider .media-gallery {
     display: block;
     position: sticky;
-    top:200px;
+    top: 200px;
     z-index: 2;
     transition: top 0.5s ease;
   }
-  .product.js-product .product-info{
+  .product.js-product .product-info {
     width: 100%;
   }
 </style>

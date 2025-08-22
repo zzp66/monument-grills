@@ -86,26 +86,27 @@
 {% endstyle %}
 
 <style>
-  .best-sales .best-sales-template--16234261741631__best_sales_YcFpiN .event-information .event-title ul li:before{
-  content:"▸";
+  .best-sales .cc-best-sales .event-information .event-header strong{
+    color: #e55420;
+  }
+  .best-sales .cc-best-sales .event-information .event-title ul li:before{
+  content:"•";
+  font-size: 18px;
   display:block;
   position: absolute;
   left:0;
   top: 50%;
-  color:#fff;
+  color:#e55420;
   transform: translateY(-50%);
-  width: 30px;
 }
-  .best-sales-template--16234261741631__best_sales_YcFpiN .event-information.info-bg:after {
-    content: '';
-    background: url(https://cdn.shopify.com/s/files/1/1639/3511/files/CNET-1.png?v=1747125351);
-    width: 100px;
-    height: 41px;
-    background-size: cover;
-    display: block;
+.best-sales .cc-best-sales .video-box .video-banner .video-topright-icon{
     position: absolute;
     top: 10px;
     right: 10px;
+    width: 100px;
+    height: 40px;
+    background-size: cover;
+    z-index: 1;
 }
 </style>
 
@@ -323,6 +324,9 @@
                           {%- endif -%}
                         </div>
                     </div>
+                    <div class="video-topright-icon">
+                      <img src="{{ block.settings.video_topright_icon | image_url: width: master }}" alt="">
+                    </div>
                </div>
            </div>
             {% elsif block.settings.use_image != blank %}
@@ -525,6 +529,12 @@
             "info": "Some devices will not autoplay videos under certain circumstances. In accordance with Google's guidelines, autoplaying videos will be muted by default. [Learn more](https://cleancanvas.co.uk/support/enterprise/using-videos)",
             "default": true
           },
+          {
+            "type": "image_picker",
+            "id": "video_topright_icon",
+            "label": "视频右上角icon图标",
+            "info": "icon尺寸占位100px*40px"
+          },
          {
             "type": "header",
             "content": "Layout images"
@@ -670,7 +680,7 @@
           "type": "text",
           "id": "event_title",
           "label": "Event Title",
-          "info": "Enter <br> for a line-break."
+          "info": "使用<br>来换行，使用strong标签来作用特殊颜色，例如：<strong>Eminence 605</strong>"
         },
         {
           "type": "select",
