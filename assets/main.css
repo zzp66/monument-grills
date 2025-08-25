@@ -7285,7 +7285,7 @@ a.card__media,
 
 @media(min-width:991px) {
   .homes__index .cc-icons-with-text ul.slider__grid {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     padding: 10px 0;
   }
