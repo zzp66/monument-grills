@@ -1,0 +1,260 @@
+{%- if section.index > 2 -%}
+  <link rel="stylesheet" href="{{ 'featured-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'product.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- else -%}
+  {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
+  {{ 'product.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- if settings.enable_quick_add -%}
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-select.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- liquid
+  assign collection = section.settings.hwi_collection
+
+  assign carousel_desktop_small_promo = ' sm:auto-cols-3 md:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4 small-cards-desktop'
+  assign carousel_desktop_medium_promo = ' sm:auto-cols-2 lg:auto-cols-3'
+  assign carousel_desktop_large_promo = ' sm:auto-cols-2'
+  assign carousel_desktop_small = ' md:auto-cols-3 lg:auto-cols-4 xl:auto-cols-5 small-cards-desktop'
+  assign carousel_desktop_medium = ' sm:auto-cols-3 xl:auto-cols-4'
+  assign carousel_desktop_large = ' sm:auto-cols-2 lg:auto-cols-3'
+
+  assign grid_desktop_small_promo = ' sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 small-cards-desktop'
+  assign grid_desktop_medium_promo = ' md:grid-cols-2 lg:grid-cols-3'
+  assign grid_desktop_large_promo = ' sm:grid-cols-2'
+  assign grid_desktop_small = ' md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 small-cards-desktop'
+  assign grid_desktop_medium = ' sm:grid-cols-3 xl:grid-cols-4'
+  assign grid_desktop_large = ' sm:grid-cols-2 lg:grid-cols-3'
+
+  if section.settings.card_size_mobile == 'small'
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-2 small-cards-mobile'
+    assign grid_mobile_cols = 'grid-cols-2 small-cards-mobile'
+  else
+    assign carousel_mobile_cols = 'grid-flow-col auto-cols-1'
+    assign grid_mobile_cols = 'grid-cols-1'
+  endif
+
+  if section.settings.layout == 'carousel'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: carousel_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'carousel_on_mobile'
+    assign carousel = true
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = carousel_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  elsif section.settings.layout == 'grid'
+    assign carousel = false
+
+    if section.settings.show_promo_info
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small_promo
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium_promo
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large_promo
+      endif
+    else
+      if section.settings.card_size == 'small'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_small
+      elsif section.settings.card_size == 'medium'
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_medium
+      else
+        assign grid_classes = grid_mobile_cols | append: grid_desktop_large
+      endif
+    endif
+  endif
+
+  if settings.prod_card_image_ratio == 'shortest'
+    assign image_ratio = 0
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio > image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  elsif settings.prod_card_image_ratio == 'tallest'
+    assign image_ratio = 99
+    for product in collection.products limit: section.settings.products_to_show
+      if product.featured_media.preview_image.aspect_ratio < image_ratio
+        assign image_ratio = product.featured_media.preview_image.aspect_ratio
+      endif
+    endfor
+  else
+    assign image_ratio = settings.prod_card_image_ratio
+  endif
+
+  assign color_scheme = section.settings.color_scheme
+  assign bg_color = false
+
+  if color_scheme == 'default'
+    assign bg_color = settings.bg_color
+  elsif color_scheme == '1'
+    assign bg_color = settings.color_scheme_1_bg_grad | default: settings.color_scheme_1_bg
+  elsif color_scheme == '2'
+    assign bg_color = settings.color_scheme_2_bg_grad | default: settings.color_scheme_2_bg
+  elsif color_scheme == '3'
+    assign bg_color = settings.color_scheme_3_bg_grad | default: settings.color_scheme_3_bg
+  endif
+
+  if bg_color == settings.bg_color or bg_color == 'rgba(0,0,0,0)'
+    assign bg_color = false
+  endif
+-%}
+{% style %}
+  #{{ section.id }} .font-weight{
+    font-weight: bold;
+  }
+  #{{ section.id }} .font-uppercase{
+    text-transform:uppercase;
+  }
+{% endstyle %}
+<style>
+  .hwi-content {
+    display: grid;
+    grid-template-columns: 32% 68%;
+    gap: 20px;
+  }
+  .hwi-infos-img {
+    display: flex;
+  }
+  .hwi-infos-info {
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+  }
+  p.hwi-info-title {
+    margin: 0;
+    font-size: 28px;
+    line-height: 32px;
+  }
+  p.hwi-info-save {
+    margin: 10px 0 5px;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 700;
+    color: #e55420;
+  }
+  p.hwi-info-desc {
+    margin: 0;
+    font-size: 16px;
+    line-height: 18px;
+  }
+</style>
+<div class="hotsale-with-info section">
+  <div class="container">
+    <div class="hwi-content">
+      <div class="hwi-infos">
+        <div class="hwi-infos-img">
+          <img
+            src="https://cdn.shopify.com/s/files/1/1639/3511/files/D605-6_866a2b4b-d91b-4bd4-be5f-177a7826e26c.jpg?v=1756108963"
+            alt=""
+          >
+        </div>
+        <div class="hwi-infos-info">
+          <p class="hwi-info-title">Summer Hot Sales</p>
+          <p class="hwi-info-save">UP TO $138 OFF</p>
+          <p class="hwi-info-desc">
+            Celebrate summer’s last moments with our grill specials, enjoying flavorful feasts and treasured time with
+            family and friends.
+          </p>
+        </div>
+      </div>
+      <div class="hwi-products">
+        <div class="swiper hwi-swiper">
+          <div class="swiper-wrapper">
+            {% for product in collection.products %}
+              <div class="swiper-slide hotsale-slide">
+                {% render 'product-card-shownow',
+                  product: product,
+                  collection: section.settings.hotsale_collection,
+                  image_ratio: image_ratio,
+                  show_rating: false
+                %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.hwi-swiper', {
+      slidesPerView: 2,
+      spaceBetween: 20,
+      // navigation: {
+      //   nextEl: '.hotsale-next-btn',
+      //   prevEl: '.hotsale-prev-btn',
+      // },
+      breakpoints: {
+        320: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 1.2,
+          spaceBetween: 15,
+        },
+        1280: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hotsale With Info",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "hwi_collection",
+      "label": "选择集合页"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hotsale With Info"
+    }
+  ]
+}
+{% endschema %}
