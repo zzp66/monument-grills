@@ -6722,6 +6722,8 @@ a.angi-upsell-learn-more {
 .angi-upsell-title {
   margin-bottom: 0 !important;
   font-weight: bold !important;
+    flex: 1; /* 占剩余空间 */
+  margin-right: 10px;
 }
 
 .angi-upsell-widget {

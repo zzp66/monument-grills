@@ -68,7 +68,7 @@
               <a href="{{ item.settings.story_link }}" class="storyshared-url">
                 <div class="storyshared-item-img">
                   <img
-                    src="{{ item.settings.story_img }}"
+                    src="{{ item.settings.story_img | image_url: width: master }}"
                     alt=""
                   >
                 </div>
