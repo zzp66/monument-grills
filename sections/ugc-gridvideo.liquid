@@ -60,6 +60,7 @@
   .video-card img.ig-icon {
     max-width: 40px;
     height: auto;
+    border-radius: 50%;
   }
   .bottom-bar-text {
     margin-left: 8px;
@@ -179,15 +180,13 @@
                 </svg>
               </div>
               <div class="bottom-bar">
-                {% if block.settings.video_author_img != blank %}
-                  <img
-                    src="{{ block.settings.video_author_img | image_url: width: master }}"
-                    alt="Instagram"
-                    class="ig-icon"
-                  >
-                {% endif %}
+                <img
+                  src="https://cdn.shopify.com/s/files/1/1639/3511/files/logo-0813_18da88cd-e628-4a22-9e47-40309d9530d0.jpg?v=1755075485"
+                  alt="Instagram"
+                  class="ig-icon"
+                >
                 <div class="bottom-bar-text">
-                  <span class="text-strong">{{ block.settings.video_author }}</span>
+                  <span class="text-strong">Monument Grills</span>
                   <span class="text-ins">Instagram</span>
                 </div>
               </div>
@@ -273,17 +272,6 @@
           "type": "image_picker",
           "id": "thumbnail",
           "label": "Thumbnail Image"
-        },
-        {
-          "type": "image_picker",
-          "id": "video_author_img",
-          "label": "红人头像"
-        },
-        {
-          "type": "text",
-          "id": "video_author",
-          "label": "红人名称",
-          "default": "Monument Grills"
         },
         {
           "type": "url",
