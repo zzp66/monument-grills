@@ -7281,7 +7281,7 @@ a.card__media,
 }
 
 .homes__index .reviews_info p {
-  height: 180px;
+  height: 230px;
   font-size: 16px;
 }
 
@@ -7376,3 +7376,27 @@ a.card__media,
 }
 
 /* group buy css end here */
+
+@media screen and (max-width: 767px){
+  .homes__product .yotpo-display-s .yotpo-head{
+    min-height: 0;
+  	margin-top: 0;
+    margin-bottom: 0;
+  }
+  .homes__product .yotpo-display-s .yotpo-head .yotpo-headline{
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .homes__product .yotpo-base-layout{
+    width: 100% !important;
+  }
+  .homes__product .yotpo-display-s .yotpo-bold-layout .yotpo-layout-header-wrapper[data-v-012a3912]{
+    padding: 30px 25px !important;
+  }
+  .homes__product .yotpo-display-s .yotpo-layout-header-wrapper{
+    margin-bottom: 0;
+  }
+  .homes__product .yotpo-display-s .yotpo-bold-layout .yotpo-layout-header-wrapper .yotpo-bottom-line[data-v-012a3912]{
+    margin-bottom: 20px;
+  }
+}
