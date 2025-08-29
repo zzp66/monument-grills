@@ -88,9 +88,9 @@
     padding: 20px 40px;
     width: 80%;
     max-height: 680px;
-    overflow-y: auto;
     max-width: 640px;
     border-radius: 16px;
+    overflow-y: auto;
     text-align: center;
     position: relative;
   }
@@ -117,8 +117,21 @@
 
   .storyshared-popup-content-text {
     font-size: 16px;
-    color: #333;
     text-align: left;
+  }
+  @media screen and (max-width: 767px) {
+    .storyshared-popup-box {
+      padding: 20px;
+      margin: 0;
+      width: 90%;
+      height: auto;
+    }
+    .storyshared-popup-title {
+      font-size: 18px;
+    }
+    .storyshared-popup-content-text {
+      font-size: 14px;
+    }
   }
 </style>
 

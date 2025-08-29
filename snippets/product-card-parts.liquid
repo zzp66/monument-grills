@@ -232,78 +232,28 @@
                   <div class="parts-products-list" style="display:">
                     {% assign raw_string = product.metafields.custom.replacement_parts %}
                     {% if raw_string != blank %}
-                      {% assign cleaned_string = raw_string | remove: '["' | remove: '"]' %}
-                      {% assign parts_array = cleaned_string | split: '","' %}
-
-                      {% paginate collections['replacement-parts'].products by 1000 %}
-                        {% for part in parts_array %}
-                          {% assign part_id = part | split: '/' | last | plus: 0 %}
-                          {% assign found_product = null %}
-
-                          {% comment %}在替换件 collection 中查找产品{% endcomment %}
-                          {% for collection_product in collections['replacement-parts'].products %}
-                            {% assign collection_id = collection_product.id | plus: 0 %}
-                            {% if collection_id == part_id %}
-                              <div class="part-item">
-                                <div class="part-number">{{ forloop.parentloop.index }}</div>
-                                <div class="part-info">
-                                  <div class="part-title">{{ collection_product.title }}</div>
-                                  <div class="part-price">
-                                    {% if collection_product.compare_at_price > collection_product.price %}
-                                      <span class="price-sale">{{ collection_product.price | money }}</span>
-                                      <s class="price-compare">{{ collection_product.compare_at_price | money }}</s>
-                                    {% else %}
-                                      <span class="price">{{ collection_product.price | money }}</span>
-                                    {% endif %}
-                                  </div>
-                                </div>
-                                <a href="{{ collection_product.url }}" class="add-to-cart-btn" target="_blank"
-                                  >Shop Now</a
-                                >
-                              </div>
-                              {% assign found_product = collection_product %}
-                              {% break %}
-                            {% endif %}
-                          {% endfor %}
-
-                          {% unless found_product %}
-                            {% assign global_product = all_products[part_id] %}
-                            {% if global_product %}
-                              <div class="part-item">
-                                <div class="part-number">{{ forloop.index }}</div>
-                                <div class="part-info">
-                                  <div class="part-title">{{ global_product.title }}</div>
-                                  <div class="part-price">
-                                    {% if global_product.compare_at_price > global_product.price %}
-                                      <span class="price-sale">{{ global_product.price | money }}</span>
-                                      <s class="price-compare">{{ global_product.compare_at_price | money }}</s>
-                                    {% else %}
-                                      <span class="price">{{ global_product.price | money }}</span>
-                                    {% endif %}
-                                  </div>
-                                </div>
-                                <a href="{{ global_product.url }}" class="add-to-cart-btn" target="_blank">Shop Now</a>
-                              </div>
-                            {% else %}
-                              <div class="part-item unavailable">
-                                <div class="part-number">{{ forloop.index }}</div>
-                                <div class="part-info">
-                                  <div class="part-title">Replacement Part (ID: {{ part_id }})</div>
-                                  <div class="part-status">Product Not Found</div>
-                                </div>
-                                <button class="add-to-cart-btn" disabled>Unavailable</button>
-                              </div>
-                            {% endif %}
-                          {% endunless %}
-                        {% endfor %}
-                      {% endpaginate %}
+                      {% for global_product in product.metafields.custom.replacement_parts.value %}
+                        <div class="part-item">
+                          <div class="part-number">{{ forloop.index }}</div>
+                          <div class="part-info">
+                            <div class="part-title">{{ global_product.title }}</div>
+                            <div class="part-price">
+                              {% if global_product.compare_at_price > global_product.price %}
+                                <span class="price-sale">{{ global_product.price | money }}</span>
+                                <s class="price-compare">{{ global_product.compare_at_price | money }}</s>
+                              {% else %}
+                                <span class="price">{{ global_product.price | money }}</span>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <a href="{{ global_product.url }}" class="add-to-cart-btn" target="_blank">Shop Now</a>
+                        </div>
+                      {% endfor %}
                     {% endif %}
                   </div>
                 </div>
                 <div style="border: 1px solid red; padding: 10px; margin: 10px;display:none">
                   <h3>Metafields 调试信息：</h3>
-
-                  <!-- 显示原始 metafield 值 -->
                   <p>原始 Metafield 值: {{ product.metafields.custom.replacement_parts }}</p>
                 </div>
               </div>
