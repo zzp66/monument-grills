@@ -151,9 +151,8 @@
           <div class="swiper-slide">
             <div
               class="storyshared-item"
-              data-title="{{ data-title }}"
+              data-title="{{ data-title | escape }}"
               data-img="{{ data-img }}"
-              data-content="{{ data-content }}"
             >
               <div class="storyshared-item-img">
                 <img
@@ -164,6 +163,10 @@
               <div class="storyshared-item-info">
                 <p class="storyshared-item-title">{{ item.settings.story_title }}</p>
                 <p class="storyshared-item-btn">Learn More ></p>
+              </div>
+              <!-- 隐藏的内容，保留 richtext -->
+              <div class="storyshared-item-content" style="display:none;">
+                {{ data-content }}
               </div>
             </div>
           </div>
@@ -234,13 +237,13 @@
         const parentItem = btn.closest('.storyshared-item');
         const title = parentItem.getAttribute('data-title');
         const img = parentItem.getAttribute('data-img');
-        const content = parentItem.getAttribute('data-content');
+        const contentHtml = parentItem.querySelector('.storyshared-item-content').innerHTML;
 
         popupTitle.textContent = title;
         popupImg.src = img;
 
         // 保留 richtext 格式
-        popupContent.innerHTML = content;
+        popupContent.innerHTML = contentHtml;
 
         popup.style.display = 'flex';
       });
