@@ -48,9 +48,17 @@
   .reviews_info p {
     height: 150px;
   }
+  .reviews-container {
+    margin-top: 25px;
+  }
 
-  .reviewsSwiper-swiper-btn .swiper-button-prev,
-  .reviewsSwiper-swiper-btn .swiper-button-next {
+  .reviews-container-box {
+    position: relative;
+  }
+
+  .reviews-container .swiper-button-prev,
+  .reviews-container .swiper-button-next {
+    font-size: 16px;
     background-image: none;
     margin-top: 0;
     width: 40px;
@@ -59,10 +67,14 @@
     background-color: #e55420;
     border: 1px solid #e55420;
   }
-  .reviewsSwiper-swiper-btn .reviewsSwiper-prev-btn::after,
-  .reviewsSwiper-swiper-btn .reviewsSwiper-next-btn::after {
+  .reviews-container .reviewsSwiper-prev-btn::after,
+  .reviews-container .reviewsSwiper-next-btn::after {
     color: #fff;
     font-size: 16px;
+  }
+
+  .reviewsSwiper-swiper-btn {
+    display: none;
   }
   @media (max-width: 991px) {
     .head_sec h2 {
@@ -77,6 +89,12 @@
   }
 
   @media screen and (max-width: 767px) {
+    .mobile-hide {
+      display: none;
+    }
+    .reviews-container {
+      margin-top: 20px;
+    }
     .homes__index section.reviews_sec {
       padding: 20px 0;
     }
@@ -99,12 +117,13 @@
   }
 </style>
 <section class="reviews_sec">
-  <div class="container">
-    <div class="head_sec">
-      <h2>{{ section.settings.heading }}</h2>
-    </div>
+  <div class="head_sec">
+    <h2 class="section__heading mb-0 flex-auto text-center discover-title">{{ section.settings.heading }}</h2>
+  </div>
 
-    <div class="reviews_container">
+  <div class="reviews-container">
+    <div class="container reviews-container-box">
+      <div class="swiper-button-prev reviewsSwiper-prev-btn"></div>
       <div class="swiper reviewsSwiper">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
@@ -137,11 +156,14 @@
           {% endfor %}
         </div>
         <!-- 如果需要导航按钮 -->
-        <div class="reviewsSwiper-swiper-btn">
-          <div class="swiper-button-prev reviewsSwiper-prev-btn"></div>
-          <div class="swiper-button-next reviewsSwiper-next-btn"></div>
-        </div>
+        {% comment %}
+          <div class="reviewsSwiper-swiper-btn">
+            <div class="swiper-button-prev reviewsSwiper-prev-btn reviewsSwiper-prev-btn-mb"></div>
+            <div class="swiper-button-next reviewsSwiper-next-btn reviewsSwiper-next-btn-mb"></div>
+          </div>
+        {% endcomment %}
       </div>
+      <div class="swiper-button-next reviewsSwiper-next-btn"></div>
     </div>
   </div>
 </section>
@@ -153,10 +175,6 @@
         slidesPerView: 4,
         spaceBetween: 20,
         loop: true,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
         navigation: {
           nextEl: '.reviewsSwiper-next-btn',
           prevEl: '.reviewsSwiper-prev-btn',
