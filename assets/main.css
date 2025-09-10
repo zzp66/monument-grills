@@ -7370,4 +7370,25 @@ a.card__media,
   .homes__product .yotpo-display-s .yotpo-bold-layout .yotpo-layout-header-wrapper .yotpo-bottom-line[data-v-012a3912]{
     margin-bottom: 20px;
   }
+  .footer-accessibility {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.footer-accessibility__link {
+  display: inline-flex;
+  align-items: center;
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer-accessibility__link:hover {
+  color: #0073e6;
+}
+
+.footer-accessibility__icon {
+  margin-right: 6px;
+}
+
 }

@@ -160,29 +160,40 @@
                           </span>
                         </div>
                       </summary>
-                      <div class="disclosure__panel has-motion">
-                        <div class="disclosure__content">
-                          {%- if block.settings.text != blank -%}
-                            {{ block.settings.text }}
-                          {%- endif -%}
+    <!-- Our Values Menu (no title) -->
+    <div class="footer-our-values">
+      <ul class="footer-our-values__menu">
+        {% for link in linklists.our-values.links %}
+          <li class="footer-our-values__item">
+            <a href="{{ link.url }}" class="footer-our-values__link">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-                          {% render 'newsletter-signup', id: 'footer-signup', arrow_button: true, tags: 'newsletter' %}
-                        </div>
-                      </div>
-                    </details>
-                    {%- if block.settings.show_social -%}
-                      {%- liquid
-                        if block.settings.text_align == "text-end"
-                          assign class = "justify-end"
-                        elsif block.settings.text_align == "text-center"
-                          assign class = "justify-center"
-                        else
-                          assign class = "justify-start"
-                        endif
-                      -%}
-                      <div class="footer-block__btns footer-block__social">
-                        {% render 'social-media', icon: settings.social_custom_icon, icon_height: 24, class: class %}
-                      </div>
+                                            <!-- Accessibility Assistance Link -->
+<div class="footer-accessibility">
+  <a href="#add-aacc-link" class="footer-accessibility__link">
+    <!-- 图标，可以用 SVG 或字体图标 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="footer-accessibility__icon" viewBox="0 0 16 16">
+      <path d="M8 1a2 2 0 110 4 2 2 0 010-4zM2 7a1 1 0 011-1h10a1 1 0 010 2H9v7a1 1 0 11-2 0V8H3a1 1 0 01-1-1z"/>
+    </svg>
+    <span class="footer-accessibility__title">Accessibility Assistance</span>
+  </a>
+</div>
+{%- if block.settings.show_social -%}
+  {%- liquid
+    if block.settings.text_align == "text-end"
+      assign align_class = "justify-end"
+    elsif block.settings.text_align == "text-center"
+      assign align_class = "justify-center"
+    else
+      assign align_class = "justify-start"
+    endif
+  -%}
+  <div class="footer-block__btns footer-block__social {{ align_class }}">
+    {% render 'social-media', icon: settings.social_custom_icon, icon_height: 24 %}
+  </div>
                     {%- endif -%}
                   </footer-menu>
                   {%- assign is_first_disclosure = false -%}
@@ -303,6 +314,7 @@
       {%- endif -%}
     </div>
   </div>
+
 </footer>
 
 {% javascript %}

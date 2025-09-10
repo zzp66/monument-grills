@@ -62,6 +62,87 @@
 .footer-block__heading {
   margin-bottom: 1em;
 }
+/* Accessibility Assistance Button */
+.footer-accessibility {
+  margin-top: 16px;
+  text-align: left; /* 左对齐 */
+}
+
+.footer-accessibility__link {
+  display: inline-flex;
+  align-items: center; /* 垂直居中图标和文字 */
+  gap: 8px; /* 图标与文字间距 */
+  padding: 8px 16px;
+  border-radius: 3px; /* 小圆角 */
+  background-color: #ffffff; /* 白底 */
+  color: #111827 !important; /* 强制黑色文字 */
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.footer-accessibility__link:hover {
+  background-color: #f3f4f6; /* 浅灰 hover */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  color: #111827 !important; /* hover 文字依然黑色 */
+}
+
+.footer-accessibility__icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  fill: #111827; /* 黑色图标 */
+}
+.footer-our-values {
+  font-family: 'Indivisible', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;       
+  line-height: 1.4;      
+  color: #ffffff;        /* 字体改白色 */
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-our-values__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;              
+}
+
+.footer-our-values__item {
+  margin: 0;
+}
+
+.footer-our-values__link {
+  color: #ffffff;        /* 链接字体白色 */
+  text-decoration: none;
+  font-size: 16px;       
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.footer-our-values__link:hover {
+  color: #c00000;        /* hover 保持原来的红色 */
+}
+
+/* 移动端可选：垂直排列 */
+@media (max-width: 768px) {
+  .footer-our-values__menu {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
 
 .footer-menu {
   line-height: 1.5;
